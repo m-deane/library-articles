@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Visual Guide to Exponential Decay</title>
+  <meta name="description" content="Why everything fades, and how fast — a short tour of the simplest half-life you&#x27;ll ever meet." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=DM+Serif+Display&family=Instrument+Sans:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- React / Recharts / Babel (UMD from unpkg) -->
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+  <script crossorigin src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+</head>
+<body>
+  <!-- Compact header bar -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">A Visual Guide to Exponential Decay</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-20</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read">3 min</span>
+        <span class="style-badge" style="background:#7c4dff15; color:#7c4dff; border:1px solid #7c4dff55;">Technical DS</span>
+      </div>
+      <a class="index-link" href="../index.html">All articles</a>
+    </div>
+  </header>
+
+  <!-- Render target -->
+  <main class="article-container">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem; font-family:serif;">
+        This article requires JavaScript to render the embedded React/Recharts components.
+      </p>
+    </noscript>
+    <div id="error-boundary" style="display:none; padding:2rem; background:#fff3f3; border:1px solid #f5c2c2; border-radius:8px; font-family:ui-monospace,monospace;"></div>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>test-chart-article</code> &middot; category: <code>statistics</code></span>
+      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Expose React hooks + Recharts components into global scope for the JSX block -->
+  <script>
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useMemo = React.useMemo;
+    window.useRef = React.useRef;
+    window.useCallback = React.useCallback;
+    window.useReducer = React.useReducer;
+    window.useLayoutEffect = React.useLayoutEffect;
+    window.useContext = React.useContext;
+    window.Fragment = React.Fragment;
+
+    // Expose Recharts components into global scope
+    const _R = window.Recharts || {};
+    [
+      'LineChart','BarChart','AreaChart','ScatterChart','RadarChart','PieChart',
+      'XAxis','YAxis','CartesianGrid','Tooltip','Legend','Line','Bar','Area',
+      'Scatter','Pie','Cell','ResponsiveContainer','ReferenceLine','ReferenceArea',
+      'ComposedChart','Treemap','Radar','PolarGrid','PolarAngleAxis','PolarRadiusAxis',
+      'RadialBar','RadialBarChart','FunnelChart','Funnel','LabelList','Label','Brush',
+      'Sankey','Sector'
+    ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
+
+    // Simple error surface for Babel / runtime failures
+    window.addEventListener('error', function (e) {
+      var box = document.getElementById('error-boundary');
+      if (!box) return;
+      box.style.display = 'block';
+      box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
+    });
+  </script>
+
+  <!-- JSX payload compiled in-browser by Babel Standalone -->
+  <script type="text/babel" data-presets="react">
+    const ARTICLE_DATA = {
+  title: "A Visual Guide to Exponential Decay",
+  subtitle: "Why everything fades, and how fast — a short tour of the simplest half-life you'll ever meet.",
+  date: "2026-04-20",
+  tags: ["statistics", "visualisation", "test"],
+  read_time: "3 min",
+  category: "statistics",
+  style: "technical-ds",
+};
+
+function TestChartArticle() {
+  const data = React.useMemo(() => {
+    const pts = [];
+    for (let x = 0; x <= 20; x += 0.25) {
+      pts.push({ x: Number(x.toFixed(2)), y: Math.exp(-0.2 * x) });
+    }
+    return pts;
+  }, []);
+
+  const serif = "'Source Serif 4', Georgia, serif";
+  const display = "'Playfair Display', Georgia, serif";
+
+  return (
+    <article style={{ color: "#1a1a1a", fontFamily: serif }}>
+      {/* Hero */}
+      <header style={{ marginBottom: "2rem" }}>
+        <div
+          style={{
+            fontFamily: "'Source Sans 3', system-ui, sans-serif",
+            fontSize: "0.8rem",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "#7c4dff",
+            fontWeight: 600,
+            marginBottom: "0.75rem",
+          }}
+        >
+          Statistics &middot; Technical DS
+        </div>
+        <h1
+          style={{
+            fontFamily: display,
+            fontSize: "2.8rem",
+            lineHeight: 1.1,
+            fontWeight: 700,
+            margin: "0 0 0.6rem",
+            letterSpacing: "-0.015em",
+          }}
+        >
+          A Visual Guide to Exponential Decay
+        </h1>
+        <p
+          style={{
+            fontFamily: serif,
+            fontSize: "1.2rem",
+            lineHeight: 1.5,
+            color: "#555",
+            margin: 0,
+            fontStyle: "italic",
+          }}
+        >
+          Why everything fades, and how fast — a short tour of the simplest
+          half-life you'll ever meet.
+        </p>
+      </header>
+
+      {/* Opening paragraph */}
+      <p style={{ fontSize: "1.05rem", lineHeight: 1.75 }}>
+        Exponential decay is the quiet workhorse of applied statistics. From
+        radioactive atoms to forgotten vocabulary, from cooling coffee to
+        decaying customer retention, the same small differential equation
+        shows up again and again: the rate of change is proportional to what
+        remains. Solve it and you get{" "}
+        <code style={{ background: "#f4f1ea", padding: "1px 6px", borderRadius: 4 }}>
+          y = e<sup>&ndash;&lambda;x</sup>
+        </code>
+        . The plot below uses &lambda; = 0.2 — a gentle, half-life of roughly
+        3.5 units.
+      </p>
+
+      {/* Chart */}
+      <figure style={{ margin: "2rem 0", padding: "1.25rem", background: "#fff", border: "1px solid #e5e2d9", borderRadius: 12 }}>
+        <figcaption
+          style={{
+            fontFamily: "'Source Sans 3', system-ui, sans-serif",
+            fontSize: "0.85rem",
+            color: "#666",
+            marginBottom: "0.75rem",
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+          }}
+        >
+          y = exp(&minus;0.2 &middot; x), &nbsp; x &isin; [0, 20]
+        </figcaption>
+        <ResponsiveContainer width="100%" height={320}>
+          <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
+            <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
+            <XAxis
+              dataKey="x"
+              type="number"
+              domain={[0, 20]}
+              tick={{ fill: "#666", fontSize: 12 }}
+              label={{ value: "x", position: "insideBottomRight", offset: -5, fill: "#666" }}
+            />
+            <YAxis
+              tick={{ fill: "#666", fontSize: 12 }}
+              domain={[0, 1]}
+              label={{ value: "y", angle: -90, position: "insideLeft", fill: "#666" }}
+            />
+            <Tooltip
+              formatter={(v) => Number(v).toFixed(4)}
+              contentStyle={{ fontFamily: serif, fontSize: "0.85rem" }}
+            />
+            <Line
+              type="monotone"
+              dataKey="y"
+              stroke="#7c4dff"
+              strokeWidth={2.5}
+              dot={false}
+            />
+            <ReferenceLine
+              y={0.5}
+              stroke="#aaa"
+              strokeDasharray="4 4"
+              label={{ value: "half-life", fill: "#888", position: "insideTopRight", fontSize: 11 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </figure>
+
+      {/* Pull quote */}
+      <blockquote
+        style={{
+          fontFamily: display,
+          fontStyle: "italic",
+          fontSize: "1.4rem",
+          lineHeight: 1.4,
+          color: "#333",
+          borderLeft: "3px solid #7c4dff",
+          margin: "2rem 0",
+          padding: "0.2rem 0 0.2rem 1.4rem",
+        }}
+      >
+        "Everything decays — what matters is the constant."
+      </blockquote>
+
+      {/* Closing */}
+      <p style={{ fontSize: "1.05rem", lineHeight: 1.75 }}>
+        The curve above never quite reaches zero, which is both
+        mathematically inconvenient and practically useful. It means a
+        tiny residual trace survives indefinitely — the same property that
+        lets carbon dating reach back tens of thousands of years. Shift
+        &lambda;, and you shift the timescale: double it and the half-life
+        halves. It is the single parameter that separates a breath of
+        perfume from a Roman villa's wall paint.
+      </p>
+
+      <p
+        style={{
+          fontFamily: "'Source Sans 3', system-ui, sans-serif",
+          fontSize: "0.85rem",
+          color: "#999",
+          marginTop: "3rem",
+          paddingTop: "1rem",
+          borderTop: "1px solid #e5e2d9",
+        }}
+      >
+        Test article &middot; rendered via Babel Standalone + Recharts UMD.
+      </p>
+    </article>
+  );
+}
+
+
+    try {
+      ReactDOM.createRoot(document.getElementById('root')).render(
+        React.createElement(TestChartArticle)
+      );
+    } catch (err) {
+      var box = document.getElementById('error-boundary');
+      if (box) {
+        box.style.display = 'block';
+        box.textContent = '[render error] ' + (err && err.message ? err.message : err);
+      }
+      console.error(err);
+    }
+  </script>
+</body>
+</html>

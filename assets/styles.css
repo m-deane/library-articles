@@ -1,0 +1,293 @@
+/* ===================================================================
+   Library Articles — shared styles
+   Magazine-quality typography; minimal chrome; leave article internals
+   to each article's own inline styles.
+   =================================================================== */
+
+:root {
+  --ink: #1a1a1a;
+  --ink-soft: #444;
+  --paper: #fbfaf7;
+  --paper-alt: #f4f1ea;
+  --rule: #e5e2d9;
+  --accent: #7c4dff;
+  --accent-soft: #ede7ff;
+  --font-display: 'Playfair Display', 'DM Serif Display', Georgia, serif;
+  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Source Sans 3', 'Instrument Sans', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+code, pre { font-family: var(--font-mono); font-size: 0.9em; }
+
+/* ---- Header bar ---- */
+.article-header-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(160%) blur(8px);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1.25rem;
+}
+
+.back-link, .index-link {
+  color: var(--ink-soft);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.header-meta {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.header-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 0.95rem;
+  max-width: 540px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-sep { color: #bbb; }
+
+.style-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  letter-spacing: 0.02em;
+  margin-left: 0.25rem;
+}
+
+/* ---- Article container ---- */
+.article-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* Sensible defaults inside #root — individual articles override via inline styles */
+#root h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.6rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0.5rem 0 1rem;
+  color: var(--ink);
+}
+#root h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.85rem;
+  line-height: 1.25;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+#root h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.35rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+#root p {
+  margin: 0 0 1.1rem;
+}
+#root blockquote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.35rem;
+  line-height: 1.4;
+  color: #444;
+  border-left: 3px solid var(--accent);
+  margin: 1.6rem 0;
+  padding: 0.2rem 0 0.2rem 1.25rem;
+}
+#root code {
+  background: var(--paper-alt);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* ---- Footer ---- */
+.article-footer {
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  background: var(--paper-alt);
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ===================================================================
+   Index page
+   =================================================================== */
+.index-hero {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 1.5rem;
+}
+.index-hero h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3rem;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.01em;
+}
+.index-hero p {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  max-width: 680px;
+  margin: 0 0 1.5rem;
+}
+
+.index-filters {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 1rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-family: var(--font-sans);
+}
+.index-filters select, .index-filters input {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  min-width: 180px;
+}
+.index-filters input { flex: 1; min-width: 240px; }
+.filter-count {
+  align-self: center;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.index-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.article-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 1.25rem 1.25rem 1rem;
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+  color: inherit;
+}
+.article-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px -10px rgba(0,0,0,0.15);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+.article-card .card-meta {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.article-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.25;
+  margin: 0.25rem 0 0.4rem;
+  color: var(--ink);
+}
+.article-card .card-subtitle {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin: 0 0 0.75rem;
+  line-height: 1.4;
+}
+.article-card .card-tags {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  font-family: var(--font-sans);
+}
+.article-card .tag {
+  font-size: 0.7rem;
+  padding: 1px 8px;
+  background: var(--paper-alt);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  color: var(--ink-soft);
+}
+
+/* Responsive tweaks */
+@media (max-width: 720px) {
+  body { font-size: 17px; }
+  .header-title { max-width: 220px; font-size: 0.85rem; }
+  .header-meta { font-size: 0.75rem; }
+  .index-hero h1 { font-size: 2.2rem; }
+  #root h1 { font-size: 2.1rem; }
+  #root h2 { font-size: 1.55rem; }
+}
