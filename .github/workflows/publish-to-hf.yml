@@ -78,28 +78,38 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Open revert PR (branch protection blocks direct push)
+      - name: Open revert PR (best-effort; branch protection blocks direct push)
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set +e
           # Only attempt revert if validate-and-build actually succeeded
           # (if it failed, the bad commit didn't reach HF — no rollback needed,
           # just the issue below is enough).
-          if [ "${{ needs.validate-and-build.result }}" = "success" ]; then
-            SHA="${{ needs.validate-and-build.outputs.sha }}"
-            BRANCH="revert/${SHA:0:7}"
-            git config user.email "actions@github.com"
-            git config user.name  "gh-actions"
-            git checkout -b "$BRANCH"
-            git revert --no-edit "$SHA" || exit 0
-            git push origin "$BRANCH"
-            gh pr create --base main --head "$BRANCH" \
-              --title "Auto-revert $SHA (HF publish failed)" \
-              --body "Validate-and-build succeeded but push-to-hf failed. Reverting to keep main in sync with HF Space state." || true
-            gh pr merge "$BRANCH" --auto --squash || true
-          else
-            echo "validate-and-build failed — no revert needed (bad commit never left main in a valid state)"
+          if [ "${{ needs.validate-and-build.result }}" != "success" ]; then
+            echo "validate-and-build failed — no revert needed"
+            exit 0
           fi
+          SHA="${{ needs.validate-and-build.outputs.sha }}"
+          BRANCH="revert/${SHA:0:7}"
+          git config user.email "actions@github.com"
+          git config user.name  "gh-actions"
+          git checkout -b "$BRANCH" || exit 0
+          git revert --no-edit "$SHA" || exit 0
+          # Default GITHUB_TOKEN can't push workflow-file changes. If that
+          # blocks the push, the issue below is the only rollback signal —
+          # operator can manually revert. Real article commits never touch
+          # .github/ so this guard is only relevant for meta-commits.
+          if ! git push origin "$BRANCH" 2>&1; then
+            echo "::warning::revert push rejected (likely workflow-file change); manual revert required"
+            exit 0
+          fi
+          gh pr create --base main --head "$BRANCH" \
+            --title "Auto-revert $SHA (HF publish failed)" \
+            --body "Validate-and-build succeeded but push-to-hf failed. Reverting to keep main in sync with HF Space state." || true
+          gh pr merge "$BRANCH" --auto --squash || true
+          exit 0
       - name: Open issue
         uses: actions/github-script@v7
         with:
