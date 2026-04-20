@@ -345,12 +345,37 @@ code, pre { font-family: var(--font-code); font-size: 0.9em; }
   padding: 0.2rem 0 0.2rem 1.25rem;
 }
 
-#root code {
+/* Inline code only — not inside <pre> blocks */
+#root :not(pre) > code {
   background: var(--bg-section-blue);
   color: var(--accent-purple);
   padding: 1px 6px;
   border-radius: 4px;
   font-size: 0.88em;
+}
+
+/* Code blocks: honour the article's inline pre styles (usually dark bg +
+   light text). Force <code> inside to inherit everything from its parent
+   <pre>, so our inline-code rule above never overrides it. */
+#root pre {
+  color: #e2e8f0;  /* fallback if article didn't set one */
+}
+#root pre code {
+  background: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: inherit !important;
+}
+#root pre code * {
+  color: inherit;
+}
+
+/* Readable selection highlight on dark code blocks */
+#root pre::selection,
+#root pre *::selection {
+  background: rgba(124, 77, 255, 0.45);
+  color: #ffffff;
 }
 
 /* ===================================================================
