@@ -1349,16 +1349,36 @@ def convert_slug(slug: str) -> str:
 
 def _update_md(slug: str, new_body: str) -> tuple[int, int]:
     md_path = MD_DIR / f"{slug}.md"
-    existing = md_path.read_text(encoding="utf-8")
-    # Keep everything up to and including the "View Full Article" line + one
-    # blank line; discard the rest.
-    m = re.search(
-        r"(\*\*\[📑 View Full (?:Article|Interactive).+?\)\*\*\n)", existing
-    )
-    if not m:
-        raise RuntimeError(f"could not find View-Full marker in {md_path}")
-    header = existing[: m.end()]
-    # ensure header ends with a blank line then the divider
+    MD_DIR.mkdir(parents=True, exist_ok=True)
+    if md_path.exists():
+        existing = md_path.read_text(encoding="utf-8")
+        # Keep everything up to and including the "View Full Article" line + one
+        # blank line; discard the rest.
+        m = re.search(
+            r"(\*\*\[📑 View Full (?:Article|Interactive).+?\)\*\*\n)", existing
+        )
+        if m:
+            header = existing[: m.end()]
+        else:
+            # Missing marker — rebuild a minimal header so the file stays usable.
+            sys.stderr.write(
+                f"[warn] {md_path}: no View-Full marker; regenerating minimal header\n"
+            )
+            header = (
+                f"# {slug}\n\n"
+                f"**[📑 View Full Article on the JSX Space →]"
+                f"(https://helwyr55-library-articles.static.hf.space/articles/"
+                f"{slug}.html)**\n"
+            )
+    else:
+        # First-time generation (e.g. CI without the sibling library/ checkout).
+        # Build a minimal header so the extractor has somewhere to anchor.
+        header = (
+            f"# {slug}\n\n"
+            f"**[📑 View Full Article on the JSX Space →]"
+            f"(https://helwyr55-library-articles.static.hf.space/articles/"
+            f"{slug}.html)**\n"
+        )
     new_content = header.rstrip() + "\n\n---\n\n" + new_body.rstrip() + "\n"
     md_path.write_text(new_content, encoding="utf-8")
     return len(new_content), new_content.count("\n")
