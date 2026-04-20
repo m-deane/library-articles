@@ -671,6 +671,30 @@ def _render_region(region: str) -> str:
                 caption = attrs.get("caption", "")
                 if caption:
                     parts.append(inline_html_to_md(f"*{caption}*"))
+            elif tag == "Photograph":
+                # Inline editorial photograph:
+                #   ![caption or alt](src)
+                #   *caption — [credit](href)*
+                src = attrs.get("src", "")
+                alt = attrs.get("alt", "")
+                caption = attrs.get("caption", "")
+                credit = attrs.get("credit", "")
+                href = attrs.get("href", "")
+                label = caption or alt
+                if src:
+                    lines: list[str] = []
+                    lines.append(f"![{label}]({src})")
+                    if caption and credit and href:
+                        lines.append(f"*{caption} — [{credit}]({href})*")
+                    elif caption and credit:
+                        lines.append(f"*{caption} — {credit}*")
+                    elif caption:
+                        lines.append(f"*{caption}*")
+                    elif credit and href:
+                        lines.append(f"*[{credit}]({href})*")
+                    elif credit:
+                        lines.append(f"*{credit}*")
+                    parts.append("\n\n".join(lines))
             elif tag == "BR":
                 parts.append("\n---\n")
             elif tag == "Callout":
@@ -894,6 +918,13 @@ def _find_all_events(src: str) -> list[tuple[int, str, dict]]:
         r'<IC\s+func="[^"]*"\s+caption="([^"]*)"\s*/?>', src
     ):
         events.append((m.start(), "ic", {"caption": m.group(1)}))
+
+    # <Photograph src="..." alt="..." caption="..." credit="..." href="..." />
+    # Self-closing; attributes may appear in any order. Scan for the opener and
+    # parse attributes via the shared _parse_attrs helper.
+    for m in re.finditer(r"<Photograph\b([^>]*?)/?>", src):
+        attrs = _parse_attrs(m.group(1))
+        events.append((m.start(), "photograph", {"attrs": attrs}))
 
     # <H3>...</H3>
     for m in re.finditer(r"<H3>", src):
@@ -1180,6 +1211,27 @@ def generic_text_extraction(src: str) -> str:
             txt = inline_html_to_md(payload["caption"])
             if txt:
                 parts.append(f"*{txt}*")
+        elif kind == "photograph":
+            attrs = payload["attrs"]
+            src_url = attrs.get("src", "")
+            alt = attrs.get("alt", "")
+            caption = attrs.get("caption", "")
+            credit = attrs.get("credit", "")
+            href = attrs.get("href", "")
+            label = caption or alt
+            if src_url:
+                chunk: list[str] = [f"![{label}]({src_url})"]
+                if caption and credit and href:
+                    chunk.append(f"*{caption} — [{credit}]({href})*")
+                elif caption and credit:
+                    chunk.append(f"*{caption} — {credit}*")
+                elif caption:
+                    chunk.append(f"*{caption}*")
+                elif credit and href:
+                    chunk.append(f"*[{credit}]({href})*")
+                elif credit:
+                    chunk.append(f"*{credit}*")
+                parts.append("\n\n".join(chunk))
         elif kind == "h3":
             txt = inline_html_to_md(payload["text"])
             if txt:
