@@ -1,0 +1,21 @@
+{
+  "slug": "virtual-barrels",
+  "title": "Virtual Barrels: A Quant's Tour of the Oil Market",
+  "subtitle": "Real options, spreads, volatility risk premium, and spread-option pricing \u2014 the mental models that turn physical crude into a tradeable portfolio.",
+  "date": "2026-04-20",
+  "read_time": "22 min",
+  "category": "energy",
+  "style": "technical-ds",
+  "tags": [
+    "oil",
+    "commodities",
+    "volatility",
+    "options",
+    "real-options",
+    "quant-trading",
+    "spread-options",
+    "energy"
+  ],
+  "component": "VirtualBarrels",
+  "url": "articles/virtual-barrels.html"
+}

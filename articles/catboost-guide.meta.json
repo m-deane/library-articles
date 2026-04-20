@@ -1,7 +1,7 @@
 {
   "slug": "catboost-guide",
-  "title": "CatBoost: The Theoretically Principled Member of the Gradient Boosting Trinity",
-  "subtitle": "Ordered boosting eliminates prediction shift. Ordered target statistics handle categorical features without leakage. A deep dive.",
+  "title": "Catboost Guide",
+  "subtitle": "",
   "date": "",
   "read_time": "",
   "category": "general",

@@ -1,7 +1,7 @@
 {
   "slug": "test-chart-article",
   "title": "A Visual Guide to Exponential Decay",
-  "subtitle": "A test article to verify JSX rendering with Recharts.",
+  "subtitle": "Why everything fades, and how fast \u2014 a short tour of the simplest half-life you'll ever meet.",
   "date": "2026-04-20",
   "read_time": "3 min",
   "category": "statistics",

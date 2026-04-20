@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Practitioner's Deep Dive: Time Series Feature Selection in Practice</title>
+  <title>Feature Selection Ts Deep Dive</title>
   <meta name="description" content="" />
 
   <!-- Google Fonts -->
@@ -32,7 +32,7 @@
         &larr; Library
       </a>
       <div class="header-meta">
-        <span class="header-title">The Practitioner's Deep Dive: Time Series Feature Selection in Practice</span>
+        <span class="header-title">Feature Selection Ts Deep Dive</span>
         <span class="header-sep">&middot;</span>
         <span class="header-date"></span>
         <span class="header-sep">&middot;</span>
@@ -91,6 +91,26 @@
       box.style.display = 'block';
       box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
     });
+  </script>
+
+  <!-- Global <Photograph> helper — available to every article -->
+  <script type="text/babel" data-presets="react">
+    // Global Photograph helper — available to every article
+    window.Photograph = ({ src, alt, caption, credit, href }) => (
+      <figure className="photo">
+        <img src={src} alt={alt || caption || ""} loading="lazy" />
+        {(caption || credit) && (
+          <figcaption>
+            {caption && <span className="photo-caption">{caption}</span>}
+            {credit && (
+              <span className="photo-credit">
+                {" "}— <a href={href} target="_blank" rel="noopener noreferrer">{credit}</a>
+              </span>
+            )}
+          </figcaption>
+        )}
+      </figure>
+    );
   </script>
 
   <!-- JSX payload compiled in-browser by Babel Standalone -->

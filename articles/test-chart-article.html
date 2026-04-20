@@ -93,6 +93,26 @@
     });
   </script>
 
+  <!-- Global <Photograph> helper — available to every article -->
+  <script type="text/babel" data-presets="react">
+    // Global Photograph helper — available to every article
+    window.Photograph = ({ src, alt, caption, credit, href }) => (
+      <figure className="photo">
+        <img src={src} alt={alt || caption || ""} loading="lazy" />
+        {(caption || credit) && (
+          <figcaption>
+            {caption && <span className="photo-caption">{caption}</span>}
+            {credit && (
+              <span className="photo-credit">
+                {" "}— <a href={href} target="_blank" rel="noopener noreferrer">{credit}</a>
+              </span>
+            )}
+          </figcaption>
+        )}
+      </figure>
+    );
+  </script>
+
   <!-- JSX payload compiled in-browser by Babel Standalone -->
   <script type="text/babel" data-presets="react">
     const ARTICLE_DATA = {

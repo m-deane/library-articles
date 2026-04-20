@@ -1,7 +1,7 @@
 {
   "slug": "probabilistic-forecasting-guide",
-  "title": "Beyond Point Forecasts: Prediction Intervals That Actually Work",
-  "subtitle": "From 'demand will be 215' to 'demand will be 215 [195, 238] at 90% coverage.' Quantile regression, conformal, and native probabilistic models compared.",
+  "title": "Probabilistic Forecasting Guide",
+  "subtitle": "",
   "date": "",
   "read_time": "",
   "category": "general",
