@@ -58,7 +58,6 @@ SLUGS = [
     "splitwise-python-article",
     "stochastic-dp-encyclopaedic-article",
     "ts-feature-engineering-guide",
-    "virtual-barrels",
 ]
 
 
