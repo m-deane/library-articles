@@ -1,0 +1,355 @@
+import { useState } from "react";
+
+const C = {
+  bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#0F766E",
+  accentLight: "#CCFBF1", accentDark: "#064E3B", text: "#1E293B",
+  muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9",
+  warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF",
+  green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316",
+};
+const F = {
+  h: "'Newsreader', Georgia, serif",
+  b: "'Inter', -apple-system, sans-serif",
+  m: "'JetBrains Mono', 'Fira Code', monospace",
+};
+
+// ═══════ DIAGRAMS ═══════
+
+const PipelineDiagram = () => (
+  <svg viewBox="0 0 820 200" style={{width:"100%",display:"block"}}>
+    <rect width="820" height="200" fill={C.bg} rx="8"/>
+    {[
+      {x:10,w:130,l:"Raw Time Series",sub:"datetime + target",c:"#6366F1",icon:"📈"},
+      {x:160,w:130,l:"Feature Engineering",sub:"lags, rolling, calendar",c:"#8B5CF6",icon:"🔧"},
+      {x:310,w:130,l:"Train Model",sub:"XGB / LGBM / RF",c:C.accent,icon:"🌲"},
+      {x:460,w:130,l:"Compute SHAP",sub:"TreeSHAP backend",c:"#0EA5E9",icon:"📊"},
+      {x:610,w:190,l:"Shapash SmartExplainer",sub:"inverse encode → visualise",c:"#D97706",icon:"🔅"},
+    ].map((b,i)=>(
+      <g key={i}>
+        {i>0 && <path d={`M${b.x-12},100 L${b.x-2},100`} stroke={C.border} strokeWidth="2" markerEnd="url(#pipeArr)"/>}
+        <rect x={b.x} y="30" width={b.w} height="140" rx="8" fill="#fff" stroke={b.c} strokeWidth="2"/>
+        <text x={b.x+b.w/2} y="65" textAnchor="middle" fontSize="22">{b.icon}</text>
+        <text x={b.x+b.w/2} y="90" textAnchor="middle" fill={C.text} fontSize="11" fontFamily={F.b} fontWeight="700">{b.l}</text>
+        <text x={b.x+b.w/2} y="108" textAnchor="middle" fill={C.muted} fontSize="9" fontFamily={F.m}>{b.sub}</text>
+      </g>
+    ))}
+    <defs><marker id="pipeArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill={C.border}/></marker></defs>
+  </svg>
+);
+
+const ShapleyDiagram = () => (
+  <svg viewBox="0 0 700 280" style={{width:"100%",display:"block"}}>
+    <rect width="700" height="280" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/>
+    <text x="350" y="28" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">Shapley Value: Marginal Contribution Across All Coalitions</text>
+    {/* Prediction bar */}
+    <rect x="50" y="50" width="600" height="30" rx="4" fill={C.codeBg}/>
+    <text x="60" y="70" fill={C.muted} fontSize="10" fontFamily={F.m}>Base value (E[f(x)] = $180k)</text>
+    <rect x="290" y="50" width="180" height="30" rx="4" fill={C.accent} opacity="0.2"/>
+    <text x="380" y="70" textAnchor="middle" fill={C.accent} fontSize="10" fontFamily={F.m} fontWeight="700">→ Prediction = $215k</text>
+    {/* Feature contributions */}
+    {[
+      {l:"lag_1 = 210k",v:"+$18k",w:90,c:C.green,dir:1},
+      {l:"rolling_7d_mean",v:"+$12k",w:60,c:C.green,dir:1},
+      {l:"month = Jan",v:"-$8k",w:40,c:C.red,dir:-1},
+      {l:"day_of_week = Mon",v:"+$5k",w:25,c:C.green,dir:1},
+      {l:"lag_7 = 195k",v:"+$4k",w:20,c:C.green,dir:1},
+      {l:"temp_rolling_3d",v:"+$3k",w:15,c:C.green,dir:1},
+      {l:"is_holiday",v:"+$1k",w:5,c:C.green,dir:1},
+    ].map((f,i)=>(
+      <g key={i}>
+        <rect x="50" y={100+i*24} width={f.w*2.5} height="16" rx="3" fill={f.c} opacity="0.15"/>
+        <rect x="50" y={100+i*24} width={f.w*2.5} height="16" rx="3" fill="none" stroke={f.c} strokeWidth="1" opacity="0.4"/>
+        <text x="60" y={112+i*24} fill={C.text} fontSize="9" fontFamily={F.m}>{f.l}</text>
+        <text x={60+f.w*2.5+8} y={112+i*24} fill={f.c} fontSize="9" fontFamily={F.m} fontWeight="700">{f.v}</text>
+      </g>
+    ))}
+    {/* Formula */}
+    <text x="420" y="120" fill={C.muted} fontSize="10" fontFamily={F.m}>φᵢ = Σ |S|!(n-|S|-1)!</text>
+    <text x="420" y="136" fill={C.muted} fontSize="10" fontFamily={F.m}>     ─────────────── × [f(S∪{"{i}"}) - f(S)]</text>
+    <text x="420" y="152" fill={C.muted} fontSize="10" fontFamily={F.m}>          n!</text>
+    <text x="420" y="180" fill={C.light} fontSize="9" fontFamily={F.b}>Weighted average of marginal</text>
+    <text x="420" y="195" fill={C.light} fontSize="9" fontFamily={F.b}>contributions across all possible</text>
+    <text x="420" y="210" fill={C.light} fontSize="9" fontFamily={F.b}>feature subsets (coalitions)</text>
+    <text x="350" y="268" textAnchor="middle" fill={C.light} fontSize="8" fontFamily={F.b}>Satisfies: Local accuracy, Missingness, Consistency — Lundberg & Lee (NeurIPS 2017)</text>
+  </svg>
+);
+
+const FeatureEngDiagram = () => (
+  <svg viewBox="0 0 700 320" style={{width:"100%",display:"block"}}>
+    <rect width="700" height="320" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/>
+    <text x="350" y="28" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">Time Series → Tabular: The Feature Engineering Bridge</text>
+    {/* Raw TS */}
+    <rect x="30" y="50" width="200" height="120" rx="6" fill={C.codeBg}/>
+    <text x="130" y="70" textAnchor="middle" fill={C.text} fontSize="10" fontFamily={F.m} fontWeight="600">Raw Time Series</text>
+    <text x="40" y="90" fill={C.muted} fontSize="8" fontFamily={F.m}>date       | value</text>
+    <text x="40" y="104" fill={C.text} fontSize="8" fontFamily={F.m}>2024-01-01 | 210</text>
+    <text x="40" y="116" fill={C.text} fontSize="8" fontFamily={F.m}>2024-01-02 | 215</text>
+    <text x="40" y="128" fill={C.text} fontSize="8" fontFamily={F.m}>2024-01-03 | 208</text>
+    <text x="40" y="140" fill={C.text} fontSize="8" fontFamily={F.m}>2024-01-04 | 220</text>
+    <text x="40" y="152" fill={C.muted} fontSize="8" fontFamily={F.m}>...</text>
+    {/* Arrow */}
+    <path d="M240,110 L270,110" stroke={C.accent} strokeWidth="2" markerEnd="url(#feArr)"/>
+    {/* Tabular */}
+    <rect x="280" y="45" width="390" height="160" rx="6" fill={C.codeBg}/>
+    <text x="475" y="65" textAnchor="middle" fill={C.text} fontSize="10" fontFamily={F.m} fontWeight="600">Engineered Tabular Features</text>
+    <text x="290" y="85" fill={C.muted} fontSize="7" fontFamily={F.m}>lag_1 lag_7 roll_7d month dow is_hol temp_lag target</text>
+    {[["215","195","205","Jan","Mon","0","8.2","220"],["208","190","202","Jan","Tue","0","7.5","218"],["220","198","208","Jan","Wed","0","9.1","225"]].map((row,r)=>(
+      <text key={r} x="290" y={100+r*16} fill={C.text} fontSize="7" fontFamily={F.m}>{row.join("   ")}</text>
+    ))}
+    <text x="290" y={100+3*16} fill={C.muted} fontSize="7" fontFamily={F.m}>...    ...   ...    ...   ...  ...  ...   ...</text>
+    {/* Category labels */}
+    {[{x:290,w:80,l:"Lag features",c:"#6366F1"},{x:375,w:55,l:"Rolling",c:"#8B5CF6"},{x:435,w:70,l:"Calendar",c:C.orange},{x:510,w:55,l:"Exogenous",c:C.accent}].map((cat,i)=>(
+      <g key={i}><rect x={cat.x} y="210" width={cat.w} height="20" rx="4" fill={cat.c} opacity="0.15" stroke={cat.c} strokeWidth="1"/>
+        <text x={cat.x+cat.w/2} y="224" textAnchor="middle" fill={cat.c} fontSize="8" fontFamily={F.b} fontWeight="600">{cat.l}</text></g>
+    ))}
+    <text x="350" y="260" textAnchor="middle" fill={C.muted} fontSize="9" fontFamily={F.b}>Each row = one forecast origin. Each column = a feature Shapash can explain.</text>
+    <text x="350" y="278" textAnchor="middle" fill={C.muted} fontSize="9" fontFamily={F.b}>Shapash's inverse encoding maps "lag_1" → "Yesterday's Value" for stakeholder reports.</text>
+    <text x="350" y="305" textAnchor="middle" fill={C.light} fontSize="8" fontFamily={F.b}>This tabular reframing is why Shapash works for time series — it explains the features, not the raw sequence.</text>
+    <defs><marker id="feArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill={C.accent}/></marker></defs>
+  </svg>
+);
+
+// ═══════ COMPONENTS ═══════
+
+const Code = ({children, title}) => (
+  <div style={{margin:"24px 0",borderRadius:8,overflow:"hidden",border:`1px solid ${C.border}`}}>
+    {title && <div style={{background:C.code,padding:"8px 16px",fontFamily:F.m,fontSize:11,color:"#A78BFA",letterSpacing:"0.05em"}}>{title}</div>}
+    <pre style={{background:C.code,padding:"16px 20px",margin:0,overflowX:"auto",fontSize:13,lineHeight:1.7,fontFamily:F.m,color:"#E2E8F0"}}>
+      <code>{children}</code>
+    </pre>
+  </div>
+);
+
+const Callout = ({type="info",title,children}) => {
+  const styles = {info:{bg:C.infoBg,border:C.info,icon:"💡"},warn:{bg:C.warnBg,border:C.warn,icon:"⚠️"},tip:{bg:"#F0FDF4",border:C.green,icon:"✅"}};
+  const s = styles[type];
+  return(
+    <div style={{margin:"28px 0",padding:"20px 24px",background:s.bg,borderLeft:`4px solid ${s.border}`,borderRadius:"0 8px 8px 0"}}>
+      <div style={{fontFamily:F.b,fontSize:13,fontWeight:700,color:s.border,marginBottom:6}}>{s.icon} {title}</div>
+      <div style={{fontFamily:F.b,fontSize:14,lineHeight:1.7,color:C.text}} dangerouslySetInnerHTML={{__html:children}}/>
+    </div>
+  );
+};
+
+const Section = ({number,title,children}) => (
+  <div style={{margin:"56px 0 0"}}>
+    <div style={{display:"flex",alignItems:"baseline",gap:12,marginBottom:20}}>
+      <span style={{fontFamily:F.m,fontSize:13,color:C.accent,fontWeight:700}}>§{number}</span>
+      <h2 style={{fontFamily:F.h,fontSize:28,fontWeight:700,color:C.text,lineHeight:1.2}}>{title}</h2>
+    </div>
+    {children}
+  </div>
+);
+
+const P = ({children}) => (<p style={{fontFamily:F.b,fontSize:16,lineHeight:1.8,color:C.text,margin:"0 0 18px"}} dangerouslySetInnerHTML={{__html:children}}/>);
+
+// ═══════ MAIN ═══════
+
+export default function ShapashTSArticle() {
+  return (
+    <div style={{background:C.bg,minHeight:"100vh",margin:0,padding:0}}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{background:${C.bg}}`}</style>
+
+      {/* Header */}
+      <div style={{background:C.accent,padding:"12px 24px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <span style={{fontFamily:F.m,fontSize:11,color:"#CCFBF1",letterSpacing:"0.1em",textTransform:"uppercase"}}>Technical Article</span>
+        <span style={{fontFamily:F.m,fontSize:11,color:"#CCFBF1"}}>Data Science · XAI · Time Series</span>
+      </div>
+
+      {/* Hero */}
+      <div style={{maxWidth:800,margin:"0 auto",padding:"60px 24px 0"}}>
+        <div style={{fontFamily:F.m,fontSize:12,color:C.accent,fontWeight:600,letterSpacing:"0.08em",marginBottom:12}}>SHAPASH × TIME SERIES FORECASTING</div>
+        <h1 style={{fontFamily:F.h,fontSize:"clamp(32px,5vw,48px)",fontWeight:700,color:C.text,lineHeight:1.15,marginBottom:20}}>Explaining Time Series Forecasts with Shapash: A Practitioner's Guide</h1>
+        <p style={{fontFamily:F.b,fontSize:18,color:C.muted,lineHeight:1.6,maxWidth:640,marginBottom:12}}>How to use MAIF's explainability library to make lag features, rolling statistics, and calendar effects interpretable to business stakeholders — from feature engineering to production deployment.</p>
+        <div style={{fontFamily:F.b,fontSize:13,color:C.light,marginBottom:40}}>By the MAIF Data Science team approach · Covers Shapash 2.7+ · Requires: Python 3.9+, scikit-learn, XGBoost or LightGBM, SHAP</div>
+        <div style={{height:1,background:C.border,marginBottom:40}}/>
+      </div>
+
+      {/* Body */}
+      <div style={{maxWidth:800,margin:"0 auto",padding:"0 24px 80px"}}>
+
+        <Section number="1" title="The Problem: Black-Box Forecasts Nobody Trusts">
+          <P>{`You've built a time series forecasting model. It uses LightGBM with 47 engineered features — lagged values, rolling means, day-of-week dummies, holiday indicators, temperature data. The MAPE is 4.2%, well within business requirements. The model is ready for production. And then your VP of Operations asks: <em>"Why does the model think next Tuesday's demand will spike 18% above the rolling average?"</em>`}</P>
+          <P>{`This is the explainability gap. The model knows. You don't — or more precisely, you can't communicate what the model knows in language that a non-technical stakeholder can act on. Raw SHAP values tell you that <code>lag_1</code> contributed +0.32 and <code>rolling_7d_mean</code> contributed -0.18, but what your VP needs to hear is: "Yesterday's value was unusually high, and the 7-day trend has been climbing, which together push Tuesday's forecast up. The biggest single driver is the previous day's reading."</em>`}</P>
+          <P>{`Shapash, the open-source Python library developed by MAIF (a French mutual insurer), bridges this gap. It wraps SHAP and LIME computations in a presentation layer that performs inverse encoding (translating <code>feature_17</code> back into "Neighbourhood: Northridge"), generates interactive dashboards, and produces standalone HTML audit reports. For time series forecasting, the key insight is that <strong>Shapash doesn't need to know your data is temporal</strong> — it explains the tabular features that your forecasting pipeline produces. The temporal intelligence lives in your feature engineering; Shapash explains the result.`}</P>
+        </Section>
+
+        <Section number="2" title="Core Concepts: What You Need to Know">
+          <P>{`Before diving into the implementation, three concepts underpin everything Shapash does.`}</P>
+
+          <h3 style={{fontFamily:F.h,fontSize:20,fontWeight:600,color:C.text,margin:"28px 0 12px"}}>2.1 Shapley Values</h3>
+          <P>{`A Shapley value answers: <strong>how much did feature <em>i</em> contribute to this specific prediction, relative to the average prediction?</strong> It comes from cooperative game theory (Lloyd Shapley, 1953; Nobel Prize 2012). The idea: consider every possible subset of features ("coalition"). For each, measure how much the prediction changes when you add feature <em>i</em>. The Shapley value is the weighted average of these marginal contributions across all coalitions. It is the <em>only</em> attribution method that simultaneously satisfies local accuracy (contributions sum to the prediction minus the base value), missingness (missing features contribute zero), and consistency (if a feature's marginal contribution increases in a new model, its attribution doesn't decrease).`}</P>
+          <ShapleyDiagram/>
+          <div style={{fontFamily:F.b,fontSize:12,color:C.light,marginTop:8,marginBottom:24}}>A local explanation for a single forecast. Each feature's Shapley value quantifies its push on the prediction relative to the base value (average). Positive values push the forecast up; negative values push it down.</div>
+
+          <h3 style={{fontFamily:F.h,fontSize:20,fontWeight:600,color:C.text,margin:"28px 0 12px"}}>2.2 TreeSHAP</h3>
+          <P>{`Computing exact Shapley values is exponential in the number of features (2<sup>n</sup> coalitions). TreeSHAP, by Scott Lundberg (2018), exploits the tree structure of gradient-boosted models to compute <em>exact</em> Shapley values in polynomial time — O(TLD²) where T is the number of trees, L the maximum leaves, and D the maximum depth. This is why Shapash works best with XGBoost, LightGBM, CatBoost, and scikit-learn tree ensembles: the SHAP backend can compute exact values fast enough for interactive exploration.`}</P>
+
+          <h3 style={{fontFamily:F.h,fontSize:20,fontWeight:600,color:C.text,margin:"28px 0 12px"}}>2.3 Inverse Encoding: Shapash's Key Innovation</h3>
+          <P>{`Most ML pipelines encode categorical features before training. An ordinal encoder maps "Monday" → 0, "Tuesday" → 1, etc. A one-hot encoder creates <code>dow_Monday</code>, <code>dow_Tuesday</code>, ... When SHAP computes contributions, it operates on these encoded features. Shapash reverses the encoding at display time, showing "Day of Week: Monday contributed +$5k" instead of "feature_23 = 0 contributed +0.023." For time series, this means your lag features, rolling statistics, and calendar dummies all appear with human-readable labels in the dashboard and report.`}</P>
+        </Section>
+
+        <Section number="3" title="The Pipeline: Time Series → Tabular → Shapash">
+          <PipelineDiagram/>
+          <div style={{fontFamily:F.b,fontSize:12,color:C.light,marginTop:8,marginBottom:24}}>The end-to-end workflow. Raw time series are transformed into tabular features, trained with a tree-based model, explained via TreeSHAP, and presented through Shapash's SmartExplainer.</div>
+
+          <P>{`The critical step is feature engineering — converting the raw time series into a tabular dataset where each row represents a forecast origin and each column represents a feature that Shapash can explain.`}</P>
+
+          <FeatureEngDiagram/>
+          <div style={{fontFamily:F.b,fontSize:12,color:C.light,marginTop:8,marginBottom:24}}>The tabular reframing. Each forecast origin becomes a row. Features include lag values (yesterday, last week), rolling statistics (7-day mean), calendar features (month, day of week, holiday), and exogenous variables (temperature). This is what Shapash sees.</div>
+
+          <Callout type="info" title="Why this works for Shapash">{`Shapash doesn't need temporal awareness — it explains tabular features. The temporal structure is encoded <em>in</em> the features (lags carry history, rolling stats carry trend, calendar features carry seasonality). When Shapash says "lag_1 contributed +$18k," it means the model relied heavily on yesterday's value for this forecast. When it says "month = January contributed -$8k," it means the model learned a seasonal pattern. The <strong>feature engineering is your domain knowledge; Shapash makes it visible</strong>.`}</Callout>
+        </Section>
+
+        <Section number="4" title="Implementation: Step by Step">
+          <h3 style={{fontFamily:F.h,fontSize:20,fontWeight:600,color:C.text,margin:"28px 0 12px"}}>4.1 Feature Engineering</h3>
+          <Code title="feature_engineering.py">{`import pandas as pd
+import numpy as np
+
+def create_ts_features(df, target_col="value", lags=[1,2,3,7,14],
+                       rolling_windows=[7,14,28]):
+    """Convert time series to tabular features for ML."""
+    df = df.copy().sort_values("date")
+
+    # Lag features
+    for lag in lags:
+        df[f"lag_{lag}"] = df[target_col].shift(lag)
+
+    # Rolling statistics
+    for w in rolling_windows:
+        df[f"rolling_{w}d_mean"] = df[target_col].shift(1).rolling(w).mean()
+        df[f"rolling_{w}d_std"]  = df[target_col].shift(1).rolling(w).std()
+
+    # Calendar features
+    df["month"]       = df["date"].dt.month
+    df["day_of_week"] = df["date"].dt.dayofweek
+    df["is_weekend"]  = (df["day_of_week"] >= 5).astype(int)
+    df["day_of_year"] = df["date"].dt.dayofyear
+
+    return df.dropna()`}</Code>
+
+          <h3 style={{fontFamily:F.h,fontSize:20,fontWeight:600,color:C.text,margin:"28px 0 12px"}}>4.2 Train the Model</h3>
+          <Code title="train_model.py">{`from sklearn.model_selection import train_test_split
+from lightgbm import LGBMRegressor
+
+# Prepare data
+feature_cols = [c for c in df.columns if c not in ["date", "value"]]
+X = df[feature_cols]
+y = df["value"]
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, shuffle=False  # temporal split!
+)
+
+# Train
+model = LGBMRegressor(n_estimators=500, learning_rate=0.05,
+                       max_depth=6, random_state=42)
+model.fit(X_train, y_train)`}</Code>
+
+          <Callout type="warn" title="Temporal split matters">{`Always use <code>shuffle=False</code> for time series. Shuffled splits leak future information into training, inflating accuracy and producing misleading SHAP explanations — the model "explains" patterns it shouldn't have seen.`}</Callout>
+
+          <h3 style={{fontFamily:F.h,fontSize:20,fontWeight:600,color:C.text,margin:"28px 0 12px"}}>4.3 Explain with Shapash</h3>
+          <Code title="explain_with_shapash.py">{`from shapash import SmartExplainer
+
+# Create a features dictionary for readable labels
+features_dict = {
+    "lag_1": "Yesterday's Value",
+    "lag_7": "Same Day Last Week",
+    "lag_14": "Two Weeks Ago",
+    "rolling_7d_mean": "7-Day Rolling Average",
+    "rolling_7d_std": "7-Day Volatility",
+    "rolling_28d_mean": "28-Day Rolling Average",
+    "month": "Month of Year",
+    "day_of_week": "Day of Week",
+    "is_weekend": "Weekend Flag",
+    "day_of_year": "Day of Year",
+}
+
+# Initialize SmartExplainer
+xpl = SmartExplainer(
+    model=model,
+    features_dict=features_dict,  # human-readable labels
+)
+
+# Compile — this computes SHAP values via TreeSHAP
+xpl.compile(x=X_test, y_target=y_test)
+
+# Launch interactive dashboard
+xpl.run_app(title="Demand Forecast Explainer")`}</Code>
+
+          <P>{`The <code>run_app()</code> call launches a Dash-based web application on localhost. The dashboard provides four linked views: <strong>global feature importance</strong> (which features matter most across all forecasts), <strong>feature contribution plots</strong> (how a single feature's values relate to its SHAP contributions), <strong>local explanations</strong> (why a specific forecast came out the way it did), and a <strong>filterable data table</strong> that lets you select subsets by feature values, prediction ranges, or error magnitudes. Crucially, every label in the dashboard uses the <code>features_dict</code> you provided — so your VP sees "Yesterday's Value" and "7-Day Rolling Average," not "lag_1" and "rolling_7d_mean."`}</P>
+
+          <h3 style={{fontFamily:F.h,fontSize:20,fontWeight:600,color:C.text,margin:"28px 0 12px"}}>4.4 Generate the Audit Report</h3>
+          <Code title="generate_report.py">{`xpl.generate_report(
+    output_file="demand_forecast_report.html",
+    project_info_file="project_info.yml",
+    x_train=X_train,
+    y_train=y_train,
+    y_test=y_test,
+    title_story="Weekly Demand Forecast — Model Report",
+    title_description="Explainability report for the LightGBM "
+        "demand forecasting model, Q1 2025.",
+    metrics=[
+        {"name": "MAE", "path": "sklearn.metrics.mean_absolute_error"},
+        {"name": "MAPE", "path": "sklearn.metrics.mean_absolute_percentage_error"},
+    ],
+)`}</Code>
+          <P>{`This generates a standalone HTML file — no server required — containing project metadata, dataset descriptions, feature distributions, model performance metrics, global and local explainability visualisations, and correlation analyses. It is designed to be emailed to compliance, shared with auditors, or archived as regulatory documentation.`}</P>
+
+          <h3 style={{fontFamily:F.h,fontSize:20,fontWeight:600,color:C.text,margin:"28px 0 12px"}}>4.5 Deploy to Production</h3>
+          <Code title="deploy_predictor.py">{`from shapash import SmartPredictor
+
+# Create a lighter object for production
+predictor = xpl.to_smartpredictor()
+
+# For each new prediction, get explanation summary
+new_data = pd.DataFrame({...})  # new feature row
+result = predictor.add_input(x=new_data)
+detailed = predictor.detail_contributions()
+
+# Output: prediction + top contributing features in plain language
+# e.g., "Forecast: $225k. Main drivers: Yesterday's Value (+$22k),
+#        7-Day Rolling Average (+$8k), Weekend Flag (-$5k)"`}</Code>
+
+          <Callout type="tip" title="SmartPredictor vs. SmartExplainer">{`<strong>SmartExplainer</strong> is for exploration — it holds the full test set, all SHAP values, and the web app. <strong>SmartPredictor</strong> is for production — it's lighter, runs per-instance, includes consistency checks, and outputs summarised explanations in configurable natural language. Use SmartExplainer during development; deploy SmartPredictor.`}</Callout>
+        </Section>
+
+        <Section number="5" title="Use Case: Energy Demand Forecasting">
+          <P>{`Consider a utility company forecasting hourly electricity demand. The model uses 28 features: 7 lag features (hours -1 through -24 plus -168 for same-hour-last-week), 4 rolling statistics (6h, 12h, 24h, 168h means), 6 calendar features (hour, day of week, month, holiday, daylight hours, working day flag), and 11 weather features (temperature, humidity, wind speed, cloud cover — current and 3 lagged values). The model is LightGBM with 800 trees.`}</P>
+          <P>{`Shapash reveals patterns that raw accuracy metrics hide. <strong>Globally</strong>, the dashboard shows that <code>lag_1</code> (previous hour's demand) and <code>temperature</code> dominate — expected for energy. But the contribution plot for <code>hour_of_day</code> reveals that the model has learned a non-monotonic relationship: demand peaks at hours 8–9 and 18–20 (morning and evening peaks), with a trough at 14:00. This pattern matches known load curves but was never explicitly engineered — the model discovered it from the data.`}</P>
+          <P>{`<strong>Locally</strong>, when the model forecasts an unusual spike on a Tuesday evening, the SmartExplainer shows: "Temperature: -2°C (+3.4 MW above average), Previous Hour: 42 MW (+2.1 MW), Hour of Day: 19:00 (+1.8 MW)." The operations team doesn't need to understand gradient boosting — they can see that the cold snap is driving the spike, confirm that it makes physical sense, and decide whether to activate additional generation capacity.`}</P>
+          <P>{`The <strong>audit report</strong>, generated at model deployment, documents the training data period (2021–2024), the feature set, the model's MAE (1.2 MW) and MAPE (2.8%), and the full global explainability analysis. When the energy regulator asks how automated dispatch decisions are made, the utility hands over the HTML file.`}</P>
+        </Section>
+
+        <Section number="6" title="Use Case: Retail Sales Forecasting">
+          <P>{`A retail chain forecasts weekly sales per store. Features include: 4 lag features (weeks -1, -2, -4, -52), rolling 4-week and 12-week means, promotion flags, store-level categorical features (region, format, size tier), and macroeconomic indicators (CPI, consumer confidence). The model is XGBoost.`}</P>
+          <P>{`Shapash's <strong>feature grouping</strong> capability (available since v2.3) is valuable here: you can group the four lag features under "Recent Sales History" and the two macroeconomic features under "Economic Conditions," collapsing the dashboard to a level of abstraction that a regional manager can parse. The <strong>filter functionality</strong> in the web app lets the merchandising team select only stores in the "Urban Large" format and see how feature importance shifts — perhaps promotions matter more in urban locations, while weather matters more in suburban ones.`}</P>
+          <P>{`The SmartPredictor, deployed in the weekly batch pipeline, appends a one-line explanation to each store's forecast: "Store 247 forecast: $182k (+12% vs. baseline). Top drivers: Last Week's Sales (+$14k), Active Promotion (+$8k), Week 52 Seasonality (-$3k)." The store manager reads this alongside the number and knows whether the spike is promotion-driven (temporary) or trend-driven (sustained) — a distinction that changes the replenishment decision.`}</P>
+        </Section>
+
+        <Section number="7" title="Limitations and Workarounds">
+          <P>{`Shapash has real constraints that practitioners must understand.`}</P>
+          <P>{`<strong>No native deep learning support.</strong> If your forecasting model is an LSTM, Transformer, or N-BEATS architecture, Shapash's TreeSHAP backend won't work. You can provide pre-computed SHAP values (via DeepSHAP or KernelSHAP), but the web app and report are optimised for tabular feature-level explanations, not sequence-level attributions. For deep TS models, consider TsSHAP, TimeSHAP, or C-SHAP as complementary tools.`}</P>
+          <P>{`<strong>Feature independence assumption.</strong> Shapley values assume features are independent — but in time series, lag features are highly correlated by construction (<code>lag_1</code> and <code>lag_2</code> are adjacent values of the same series). This can redistribute attribution between correlated features in unstable ways. Use Shapash's <strong>Stability metric</strong> to detect this: if the same prediction gets very different explanations on slightly perturbed data, your features are too correlated for reliable local attribution.`}</P>
+          <P>{`<strong>Memory and scale.</strong> SmartExplainer loads all SHAP values into memory. For datasets with millions of rows, use the <code>sample</code> parameter or compute SHAP on a representative subset. The web app defaults to 1,000 rows for responsiveness.`}</P>
+          <P>{`<strong>Multi-step forecasting.</strong> If your model produces multi-horizon forecasts (predicting t+1 through t+7 simultaneously), you need to explain each horizon separately. Shapash treats each target as a single regression output.`}</P>
+        </Section>
+
+        <Section number="8" title="Summary: When to Use Shapash for Time Series">
+          <div style={{background:"#fff",border:`1px solid ${C.border}`,borderRadius:8,padding:24,margin:"20px 0"}}>
+            <div style={{fontFamily:F.b,fontSize:14,lineHeight:2,color:C.text}}>
+              <div><span style={{color:C.green,fontWeight:700}}>✓ Use Shapash when:</span> your forecasting model is tree-based (XGB, LGBM, CatBoost, RF); your features are interpretable tabular columns (lags, rolling stats, calendar, exogenous); you need to explain forecasts to non-technical stakeholders; you need audit-ready documentation for regulatory compliance.</div>
+              <div style={{marginTop:12}}><span style={{color:C.red,fontWeight:700}}>✗ Consider alternatives when:</span> your model is a deep learning sequence model (LSTM, Transformer); you need timestep-level rather than feature-level attribution; your dataset is extremely high-dimensional (500+ features); you need real-time sub-millisecond explanations at inference.</div>
+            </div>
+          </div>
+          <P>{`Shapash doesn't make your time series model explainable. Your feature engineering does that. Shapash makes the explanation <em>visible</em> — to the people who need to trust it, act on it, audit it, and regulate it. In a world where the EU AI Act requires that high-risk AI systems be "sufficiently transparent for deployers to interpret the system's output," that visibility is not optional. It is the product.`}</P>
+        </Section>
+
+        {/* Footer */}
+        <div style={{marginTop:60,paddingTop:24,borderTop:`1px solid ${C.border}`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div style={{fontFamily:F.m,fontSize:11,color:C.light}}>Shapash 2.7+ · Apache 2.0 · github.com/MAIF/shapash</div>
+          <div style={{fontFamily:F.m,fontSize:11,color:C.light}}>Built with verified research from MAIF, Lundberg (SHAP), and the XAI community</div>
+        </div>
+      </div>
+    </div>
+  );
+}

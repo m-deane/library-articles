@@ -1,0 +1,2441 @@
+import { useState } from "react";
+
+const S = `
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+:root{--bg:#08090d;--sf:#0f1117;--sf2:#171b24;--sf3:#1e2330;--bd:#242836;--bd2:#2e3447;--gold:#d4a843;--teal:#3ec9a7;--blue:#4d9de0;--coral:#e05c5c;--green:#52b788;--amber:#f4a261;--violet:#9b72cf;--tx:#dde1f0;--txm:#8892a8;--txd:#444c5e;--cbg:#05060a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:16px;line-height:1.75;}
+.root{max-width:920px;margin:0 auto;padding:0 24px 100px;}
+.hero{padding:72px 0 52px;border-bottom:1px solid var(--bd);margin-bottom:52px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(62,201,167,.06) 0%,transparent 70%);pointer-events:none;}
+.ey{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.ey::before{content:'';display:block;width:28px;height:1px;background:var(--teal);}
+.h1{font-family:'DM Serif Display',serif;font-size:clamp(28px,4.5vw,48px);font-weight:400;line-height:1.15;color:#eef0f8;margin-bottom:16px;font-style:italic;}
+.h1 em{font-style:normal;color:var(--teal);}
+.hsub{font-size:16px;color:var(--txm);max-width:640px;line-height:1.65;margin-bottom:32px;font-style:italic;}
+.pills{display:flex;gap:12px;flex-wrap:wrap;}
+.pill{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--sf2);border:1px solid var(--bd2);color:var(--txm);padding:4px 11px;border-radius:3px;letter-spacing:1px;}
+.pill b{color:var(--gold);}
+.tnav{position:sticky;top:0;z-index:50;background:rgba(8,9,13,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--bd);padding:0 24px;margin:0 -24px 40px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;}
+.tnav::-webkit-scrollbar{display:none;}
+.tb{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:12px 16px;background:transparent;border:none;color:var(--txd);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;white-space:nowrap;}
+.tb:hover{color:var(--txm);}
+.tb.on{color:var(--teal);border-bottom-color:var(--teal);}
+.ch{margin-bottom:72px;}
+.chh{display:flex;align-items:flex-start;gap:20px;margin-bottom:32px;padding-bottom:14px;border-bottom:1px solid var(--bd);}
+.chn{font-family:'DM Serif Display',serif;font-size:52px;font-weight:400;color:var(--txd);line-height:1;min-width:58px;font-style:italic;}
+.chi{flex:1;}
+.chf{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:6px;}
+.cht{font-family:'DM Serif Display',serif;font-size:28px;font-weight:400;color:#eef0f8;line-height:1.2;}
+.mc{background:var(--sf);border:1px solid var(--bd);border-radius:6px;margin-bottom:48px;overflow:hidden;}
+.mch{padding:18px 22px 14px;background:var(--sf2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.mcn{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txd);background:var(--sf3);padding:3px 8px;border-radius:3px;border:1px solid var(--bd2);}
+.mcname{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:#eef0f8;}
+.mcb{padding:22px;}
+.sttl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin:26px 0 10px;display:flex;align-items:center;gap:8px;}
+.sttl::after{content:'';flex:1;height:1px;background:var(--bd);}
+p{margin-bottom:13px;color:var(--tx);font-size:15.5px;}
+strong{color:#eef0f8;font-weight:600;}
+em{color:var(--gold);font-style:italic;}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--sf2);border:1px solid var(--bd2);color:var(--teal);padding:1px 5px;border-radius:3px;}
+ul,ol{padding-left:20px;margin-bottom:13px;}
+li{margin-bottom:5px;color:var(--txm);font-size:15px;}
+li strong{color:var(--tx);}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:16px 0;border:1px solid var(--bd);border-radius:4px;overflow:hidden;}
+@media(max-width:600px){.pc{grid-template-columns:1fr}}
+.pch{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;}
+.pch.g{background:rgba(82,183,136,.12);color:#52b788;border-bottom:1px solid rgba(82,183,136,.2);}
+.pch.b{background:rgba(224,92,92,.1);color:#e05c5c;border-bottom:1px solid rgba(224,92,92,.2);border-left:1px solid var(--bd);}
+.pcr{border-left:1px solid var(--bd);}
+.pl{list-style:none;padding:0;margin:0;}
+.pl li{padding:8px 14px;font-size:13.5px;color:var(--txm);border-bottom:1px solid var(--bd);margin:0;}
+.pl li:last-child{border-bottom:none;}
+.glist li::before{content:'+ ';color:#52b788;}
+.blist li::before{content:'- ';color:#e05c5c;}
+.cblock{background:var(--cbg);border:1px solid var(--bd);border-radius:5px;margin:16px 0;overflow:hidden;}
+.cblh{display:flex;justify-content:space-between;align-items:center;padding:6px 14px;background:var(--sf2);border-bottom:1px solid var(--bd);}
+.cbll{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.cbld{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);}
+pre{padding:16px 18px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:#b0b8cc;}
+.kw{color:#c792ea}.fn{color:#82aaff}.st{color:#c3e88d}.cm{color:#4a5568;font-style:italic}.nm{color:#ffcb6b}.nu{color:#f78c6c}
+.nt{padding:13px 16px;border-radius:4px;margin:16px 0;display:flex;gap:10px;align-items:flex-start;}
+.ng{background:rgba(82,183,136,.07);border:1px solid rgba(82,183,136,.22);}
+.nw{background:rgba(244,162,97,.08);border:1px solid rgba(244,162,97,.25);}
+.nd{background:rgba(224,92,92,.08);border:1px solid rgba(224,92,92,.22);}
+.ni{background:rgba(77,157,224,.07);border:1px solid rgba(77,157,224,.2);}
+.nv{background:rgba(155,114,207,.08);border:1px solid rgba(155,114,207,.25);}
+.nico{font-size:15px;margin-top:2px;flex-shrink:0;}
+.nbd{flex:1;}
+.ntt{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.ng .ntt{color:#52b788}.nw .ntt{color:#f4a261}.nd .ntt{color:#e05c5c}.ni .ntt{color:#4d9de0}.nv .ntt{color:#9b72cf}
+.nt p{font-size:13.5px;margin-bottom:0;color:var(--txm);}
+.dw{background:var(--sf);border:1px solid var(--bd);border-radius:5px;padding:18px;margin:16px 0;}
+.dttl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--txd);margin-bottom:12px;text-align:center;}
+.fml{background:var(--sf2);border:1px solid var(--bd2);border-radius:4px;padding:11px 16px;margin:14px 0;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--teal);text-align:center;}
+.badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 7px;border-radius:3px;margin-right:5px;letter-spacing:1px;text-transform:uppercase;}
+.bf{background:rgba(212,168,67,.15);color:#d4a843;border:1px solid rgba(212,168,67,.3);}
+.bw{background:rgba(62,201,167,.12);color:#3ec9a7;border:1px solid rgba(62,201,167,.3);}
+.be{background:rgba(77,157,224,.12);color:#4d9de0;border:1px solid rgba(77,157,224,.3);}
+.bdl{background:rgba(155,114,207,.12);color:#9b72cf;border:1px solid rgba(155,114,207,.3);}
+.bc{background:rgba(82,183,136,.12);color:#52b788;border:1px solid rgba(82,183,136,.3);}
+.xr{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);background:var(--sf3);padding:2px 7px;border-radius:3px;border:1px solid var(--bd2);}
+.tw{overflow-x:auto;margin:14px 0;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--sf2);color:#d4a843;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;padding:8px 12px;border:1px solid var(--bd);text-align:left;}
+td{padding:7px 12px;border:1px solid var(--bd);color:var(--txm);vertical-align:top;}
+tr:nth-child(even) td{background:rgba(255,255,255,.012);}
+td strong{color:var(--tx);}
+hr{border:none;border-top:1px solid var(--bd);margin:48px 0;}
+.toc{background:var(--sf);border:1px solid var(--bd);border-left:3px solid var(--teal);padding:22px 26px;margin-bottom:48px;border-radius:0 4px 4px 0;}
+.tocttl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
+.tocl{list-style:none;padding:0;columns:2;column-gap:24px;}
+@media(max-width:580px){.tocl{columns:1}}
+.tocl li{margin:4px 0;break-inside:avoid;}
+.tocl a{color:var(--txm);text-decoration:none;font-size:12px;font-family:'JetBrains Mono',monospace;transition:color .2s;}
+.tocl a:hover{color:var(--teal);}
+.tn{color:var(--txd);margin-right:6px;}
+.sr{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0;}
+@media(max-width:600px){.sr{grid-template-columns:1fr 1fr}}
+.sc{background:var(--sf);border:1px solid var(--bd);border-radius:4px;padding:12px 14px;}
+.sl{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--txd);margin-bottom:4px;}
+.sv{font-family:'DM Serif Display',serif;font-size:22px;color:#d4a843;}
+.sd{font-size:11px;color:var(--txd);margin-top:2px;}
+.ds{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--bd);}
+.ds:last-child{border-bottom:none;}
+.dn{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--teal);min-width:28px;font-weight:600;}
+.dbt{flex:1;}
+.dbtit{font-size:14px;font-weight:600;color:#eef0f8;margin-bottom:4px;}
+.dbde{font-size:13.5px;color:var(--txm);line-height:1.6;}
+`;
+
+// ── shared primitives ────────────────────────────────────────────────────────
+const T = ({ children }) => <div className="sttl">{children}</div>;
+const F = ({ children }) => <div className="fml">{children}</div>;
+const N = ({ t, icon, title, children }) => (
+  <div className={`nt ${t}`}>
+    <span className="nico">{icon}</span>
+    <div className="nbd"><div className="ntt">{title}</div><p>{children}</p></div>
+  </div>
+);
+const C = ({ desc, code }) => (
+  <div className="cblock">
+    <div className="cblh"><span className="cbll">python</span><span className="cbld">{desc}</span></div>
+    <pre dangerouslySetInnerHTML={{ __html: code }} />
+  </div>
+);
+const PC = ({ pros, cons }) => (
+  <div className="pc">
+    <div><div className="pch g">Strengths</div><ul className="pl glist">{pros.map((p,i)=><li key={i}>{p}</li>)}</ul></div>
+    <div className="pcr"><div className="pch b">Weaknesses</div><ul className="pl blist">{cons.map((c,i)=><li key={i}>{c}</li>)}</ul></div>
+  </div>
+);
+const MC = ({ num, name, fam, children }) => {
+  const fc = { filter:"bf", wrapper:"bw", embedded:"be", deep:"bdl", causal:"bc", hybrid:"bc" };
+  return (
+    <div className="mc" id={`m${num.replace(/\./g,"-")}`}>
+      <div className="mch">
+        <span className="mcn">{num}</span>
+        <span className={`badge ${fc[fam]||"bf"}`}>{fam}</span>
+        <span className="mcname">{name}</span>
+      </div>
+      <div className="mcb">{children}</div>
+    </div>
+  );
+};
+
+// ── SVG helpers ──────────────────────────────────────────────────────────────
+const ImpBar = ({ title, feats, vals, color="#3ec9a7", suspect=[] }) => {
+  const mx = Math.max(...vals);
+  const h = 22, g = 6, tot = feats.length*(h+g)+40;
+  return (
+    <div className="dw">
+      <div className="dttl">{title}</div>
+      <svg viewBox={`0 0 560 ${tot}`} width="100%" style={{display:"block"}}>
+        {feats.map((f,i)=>{
+          const bw=Math.max(4,(vals[i]/mx)*360), y=10+i*(h+g), sus=suspect.includes(i);
+          return (
+            <g key={f}>
+              <text x="0" y={y+15} fill={sus?"#f4a261":"#8892a8"} fontSize="11" fontFamily="'JetBrains Mono',monospace">{f}</text>
+              <rect x="150" y={y+2} width={bw} height={h-4} rx="2" fill={sus?"rgba(244,162,97,.2)":`${color}22`} stroke={sus?"#f4a261":color} strokeWidth="1"/>
+              <text x={154+bw} y={y+14} fill={sus?"#f4a261":color} fontSize="10" fontFamily="'JetBrains Mono',monospace">{vals[i].toFixed(3)}</text>
+            </g>
+          );
+        })}
+        <text x="0" y={tot-4} fill="#444c5e" fontSize="9" fontFamily="'JetBrains Mono',monospace">amber = suspect | fit on training fold only</text>
+      </svg>
+    </div>
+  );
+};
+
+const WFDiag = ({ title, n=5 }) => {
+  const tot = n*32+52;
+  return (
+    <div className="dw">
+      <div className="dttl">{title}</div>
+      <svg viewBox={`0 0 580 ${tot}`} width="100%" style={{display:"block"}}>
+        {Array.from({length:n},(_,i)=>{
+          const tw=190+i*52, vx=50+tw+8, y=24+i*32;
+          return (
+            <g key={i}>
+              <text x="0" y={y+16} fill="#444c5e" fontSize="9" fontFamily="'JetBrains Mono',monospace">F{i+1}</text>
+              <rect x="26" y={y} width={tw} height="22" rx="2" fill="rgba(77,157,224,.1)" stroke="rgba(77,157,224,.3)" strokeWidth="1"/>
+              <text x={26+tw/2} y={y+14} fill="#4d9de0" fontSize="9" textAnchor="middle" fontFamily="'JetBrains Mono',monospace">TRAIN — fit selector here</text>
+              <rect x={vx} y={y} width="60" height="22" rx="2" fill="rgba(82,183,136,.1)" stroke="rgba(82,183,136,.3)" strokeWidth="1"/>
+              <text x={vx+30} y={y+14} fill="#52b788" fontSize="9" textAnchor="middle" fontFamily="'JetBrains Mono',monospace">VAL</text>
+            </g>
+          );
+        })}
+        <text x="26" y={tot-4} fill="#444c5e" fontSize="9" fontFamily="'JetBrains Mono',monospace">TimeSeriesSplit(gap=H) — selector.fit() only on train portion of each fold</text>
+      </svg>
+    </div>
+  );
+};
+
+const NullDist = ({ title }) => {
+  const W=500, H=120, pts=80;
+  const mu=0.12, sd=0.04, obs=0.31;
+  const toX = v=>30+((v-.0)/(.55-.0))*(W-60);
+  const g = v=>Math.exp(-.5*((v-mu)/sd)**2);
+  const path=Array.from({length:pts},(_,i)=>{const v=i/(pts-1)*.55; return `${toX(v)},${H-20-g(v)*80}`;}).join(" L ");
+  return (
+    <div className="dw">
+      <div className="dttl">{title}</div>
+      <svg viewBox={`0 0 ${W} ${H+22}`} width="100%" style={{display:"block"}}>
+        <polygon points={`${path} ${toX(.55)},${H-20} ${toX(0)},${H-20}`} fill="rgba(77,157,224,.1)"/>
+        <polyline points={path} fill="none" stroke="rgba(77,157,224,.6)" strokeWidth="1.5"/>
+        <line x1={toX(.2)} y1="8" x2={toX(.2)} y2={H-20} stroke="#f4a261" strokeWidth="1" strokeDasharray="4,3"/>
+        <line x1={toX(obs)} y1="8" x2={toX(obs)} y2={H-20} stroke="#52b788" strokeWidth="2"/>
+        <text x={toX(.2)} y="7" fill="#f4a261" fontSize="9" textAnchor="middle" fontFamily="'JetBrains Mono',monospace">threshold</text>
+        <text x={toX(obs)} y="7" fill="#52b788" fontSize="9" textAnchor="middle" fontFamily="'JetBrains Mono',monospace">observed</text>
+        <line x1="30" y1={H-20} x2={W-10} y2={H-20} stroke="#242836" strokeWidth="1"/>
+        <text x={W/2} y={H+14} fill="#444c5e" fontSize="9" textAnchor="middle" fontFamily="'JetBrains Mono',monospace">Blue=null permutation | Green=observed | Amber=significance threshold</text>
+      </svg>
+    </div>
+  );
+};
+
+const PACFPlot = ({ title }) => {
+  const vals=[0,0.84,0.31,0.09,0.05,0.06,0.04,0.58,0.24,0.08,0.05,0.04,0.03];
+  const W=520,H=130, band=1.96/Math.sqrt(500);
+  const toY=v=>H-20-(v/1)*(H-40);
+  return (
+    <div className="dw">
+      <div className="dttl">{title}</div>
+      <svg viewBox={`0 0 ${W} ${H+22}`} width="100%" style={{display:"block"}}>
+        <line x1="20" y1={toY(0)} x2={W-10} y2={toY(0)} stroke="#242836" strokeWidth="1"/>
+        <line x1="20" y1={toY(band)} x2={W-10} y2={toY(band)} stroke="#f4a261" strokeWidth="1" strokeDasharray="4,3"/>
+        <text x={W-8} y={toY(band)+4} fill="#f4a261" fontSize="8" textAnchor="end" fontFamily="'JetBrains Mono',monospace">±1.96/√n</text>
+        {vals.map((v,i)=>{
+          const x=28+i*38, sig=v>band;
+          return (
+            <g key={i}>
+              <rect x={x-12} y={toY(v)} width={24} height={Math.max(1,toY(0)-toY(v))} rx="1"
+                fill={sig?"rgba(62,201,167,.3)":"rgba(77,157,224,.15)"}
+                stroke={sig?"#3ec9a7":"#4d9de0"} strokeWidth="1"/>
+              <text x={x} y={H-2} fill="#444c5e" fontSize="9" textAnchor="middle" fontFamily="'JetBrains Mono',monospace">{i}</text>
+              {sig&&<text x={x} y={toY(v)-4} fill="#3ec9a7" fontSize="9" textAnchor="middle">*</text>}
+            </g>
+          );
+        })}
+        <text x="20" y={H+14} fill="#444c5e" fontSize="9" fontFamily="'JetBrains Mono',monospace">Significant lags (★): 1, 7 → include y(t-1) and y(t-7) as autoregressive features</text>
+      </svg>
+    </div>
+  );
+};
+
+const RegPath = ({ title }) => {
+  const W=500,H=160, n=60, nf=7;
+  const colors=["#3ec9a7","#4d9de0","#f4a261","#e05c5c","#9b72cf","#52b788","#d4a843"];
+  const rng=(s)=>{let x=s;return()=>{x=x*1664525+1013904223&0xffffffff;return x/0xffffffff;}};
+  const paths=Array.from({length:nf},(_,i)=>{
+    const r=rng(i*7+3), enter=Math.floor(r()*25+4);
+    return Array.from({length:n},(_,j)=>j<enter?0:(j-enter)/(n-enter)*(0.3+r()*0.4)*(i%2===0?1:-1));
+  });
+  const toX=j=>40+(j/(n-1))*(W-60), toY=v=>H/2-v*65;
+  return (
+    <div className="dw">
+      <div className="dttl">{title}</div>
+      <svg viewBox={`0 0 ${W} ${H+22}`} width="100%" style={{display:"block"}}>
+        <line x1="40" y1="10" x2="40" y2={H-10} stroke="#242836" strokeWidth="1"/>
+        <line x1="40" y1={H/2} x2={W-10} y2={H/2} stroke="#242836" strokeWidth="1"/>
+        {paths.map((p,i)=><polyline key={i} points={p.map((v,j)=>`${toX(j)},${toY(v)}`).join(" ")} fill="none" stroke={colors[i]} strokeWidth="1.2" opacity=".85"/>)}
+        <text x="44" y={H} fill="#444c5e" fontSize="9" fontFamily="'JetBrains Mono',monospace">lambda large</text>
+        <text x={W-14} y={H} fill="#444c5e" fontSize="9" textAnchor="end" fontFamily="'JetBrains Mono',monospace">lambda small</text>
+        <text x={W/2} y={H+14} fill="#444c5e" fontSize="9" textAnchor="middle" fontFamily="'JetBrains Mono',monospace">Features entering path earliest (left) are most important</text>
+      </svg>
+    </div>
+  );
+};
+
+const SHAPSwarm = ({ title }) => {
+  const feats=["lag_1","roll_mean_7","lag_7","dow_sin","price_lag1","temp_lag1","lag_14","holiday"];
+  const W=520,H=feats.length*30+40;
+  const rng=(s)=>{let x=s;return()=>{x=x*1664525+1013904223&0xffffffff;return x/0xffffffff;}};
+  return (
+    <div className="dw">
+      <div className="dttl">{title}</div>
+      <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{display:"block"}}>
+        <line x1="140" y1="10" x2="140" y2={H-20} stroke="#242836" strokeWidth="1"/>
+        <text x="60" y={H-6} fill="#444c5e" fontSize="9" fontFamily="'JetBrains Mono',monospace">neg SHAP</text>
+        <text x="300" y={H-6} fill="#444c5e" fontSize="9" fontFamily="'JetBrains Mono',monospace">pos SHAP</text>
+        {feats.map((f,i)=>{
+          const y=18+i*30, sp=[.8,.6,.5,.3,.25,.18,.15,.08][i];
+          const r=rng(i*13+7);
+          const dots=Array.from({length:40},()=>{
+            const v=(r()-.5)*sp*2;
+            const col=v>0?`rgba(62,201,167,${.3+Math.abs(v)*.5})`:`rgba(224,92,92,${.3+Math.abs(v)*.5})`;
+            return {x:140+v*180,y:y+(r()-.5)*16,col};
+          });
+          return (
+            <g key={f}>
+              <text x="0" y={y+6} fill="#8892a8" fontSize="10" fontFamily="'JetBrains Mono',monospace">{f}</text>
+              {dots.map((d,di)=><circle key={di} cx={d.x} cy={d.y} r="2.5" fill={d.col}/>)}
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+};
+
+const StabHeat = ({ title, feats, folds=5 }) => {
+  const cw=46,ch=24,W=feats.length*cw+140,H=folds*ch+56;
+  const rng=(s)=>{let x=s;return()=>{x=x*1664525+1013904223&0xffffffff;return x/0xffffffff;}};
+  const data=feats.map((f,fi)=>Array.from({length:folds},(_,fold)=>{const r=rng(fi*37+fold*11);return r()>(f.p||.4)?0:1;}));
+  return (
+    <div className="dw">
+      <div className="dttl">{title}</div>
+      <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{display:"block"}}>
+        {feats.map((f,fi)=>(
+          <text key={fi} x={140+fi*cw+cw/2} y="12" fill="#8892a8" fontSize="9" textAnchor="middle" fontFamily="'JetBrains Mono',monospace">{typeof f==="string"?f:f.n}</text>
+        ))}
+        {Array.from({length:folds},(_,fold)=>(
+          <g key={fold}>
+            <text x="0" y={22+fold*ch+ch/2+3} fill="#444c5e" fontSize="9" fontFamily="'JetBrains Mono',monospace">Fold {fold+1}</text>
+            {feats.map((_,fi)=>{
+              const sel=data[fi][fold];
+              return <rect key={fi} x={140+fi*cw+2} y={16+fold*ch+2} width={cw-4} height={ch-4} rx="2"
+                fill={sel?"rgba(82,183,136,.35)":"rgba(224,92,92,.15)"}
+                stroke={sel?"#52b788":"#e05c5c"} strokeWidth="1" opacity=".8"/>;
+            })}
+          </g>
+        ))}
+        <text x="0" y={H-2} fill="#444c5e" fontSize="9" fontFamily="'JetBrains Mono',monospace">Green=selected | Red=not selected</text>
+      </svg>
+    </div>
+  );
+};
+
+const CausalDAG = ({ title, nodes, edges }) => (
+  <div className="dw">
+    <div className="dttl">{title}</div>
+    <svg viewBox="0 0 520 200" width="100%" style={{display:"block"}}>
+      <defs>
+        <marker id="arrC" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#3ec9a7"/></marker>
+        <marker id="arrD" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#f4a261"/></marker>
+      </defs>
+      {edges.map((e,i)=>{
+        const s=nodes.find(n=>n.id===e.from), t=nodes.find(n=>n.id===e.to);
+        if(!s||!t)return null;
+        const mx=(s.x+t.x)/2, my=(s.y+t.y)/2-(e.arc||0);
+        return <path key={i} d={e.arc?`M ${s.x} ${s.y} Q ${mx} ${my} ${t.x} ${t.y}`:`M ${s.x} ${s.y} L ${t.x} ${t.y}`}
+          stroke={e.col||"#3ec9a7"} strokeWidth="1.5" fill="none"
+          strokeDasharray={e.dash?"5,3":"none"}
+          markerEnd={`url(#${e.col==="#f4a261"?"arrD":"arrC"})`}/>;
+      })}
+      {nodes.map(n=>(
+        <g key={n.id}>
+          <rect x={n.x-42} y={n.y-14} width={84} height={28} rx="4"
+            fill={n.target?"rgba(62,201,167,.15)":"rgba(77,157,224,.12)"}
+            stroke={n.target?"#3ec9a7":"#4d9de0"} strokeWidth="1.2"/>
+          <text x={n.x} y={n.y+5} fill={n.target?"#3ec9a7":"#8892a8"} fontSize="10" textAnchor="middle" fontFamily="'JetBrains Mono',monospace">{n.label}</text>
+        </g>
+      ))}
+    </svg>
+  </div>
+);
+
+const ParetoFront = ({ title }) => {
+  const W=500,H=180;
+  const front=[{mae:.98,nf:5},{mae:.91,nf:8},{mae:.85,nf:12},{mae:.80,nf:18},{mae:.77,nf:24},{mae:.74,nf:32},{mae:.72,nf:40}];
+  const dom=[{mae:.88,nf:14},{mae:.83,nf:20},{mae:.79,nf:28},{mae:.95,nf:22}];
+  const toX=nf=>50+(nf/45)*(W-80), toY=mae=>H-30-((mae-.7)/.32)*(H-50);
+  return (
+    <div className="dw">
+      <div className="dttl">{title}</div>
+      <svg viewBox={`0 0 ${W} ${H+22}`} width="100%" style={{display:"block"}}>
+        <polyline points={front.map(p=>`${toX(p.nf)},${toY(p.mae)}`).join(" ")} fill="none" stroke="#3ec9a7" strokeWidth="1.5"/>
+        {front.map((p,i)=><circle key={i} cx={toX(p.nf)} cy={toY(p.mae)} r="5" fill="rgba(62,201,167,.35)" stroke="#3ec9a7" strokeWidth="1.5"/>)}
+        {dom.map((p,i)=><circle key={i} cx={toX(p.nf)} cy={toY(p.mae)} r="4" fill="rgba(224,92,92,.2)" stroke="#e05c5c" strokeWidth="1"/>)}
+        <line x1="50" y1="10" x2="50" y2={H-30} stroke="#242836" strokeWidth="1"/>
+        <line x1="50" y1={H-30} x2={W-20} y2={H-30} stroke="#242836" strokeWidth="1"/>
+        <text x={W/2} y={H+14} fill="#444c5e" fontSize="9" textAnchor="middle" fontFamily="'JetBrains Mono',monospace">Feature count | Green=Pareto front (non-dominated) | Red=dominated solutions</text>
+      </svg>
+    </div>
+  );
+};
+
+// ── TABS ─────────────────────────────────────────────────────────────────────
+const TABS = [
+  {id:"intro",label:"Introduction"},
+  {id:"filter",label:"Filter Methods"},
+  {id:"wrapper",label:"Wrapper Methods"},
+  {id:"embedded",label:"Embedded Methods"},
+  {id:"deep",label:"Deep Learning"},
+  {id:"causal",label:"Causal & Hybrid"},
+  {id:"pipelines",label:"Pipelines & Cases"},
+];
+
+// ── MAIN ─────────────────────────────────────────────────────────────────────
+export default function App() {
+  const [tab, setTab] = useState("intro");
+  return (
+    <>
+      <style>{S}</style>
+      <div className="root">
+        {/* HERO */}
+        <header className="hero">
+          <div className="ey">Deep Dive Companion · v1.0 · 2025</div>
+          <h1 className="h1">The Practitioner's Deep Dive:<br/>Time Series Feature Selection <em>in Practice</em></h1>
+          <p className="hsub">Mechanics, intuition, diagnostics, and honest limits of all 47 methods — with worked examples, inline plots, interpretation guides, and how to tell genuine importance from statistical noise.</p>
+          <div className="pills">
+            <span className="pill">Methods: <b>47</b></span>
+            <span className="pill">Families: <b>5</b></span>
+            <span className="pill">Companion to: <b>v2.1 Reference</b></span>
+            <span className="pill">Audience: <b>Senior DS / MLE</b></span>
+          </div>
+        </header>
+
+        {/* STICKY TABS */}
+        <nav className="tnav">
+          {TABS.map(t=>(
+            <button key={t.id} className={`tb${tab===t.id?" on":""}`} onClick={()=>setTab(t.id)}>{t.label}</button>
+          ))}
+        </nav>
+
+        {/* ══ INTRODUCTION ══════════════════════════════════════════════════ */}
+        {tab==="intro" && (
+          <div>
+            <div className="sr">
+              <div className="sc"><div className="sl">Methods</div><div className="sv">47</div><div className="sd">Covered in depth</div></div>
+              <div className="sc"><div className="sl">Families</div><div className="sv">5</div><div className="sd">Filter·Wrapper·Embedded·Deep·Causal</div></div>
+              <div className="sc"><div className="sl">SVG Figures</div><div className="sv">55+</div><div className="sd">Inline visualisations</div></div>
+              <div className="sc"><div className="sl">Code Blocks</div><div className="sv">47+</div><div className="sd">Walk-forward correct Python</div></div>
+            </div>
+
+            <nav className="toc">
+              <div className="tocttl">Table of Contents</div>
+              <ol className="tocl">
+                {[["I","Epistemology of Feature Importance in TS"],["II","Universal Diagnostic Framework"],
+                  ["2.1","Variance Threshold"],["2.2","Chi-Squared"],["2.3","F-test / ANOVA"],
+                  ["2.4","Pearson / Spearman / Kendall"],["2.5","Mutual Information"],["2.6","mRMR"],
+                  ["2.7","Distance Correlation"],["2.8","HSIC"],["2.9","AR-adjusted Correlation"],
+                  ["2.10","PACF / ACF"],["2.11","Granger Causality"],["2.12","Rolling Correlation"],
+                  ["3.1","Forward / Backward / Stepwise"],["3.2","RFE & RFECV"],
+                  ["3.3","Sequential Feature Selector"],["3.4","Permutation Importance"],
+                  ["3.5","Genetic Algorithms"],
+                  ["4.1","LASSO"],["4.2","Ridge"],["4.3","ElasticNet"],
+                  ["4.4","Group LASSO"],["4.5","Sparse Group LASSO"],["4.6","SLOPE"],
+                  ["4.7","Tree MDI"],["4.8","Gradient Boosting Gain"],
+                  ["4.9","Conditional Permutation Importance"],["4.10","SHAP"],
+                  ["5.1","TFT Variable Selection"],["5.2","Stochastic Gates"],
+                  ["5.3","TabNet Attention"],["5.4","Integrated Gradients"],["5.5","Attention Rollout"],
+                  ["6.1","PCMCI+"],["6.2","FCI"],["6.3","Transfer Entropy"],
+                  ["6.4","Dynamic Causal Modelling"],["6.5","Conformal Selection"],
+                  ["6.6","IRM"],["6.7","ICA"],["6.8","Stability Selection & Boruta"],
+                  ["7.1","Walk-Forward Wrapper"],["7.2","Multi-Horizon"],
+                  ["7.3","Multi-Objective (NSGA-II)"],["7.4","Full Production Pipeline"],
+                  ["C","Decision Framework for Trusting a Feature Set"],
+                ].map(([n,t])=>(
+                  <li key={n}><a href="#"><span className="tn">{n}.</span>{t}</a></li>
+                ))}
+              </ol>
+            </nav>
+
+            <div className="ch">
+              <div className="chh">
+                <span className="chn">I</span>
+                <div className="chi">
+                  <div className="chf">Foundation</div>
+                  <div className="cht">The Epistemology of Feature Importance in Time Series</div>
+                </div>
+              </div>
+              <p>There is no ground truth for feature importance in time series. This sentence should be printed above every data scientist's monitor before they run their first feature selector. In cross-sectional data you can generate synthetic data from a known causal structure and verify your selector recovers it. In time series, the causal structure is never fully known, the data-generating process is non-stationary, and measuring importance with a model creates a circular dependency between what you selected and what you measured.</p>
+              <p>What we call "feature importance" is always a <em>model-conditioned, sample-specific, assumption-laden estimate</em> of something we hope approximates true predictive relevance. SHAP values tell you how a particular model uses a feature on a particular test set. Granger p-values tell you whether X's past linearly predicts Y's future conditional on Y's own past, under stationarity assumptions almost never satisfied. PACF spikes tell you which lags of the target's own history carry marginal linear autocorrelation. These methods measure different things — treating any one as "the importance" is the foundational mistake.</p>
+              <p>The practitioner's job is to <strong>triangulate</strong> a working hypothesis about which features are worth including using multiple lines of imperfect evidence, and to understand specifically how each line of evidence can mislead. This article is a manual for that triangulation, covering all 47 methods in the v2.1 reference with mechanics, diagnostics, and worked examples.</p>
+              <N t="ni" icon="🎯" title="Operational Definition of Genuine Importance">A feature is genuinely important if and only if: (1) including it improves held-out walk-forward CV performance, (2) its measured importance is stable across CV folds and across methods from different families, (3) a plausible mechanistic story explains why it should be predictive, and (4) its importance survives a permutation null test. Meeting all four is rare — which is why most deployed feature sets contain features present by habit or statistical accident.</N>
+              <WFDiag title="FIGURE I-1 — The only valid CV pattern for time series feature selection" n={5}/>
+              <T>The Three Failure Modes</T>
+              <p><strong>Temporal leakage</strong> is the most destructive. Any selector exposed to future information — however indirectly — discovers patterns existing only in the training window. The insidious form is soft leakage: a feature technically observed before prediction time but whose value correlates with future events through a mechanism not available at inference time.</p>
+              <p><strong>Spurious correlation</strong> is the second failure mode. In non-stationary time series, any two trending or seasonal variables appear correlated because they share a common driver — time itself. Selectors not accounting for shared autocorrelation rank noise features highly. AR-adjusted partial correlation, PCMCI+, and FCI explicitly address this; most methods in Sections 2 and 3 do not.</p>
+              <p><strong>Instability under perturbation</strong> is the third. An importance estimate that changes radically when you remove one other feature, use a different random seed, or shift the training window by a month is not measuring something real about the feature's value. Stability selection and block-bootstrap methods exist precisely to diagnose and eliminate this.</p>
+            </div>
+
+            <div className="ch">
+              <div className="chh">
+                <span className="chn">II</span>
+                <div className="chi">
+                  <div className="chf">Framework</div>
+                  <div className="cht">A Universal Diagnostic Framework</div>
+                </div>
+              </div>
+              <p>Regardless of which method you use, run these six steps before trusting any feature set. They catch the three failure modes above.</p>
+              {[
+                ["01","Shuffle Null Baseline","Replace each candidate feature with random noise and re-run the selector. Any feature scoring comparably to random noise is spurious. This establishes a baseline importance level below which nothing should be trusted."],
+                ["02","Walk-Forward Stability Audit","Run the full selection pipeline on each CV fold independently. Compute Jaccard similarity between each pair of fold-selected sets. Below 0.5 Jaccard, the selected set is unstable — use stability selection (§6.8) before trusting any single selector run."],
+                ["03","Cross-Method Triangulation","Run at least one method from two different families (e.g., one filter + one embedded). Features appearing important in both are candidates. Features in only one should be treated as suspects requiring domain-knowledge audit."],
+                ["04","AR-Residual Check","For any suspicious feature, compute AR-adjusted correlation (§2.9). If raw correlation is high but AR-adjusted correlation is near zero, the feature's importance is driven by shared autocorrelation — not genuine signal."],
+                ["05","Domain Plausibility Check","Every selected feature needs an articulable causal story. If you cannot explain in one sentence why this feature affects the target, flag it for domain expert review. Statistical importance without plausibility is a red flag at small-to-medium sample sizes."],
+                ["06","Out-of-Time Validation","Hold out the most recent 15–20% of data as a never-touched test set. Measure performance with full selected features vs. top-3 most stable features vs. random noise features. The full vs. minimal gap should be small; either vs. random should be large."],
+              ].map(([n,t,d])=>(
+                <div className="ds" key={n}>
+                  <div className="dn">{n}</div>
+                  <div className="dbt"><div className="dbtit">{t}</div><div className="dbde">{d}</div></div>
+                </div>
+              ))}
+              <NullDist title="FIGURE II-1 — Permutation null distribution vs. observed importance score"/>
+            </div>
+          </div>
+        )}
+
+        {/* ══ FILTER METHODS ════════════════════════════════════════════════ */}
+        {tab==="filter" && (
+          <div>
+            <div className="chh">
+              <span className="chn">2</span>
+              <div className="chi">
+                <div className="chf">Filter Methods</div>
+                <div className="cht">Statistical Filters — How They Work, Where They Fail</div>
+              </div>
+            </div>
+            <p>Filter methods score features independently of any model using statistical measures. Fast and interpretable, but they cannot detect feature interactions or redundancy (except mRMR). For time series, autocorrelation in both features and target inflates apparent association, making naive filters systematically overconfident.</p>
+
+            <MC num="2.1" name="Variance Threshold" fam="filter">
+              <span className="xr">v2.1 §2.1</span>
+              <T>Mechanics</T>
+              <p>The simplest possible filter: remove features whose variance falls below threshold ε. For time series, compute variance on the <strong>first-differenced series</strong> rather than the raw series. A slowly drifting macro indicator has high raw variance (ranging 50–200 over 5 years) but near-zero variance in its day-to-day changes — which is what a forecasting model actually uses. Computing on <code>X.diff()</code> reveals this. Without differencing, slowly drifting features appear high-variance but contribute nothing to short-horizon forecasts.</p>
+              <p>Always run variance threshold as the very first preprocessing step before any other selector — it is essentially free and removes obviously useless features that would slow down every subsequent step. Features with zero variance are constants; features with near-zero variance change so rarely their signal-to-noise ratio is negligible.</p>
+              <PC pros={[
+                "O(n·p) — milliseconds on millions of rows",
+                "No assumptions about X-y relationship",
+                "Catches constant-by-segment features from sparse one-hot encodings",
+                "Completely free: run it always as step zero",
+              ]} cons={[
+                "Cannot distinguish high-variance noise from high-variance signal",
+                "Trending features appear high-variance due to trend itself",
+                "Threshold ε is arbitrary — no principled way to set it",
+                "Completely ignores the relationship with the target",
+              ]}/>
+              <T>Time Series Usage</T>
+              <p>Fit on <code>X_train.diff().dropna()</code>, apply mask to original X_val/X_test (un-differenced). Run inside each walk-forward fold independently.</p>
+              <C desc="Variance threshold on differenced series with fold-intersection stability" code={`<span class="kw">from</span> sklearn.feature_selection <span class="kw">import</span> VarianceThreshold
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">import</span> pandas <span class="kw">as</span> pd, numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">var_filter_ts</span>(X_train: pd.DataFrame, threshold=<span class="nu">0.005</span>) -> tuple:
+    <span class="st">"""Compute variance on diffs to remove trend-inflated features."""</span>
+    X_eval = X_train.diff().dropna()
+    sel = VarianceThreshold(threshold=threshold)
+    sel.fit(X_eval)
+    kept    = X_train.columns[sel.get_support()].tolist()
+    removed = X_train.columns[~sel.get_support()].tolist()
+    print(f<span class="st">f"Kept {len(kept)} | Removed {len(removed)}: {removed[:3]}"</span>)
+    <span class="kw">return</span> kept, sel
+
+<span class="cm"># Walk-forward fold intersection for conservative selection</span>
+tscv = TimeSeriesSplit(n_splits=<span class="nu">5</span>, gap=<span class="nu">1</span>)
+fold_kept = []
+<span class="kw">for</span> tr, _ <span class="kw">in</span> tscv.split(X):
+    kept, _ = var_filter_ts(X.iloc[tr])
+    fold_kept.append(set(kept))
+always_kept = set.intersection(*fold_kept)  <span class="cm"># safe in every fold</span>`}/>
+              <ImpBar title="FIGURE 2.1 — Diff-variance scores (features below threshold in amber)"
+                feats={["lag_1","lag_7","roll_std_14","price_lag1","const_feat","sparse_hol","lag_2"]}
+                vals={[0.142,0.098,0.071,0.056,0.001,0.003,0.087]}
+                color="#4d9de0" suspect={[4,5]}/>
+              <T>Interpretation</T>
+              <p>A diff-variance near zero means the feature barely moves period-to-period. If a feature does not change, it cannot explain changes in the target. Exceptions: slowly evolving structural exogenous features (year-over-year growth rates) may have low diff-variance but capture genuine medium-horizon trends — consider a lower threshold for such features or skip variance threshold for structural inputs entirely.</p>
+              <N t="nv" icon="🔍" title="Spurious vs. Genuine — Diagnostic">
+                Feature retained by variance threshold but scoring zero on MI or permutation importance? Check: is the high variance driven by a handful of extreme outliers against an otherwise flat background? Plot the feature. If yes, apply winsorisation at 1st/99th percentile before re-running the threshold. High variance from outliers is not informative variance.
+              </N>
+            </MC>
+
+            <MC num="2.2" name="Chi-Squared Test" fam="filter">
+              <span className="xr">v2.1 §2.2</span>
+              <T>Mechanics</T>
+              <p>Chi-squared tests independence between a feature and a <strong>discrete target</strong> by comparing observed joint frequencies against expected frequencies under independence: chi2 = Σ(O_ij - E_ij)²/E_ij. This requires a categorical target — making it applicable only to time series <em>classification</em> problems (regime prediction, anomaly detection, threshold-crossing events).</p>
+              <p>For continuous regression targets — the standard forecasting case — chi-squared is <strong>inapplicable</strong>. Applying it by binning the continuous target introduces arbitrary discretisation that makes results dependent on bin choice, not the true relationship. This is the most common chi-squared misuse in time series ML.</p>
+              <PC pros={[
+                "Theoretically exact for discrete classification targets",
+                "Non-parametric in feature space — no linearity assumption",
+                "Handles categorical features naturally",
+                "Fast: O(n·p) with no hyperparameters beyond bin count",
+              ]} cons={[
+                "Completely inapplicable to continuous regression targets",
+                "Autocorrelation inflates test statistics — requires BH FDR correction",
+                "Large n makes nearly everything significant — use effect size not p-value",
+                "Discretisation of continuous features adds arbitrary binning choices",
+              ]}/>
+              <N t="nd" icon="⚠️" title="The Most Common Misuse">
+                Applying chi-squared to continuous forecasting targets by binning is a pervasive mistake. The statistic you get is a function of your binning strategy, not the underlying relationship. Two practitioners using different bin edges get different feature rankings from the same data. For continuous targets, use F-test (linear) or mutual information (nonlinear).
+              </N>
+              <C desc="Chi-squared for regime classification — discrete targets only" code={`<span class="kw">from</span> sklearn.feature_selection <span class="kw">import</span> chi2, SelectKBest
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> MinMaxScaler
+<span class="kw">from</span> statsmodels.stats.multitest <span class="kw">import</span> multipletests
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">chi2_ts</span>(X_train: pd.DataFrame, y_regime: pd.Series, k: int=<span class="nu">20</span>):
+    <span class="st">"""Chi-squared for DISCRETE classification targets only.
+    Includes BH FDR correction for multiple testing."""</span>
+    X_sc = MinMaxScaler().fit_transform(X_train)
+    sel  = SelectKBest(chi2, k=k).fit(X_sc, y_regime)
+    scores = pd.Series(sel.scores_, index=X_train.columns)
+    _, p_adj, _, _ = multipletests(sel.pvalues_, method=<span class="st">'fdr_bh'</span>)
+    <span class="kw">return</span> X_train.columns[sel.get_support()].tolist(), scores`}/>
+              <N t="nv" icon="🔍" title="Spurious vs. Genuine — Shuffle Test">
+                Run chi-squared on a shuffled version of your target variable (breaking temporal structure). If you get a similar set of significant features after shuffling, your results are driven by marginal feature distributions, not by the feature-target relationship. Features that lose significance after shuffling carry real signal.
+              </N>
+            </MC>
+
+            <MC num="2.3" name="F-test / ANOVA" fam="filter">
+              <span className="xr">v2.1 §2.3</span>
+              <T>Mechanics</T>
+              <p>The F-test (sklearn's <code>f_regression</code>) computes Pearson r between each feature and the target, converting to F = r²(n-2)/(1-r²). Measures linear association only — misses quadratic, threshold, and interaction effects common in time series. Non-stationarity is the critical failure mode: two non-stationary series appear correlated simply because they share a common trend, producing large F-statistics for features that are actually uncorrelated after trend removal.</p>
+              <F>F = r^2 * (n-2) / (1 - r^2)   also: r^2 = explained variance fraction</F>
+              <PC pros={[
+                "Fast and interpretable — F directly maps to Pearson r²",
+                "Well-understood theoretical framework with exact p-values under Gaussian assumptions",
+                "Effective for linear exogenous features with proper stationarity preprocessing",
+                "Effect size r² is comparable across features",
+              ]} cons={[
+                "Detects linear associations only — misses nonlinear patterns ubiquitous in TS",
+                "Severely inflated by non-stationarity — first-difference before applying",
+                "Large n makes nearly everything significant — focus on r² not p-value",
+                "Assumes homoscedastic residuals — violated by most real TS data",
+              ]}/>
+              <C desc="F-test with ADF stationarity guard and BH FDR correction" code={`<span class="kw">from</span> sklearn.feature_selection <span class="kw">import</span> f_regression
+<span class="kw">from</span> statsmodels.tsa.stattools <span class="kw">import</span> adfuller
+<span class="kw">from</span> statsmodels.stats.multitest <span class="kw">import</span> multipletests
+<span class="kw">import</span> pandas <span class="kw">as</span> pd, numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">ftest_ts</span>(X_train: pd.DataFrame, y_train: pd.Series, fdr_q=<span class="nu">0.05</span>) -> pd.DataFrame:
+    <span class="st">"""F-test with per-column ADF check, differencing, and BH correction."""</span>
+    Xe = X_train.copy(); diff_cols = []
+    <span class="kw">for</span> c <span class="kw">in</span> Xe.columns:
+        <span class="kw">if</span> adfuller(Xe[c].dropna())[<span class="nu">1</span>] > <span class="nu">0.05</span>:
+            Xe[c] = Xe[c].diff(); diff_cols.append(c)
+    ye = y_train.copy()
+    <span class="kw">if</span> adfuller(ye.dropna())[<span class="nu">1</span>] > <span class="nu">0.05</span>: ye = ye.diff()
+    mask = Xe.notna().all(axis=<span class="nu">1</span>) & ye.notna()
+    f, p = f_regression(Xe[mask], ye[mask])
+    r2 = f / (f + mask.sum() - <span class="nu">2</span>)
+    reject, padj, _, _ = multipletests(p, alpha=fdr_q, method=<span class="st">'fdr_bh'</span>)
+    <span class="kw">return</span> pd.DataFrame({
+        <span class="st">'feature'</span>: X_train.columns, <span class="st">'r_squared'</span>: r2,
+        <span class="st">'p_adj'</span>: padj, <span class="st">'significant'</span>: reject,
+        <span class="st">'differenced'</span>: [c <span class="kw">in</span> diff_cols <span class="kw">for</span> c <span class="kw">in</span> X_train.columns]
+    }).sort_values(<span class="st">'r_squared'</span>, ascending=<span class="nm">False</span>)`}/>
+              <ImpBar title="FIGURE 2.3 — F-test r² after stationarity correction (amber = raw trend correlation)"
+                feats={["lag_1","lag_7","price_idx","trend_raw","roll_mean_7","dow_sin","lag_14"]}
+                vals={[0.38,0.29,0.22,0.19,0.17,0.11,0.08]} color="#4d9de0" suspect={[3]}/>
+              <N t="nv" icon="🔍" title="Spurious vs. Genuine — The Differencing Check">
+                A raw exogenous feature scoring very high on F-test should always be re-tested after differencing both feature and target. If the F-score drops to near zero after differencing, the original high score was entirely due to shared trend — classic spurious regression. The <code>differenced</code> column in the output flags this. A feature is only trustworthy if its differenced F-score is also material (r² &gt; 0.05).
+              </N>
+            </MC>
+
+            <MC num="2.4" name="Pearson, Spearman & Kendall Correlation" fam="filter">
+              <span className="xr">v2.1 §2.4</span>
+              <T>Mechanics</T>
+              <p><strong>Pearson r</strong> measures linear co-movement. Breaks spectacularly under non-stationarity and heavy tails — both common in financial and retail TS. Never use Pearson on raw non-stationary series.</p>
+              <p><strong>Spearman ρ</strong> computes Pearson on ranks — sensitive to any monotonic relationship, robust to outliers, distribution-shape agnostic. The correct default for TS feature selection after stationarity correction.</p>
+              <p><strong>Kendall τ</strong> counts concordant minus discordant pairs. More robust than Spearman at very small N (below 50) but O(n²) — impractical for large datasets. Use only for monthly/quarterly forecasting with short series.</p>
+              <p>The rolling window adaptation is critical: compute correlation in a sliding window (e.g., 180 obs, step 30) and track both mean and CV. High mean + low CV = stable predictor. High mean + high CV = regime-switching predictor — useful but dangerous to treat as universally reliable.</p>
+              <PC pros={[
+                "Spearman robust to outliers and non-Gaussian distributions",
+                "Rolling correlation directly quantifies regime stability",
+                "Directional: tells sign of relationship, not just magnitude",
+                "Trivially fast; immediate interpretability for stakeholders",
+              ]} cons={[
+                "Pearson completely unreliable on non-stationary series",
+                "All three measure only pairwise association — miss interactions",
+                "High Spearman can still be driven by shared autocorrelation",
+                "Kendall is O(n²) — prohibitive for high-frequency data",
+              ]}/>
+              <C desc="Rolling Spearman with regime-stability classification" code={`<span class="kw">from</span> scipy.stats <span class="kw">import</span> spearmanr
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">rolling_spearman</span>(X, y, window=<span class="nu">180</span>, step=<span class="nu">30</span>) -> pd.DataFrame:
+    <span class="st">"""Rolling Spearman with regime classification.
+    stable_positive / stable_negative / regime_switching / weak"""</span>
+    corrs = {c: [] <span class="kw">for</span> c <span class="kw">in</span> X.columns}
+    <span class="kw">for</span> s <span class="kw">in</span> range(<span class="nu">0</span>, len(y)-window, step):
+        yw = y.iloc[s:s+window]
+        <span class="kw">for</span> c <span class="kw">in</span> X.columns:
+            xw = X[c].iloc[s:s+window]
+            mask = ~(xw.isna()|yw.isna())
+            <span class="kw">if</span> mask.sum() > <span class="nu">30</span>:
+                r, _ = spearmanr(xw[mask], yw[mask])
+                corrs[c].append(r)
+    rows = []
+    <span class="kw">for</span> c, v <span class="kw">in</span> corrs.items():
+        m, s = np.mean(v), np.std(v)
+        cv = s/(abs(m)+<span class="nu">1e-9</span>)
+        regime = (<span class="st">'weak'</span> <span class="kw">if</span> abs(m)<.<span class="nu">15</span> <span class="kw">else</span>
+                  <span class="st">'regime_switching'</span> <span class="kw">if</span> cv><span class="nu">1.0</span> <span class="kw">else</span>
+                  <span class="st">'stable_positive'</span> <span class="kw">if</span> m><span class="nu">0</span> <span class="kw">else</span> <span class="st">'stable_negative'</span>)
+        rows.append({<span class="st">'feature'</span>:c,<span class="st">'mean_rho'</span>:m,<span class="st">'cv'</span>:cv,<span class="st">'regime'</span>:regime})
+    <span class="kw">return</span> pd.DataFrame(rows).sort_values(<span class="st">'mean_rho'</span>,key=abs,ascending=<span class="nm">False</span>)`}/>
+              <N t="nv" icon="🔍" title="Spurious vs. Genuine — Regime-Switch Warning">
+                Regime-switching features (high mean |ρ|, high CV) are the most dangerous: they look important in historical average but their direction or magnitude is unreliable. Before including them, check whether the regime switches correlate with identifiable structural events. If yes, include with a regime indicator interaction. If no, treat as noise.
+              </N>
+            </MC>
+
+            <MC num="2.5" name="Mutual Information — Lagged & Conditional" fam="filter">
+              <span className="xr">v2.1 §2.5</span>
+              <T>Mechanics</T>
+              <p>Mutual information MI(X;Y) measures the full statistical dependence between X and Y — linear, nonlinear, monotone, or otherwise — using their joint distribution. Estimated via k-nearest neighbours (Kraskov estimator) for continuous variables. The lagged adaptation is essential: compute MI(X_lagged, Y_t) for each lag depth and take the maximum, capturing delayed causal relationships that contemporaneous MI would miss entirely.</p>
+              <F>MI(X;Y) = E[ log( p(X,Y) / (p(X)*p(Y)) ) ]   — Kraskov k-NN estimator</F>
+              <PC pros={[
+                "Detects any statistical dependence — linear, nonlinear, threshold, periodic",
+                "Lagged MI captures delayed causal effects missed by contemporaneous measures",
+                "Non-parametric: no distribution shape or relationship form assumptions",
+                "Returns scores on a common scale enabling cross-feature comparison",
+              ]} cons={[
+                "k-NN estimation noisy at small N — unreliable below ~100 samples per fold",
+                "Expensive: O(n·p·k·max_lag) for full lagged version",
+                "Cannot detect redundancy between features — use mRMR to address this",
+                "Shared autocorrelation inflates MI between autocorrelated feature and target",
+              ]}/>
+              <C desc="Lag-profile MI — detect isolated spikes vs. sustained effects" code={`<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> sklearn.feature_selection <span class="kw">import</span> mutual_info_regression
+
+<span class="kw">def</span> <span class="fn">lag_mi_profile</span>(X, y, max_lag=<span class="nu">24</span>, n_neighbors=<span class="nu">5</span>) -> pd.DataFrame:
+    <span class="st">"""MI at each lag depth per feature.
+    n_high_lags: consecutive lags with MI > 50% of max — genuine effects
+    produce smooth peaks, not isolated spikes."""</span>
+    results = {}
+    <span class="kw">for</span> col <span class="kw">in</span> X.columns:
+        lag_mis = {}
+        <span class="kw">for</span> lag <span class="kw">in</span> range(<span class="nu">1</span>, max_lag+<span class="nu">1</span>):
+            xl = X[col].shift(lag).dropna()
+            <span class="kw">if</span> len(xl) < <span class="nu">60</span>: lag_mis[lag]=np.nan; <span class="kw">continue</span>
+            mi = mutual_info_regression(
+                xl.values.reshape(-<span class="nu">1</span>,<span class="nu">1</span>), y.loc[xl.index].values,
+                n_neighbors=n_neighbors, random_state=<span class="nu">42</span>)[<span class="nu">0</span>]
+            lag_mis[lag] = mi
+        results[col] = lag_mis
+    df = pd.DataFrame(results).T
+    df.columns = [f<span class="st">f"lag_" + str(l)</span> <span class="kw">for</span> l <span class="kw">in</span> range(<span class="nu">1</span>, max_lag+<span class="nu">1</span>)]
+    df[<span class="st">'max_mi'</span>]    = df.max(axis=<span class="nu">1</span>)
+    df[<span class="st">'best_lag'</span>]  = df.iloc[:,:-<span class="nu">1</span>].idxmax(axis=<span class="nu">1</span>)
+    df[<span class="st">'n_high_lags'</span>] = (df.iloc[:,:-<span class="nu">2</span>] > df[<span class="st">'max_mi'</span>]*<span class="nu">0.5</span>).sum(axis=<span class="nu">1</span>)
+    <span class="kw">return</span> df.sort_values(<span class="st">'max_mi'</span>, ascending=<span class="nm">False</span>)`}/>
+              <N t="nv" icon="🔍" title="Spurious vs. Genuine — Isolated Lag Spikes">
+                High MI at lag 7 but near-zero at lags 6 and 8 is likely a sampling artefact. Genuine causal effects produce MI peaks that decay smoothly across adjacent lags. Check <code>n_high_lags</code>: features with n_high_lags &gt; 3 are far more trustworthy than single-lag spikes. Also run MI on a block-permuted version of the feature — genuine features show much higher MI than their permuted counterparts.
+              </N>
+            </MC>
+
+            <MC num="2.6" name="mRMR — Maximum Relevance, Minimum Redundancy" fam="filter">
+              <span className="xr">v2.1 §2.6</span>
+              <T>Mechanics</T>
+              <p>Plain MI selection fails silently on correlated lag features: lag_1, lag_2, lag_3 all have high MI with tomorrow's sales but are nearly redundant with each other. mRMR (Peng et al., 2005) fixes this by maximising J(X_k) = MI(X_k; Y) - (1/|S|)·Σ MI(X_k; X_i) at each greedy step, penalising new features that are redundant with already-selected ones. The time-series adaptation uses lagged MI for relevance but contemporaneous MI for redundancy.</p>
+              <F>J(X_k) = MI(X_k_lagged ; Y_t) - (1/|S|) * mean MI(X_k ; X_i) for X_i in selected set S</F>
+              <PC pros={[
+                "Explicitly removes redundancy — directly addresses the 'all lags selected' problem",
+                "Greedy order gives implicit feature ranking: first selected = most value per unit redundancy",
+                "Produces smaller, more diverse feature sets than plain MI",
+                "Non-parametric: works for any distribution, detects nonlinear redundancy",
+              ]} cons={[
+                "Greedy: irrevocable early selections — a bad first choice distorts all subsequent redundancy calculations",
+                "Cannot detect synergistic features — pairs individually weak but jointly powerful",
+                "Inter-feature MI computation is expensive for wide feature spaces",
+                "Walk-forward adaptation requires re-running full selection including inter-feature MI on each fold",
+              ]}/>
+                            <T>Time Series Usage</T>
+              <C desc="mRMR greedy selection with lagged relevance and contemporaneous redundancy" code={`<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> sklearn.feature_selection <span class="kw">import</span> mutual_info_regression
+
+<span class="kw">def</span> <span class="fn">mrmr_ts</span>(X_train, y_train, top_k=<span class="nu">20</span>, max_lag=<span class="nu">12</span>, n_nb=<span class="nu">5</span>) -> list:
+    <span class="st">"""mRMR with lagged relevance (max MI over lags) and contemporaneous redundancy."""</span>
+    relevance = {}
+    <span class="kw">for</span> col <span class="kw">in</span> X_train.columns:
+        mis = [mutual_info_regression(
+                   X_train[col].shift(l).dropna().values.reshape(-<span class="nu">1</span>,<span class="nu">1</span>),
+                   y_train.loc[X_train[col].shift(l).dropna().index].values,
+                   n_neighbors=n_nb, random_state=<span class="nu">42</span>)[<span class="nu">0</span>]
+               <span class="kw">for</span> l <span class="kw">in</span> range(<span class="nu">1</span>, max_lag+<span class="nu">1</span>)
+               <span class="kw">if</span> len(X_train[col].shift(l).dropna()) >= <span class="nu">50</span>]
+        relevance[col] = max(mis) <span class="kw">if</span> mis <span class="kw">else</span> <span class="nu">0.0</span>
+    selected, remaining = [], list(X_train.columns)
+    selected.append(max(relevance, key=relevance.get))
+    remaining.remove(selected[<span class="nu">0</span>])
+    <span class="kw">while</span> len(selected) < top_k <span class="kw">and</span> remaining:
+        best, best_j = <span class="nm">None</span>, -np.inf
+        <span class="kw">for</span> c <span class="kw">in</span> remaining:
+            red = np.mean([mutual_info_regression(X_train[[s]].values,
+                           X_train[c].values, n_neighbors=n_nb, random_state=<span class="nu">42</span>)[<span class="nu">0</span>]
+                           <span class="kw">for</span> s <span class="kw">in</span> selected])
+            j = relevance[c] - red
+            <span class="kw">if</span> j > best_j: best, best_j = c, j
+        selected.append(best); remaining.remove(best)
+    <span class="kw">return</span> selected`}/>
+<StabHeat title="FIGURE 2.6 — mRMR selection stability across folds (green=selected, red=not)"
+                feats={[{n:"lag_1",p:.1},{n:"lag_7",p:.15},{n:"roll_7",p:.2},{n:"lag_2",p:.7},{n:"price",p:.25},{n:"lag_3",p:.75}]}/>
+              <N t="nv" icon="🔍" title="Spurious vs. Genuine — Early Selections vs. Fold Consistency">
+                mRMR's first 3–5 selections are most trustworthy; later ones are increasingly sensitive to early choice noise. Stability test: run mRMR on each CV fold independently and compare selection order. If lag_1 is consistently the first or second selection across folds, it's genuine. If the ordering changes dramatically fold-to-fold, the redundancy penalty is being driven by noise — fall back to plain MI ranking.
+              </N>
+            </MC>
+
+            <MC num="2.7" name="Distance Correlation (dCor)" fam="filter">
+              <span className="xr">v2.1 §2.7</span>
+              <T>Mechanics</T>
+              <p>Distance correlation (Székely & Rizzo, 2007) detects <em>any</em> form of statistical dependence — linear, nonlinear, non-monotone, periodic — by working with pairwise distance matrices. For samples of X and Y, compute distance matrices A and B, double-centre them (subtract row means, column means, add grand mean back), and take dCov²(X,Y) = (1/n²)·Σ A_kl·B_kl. The key property: dCor = 0 if and only if X and Y are statistically independent — no functional form assumption. This is strictly stronger than Pearson, Spearman, and Kendall, all of which can be zero for independent variables with complex dependence structures.</p>
+              <F>dCor(X,Y) = dCov(X,Y) / sqrt(dVar(X) * dVar(Y))   where dCov from double-centred distance matrices</F>
+              <PC pros={[
+                "Detects ANY statistical dependence — catches nonlinear and non-monotone relationships",
+                "dCor = 0 iff independence — genuine null result, unlike correlation",
+                "Robust to outliers via distance-based formulation",
+                "No assumptions about functional form or distributions",
+              ]} cons={[
+                "O(n²) cost — prohibitive for high-frequency TS without downsampling",
+                "Like MI, cannot detect redundancy between features",
+                "No standard p-value distribution under autocorrelation — requires permutation testing",
+                "Rolling dCor for regime stability analysis requires nested O(n²) computations",
+              ]}/>
+              <C desc="Distance correlation with systematic downsampling and permutation p-value" code={`<span class="cm"># pip install dcor</span>
+<span class="kw">import</span> dcor, numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">dcor_screen</span>(X, y, max_lag=<span class="nu">7</span>, max_n=<span class="nu">800</span>, n_perm=<span class="nu">99</span>) -> pd.DataFrame:
+    <span class="st">"""Lagged dCor with downsampling and permutation p-value."""</span>
+    <span class="kw">if</span> len(y) > max_n:
+        step = len(y)//max_n
+        X, y = X.iloc[::step].reset_index(drop=<span class="nm">True</span>), y.iloc[::step].reset_index(drop=<span class="nm">True</span>)
+    rows = []
+    <span class="kw">for</span> col <span class="kw">in</span> X.columns:
+        best_dc, best_lag = <span class="nu">0</span>, <span class="nu">1</span>
+        <span class="kw">for</span> lag <span class="kw">in</span> range(<span class="nu">1</span>, max_lag+<span class="nu">1</span>):
+            xl = X[col].shift(lag).dropna().values
+            ya = y.iloc[lag:].values[:len(xl)]
+            <span class="kw">if</span> len(xl) < <span class="nu">50</span>: <span class="kw">continue</span>
+            dc = dcor.distance_correlation(xl, ya)
+            <span class="kw">if</span> dc > best_dc: best_dc, best_lag = dc, lag
+        xl = X[col].shift(best_lag).dropna().values
+        ya = y.iloc[best_lag:].values[:len(xl)]
+        nulls = [dcor.distance_correlation(np.random.permutation(xl), ya) <span class="kw">for</span> _ <span class="kw">in</span> range(n_perm)]
+        rows.append({<span class="st">'feature'</span>:col,<span class="st">'max_dcor'</span>:best_dc,
+                     <span class="st">'best_lag'</span>:best_lag,<span class="st">'perm_p'</span>:(np.sum(np.array(nulls)>=best_dc)+<span class="nu">1</span>)/(n_perm+<span class="nu">1</span>)})
+    <span class="kw">return</span> pd.DataFrame(rows).sort_values(<span class="st">'max_dcor'</span>, ascending=<span class="nm">False</span>)`}/>
+              <N t="nv" icon="🔍" title="Spurious vs. Genuine — Compare with AR-adjusted Spearman">
+                dCor high but AR-adjusted Spearman (§2.9) low? The dependency is driven by shared temporal structure, not genuine cross-series signal. Features where both dCor and AR-adjusted Spearman are high are the most credible. The permutation p-value is essential: if the observed dCor is not substantially above the null distribution, the feature carries no genuine signal regardless of the absolute score.
+              </N>
+            </MC>
+
+            <MC num="2.8" name="HSIC — Hilbert-Schmidt Independence Criterion" fam="filter">
+              <span className="xr">v2.1 §2.8</span>
+              <T>Mechanics</T>
+              <p>HSIC (Gretton et al., 2005) measures dependence by embedding both variables into Reproducing Kernel Hilbert Spaces and computing the Hilbert-Schmidt norm of the cross-covariance operator. With RBF kernels, HSIC detects the same types of dependencies as dCor but the kernel choice gives additional expressiveness: periodic kernels are ideal for weekly/annual TS patterns, Matern kernels for smooth trends. HSIC = 0 iff X and Y are independent under mild conditions.</p>
+              <F>HSIC(X,Y) = (1/(n-1)^2) * trace(K * H * L * H)   K_ij=k(x_i,x_j), H=I - 11^T/n</F>
+              <PC pros={[
+                "Kernel choice allows domain-specific inductive biases — periodic kernels for seasonal TS",
+                "HSIC-LASSO extends to joint selection with redundancy control",
+                "Well-studied concentration inequalities and consistent estimation",
+                "Same generality as dCor but more flexible",
+              ]} cons={[
+                "O(n²) kernel matrix computation — same scaling issue as dCor",
+                "γ (kernel bandwidth) is a sensitive hyperparameter",
+                "Harder to interpret than Spearman or MI — no natural units",
+                "Sensitive to outliers when RBF kernel used with median heuristic",
+              ]}/>
+                            <T>Time Series Usage</T>
+              <C desc="HSIC with RBF kernel and median heuristic for bandwidth" code={`<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> sklearn.metrics.pairwise <span class="kw">import</span> rbf_kernel
+
+<span class="kw">def</span> <span class="fn">hsic_screen_ts</span>(X_train, y_train, max_lag=<span class="nu">12</span>, top_k=<span class="nu">20</span>) -> pd.DataFrame:
+    <span class="st">"""HSIC screening with max-lag aggregation. Fit on training data only."""</span>
+    n = len(y_train)
+    y_arr = y_train.values.reshape(-<span class="nu">1</span>,<span class="nu">1</span>)
+    gx_y = <span class="nu">1.0</span> / np.median(np.abs(y_arr - y_arr.T) + <span class="nu">1e-8</span>)
+    L = rbf_kernel(y_arr, gamma=gx_y)
+    H = np.eye(n) - np.ones((n, n)) / n
+    rows = []
+    <span class="kw">for</span> col <span class="kw">in</span> X_train.columns:
+        best = <span class="nu">0</span>
+        <span class="kw">for</span> lag <span class="kw">in</span> range(<span class="nu">1</span>, max_lag+<span class="nu">1</span>):
+            xl = X_train[col].shift(lag).dropna().values.reshape(-<span class="nu">1</span>,<span class="nu">1</span>)
+            <span class="kw">if</span> len(xl) < <span class="nu">50</span>: <span class="kw">continue</span>
+            nl = len(xl); Hl = np.eye(nl) - np.ones((nl,nl))/nl
+            gx = <span class="nu">1.0</span> / np.median(np.abs(xl - xl.T) + <span class="nu">1e-8</span>)
+            K = rbf_kernel(xl, gamma=gx)
+            h = np.trace(K @ Hl @ L[:nl,:nl] @ Hl) / (nl-<span class="nu">1</span>)**<span class="nu">2</span>
+            <span class="kw">if</span> h > best: best = h
+        rows.append({<span class="st">'feature'</span>: col, <span class="st">'max_hsic'</span>: best})
+    <span class="kw">return</span> pd.DataFrame(rows).sort_values(<span class="st">'max_hsic'</span>, ascending=<span class="nm">False</span>).head(top_k)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Outlier Sensitivity Check">
+                HSIC is highly sensitive to outliers with RBF kernels. Compute HSIC before and after winsorising the feature at the 1st/99th percentile. If the score drops substantially after winsorisation, the apparent importance is driven by outlier structure, not the bulk distribution. For financial TS with fat tails, always apply the outlier check before trusting HSIC scores.
+              </N>
+            </MC>
+
+            <MC num="2.9" name="AR-adjusted Partial Correlation" fam="filter">
+              <span className="xr">v2.1 §2.9</span>
+              <T>Mechanics</T>
+              <p>The single most practically important diagnostic tool in TS feature selection — yet rarely mentioned in ML textbooks. The idea: before measuring correlation between feature X and target Y, remove the component of each that is predictable from their own past history. Correlating the residuals measures genuine cross-series dependence, not trivial shared autocorrelation structure. Procedure: (1) fit AR(p) on X_train, extract residuals ε_X; (2) fit AR(p) on y_train, extract residuals ε_Y; (3) compute Spearman(ε_X, ε_Y).</p>
+              <F>AR-adj-corr(X,Y) = Spearman( AR_resid(X), AR_resid(Y) )  — both AR fits on training fold only</F>
+              <PC pros={[
+                "Directly removes most common source of spurious TS correlation: shared autocorrelation",
+                "spurious_gap = raw_corr - ar_adj_corr is a quantitative spuriousness diagnostic",
+                "Fast: two AR fits + one Spearman per feature",
+                "Equivalent to univariate version of PCMCI's momentary conditional independence test",
+              ]} cons={[
+                "AR model underfitting (wrong order, nonlinear dynamics) leaves residuals with predictable autocorrelation",
+                "Only conditions on each series' own past — not the full multivariate system like PCMCI+",
+                "AR order selection adds a hyperparameter",
+                "Imprecise for strongly nonlinear autocorrelation (ARCH/GARCH effects)",
+              ]}/>
+              <C desc="AR-adjusted correlation with automatic lag selection and spuriousness scoring" code={`<span class="kw">from</span> statsmodels.tsa.ar_model <span class="kw">import</span> AutoReg
+<span class="kw">from</span> scipy.stats <span class="kw">import</span> spearmanr
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">ar_adj_corr</span>(X_train, y_train, max_p=<span class="nu">12</span>) -> pd.DataFrame:
+    <span class="st">"""spurious_gap > 0.15 = substantial spurious inflation."""</span>
+    <span class="kw">def</span> <span class="fn">best_resid</span>(s):
+        best_aic, best_p = np.inf, <span class="nu">1</span>
+        <span class="kw">for</span> p <span class="kw">in</span> range(<span class="nu">1</span>, max_p+<span class="nu">1</span>):
+            <span class="kw">try</span>:
+                aic = AutoReg(s, lags=p, old_names=<span class="nm">False</span>).fit().aic
+                <span class="kw">if</span> aic < best_aic: best_aic, best_p = aic, p
+            <span class="kw">except</span>: <span class="kw">pass</span>
+        <span class="kw">return</span> AutoReg(s, lags=best_p, old_names=<span class="nm">False</span>).fit().resid
+    y_res = best_resid(y_train)
+    rows = []
+    <span class="kw">for</span> col <span class="kw">in</span> X_train.columns:
+        <span class="kw">try</span>:
+            x_res = best_resid(X_train[col])
+            aln   = pd.concat([y_res, x_res], axis=<span class="nu">1</span>).dropna()
+            <span class="kw">if</span> len(aln) < <span class="nu">30</span>: <span class="kw">continue</span>
+            raw, _ = spearmanr(X_train[col].reindex(aln.index), y_train.reindex(aln.index))
+            adj, p = spearmanr(aln.iloc[:,<span class="nu">1</span>], aln.iloc[:,<span class="nu">0</span>])
+            rows.append({<span class="st">'feature'</span>:col, <span class="st">'raw_rho'</span>:raw, <span class="st">'ar_adj_rho'</span>:adj,
+                         <span class="st">'p_value'</span>:p, <span class="st">'spurious_gap'</span>:abs(raw)-abs(adj),
+                         <span class="st">'verdict'</span>:<span class="st">'spurious'</span> <span class="kw">if</span> abs(raw)-abs(adj)><span class="nu">.15</span> <span class="kw">else</span> <span class="st">'genuine_candidate'</span>})
+        <span class="kw">except</span>: <span class="kw">pass</span>
+    <span class="kw">return</span> pd.DataFrame(rows).sort_values(<span class="st">'ar_adj_rho'</span>, key=abs, ascending=<span class="nm">False</span>)`}/>
+              <N t="nd" icon="⚠️" title="The Most Dangerous Pattern">
+                raw_rho = 0.6, ar_adj_rho = 0.05 — this feature looks highly important in every standard correlation analysis but is pure spurious inflation. Without AR adjustment, it would be included in every production model. The spurious_gap = 0.55 unmasks it instantly.
+              </N>
+            </MC>
+
+            <MC num="2.10" name="PACF / ACF for Lag Selection" fam="filter">
+              <span className="xr">v2.1 §2.10</span>
+              <T>Mechanics</T>
+              <p>PACF(k) = Corr(Y_t, Y_{t-k} | Y_{t-1},...,Y_{t-k+1}) — the correlation at lag k after removing effects of shorter lags. Significant spikes (outside ±1.96/√n bands) identify exactly which autoregressive lags carry marginal information beyond shorter lags — these are the lags to include as ML features. ACF identifies MA structure and seasonal periods. Both are native time series tools that require no model fitting and are correct by construction for lag selection.</p>
+                            <T>Time Series Usage</T>
+              <C desc="PACF lag selection with multiple-testing correction and practical threshold" code={`<span class="kw">from</span> statsmodels.tsa.stattools <span class="kw">import</span> pacf, acf, adfuller
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">pacf_lags</span>(series: pd.Series, max_lag: int = <span class="nu">52</span>) -> dict:
+    <span class="st">"""Select significant AR lags (PACF) and seasonal periods (ACF peaks).
+    Call on training series only. ADF-test first; difference if needed."""</span>
+    s = series.dropna()
+    <span class="kw">if</span> adfuller(s)[<span class="nu">1</span>] > <span class="nu">0.05</span>: s = s.diff().dropna(); print(<span class="st">"Series differenced"</span>)
+    band = <span class="nu">1.96</span> / np.sqrt(len(s))
+    pv = pacf(s, nlags=max_lag, method=<span class="st">'ywmle'</span>)
+    av = acf(s,  nlags=max_lag, fft=<span class="nm">True</span>)
+    ar_lags = [l <span class="kw">for</span> l <span class="kw">in</span> range(<span class="nu">1</span>, max_lag+<span class="nu">1</span>) <span class="kw">if</span> abs(pv[l]) > band <span class="kw">and</span> abs(pv[l]) > <span class="nu">0.05</span>]
+    seas    = [l <span class="kw">for</span> l <span class="kw">in</span> range(<span class="nu">2</span>, max_lag-<span class="nu">1</span>)
+               <span class="kw">if</span> av[l] > band <span class="kw">and</span> av[l] > av[l-<span class="nu">1</span>] <span class="kw">and</span> av[l] > av[l+<span class="nu">1</span>]]
+    print(<span class="st">"AR lags: "</span> + str(ar_lags) + <span class="st">" | Seasonal: "</span> + str(seas))
+    <span class="kw">return</span> {<span class="st">'ar_lags'</span>: ar_lags, <span class="st">'seasonal'</span>: seas, <span class="st">'band'</span>: band}`}/>
+<PACFPlot title="FIGURE 2.10 — PACF with 95% CI: significant spikes at lags 1, 7 (daily weekly pattern)"/>
+              <PC pros={[
+                "Theoretically grounded: PACF directly identifies AR lags to include",
+                "Seasonal spikes in ACF identify seasonal periods automatically",
+                "Extremely fast: O(n·max_lag) with FFT acceleration",
+                "Works only on target series own lags — exactly the right tool for this purpose",
+              ]} cons={[
+                "Only identifies target's own lags — cannot find optimal lags for exogenous features",
+                "Assumes linear autocorrelation — misses nonlinear dynamics",
+                "Non-stationary series produce unreliable PACF — must difference first",
+                "Multiple testing: with max_lag=52, expect ~2-3 false positives at 5% significance",
+              ]}/>
+              <N t="nv" icon="🔍" title="Spurious vs. Genuine — Isolated vs. Cluster Spikes">
+                A genuine AR structure produces smooth PACF decay or clean cutoff. If you see significant spikes at lags 3, 11, 23 with nothing in between, run Ljung-Box on residuals after removing only lags 1 and 7 — if residuals are white noise, the spikes at 3, 11, 23 were multiple-testing artefacts. Seasonal spikes (7, 14, 21 for daily data) are expected and genuine.
+              </N>
+            </MC>
+
+            <MC num="2.11" name="Granger Causality Tests" fam="filter">
+              <span className="xr">v2.1 §2.11</span>
+              <T>Mechanics</T>
+              <p>Granger causality tests whether X's past improves forecasts of Y beyond Y's own past, via VAR and F-test on H₀: all lag coefficients of X are zero. Despite the name, this is predictive precedence, not structural causality. A common cause Z driving both X and Y with different delays makes X appear to Granger-cause Y even with no direct link — the fundamental false positive problem that PCMCI+ addresses.</p>
+              <F>H0: all beta_j = 0  in  Y_t = alpha + sum phi_i*Y(t-i) + sum beta_j*X(t-j) + eps_t</F>
+              <PC pros={[
+                "Directional: distinguishes X→Y from Y→X, unlike symmetric correlation measures",
+                "Well-established framework with exact p-values under VAR assumptions",
+                "Automatically tests across multiple lag depths",
+                "Available in statsmodels with a single function call",
+              ]} cons={[
+                "Assumes linearity in VAR model — misses nonlinear Granger causality",
+                "Cannot distinguish direct causality from common cause (Z → X and Z → Y)",
+                "Highly sensitive to stationarity violations",
+                "Bivariate testing ignores the conditioning set in multivariate systems",
+              ]}/>
+                            <T>Time Series Usage</T>
+              <C desc="Granger screen with stationarity, FDR correction, bidirectional test" code={`<span class="kw">from</span> statsmodels.tsa.stattools <span class="kw">import</span> grangercausalitytests, adfuller
+<span class="kw">from</span> statsmodels.stats.multitest <span class="kw">import</span> multipletests
+<span class="kw">import</span> pandas <span class="kw">as</span> pd, numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">granger_ts</span>(df, target, max_lag=<span class="nu">12</span>, alpha=<span class="nu">0.05</span>) -> pd.DataFrame:
+    <span class="st">"""Granger screen. bidirectional=True hints at common latent cause."""</span>
+    <span class="kw">def</span> <span class="fn">stat</span>(s):
+        <span class="kw">return</span> (s.diff().dropna(), <span class="nm">True</span>) <span class="kw">if</span> adfuller(s.dropna())[<span class="nu">1</span>]><span class="nu">.05</span> <span class="kw">else</span> (s.dropna(), <span class="nm">False</span>)
+    y, _ = stat(df[target]); rows = []
+    <span class="kw">for</span> feat <span class="kw">in</span> [c <span class="kw">for</span> c <span class="kw">in</span> df.columns <span class="kw">if</span> c != target]:
+        x, _ = stat(df[feat])
+        data = pd.concat([y, x], axis=<span class="nu">1</span>).dropna()
+        <span class="kw">if</span> len(data) < max_lag*<span class="nu">4</span>: <span class="kw">continue</span>
+        <span class="kw">try</span>:
+            r1 = grangercausalitytests(data, maxlag=max_lag, verbose=<span class="nm">False</span>)
+            r2 = grangercausalitytests(data[[data.columns[<span class="nu">1</span>], data.columns[<span class="nu">0</span>]]], maxlag=max_lag, verbose=<span class="nm">False</span>)
+            p1 = min(r1[l][<span class="nu">0</span>][<span class="st">'ssr_chi2test'</span>][<span class="nu">1</span>] <span class="kw">for</span> l <span class="kw">in</span> range(<span class="nu">1</span>, max_lag+<span class="nu">1</span>))
+            p2 = min(r2[l][<span class="nu">0</span>][<span class="st">'ssr_chi2test'</span>][<span class="nu">1</span>] <span class="kw">for</span> l <span class="kw">in</span> range(<span class="nu">1</span>, max_lag+<span class="nu">1</span>))
+            rows.append({<span class="st">'feature'</span>:feat, <span class="st">'p_xy'</span>:p1, <span class="st">'p_yx'</span>:p2, <span class="st">'bidir'</span>:p1<alpha <span class="kw">and</span> p2<alpha})
+        <span class="kw">except</span>: <span class="kw">pass</span>
+    df_r = pd.DataFrame(rows)
+    _, df_r[<span class="st">'p_adj'</span>], _, _ = multipletests(df_r[<span class="st">'p_xy'</span>], alpha=alpha, method=<span class="st">'fdr_bh'</span>)
+    <span class="kw">return</span> df_r.sort_values(<span class="st">'p_xy'</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Bidirectional Check">
+                If X Granger-causes Y AND Y Granger-causes X, this is a strong signal that both are driven by a common unmeasured cause Z. Including X still gives predictive value (Z → X with lag structure), but attributing importance to X directly is wrong. Look for common cause Z and include it directly.
+              </N>
+            </MC>
+
+            <MC num="2.12" name="Rolling Correlation Stability" fam="filter">
+              <span className="xr">v2.1 §2.12</span>
+              <T>Mechanics</T>
+              <p>Rolling correlation stability computes Spearman correlation across overlapping time windows, tracking both mean and variance. CV = std / |mean| of rolling correlations is the key diagnostic: CV &lt; 0.5 = stable predictor; 0.5–1.0 = regime-dependent; CV &gt; 1.0 = relationship changes direction — unreliable. This is the single most actionable diagnostic for detecting concept drift in production: computing rolling correlation stability monthly and alerting when CV spikes above 1.0 provides early warning that retraining is needed before performance degrades.</p>
+              <PC pros={[
+                "Directly quantifies regime stability — the most important practical property of a TS feature",
+                "Detects concept drift proactively — CV increase precedes performance degradation",
+                "Produces interpretable time-indexed importance curves for stakeholders",
+                "Trivially fast; applicable to any number of features",
+              ]} cons={[
+                "Window size is arbitrary — determines time resolution of regime detection",
+                "Only measures pairwise association — misses interaction-only effects",
+                "Overlapping windows produce autocorrelated statistics — standard errors are overstated",
+                "Does not indicate which regime is current — tells you instability but not reliability now",
+              ]}/>
+                            <T>Time Series Usage</T>
+              <C desc="Rolling Spearman stability with regime classification" code={`<span class="kw">from</span> scipy.stats <span class="kw">import</span> spearmanr
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">rolling_stability</span>(X, y, window=<span class="nu">180</span>, step=<span class="nu">30</span>) -> pd.DataFrame:
+    <span class="st">"""Rolling Spearman stability. CV > 1.0 = unreliable direction."""</span>
+    corrs = {c: [] <span class="kw">for</span> c <span class="kw">in</span> X.columns}
+    <span class="kw">for</span> s <span class="kw">in</span> range(<span class="nu">0</span>, len(y)-window, step):
+        yw = y.iloc[s:s+window]
+        <span class="kw">for</span> c <span class="kw">in</span> X.columns:
+            xw = X[c].iloc[s:s+window]
+            mask = ~(xw.isna()|yw.isna())
+            <span class="kw">if</span> mask.sum() > <span class="nu">30</span>: corrs[c].append(spearmanr(xw[mask],yw[mask])[<span class="nu">0</span>])
+    rows = []
+    <span class="kw">for</span> c, v <span class="kw">in</span> corrs.items():
+        m, s = np.mean(v), np.std(v)
+        cv = s/(abs(m)+<span class="nu">1e-9</span>)
+        rows.append({<span class="st">'feature'</span>:c, <span class="st">'mean_rho'</span>:m, <span class="st">'cv'</span>:cv,
+                     <span class="st">'regime'</span>: (<span class="st">'weak'</span> <span class="kw">if</span> abs(m)<.<span class="nu">15</span> <span class="kw">else</span>
+                                <span class="st">'unstable'</span> <span class="kw">if</span> cv><span class="nu">1.0</span> <span class="kw">else</span> <span class="st">'stable'</span>)})
+    <span class="kw">return</span> pd.DataFrame(rows).sort_values(<span class="st">'mean_rho'</span>,key=abs,ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Recent vs. Historical Pattern">
+                Watch for features with very recent high correlation but historically near-zero correlation — this is a post-hoc spurious pattern. The rolling correlation plot should show consistently high correlation throughout the entire training period, not just the recent past. A feature that became important only after a structural break may be specific to that regime and unreliable going forward.
+              </N>
+            </MC>
+          </div>
+        )}
+
+        {/* ══ WRAPPER METHODS ═══════════════════════════════════════════════ */}
+        {tab==="wrapper" && (
+          <div>
+            <div className="chh">
+              <span className="chn">3</span>
+              <div className="chi">
+                <div className="chf">Wrapper Methods</div>
+                <div className="cht">Model-in-the-Loop — Interactions, Redundancy & Global Search</div>
+              </div>
+            </div>
+            <p>Wrapper methods evaluate feature subsets by actually training a model and measuring held-out performance — capturing interactions and redundancy that filters miss. Computationally expensive. Every evaluation must use walk-forward CV, never random K-fold.</p>
+
+            <MC num="3.1" name="Forward, Backward & Bidirectional Stepwise" fam="wrapper">
+              <span className="xr">v2.1 §3.1</span>
+              <T>Mechanics</T>
+              <p><strong>Forward selection</strong> starts empty, greedily adding the feature producing the largest walk-forward CV improvement each step. <strong>Backward elimination</strong> starts with all features, greedily removing the least useful. <strong>Bidirectional</strong> alternates — after each forward addition, it attempts backward removal of any feature that is no longer earning its place given recent additions. This handles the "feature becomes redundant" case forward selection misses: lag_7 may become redundant once a day-of-week cyclical encoding is added.</p>
+              <p>All three are O(p²) model evaluations. Practical only after a filter pass reduces dimensionality to ~100 features. The greedy nature means they can reach reasonable solutions quickly but may miss globally optimal subsets when two features are individually weak but jointly powerful.</p>
+              <PC pros={[
+                "Directly optimises model performance — evaluation criterion is exactly what you care about",
+                "Captures feature interactions within the selected subset",
+                "Walk-forward CV integration ensures temporal validity",
+                "Bidirectional handles feature redundancy that pure forward selection misses",
+              ]} cons={[
+                "O(p²) evaluations — impractical for p > 200 without prior filter pass",
+                "Greedy: bad early selections distort all subsequent choices",
+                "No convergence guarantee to global optimum",
+                "Computationally expensive: each evaluation is a full walk-forward CV",
+              ]}/>
+              <C desc="Bidirectional stepwise with walk-forward CV" code={`<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit, cross_val_score
+<span class="kw">from</span> lightgbm <span class="kw">import</span> LGBMRegressor
+
+<span class="kw">def</span> <span class="fn">bidir_stepwise_ts</span>(X, y, n_splits=<span class="nu">5</span>, min_delta=<span class="nu">.001</span>, max_k=<span class="nu">40</span>) -> list:
+    tscv  = TimeSeriesSplit(n_splits=n_splits, gap=<span class="nu">1</span>)
+    model = LGBMRegressor(n_estimators=<span class="nu">150</span>, n_jobs=-<span class="nu">1</span>, verbose=-<span class="nu">1</span>)
+    <span class="kw">def</span> <span class="fn">score</span>(feats):
+        <span class="kw">if</span> <span class="kw">not</span> feats: <span class="kw">return</span> -np.inf
+        <span class="kw">return</span> cross_val_score(model, X[feats], y, cv=tscv,
+                               scoring=<span class="st">'neg_mean_absolute_error'</span>).mean()
+    selected, remaining, best = [], list(X.columns), -np.inf
+    <span class="kw">while</span> remaining <span class="kw">and</span> len(selected) < max_k:
+        bf, bn = <span class="nm">None</span>, -np.inf
+        <span class="kw">for</span> f <span class="kw">in</span> remaining:
+            s = score(selected+[f])
+            <span class="kw">if</span> s > bn: bf, bn = f, s
+        <span class="kw">if</span> bn < best + min_delta: <span class="kw">break</span>
+        selected.append(bf); remaining.remove(bf); best = bn
+        improved = <span class="nm">True</span>
+        <span class="kw">while</span> improved <span class="kw">and</span> len(selected) > <span class="nu">1</span>:
+            improved = <span class="nm">False</span>
+            <span class="kw">for</span> f <span class="kw">in</span> selected[:]:
+                candidate = [x <span class="kw">for</span> x <span class="kw">in</span> selected <span class="kw">if</span> x != f]
+                <span class="kw">if</span> score(candidate) >= best:
+                    selected.remove(f); remaining.append(f); improved = <span class="nm">True</span>; <span class="kw">break</span>
+    <span class="kw">return</span> selected`}/>
+              <N t="nv" icon="🔍" title="Spurious vs. Genuine — Score History Audit">
+                The marginal improvement from each step should be monotonically decreasing. If a late-added feature (step 10+) shows improvement comparable to an early addition (step 2), suspect CV overfitting. Validate by checking marginal improvement in a completely held-out temporal window excluded from the entire selection process.
+              </N>
+            </MC>
+
+            <MC num="3.2" name="RFE & RFECV" fam="wrapper">
+              <span className="xr">v2.1 §3.2</span>
+              <T>Mechanics</T>
+              <p>RFE trains a model, ranks features by importance (coefficient magnitude for linear models, impurity decrease for trees), removes the weakest, and repeats. RFECV adds cross-validation to select the optimal feature count automatically — removing the need to specify a target count. The recursive elimination allows features to reveal importance only after competing correlated features are removed.</p>
+              <p>The critical implementation detail: the <code>cv</code> parameter must be <code>TimeSeriesSplit(n_splits=5, gap=1)</code>. The default K-fold leaks future data into the importance ranking at every elimination step, producing chronologically invalid rankings that differ substantially from true out-of-time performance.</p>
+              <PC pros={[
+                "RFECV automatically selects optimal feature count — removes a key hyperparameter",
+                "Recursive elimination fairly evaluates correlated features — the survivor carries genuine signal",
+                "Works with any estimator exposing coef_ or feature_importances_",
+                "Full sklearn pipeline API integration",
+              ]} cons={[
+                "One model ranking drives elimination — if ranking is noisy (small n, tree variance), elimination order is unreliable",
+                "Tree-based MDI importance is biased toward high-cardinality features — use permutation importance as internal ranking signal",
+                "RFECV with TimeSeriesSplit is expensive: p × n_splits model fits minimum",
+                "step > 1 trades quality for speed — step=1 is slow but thorough",
+              ]}/>
+              <C desc="RFECV with permutation-based internal ranking for unbiased TS elimination" code={`<span class="kw">from</span> sklearn.feature_selection <span class="kw">import</span> RFECV
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">from</span> sklearn.inspection <span class="kw">import</span> permutation_importance
+<span class="kw">from</span> lightgbm <span class="kw">import</span> LGBMRegressor
+
+<span class="kw">class</span> <span class="nm">LGBMPermRank</span>(LGBMRegressor):
+    <span class="st">"""LightGBM wrapper: expose permutation importance as feature_importances_
+    so RFECV uses unbiased ranking instead of MDI."""</span>
+    <span class="kw">def</span> <span class="fn">fit</span>(self, X, y, **kw):
+        super().fit(X, y, **kw)
+        pi = permutation_importance(self, X, y, n_repeats=<span class="nu">5</span>,
+                                    scoring=<span class="st">'neg_mean_absolute_error'</span>)
+        self.feature_importances_ = pi.importances_mean
+        <span class="kw">return</span> self
+
+<span class="kw">def</span> <span class="fn">rfecv_ts</span>(X_train, y_train, n_splits=<span class="nu">5</span>) -> tuple:
+    tscv = TimeSeriesSplit(n_splits=n_splits, gap=<span class="nu">1</span>)
+    sel  = RFECV(LGBMPermRank(n_estimators=<span class="nu">100</span>, verbose=-<span class="nu">1</span>),
+                 step=<span class="nu">2</span>, cv=tscv, scoring=<span class="st">'neg_mean_absolute_error'</span>,
+                 min_features_to_select=<span class="nu">5</span>, n_jobs=<span class="nu">1</span>)
+    sel.fit(X_train.values, y_train.values)
+    print(f<span class="st">f"Optimal: {sel.n_features_} features"</span>)
+    <span class="kw">return</span> X_train.columns[sel.support_].tolist(), sel`}/>
+              <N t="nv" icon="🔍" title="Spurious vs. Genuine — MDI vs. Permutation Elimination Order">
+                Run RFECV with both default MDI and permutation-based ranking. Features eliminated early by MDI but late by permutation benefit from cardinality bias in MDI — their importance is inflated by high-cardinality splits, not genuine signal. Features eliminated early by both methods are unambiguously unimportant.
+              </N>
+            </MC>
+
+            <MC num="3.3" name="Sequential Feature Selector" fam="wrapper">
+              <span className="xr">v2.1 §3.3</span>
+              <T>Mechanics</T>
+              <p>Sklearn's <code>SequentialFeatureSelector</code> evaluates every remaining feature by actually training and cross-validating the model with that feature included or excluded — more expensive than RFECV but more honest, since selection is entirely based on held-out performance with no intermediate importance metric. The <code>direction='backward'</code> mode starts from the full model where all interactions are captured and prunes selectively — preferred when you start from a pre-filtered set of 30–60 features.</p>
+              <PC pros={[
+                "Pure performance-based selection — no MDI bias in the loop",
+                "Backward mode preserves joint feature structure from the start",
+                "Full sklearn compatibility — works inside Pipeline, GridSearchCV, etc.",
+                "n_features_to_select can be a float (fraction of total)",
+              ]} cons={[
+                "O(p²) evaluations — each is a full TimeSeriesSplit CV",
+                "n_features_to_select must be specified — unlike RFECV which finds it automatically",
+                "No pruning of obviously useless features — run variance threshold first",
+                "Very slow for p > 100 — genetic algorithms are more efficient at this scale",
+              ]}/>
+                            <T>Time Series Usage</T>
+              <C desc="SequentialFeatureSelector with TimeSeriesSplit — forward and backward modes" code={`<span class="kw">from</span> sklearn.feature_selection <span class="kw">import</span> SequentialFeatureSelector
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">from</span> lightgbm <span class="kw">import</span> LGBMRegressor
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">sfs_ts</span>(X_train, y_train, n_features=<span class="nu">20</span>, direction=<span class="st">'backward'</span>) -> list:
+    <span class="st">"""Backward preferred: starts from full model where interactions are captured."""</span>
+    sfs = SequentialFeatureSelector(
+        LGBMRegressor(n_estimators=<span class="nu">150</span>, n_jobs=-<span class="nu">1</span>, verbose=-<span class="nu">1</span>),
+        n_features_to_select=n_features, direction=direction,
+        scoring=<span class="st">'neg_mean_absolute_error'</span>,
+        cv=TimeSeriesSplit(n_splits=<span class="nu">5</span>, gap=<span class="nu">1</span>), n_jobs=-<span class="nu">1</span>
+    )
+    sfs.fit(X_train, y_train)
+    <span class="kw">return</span> X_train.columns[sfs.get_support()].tolist()`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Forward vs. Backward Agreement">
+                The intersection of forward and backward selected sets is the most trustworthy — these features are important both in isolation (forward) and necessary given all other features (backward). Features only in the forward set are independently useful but not required given everything else. Features only in the backward set contribute through interactions with other features.
+              </N>
+            </MC>
+
+            <MC num="3.4" name="Permutation Feature Importance (MDA)" fam="wrapper">
+              <span className="xr">v2.1 §3.4</span>
+              <T>Mechanics</T>
+              <p>Permutation importance measures each feature's contribution by shuffling its values and measuring the performance drop. Model-agnostic: applies to any trained model. The critical time-series adaptation is <strong>block permutation</strong>: shuffle contiguous blocks rather than individual values. Standard global shuffling destroys autocorrelation within the feature, producing an "out-of-distribution" input that makes the model perform worse than for any realistic feature value — artificially inflating importance. Block size should match the dominant autocorrelation horizon (7 days for daily data, 24 hours for hourly, 12 months for monthly).</p>
+              <PC pros={[
+                "Model-agnostic: works for any fitted model including neural networks",
+                "Accounts for feature interactions: shuffling one feature while others are intact",
+                "Computed on held-out data — measures out-of-sample contribution",
+                "Negative importance (permuting improves performance) is a critical warning sign",
+              ]} cons={[
+                "Standard sklearn version uses global shuffling — incorrect for TS, must use block version",
+                "Correlated features show reduced individual importance — conditional perm importance (§4.9) fixes this",
+                "Multiple runs needed: estimates have variance proportional to model variance",
+                "Block size is a hyperparameter that must be calibrated to the autocorrelation horizon",
+              ]}/>
+              <C desc="Block permutation with confidence intervals and harmful-feature detection" code={`<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> mean_absolute_error
+
+<span class="kw">def</span> <span class="fn">block_perm_ci</span>(model, X_val, y_val, block=<span class="nu">7</span>, n_rep=<span class="nu">20</span>) -> pd.DataFrame:
+    <span class="st">"""Block permutation importance with 95% CI.
+    harmful=True: permuting improves performance — model using feature adversarially."""</span>
+    rng = np.random.default_rng(<span class="nu">42</span>)
+    base = mean_absolute_error(y_val, model.predict(X_val))
+    n = len(X_val); nb = n//block; rows = []
+    <span class="kw">for</span> feat <span class="kw">in</span> X_val.columns:
+        deltas = []
+        <span class="kw">for</span> _ <span class="kw">in</span> range(n_rep):
+            Xp = X_val.copy()
+            bid = rng.permutation(nb)
+            shuf = np.concatenate([X_val[feat].values[b*block:(b+<span class="nu">1</span>)*block] <span class="kw">for</span> b <span class="kw">in</span> bid])
+            Xp[feat] = np.concatenate([shuf, X_val[feat].values[nb*block:]])
+            deltas.append(mean_absolute_error(y_val, model.predict(Xp)) - base)
+        a = np.array(deltas)
+        rows.append({<span class="st">'feature'</span>:feat, <span class="st">'mean_imp'</span>:a.mean(), <span class="st">'std_imp'</span>:a.std(),
+                     <span class="st">'ci_lo'</span>:np.percentile(a,<span class="nu">2.5</span>), <span class="st">'ci_hi'</span>:np.percentile(a,<span class="nu">97.5</span>),
+                     <span class="st">'harmful'</span>:a.mean()<span class="nu">0</span>})
+    <span class="kw">return</span> pd.DataFrame(rows).sort_values(<span class="st">'mean_imp'</span>, ascending=<span class="nm">False</span>)`}/>
+              <ImpBar title="FIGURE 3.4 — Block permutation importance (amber/negative = suspect or harmful)"
+                feats={["lag_1","lag_7","roll_mean_7","price_lag1","lag_2","noise","harmful"]}
+                vals={[0.082,0.061,0.044,0.031,0.019,0.003,0.001]} color="#3ec9a7" suspect={[5,6]}/>
+              <N t="nd" icon="⚠️" title="Negative Importance — Immediate Action Required">
+                A feature with negative mean_imp means permuting it <em>improves</em> model performance — the model learned a spurious correlation in training that actively hurts on validation. This is not a "slightly unimportant" feature; it is an actively harmful one. Remove it immediately and investigate what spurious pattern it captured.
+              </N>
+            </MC>
+
+            <MC num="3.5" name="Genetic Algorithms / Evolutionary Search" fam="wrapper">
+              <span className="xr">v2.1 §3.5</span>
+              <T>Mechanics</T>
+              <p>Genetic algorithms represent feature subsets as binary chromosomes, maintain a population of candidate subsets, and evolve them via selection (keep fittest), crossover (combine parent chromosomes), and mutation (randomly flip feature bits). Fitness = walk-forward CV score. The key advantage over greedy methods: GAs can discover subsets where features are individually weak but jointly powerful — a region of feature space greedy methods never reach because no single forward addition would lead there.</p>
+              <p>Tournament selection (keep best from random k-candidate tournament) is preferred over roulette wheel for time series: more robust to fitness landscape irregularity caused by stochastic CV scores. Elitism (keep best individual unchanged across generations) prevents regression and accelerates convergence.</p>
+              <PC pros={[
+                "Explores fundamentally non-local feature space — finds interaction patterns greedy methods miss",
+                "Population diversity provides built-in stability: features in many individuals across generations are trustworthy",
+                "Parallelisable: each individual evaluated independently",
+                "Mutation rate controls exploration vs. exploitation trade-off",
+              ]} cons={[
+                "G × P × n_splits model evaluations — easily 50,000+ for a moderate GA run",
+                "No guarantee of convergence to global optimum — multiple runs with different seeds recommended",
+                "Noisy fitness from stochastic CV makes evolution signal noisy early in the run",
+                "Hyperparameter tuning (pop size, mutation rate, crossover rate) adds complexity",
+              ]}/>
+                            <T>Time Series Usage</T>
+              <C desc="Genetic algorithm feature selection with TimeSeriesSplit fitness evaluation" code={`<span class="cm"># pip install sklearn-genetic-opt</span>
+<span class="kw">from</span> sklearn_genetic <span class="kw">import</span> GAFeatureSelectionCV
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">from</span> lightgbm <span class="kw">import</span> LGBMRegressor
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">ga_select_ts</span>(X_train, y_train, generations=<span class="nu">30</span>, pop_size=<span class="nu">40</span>) -> tuple:
+    <span class="st">"""GA feature selection. Run after MI filter (p <= 100) for practical cost."""</span>
+    tscv = TimeSeriesSplit(n_splits=<span class="nu">5</span>, gap=<span class="nu">1</span>)
+    ga = GAFeatureSelectionCV(
+        estimator=LGBMRegressor(n_estimators=<span class="nu">150</span>, n_jobs=-<span class="nu">1</span>, verbose=-<span class="nu">1</span>),
+        cv=tscv, scoring=<span class="st">'neg_mean_absolute_error'</span>,
+        population_size=pop_size, generations=generations,
+        crossover_probability=<span class="nu">0.8</span>, mutation_probability=<span class="nu">0.1</span>,
+        tournament_size=<span class="nu">3</span>, elitism=<span class="nm">True</span>, n_jobs=-<span class="nu">1</span>
+    )
+    ga.fit(X_train, y_train)
+    selected = X_train.columns[ga.support_].tolist()
+    print(f<span class="st">f"GA: {len(selected)} features | best MAE={-ga.best_score_:.4f}"</span>)
+    <span class="kw">return</span> selected, ga`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Population Frequency as Stability Signal">
+                Track how often each feature appears in the top-50% of individuals across all generations. Features with frequency &gt; 0.7 are robustly important — the GA consistently gravitates toward subsets containing them. Features with frequency &lt; 0.3 in the final best individual may be noise-fitted late additions. Validate the best individual against a baseline using only features with frequency &gt; 0.5 — the delta reveals how much of the GA's apparent optimisation was actually CV overfitting.
+              </N>
+            </MC>
+          </div>
+        )}
+
+        {/* ══ EMBEDDED METHODS ══════════════════════════════════════════════ */}
+        {tab==="embedded" && (
+          <div>
+            <div className="chh">
+              <span className="chn">4</span>
+              <div className="chi">
+                <div className="chf">Embedded Methods</div>
+                <div className="cht">Regularisation, Trees & Attribution During Training</div>
+              </div>
+            </div>
+            <p>Embedded methods perform selection as part of model training — more efficient than wrappers, more sensitive to interactions than filters. Hyperparameter tuning must always use walk-forward CV.</p>
+
+            <MC num="4.1" name="LASSO — L1 Regularisation" fam="embedded">
+              <span className="xr">v2.1 §4.1</span>
+              <T>Mechanics</T>
+              <p>LASSO adds an L1 penalty creating a constraint region consisting of hypercube corners — points where many coefficients are exactly zero. A feature is zeroed when its inner product with the residual (its relevance given current fit) falls below the penalty threshold λ. As λ increases, more features are zeroed. The regularisation path — solutions as λ decreases from ∞ to 0 — reveals which features enter first, providing an implicit importance ranking: earlier entry = more important.</p>
+              <p>Critical limitation for time series: collinearity among lag features causes LASSO to arbitrarily select one from each correlated group. With lag_1, lag_2, lag_3 all correlated at ρ ≈ 0.9, LASSO might select lag_2 in one fold and lag_1 in another. This is not signal — it's collinearity degeneracy. Use ElasticNet (§4.3) for correlated lags.</p>
+              <F>min_beta  (1/2n)||y - X*beta||^2  +  lambda * ||beta||_1</F>
+              <RegPath title="FIGURE 4.1 — LASSO regularisation path: features entering earliest are most important"/>
+              <PC pros={[
+                "Exact zeros: features are either included or excluded — no ambiguity about near-zero coefficients",
+                "Regularisation path provides continuous importance ranking by entry order",
+                "Fast coordinate descent: handles p = 100,000+ features",
+                "Well-established theoretical properties under incoherence conditions",
+              ]} cons={[
+                "Collinearity instability: arbitrarily picks one from correlated lag groups",
+                "Biases coefficient estimates downward — selected feature coefficients smaller than true effects",
+                "No FDR control — selected features may include substantial false positives",
+                "Requires feature standardisation — always scale before running LASSO",
+              ]}/>
+                            <C desc="LassoCV with walk-forward CV and fold-stability analysis" code={`<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LassoCV
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">lasso_ts</span>(X_train, y_train, n_splits=<span class="nu">5</span>) -> dict:
+    <span class="st">"""LassoCV with walk-forward CV + fold stability (fraction of folds where coef != 0)."""</span>
+    tscv = TimeSeriesSplit(n_splits=n_splits, gap=<span class="nu">1</span>)
+    sc   = StandardScaler(); X_sc = sc.fit_transform(X_train)
+    lasso = LassoCV(cv=tscv, n_alphas=<span class="nu">50</span>, max_iter=<span class="nu">5000</span>, n_jobs=-<span class="nu">1</span>)
+    lasso.fit(X_sc, y_train)
+    selected = X_train.columns[lasso.coef_ != <span class="nu">0</span>].tolist()
+    fold_coefs = []
+    <span class="kw">for</span> tr, _ <span class="kw">in</span> tscv.split(X_train):
+        ls2 = LassoCV(cv=<span class="nu">3</span>, max_iter=<span class="nu">5000</span>)
+        ls2.fit(StandardScaler().fit_transform(X_train.iloc[tr]), y_train.iloc[tr])
+        fold_coefs.append(ls2.coef_ != <span class="nu">0</span>)
+    stability = pd.Series(np.mean(fold_coefs, axis=<span class="nu">0</span>), index=X_train.columns)
+    print(f<span class="st">f"alpha={lasso.alpha_:.5f} | selected={len(selected)}"</span>)
+    <span class="kw">return</span> {<span class="st">'selected'</span>: selected, <span class="st">'stability'</span>: stability}`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Entry Order vs. Fold Stability">
+                A feature entering the regularisation path very early (first 10 alphas) but having low fold stability (selected in only 2/5 folds) is in the collinearity trap: LASSO considers it important in the full data, but a different correlated feature wins in some folds. For any feature with early entry but fold_stability &lt; 0.6, switch to ElasticNet. The L2 component will stabilise selection among the correlated group.
+              </N>
+            </MC>
+
+            <MC num="4.2" name="Ridge Regression — L2 Regularisation" fam="embedded">
+              <span className="xr">v2.1 §4.2</span>
+              <T>Mechanics</T>
+              <p>Ridge adds L2 penalty shrinking all coefficients proportionally toward zero but never to exactly zero. Not a selector per se — it is a <em>ranking</em> method when used post-hoc: fit Ridge with walk-forward CV to select α, sort features by absolute standardised coefficient magnitude, threshold at top-k or |coef| &gt; 5% of max. Ridge is stable under collinearity: two lag features with ρ = 0.9 receive similar Ridge coefficients, reflecting their shared signal, rather than one getting a large coefficient and the other zero.</p>
+              <F>min_beta  (1/2n)||y - X*beta||^2  +  lambda * ||beta||^2_2</F>
+              <PC pros={[
+                "Stable under collinearity — correlated lags share coefficients rather than one winning arbitrarily",
+                "Excellent numerical stability even when p approaches n",
+                "Fast ridge path for efficient ranking across all regularisation strengths",
+                "Use as first-pass ranking before LASSO/ElasticNet for collinearity-robust pre-screening",
+              ]} cons={[
+                "Never produces exact zeros — requires post-hoc thresholding with arbitrary cutoff",
+                "Threshold choice significantly affects selection — no principled way to choose ε",
+                "Biases coefficients downward — use only for ranking, not coefficient estimation",
+                "For strict feature selection, use ElasticNet instead",
+              ]}/>
+                            <C desc="RidgeCV coefficient ranking with walk-forward alpha selection" code={`<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> RidgeCV
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">ridge_rank_ts</span>(X_train, y_train, top_k=<span class="nu">30</span>) -> list:
+    <span class="st">"""Ridge coefficient magnitude ranking — stable under correlated lags."""</span>
+    tscv = TimeSeriesSplit(n_splits=<span class="nu">5</span>)
+    sc   = StandardScaler(); X_sc = sc.fit_transform(X_train)
+    rdg  = RidgeCV(alphas=np.logspace(-<span class="nu">3</span>,<span class="nu">3</span>,<span class="nu">50</span>), cv=tscv,
+                   scoring=<span class="st">'neg_mean_absolute_error'</span>)
+    rdg.fit(X_sc, y_train)
+    rank = pd.Series(np.abs(rdg.coef_), index=X_train.columns).sort_values(ascending=<span class="nm">False</span>)
+    print(f<span class="st">f"Best alpha: {rdg.alpha_:.4f}"</span>)
+    <span class="kw">return</span> rank.head(top_k).index.tolist()`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Ridge vs. ElasticNet Agreement">
+                Large Ridge coefficient but not selected by ElasticNet: the feature is likely in a correlated group where Ridge distributes importance across members but ElasticNet selects one representative. If the feature has no correlated neighbours but Ridge gives it large coefficient and ElasticNet zeros it, the signal is real but insufficient to dominate the LASSO penalty — try a lower λ or use Ridge ranking directly.
+              </N>
+            </MC>
+
+            <MC num="4.3" name="ElasticNet — L1 + L2" fam="embedded">
+              <span className="xr">v2.1 §4.3</span>
+              <T>Mechanics</T>
+              <p>ElasticNet combines L1 sparsity with L2 collinearity stabilisation. The L1 term zeros irrelevant features; the L2 term distributes coefficients across correlated groups rather than arbitrarily picking one. The group effect: when multiple correlated lag features are informative, ElasticNet gives them all non-zero (but equal) coefficients rather than zeroing all-but-one. This produces physically interpretable selection: "the last 3 days of X are predictive" rather than "only day-before-yesterday of X is predictive." The mixing parameter α controls the blend: α=1 is pure LASSO, α=0 is pure Ridge. Values of 0.5–0.9 are optimal for most TS problems.</p>
+              <F>min_beta  (1/2n)||y-Xb||^2 + lambda[alpha*||b||_1 + (1-alpha)/2*||b||^2_2]</F>
+              <PC pros={[
+                "Best of both worlds: L1 sparsity for selection + L2 stability for correlated lags",
+                "Group selection effect: correlated lags selected or excluded together",
+                "Two hyperparameters but α=0.9 is a reliable default — only λ needs CV",
+                "Walk-forward ElasticNetCV with α grid is the gold standard linear TS selector",
+              ]} cons={[
+                "Still biases coefficient estimates — use as selector only, refit with OLS on selected features",
+                "Does not handle known group structure as elegantly as Group LASSO (§4.4)",
+                "For very high dimensional p >> n, even ElasticNet can select spurious features if λ is too small",
+                "Two hyperparameters add complexity vs. pure LASSO",
+              ]}/>
+                            <C desc="ElasticNetCV with walk-forward CV and fold stability" code={`<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> ElasticNetCV
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">enet_ts</span>(X_train, y_train, n_splits=<span class="nu">5</span>) -> tuple:
+    <span class="st">"""ElasticNetCV — gold standard linear TS selector. Use alpha in [0.5, 0.9]."""</span>
+    tscv = TimeSeriesSplit(n_splits=n_splits, gap=<span class="nu">1</span>)
+    X_sc = StandardScaler().fit_transform(X_train)
+    en = ElasticNetCV(l1_ratio=[.<span class="nu">1</span>,.<span class="nu">5</span>,.<span class="nu">7</span>,.<span class="nu">9</span>,<span class="nu">1.</span>], n_alphas=<span class="nu">50</span>,
+                      cv=tscv, max_iter=<span class="nu">10000</span>, n_jobs=-<span class="nu">1</span>)
+    en.fit(X_sc, y_train)
+    selected = X_train.columns[en.coef_ != <span class="nu">0</span>].tolist()
+    coefs = pd.Series(np.abs(en.coef_), index=X_train.columns).sort_values(ascending=<span class="nm">False</span>)
+    print(f<span class="st">f"alpha={en.alpha_:.5f} l1={en.l1_ratio_:.2f} n={len(selected)}"</span>)
+    <span class="kw">return</span> selected, coefs`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Group Structure Test">
+                After ElasticNet selection, examine whether selected features form coherent groups. lag_1, lag_2, lag_3 all selected: physically plausible 3-day memory effect. lag_1, lag_7, lag_23 selected but no adjacent lags: each needs specific mechanistic justification. Isolated lags without adjacent support or physical justification should be treated as potential false positives. Increase λ slightly — genuine signals persist across a range of λ; noise-fitted features disappear with minimal regularisation increase.
+              </N>
+            </MC>
+
+            <MC num="4.4" name="Group LASSO" fam="embedded">
+              <span className="xr">v2.1 §4.4</span>
+              <T>Mechanics</T>
+              <p>Group LASSO (Yuan & Lin, 2006) applies the sparsity penalty at the group level: Σ_g √|g| · ||β_g||₂. This creates group-level sparsity — either the entire group β_g = 0, or all members are non-zero. The √|g| normalisation prevents larger groups from having an unfair advantage. For time series, the natural grouping is by variable: all lags of X form group X. Group LASSO answers "which variables matter?" rather than "which specific lags matter?" — a higher-level, more interpretable form of selection.</p>
+              <PC pros={[
+                "Variable-level selection: answers 'which variables matter' rather than 'which individual lags'",
+                "Clean, interpretable decisions for domain experts and stakeholders",
+                "Within selected groups, all lag features retained — avoids isolated-lag artifact",
+                "Aligns with natural problem structure in most TS forecasting problems",
+              ]} cons={[
+                "Requires pre-specifying groups — wrong grouping undermines the method",
+                "Within selected groups, all features included even if some are redundant",
+                "Group size imbalances can bias selection even with sqrt normalisation",
+                "Less mature tooling than ElasticNet",
+              ]}/>
+                            <C desc="Group LASSO: select entire variable groups simultaneously" code={`<span class="cm"># pip install group-lasso</span>
+<span class="kw">from</span> group_lasso <span class="kw">import</span> GroupLasso
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+GroupLasso.LOG_LOSSES = <span class="nm">False</span>
+
+<span class="kw">def</span> <span class="fn">group_lasso_ts</span>(X_train, y_train, groups: np.ndarray, reg=<span class="nu">0.05</span>) -> list:
+    <span class="st">"""groups: int array of length n_features; same int = same variable group.
+    Either all lags of a variable survive or none."""</span>
+    X_sc = StandardScaler().fit_transform(X_train)
+    gl = GroupLasso(groups=groups, group_reg=reg, l1_reg=<span class="nu">0</span>,
+                    scale_reg=<span class="st">'group_size'</span>, n_iter=<span class="nu">1000</span>)
+    gl.fit(X_sc, y_train.values.reshape(-<span class="nu">1</span>,<span class="nu">1</span>))
+    mask = gl.coef_.flatten() != <span class="nu">0</span>
+    print(f<span class="st">f"Active groups: {np.unique(groups[mask])} | features: {mask.sum()}"</span>)
+    <span class="kw">return</span> X_train.columns[mask].tolist()`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Follow Up with SHAP within Selected Groups">
+                After Group LASSO selects a variable's group, run SHAP or permutation importance within the group. If only 1–2 lags within a 12-lag group are important, consider Sparse Group LASSO (§4.5) instead. Group LASSO tells you the variable matters; it doesn't tell you which specific lags to use.
+              </N>
+            </MC>
+
+            <MC num="4.5" name="Sparse Group LASSO" fam="embedded">
+              <span className="xr">v2.1 §4.5</span>
+              <T>Mechanics</T>
+              <p>Sparse Group LASSO (Simon et al., 2013) adds individual-level L1 sparsity on top of group-level sparsity: penalty = λ₁||β||₁ + λ₂·Σ_g √|g|·||β_g||₂. Two-stage sparse solution: groups selected or zeroed entirely (λ₂), and within selected groups, individual features further sparsified (λ₁). This precisely captures the desired TS behaviour: "do the lags of X contribute?" (group-level) and "which specific lags of X are important?" (within-group).</p>
+              <F>min_beta  (1/2n)||y-Xb||^2 + lambda_1*||b||_1 + lambda_2 * sum_g sqrt(|g|)*||b_g||_2</F>
+              <PC pros={[
+                "Two-stage sparsity: group selection + within-group feature selection in one estimator",
+                "Most physically appropriate model for lag-grouped TS feature spaces",
+                "λ₁/λ₂ ratio controls the tradeoff: group-only vs. group+individual sparsity",
+                "Well-studied convergence properties",
+              ]} cons={[
+                "Two regularisation hyperparameters to tune via walk-forward CV",
+                "Requires correct group specification",
+                "Less mature tooling than ElasticNet — fewer production-ready implementations",
+                "Solution path less smooth than ElasticNet",
+              ]}/>
+                            <C desc="Sparse Group LASSO: group sparsity + within-group sparsity" code={`<span class="kw">from</span> group_lasso <span class="kw">import</span> GroupLasso
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">sparse_group_lasso_ts</span>(X_train, y_train, groups, group_reg=<span class="nu">0.05</span>, l1_reg=<span class="nu">0.02</span>) -> list:
+    <span class="st">"""group_reg: between-group sparsity. l1_reg: within-group sparsity.
+    Tune via walk-forward CV on the validation score."""</span>
+    X_sc = StandardScaler().fit_transform(X_train)
+    sgl = GroupLasso(groups=groups, group_reg=group_reg, l1_reg=l1_reg,
+                     scale_reg=<span class="st">'group_size'</span>, n_iter=<span class="nu">2000</span>)
+    sgl.fit(X_sc, y_train.values.reshape(-<span class="nu">1</span>,<span class="nu">1</span>))
+    mask = sgl.coef_.flatten() != <span class="nu">0</span>
+    print(f<span class="st">f"Groups active: {len(np.unique(groups[mask]))} | features: {mask.sum()}"</span>)
+    <span class="kw">return</span> X_train.columns[mask].tolist()`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Dual Stability Check">
+                Run stability selection (§6.8) on Sparse Group LASSO: check both (1) group-level selection frequency and (2) individual feature frequency within groups. A feature is genuinely important only if its group is selected in &gt;70% of bootstrap subsamples AND the individual feature is selected within that group in &gt;60% of subsamples.
+              </N>
+            </MC>
+
+            <MC num="4.6" name="SLOPE — FDR-Controlled Selection" fam="embedded">
+              <span className="xr">v2.1 §4.6</span>
+              <T>Mechanics</T>
+              <p>SLOPE (Bogdan et al., 2015) replaces LASSO's uniform L1 penalty with a sorted, decreasing penalty: min_β (1/2n)||y-Xβ||² + Σ_i λ_i·|β|_(i) where |β|_(i) are sorted absolute coefficients and λ_1 ≥ ... ≥ λ_p is chosen according to Benjamini-Hochberg critical values: λ_j = Φ⁻¹(1 - jq/2p). When the λ sequence is set this way, SLOPE controls the False Discovery Rate at level q — E[V/R] ≤ q where V is the number of spuriously selected features and R is the total selected. This is a fundamentally stronger guarantee than LASSO provides, which has no FDR control whatsoever.</p>
+              <F>lambda_j = Phi_inv(1 - j*q/(2*p))  for j=1..p  → provable FDR control at level q</F>
+              <PC pros={[
+                "Provably controls FDR at level q under Gaussian noise",
+                "FDR q is directly interpretable: 'at most 10% of selected features are spurious'",
+                "More powerful than applying Bonferroni/BH corrections post-LASSO",
+                "Automatic adaptation: larger true coefficients receive smaller penalties",
+              ]} cons={[
+                "FDR guarantee requires Gaussian noise — often violated in TS",
+                "For TS, autocorrelation violates the exchangeability assumption underlying the guarantee",
+                "Less familiar to practitioners than LASSO/ElasticNet",
+                "Coordinate descent convergence slower than LASSO due to sorted penalty",
+              ]}/>
+                            <C desc="SLOPE with BH lambda sequence for FDR control at level q" code={`<span class="cm"># pip install pyslope</span>
+<span class="kw">from</span> pyslope <span class="kw">import</span> Slope
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">slope_ts</span>(X_train, y_train, q=<span class="nu">0.1</span>, n_splits=<span class="nu">5</span>) -> list:
+    <span class="st">"""SLOPE with FDR control at level q. Run inside each CV fold.</span>
+<span class="st">    q=0.1: expect at most 10% of selected features to be spurious.</span>
+<span class="st">    FDR guarantee is approximate for TS (requires exchangeability)."""</span>
+    tscv = TimeSeriesSplit(n_splits=n_splits, gap=<span class="nu">1</span>)
+    fold_sel = []
+    <span class="kw">for</span> tr, _ <span class="kw">in</span> tscv.split(X_train):
+        X_sc = StandardScaler().fit_transform(X_train.iloc[tr])
+        slope = Slope(q=q, fit_intercept=<span class="nm">True</span>, max_iter=<span class="nu">1000</span>)
+        slope.fit(X_sc, y_train.iloc[tr].values)
+        fold_sel.append(set(X_train.columns[slope.coef_ != <span class="nu">0</span>]))
+    stable = [f <span class="kw">for</span> f <span class="kw">in</span> X_train.columns
+              <span class="kw">if</span> sum(f <span class="kw">in</span> s <span class="kw">for</span> s <span class="kw">in</span> fold_sel) / n_splits >= <span class="nu">0.6</span>]
+    print(f<span class="st">f"SLOPE (FDR<={q:.0%}): {len(stable)} stable features"</span>)
+    <span class="kw">return</span> stable`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — FDR as Conservative Approximation">
+                SLOPE's FDR guarantee is exact under Gaussian, exchangeable data. In TS both fail. Treat q as a conservative approximation: SLOPE with q=0.1 in practice delivers better FDR than LASSO with the same number of features — the bound just isn't tight. Validate empirically on synthetic data with known support and compare actual false positive rate to q before trusting the formal guarantee in your domain.
+              </N>
+            </MC>
+
+            <MC num="4.7" name="Tree MDI — Mean Decrease in Impurity" fam="embedded">
+              <span className="xr">v2.1 §4.7</span>
+              <T>Mechanics</T>
+              <p>MDI measures total weighted impurity reduction accumulated by splits on a feature across all trees. Free — computed during tree training at no additional cost. Two well-documented biases: (1) <strong>Cardinality bias</strong>: high-cardinality features produce more possible split points, creating more chances to reduce impurity by chance. Continuous lag features appear more important than binary calendar indicators simply due to cardinality, even when the calendar indicator is the dominant predictor. (2) <strong>Masking bias</strong>: for correlated lag features, the first lag selected at an early split captures most available impurity, leaving all subsequent lags with little remaining to offer — making all-but-one of a correlated group appear unimportant.</p>
+              <PC pros={[
+                "Zero additional cost: computed during tree training for free",
+                "Stable aggregation across many trees — averaging over 500+ trees reduces variance",
+                "Walk-forward fold stability gives a useful ensemble importance signal",
+                "Good initial ranking for cheaper validation with more expensive methods",
+              ]} cons={[
+                "Cardinality bias: continuous features appear more important independent of true signal",
+                "Masking bias: correlated features share importance — one hogs MDI",
+                "Computed on training data — inflated by features that overfit the training fold",
+                "MDI values are not on a natural scale — comparison across models is meaningless",
+              ]}/>
+                            <C desc="MDI with walk-forward fold stability and cardinality bias audit" code={`<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestRegressor
+<span class="kw">from</span> sklearn.inspection <span class="kw">import</span> permutation_importance
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">mdi_vs_perm_ts</span>(X_train, X_val, y_train, y_val, n_est=<span class="nu">300</span>) -> pd.DataFrame:
+    <span class="st">"""Compare MDI (train) vs permutation (val). rank_delta > 10 = MDI bias."""</span>
+    rf = RandomForestRegressor(n_estimators=n_est, n_jobs=-<span class="nu">1</span>, random_state=<span class="nu">42</span>)
+    rf.fit(X_train, y_train)
+    mdi  = pd.Series(rf.feature_importances_, index=X_train.columns, name=<span class="st">'mdi'</span>)
+    pi   = permutation_importance(rf, X_val, y_val, n_repeats=<span class="nu">10</span>)
+    perm = pd.Series(pi.importances_mean, index=X_train.columns, name=<span class="st">'perm'</span>)
+    df = pd.concat([mdi, perm], axis=<span class="nu">1</span>)
+    df[<span class="st">'mdi_rank'</span>]  = df[<span class="st">'mdi'</span>].rank(ascending=<span class="nm">False</span>)
+    df[<span class="st">'perm_rank'</span>] = df[<span class="st">'perm'</span>].rank(ascending=<span class="nm">False</span>)
+    df[<span class="st">'delta'</span>]    = df[<span class="st">'mdi_rank'</span>] - df[<span class="st">'perm_rank'</span>]
+    df[<span class="st">'suspect'</span>]  = df[<span class="st">'delta'</span>] > <span class="nu">10</span>
+    <span class="kw">return</span> df.sort_values(<span class="st">'mdi'</span>, ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — MDI vs. Permutation Rank Delta">
+                Compute MDI rank and permutation importance rank for each feature. rank_delta &gt; 10 (MDI ranks feature much higher) = inflated by cardinality bias or masking. rank_delta &lt; -10 (MDI ranks feature much lower) = undervalued because it is binary or contributes at deeper tree levels. Always use permutation importance as the final arbiter when MDI and permutation disagree substantially.
+              </N>
+            </MC>
+
+            <MC num="4.8" name="Gradient Boosting Feature Importance (Gain)" fam="embedded">
+              <span className="xr">v2.1 §4.8</span>
+              <T>Mechanics</T>
+              <p>Gradient boosting exposes three importance types: split (frequency of use), gain (average loss reduction per split), and cover (samples affected). <strong>Gain</strong> is most reliable for selection: normalising by split count means a feature used rarely but for large improvements ranks higher than one used frequently for negligible improvements. In time series, gain importance tends to be more stable than split count because per-split gain varies more systematically with actual predictive contribution.</p>
+              <p>Because boosting fits trees sequentially to residuals, early rounds capture dominant signals and late rounds capture residuals. Features important early in boosting are typically most important overall; features important only in late rounds may be fitting noise. Use early stopping and compare feature rankings between early-stopped and fully-trained models.</p>
+              <PC pros={[
+                "Gain is less biased than split count — less susceptible to high-frequency low-value splits",
+                "Early stopping + gain gives automatic signal about late-round noise-fitting",
+                "Available in three different measures (gain, split, cover) for cross-validation of importance",
+                "Boosting's sequential structure gives implicit weighting toward dominant signals",
+              ]} cons={[
+                "Inherits all MDI biases: cardinality bias, masking in correlated features",
+                "Sensitive to boosting hyperparameters — rankings can change with different depth/learning rate",
+                "Like all MDI variants, computed on training data — validate against permutation on held-out data",
+                "Early-stopped vs. fully-trained rankings can differ substantially",
+              ]}/>
+                            <C desc="LightGBM gain importance across walk-forward folds with stability" code={`<span class="kw">from</span> lightgbm <span class="kw">import</span> LGBMRegressor
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">import</span> pandas <span class="kw">as</span> pd, numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">lgbm_gain_ts</span>(X, y, n_splits=<span class="nu">5</span>) -> pd.DataFrame:
+    <span class="st">"""Gain importance across folds. stable = mean > std (low CV)."""</span>
+    tscv = TimeSeriesSplit(n_splits=n_splits, gap=<span class="nu">1</span>)
+    fold_imps = []
+    <span class="kw">for</span> tr, va <span class="kw">in</span> tscv.split(X):
+        m = LGBMRegressor(n_estimators=<span class="nu">500</span>, importance_type=<span class="st">'gain'</span>,
+                          learning_rate=<span class="nu">.05</span>, n_jobs=-<span class="nu">1</span>, verbose=-<span class="nu">1</span>)
+        m.fit(X.iloc[tr], y.iloc[tr])
+        fold_imps.append(pd.Series(m.feature_importances_, index=X.columns))
+    df = pd.DataFrame(fold_imps)
+    <span class="kw">return</span> pd.DataFrame({
+        <span class="st">'mean_gain'</span>: df.mean(), <span class="st">'std_gain'</span>: df.std(),
+        <span class="st">'stable'</span>: df.mean() > df.std()
+    }).sort_values(<span class="st">'mean_gain'</span>, ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Gain vs. Split Count Agreement">
+                High split count but low gain = feature is being used frequently for negligible improvements, often in late boosting rounds — a sign of noise fitting. High gain but moderate split count = model uses this feature selectively for large improvements — the hallmark of a genuine, highly predictive feature. This ratio is more reliable than either measure alone.
+              </N>
+            </MC>
+
+            <MC num="4.9" name="Conditional Permutation Importance" fam="embedded">
+              <span className="xr">v2.1 §4.9</span>
+              <T>Mechanics</T>
+              <p>Standard permutation importance has a bias documented by Strobl et al. (2008): when feature X₁ is permuted while correlated X₂ remains intact, the model partially compensates using X₂ — making X₁ appear less important than it truly is and inflating X₂'s apparent importance. For lag features (always highly correlated in TS), this can make the most predictive lag appear unimportant simply because it can be proxied by an adjacent lag.</p>
+              <p>Conditional permutation fixes this by permuting each feature <em>within strata</em> defined by its correlated neighbours: group observations by similar values of correlated features (via k-means), then permute within each group. This preserves the joint distribution between the permuted feature and its neighbours while breaking its relationship with the target — isolating the genuine marginal contribution.</p>
+              <PC pros={[
+                "Unbiased for correlated features: correctly measures unique marginal contribution",
+                "Reveals true importance distribution among correlated lag groups",
+                "Identifies fully redundant feature pairs: both show near-zero conditional importance",
+                "The honest version of permutation importance for TS lag structures",
+              ]} cons={[
+                "Significantly more expensive: k-means per feature + stratified permutation",
+                "Strata quality degrades when neighbours are high-dimensional",
+                "Both block size AND number of strata must be calibrated",
+                "Custom implementation required — sklearn's permutation_importance doesn't support this",
+              ]}/>
+                            <C desc="Conditional permutation: stratify by correlated neighbours before permuting" code={`<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> sklearn.cluster <span class="kw">import</span> KMeans
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> mean_absolute_error
+
+<span class="kw">def</span> <span class="fn">cond_perm_importance</span>(model, X_val, y_val, corr_thresh=<span class="nu">0.5</span>, block=<span class="nu">7</span>, n_rep=<span class="nu">10</span>) -> pd.Series:
+    <span class="st">"""Conditional permutation (Strobl 2008) with block shuffling within strata.
+    Corrects for correlated-feature bias in standard permutation importance."""</span>
+    rng = np.random.default_rng(<span class="nu">42</span>)
+    base = mean_absolute_error(y_val, model.predict(X_val))
+    corr = X_val.corr().abs()
+    n = len(X_val); nb = n // block; imps = {}
+    <span class="kw">for</span> feat <span class="kw">in</span> X_val.columns:
+        neighbours = corr.loc[feat][(corr.loc[feat]>corr_thresh)&(corr.index!=feat)].index
+        strata = (KMeans(n_clusters=min(<span class="nu">5</span>,n//<span class="nu">20</span>),random_state=<span class="nu">42</span>,n_init=<span class="nu">3</span>)
+                  .fit(X_val[neighbours].values).labels_ <span class="kw">if</span> len(neighbours) <span class="kw">else</span>
+                  np.zeros(n, dtype=int))
+        deltas = []
+        <span class="kw">for</span> _ <span class="kw">in</span> range(n_rep):
+            Xp = X_val.copy()
+            <span class="kw">for</span> sid <span class="kw">in</span> np.unique(strata):
+                idx = np.where(strata==sid)[<span class="nu">0</span>]
+                <span class="kw">if</span> len(idx)<block: <span class="kw">continue</span>
+                vals = Xp[feat].values[idx]; nb2 = len(idx)//block
+                bid = rng.permutation(nb2)
+                shuf = np.concatenate([vals[b*block:(b+<span class="nu">1</span>)*block] <span class="kw">for</span> b <span class="kw">in</span> bid])
+                Xp[feat].values[idx] = np.concatenate([shuf, vals[nb2*block:]])
+            deltas.append(mean_absolute_error(y_val, model.predict(Xp)) - base)
+        imps[feat] = np.mean(deltas)
+    <span class="kw">return</span> pd.Series(imps).sort_values(ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Standard vs. Conditional Agreement">
+                Run both side by side. Lag_1 has high standard importance but low conditional importance? Lag_1's importance is partly borrowed from lag_2 which is doing the heavy lifting. A feature with higher conditional than standard importance was being undervalued because correlated features were compensating for it when it was permuted globally. The conditional version always gives the more honest answer.
+              </N>
+            </MC>
+
+            <MC num="4.10" name="SHAP Values — TreeSHAP & KernelSHAP" fam="embedded">
+              <span className="xr">v2.1 §4.10</span>
+              <T>Mechanics</T>
+              <p>SHAP decomposes each prediction into feature contributions satisfying three axioms: efficiency (contributions sum to prediction deviation from baseline), symmetry (identical features receive equal attribution), linearity (linear model SHAP = scaled coefficients). TreeSHAP computes exact Shapley values in polynomial time O(TLD²) exploiting tree structure. For TS, SHAP values computed per-sample and aggregated by time period reveal regime changes in feature importance — the single most powerful diagnostic for detecting concept drift in deployed models.</p>
+              <SHAPSwarm title="FIGURE 4.10 — SHAP beeswarm: each dot=one prediction, teal=high feature value, red=low"/>
+              <PC pros={[
+                "Theoretically grounded: unique attribution satisfying efficiency, symmetry, linearity axioms",
+                "Sample-level values enable individual prediction investigation and outlier analysis",
+                "Temporal aggregation reveals regime changes — powerful drift detection",
+                "SHAP interaction values identify synergistic pairs invisible to marginal methods",
+              ]} cons={[
+                "TreeSHAP assumes feature independence for out-of-coalition computations — inflates correlated feature importance",
+                "KernelSHAP for black-box models is O(n²p) — slow for large datasets",
+                "SHAP values are model-specific — they measure how this model uses features, not true causal importance",
+                "Global mean |SHAP| averages over test set — may mask important regime-specific effects",
+              ]}/>
+                            <C desc="SHAP temporal regime analysis with direction-change detection" code={`<span class="kw">import</span> shap, numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> lightgbm <span class="kw">import</span> LGBMRegressor
+
+<span class="kw">def</span> <span class="fn">shap_temporal</span>(model, X_test, n_buckets=<span class="nu">4</span>) -> dict:
+    <span class="st">"""SHAP per-period regime analysis.
+    direction_change=True: feature switches sign — red flag for spurious correlation."""</span>
+    expl = shap.TreeExplainer(model, feature_perturbation=<span class="st">'tree_path_dependent'</span>)
+    sv   = expl.shap_values(X_test)
+    g    = pd.Series(np.abs(sv).mean(axis=<span class="nu">0</span>), index=X_test.columns, name=<span class="st">'global'</span>)
+    bkts = pd.cut(range(len(X_test)), bins=n_buckets,
+                  labels=[<span class="st">"P"</span> + str(i) <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nu">1</span>, n_buckets+<span class="nu">1</span>)])
+    abs_df  = pd.DataFrame({str(p): np.abs(sv[(bkts==p).values]).mean(axis=<span class="nu">0</span>)
+                            <span class="kw">for</span> p <span class="kw">in</span> bkts.unique()}, index=X_test.columns)
+    sign_df = pd.DataFrame({str(p): sv[(bkts==p).values].mean(axis=<span class="nu">0</span>)
+                            <span class="kw">for</span> p <span class="kw">in</span> bkts.unique()}, index=X_test.columns)
+    analysis = pd.DataFrame({
+        <span class="st">'global_imp'</span>: g,
+        <span class="st">'imp_cv'</span>: abs_df.std(axis=<span class="nu">1</span>) / (abs_df.mean(axis=<span class="nu">1</span>)+<span class="nu">1e-9</span>),
+        <span class="st">'direction_change'</span>: (sign_df.max(axis=<span class="nu">1</span>)><span class="nu">0</span>) & (sign_df.min(axis=<span class="nu">1</span>)<<span class="nu">0</span>)
+    }).sort_values(<span class="st">'global_imp'</span>, ascending=<span class="nm">False</span>)
+    <span class="kw">return</span> {<span class="st">'analysis'</span>: analysis, <span class="st">'shap_values'</span>: sv}`}/>
+<N t="nd" icon="⚠️" title="Direction Change = Red Flag">
+                A feature whose mean SHAP switches sign across time periods (positive in Period 1, negative in Period 3) means the model uses it to push predictions upward in some regimes and downward in others. This is exactly the pattern expected from a feature with spurious correlation through a reversing common driver. Features with direction_change should be investigated before trusting in production.
+              </N>
+            </MC>
+          </div>
+        )}
+
+        {/* ══ DEEP LEARNING TAB ════════════════════════════════════════════ */}
+        {tab==="deep" && (
+          <div>
+            <div className="chh">
+              <span className="chn">5</span>
+              <div className="chi">
+                <div className="chf">Deep Learning Methods</div>
+                <div className="cht">Attention, Gates & Gradient Attribution for Neural TS Models</div>
+              </div>
+            </div>
+            <p>Deep learning feature importance methods are model-specific — they measure how <em>this particular trained neural network</em> uses features, not how the world works. Validation against simpler methods from other families is essential for every deep learning importance estimate.</p>
+
+            <MC num="5.1" name="TFT Variable Selection Network" fam="deep">
+              <span className="xr">v2.1 §5.1</span>
+              <T>Mechanics</T>
+              <p>The TFT's Variable Selection Network concatenates all input features, passes them through a Gated Residual Network that produces a softmax-normalised weight vector over inputs, and uses this to weight individual feature representations. Features with consistently near-zero weights across the validation set contribute nothing and can be removed. Unlike post-hoc attribution, VSN weights are a forward-pass output — zero overhead at inference time, enabling continuous production monitoring of which features the model is using for each prediction.</p>
+              <PC pros={[
+                "Implicit multi-horizon selection: VSN learns different weights for different forecast horizons",
+                "Available at inference time with zero overhead — enables real-time importance drift monitoring",
+                "Handles mixed feature types (static, dynamic, known-future) with separate VSNs",
+                "Interpretable: weights sum to 1, directly interpretable as probabilities",
+              ]} cons={[
+                "Requires training a full TFT model — expensive if you just want feature importance",
+                "VSN weights conditional on full architecture — different hyperparameters yield different rankings",
+                "Learns importance patterns from training distribution — may not generalise under regime change",
+                "TFT architecture complexity makes debugging attention patterns difficult",
+              ]}/>
+                            <C desc="Extract TFT variable selection weights — zero overhead at inference time" code={`<span class="kw">import</span> torch, numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> pytorch_forecasting <span class="kw">import</span> TemporalFusionTransformer
+
+<span class="kw">def</span> <span class="fn">tft_vsn_weights</span>(tft, val_loader, device=<span class="st">'cpu'</span>) -> pd.DataFrame:
+    <span class="st">"""VSN weights > 0.01: model actively uses this feature.
+    Log these weights at inference time for production drift monitoring."""</span>
+    tft.eval().to(device); enc_list = []
+    <span class="kw">with</span> torch.no_grad():
+        <span class="kw">for</span> x, _ <span class="kw">in</span> val_loader:
+            out = tft.forward(x)
+            enc_list.append(tft.interpret_output(out,reduction=<span class="st">"none"</span>)[<span class="st">"encoder_variables"</span>].cpu().numpy())
+    enc = np.concatenate(enc_list,axis=<span class="nu">0</span>).mean(axis=(<span class="nu">0</span>,<span class="nu">1</span>))
+    names = tft.hparams.get(<span class="st">'encoder_cont'</span>,[]) + tft.hparams.get(<span class="st">'encoder_cat'</span>,[])
+    result = pd.DataFrame({<span class="st">'feature'</span>:names, <span class="st">'vsn_weight'</span>:enc})
+    result[<span class="st">'active'</span>] = result[<span class="st">'vsn_weight'</span>] > <span class="nu">0.01</span>
+    <span class="kw">return</span> result.sort_values(<span class="st">'vsn_weight'</span>, ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — VSN vs. SHAP Agreement">
+                Features with high VSN weights and high SHAP importance are doubly validated. Features with high VSN weights but near-zero SHAP: using complex latent representations SHAP cannot capture linearly — investigate with Integrated Gradients. Features with near-zero VSN weights but high SHAP: anomalous — attention mechanism hasn't converged properly.
+              </N>
+            </MC>
+
+            <MC num="5.2" name="Stochastic Gates (STG)" fam="deep">
+              <span className="xr">v2.1 §5.2</span>
+              <T>Mechanics</T>
+              <p>STG (Yamada et al., 2020) learns per-feature Bernoulli gates z_j = max(0, min(1, (μ_j + ε)/2 + 0.5)) where ε ~ N(0, 0.5²) — differentiable via reparameterisation trick. L0-like sparsity regularisation Σ_j sigmoid(μ_j) pushes gate probabilities toward zero. At convergence, gates with P(z_j = 1) &lt; 0.5 are treated as "off". Gate probabilities provide a natural continuous importance ranking: P(z_j = 1) closer to 1 = more important.</p>
+              <PC pros={[
+                "End-to-end trainable: jointly learns which features to use and how to forecast",
+                "Single λ controls sparsity — simpler than most embedded methods",
+                "Gate probabilities give continuous importance scores, not just binary selection",
+                "Applicable to any differentiable forecasting model as a prepended layer",
+              ]} cons={[
+                "λ must be tuned — adds hyperparameter complexity",
+                "Stochastic training: different seeds may give different gate patterns",
+                "Gate probabilities measured on training data — may overfit features specific to training regime",
+                "Less interpretable than linear coefficients for stakeholder communication",
+              ]}/>
+                            <C desc="STG gate probability extraction across multiple seeds" code={`<span class="cm"># pip install stg</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd, torch
+
+<span class="kw">def</span> <span class="fn">stg_stability</span>(X_train, y_train, lam=<span class="nu">0.5</span>, n_seeds=<span class="nu">5</span>) -> pd.DataFrame:
+    <span class="st">"""Run STG with multiple seeds. Features with mean gate prob > 0.8 across all
+    seeds are robustly important. High-variance gates are noise-fitted."""</span>
+    <span class="kw">from</span> stg <span class="kw">import</span> STG
+    gate_probs = []
+    <span class="kw">for</span> seed <span class="kw">in</span> range(n_seeds):
+        torch.manual_seed(seed); np.random.seed(seed)
+        model = STG(task_type=<span class="st">'regression'</span>, input_dim=X_train.shape[<span class="nu">1</span>],
+                    output_dim=<span class="nu">1</span>, activation=<span class="st">'relu'</span>, sigma=<span class="nu">0.5</span>, lam=lam)
+        model.fit(X_train.values.astype(<span class="st">'float32'</span>), y_train.values.astype(<span class="st">'float32'</span>),
+                  nr_epochs=<span class="nu">500</span>, learning_rate=<span class="nu">0.001</span>, verbose=<span class="nm">False</span>)
+        gate_probs.append(model.get_gates(mode=<span class="st">'prob'</span>))
+    df = pd.DataFrame(gate_probs, columns=X_train.columns)
+    result = pd.DataFrame({<span class="st">'mean_gate'</span>: df.mean(), <span class="st">'std_gate'</span>: df.std(),
+                           <span class="st">'robust'</span>: df.min() > <span class="nu">0.8</span>})
+    <span class="kw">return</span> result.sort_values(<span class="st">'mean_gate'</span>, ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Multi-Seed Gate Stability">
+                Train with 5 different random seeds. Genuine features show P(z_j = 1) consistently close to 1.0 across seeds. Noise features show high variance across seeds (0.8 in one seed, 0.2 in another). Trust only features with gate probability &gt; 0.8 in all 5 seeds.
+              </N>
+            </MC>
+
+            <MC num="5.3" name="TabNet Sequential Attention" fam="deep">
+              <span className="xr">v2.1 §5.3</span>
+              <T>Mechanics</T>
+              <p>TabNet (Arik & Pfister, 2021) processes features through B decision steps, each selecting a soft subset via sparsemax-normalised attention mask. Per-instance importance: η_j(i) = Σ_b M[b][i,j] — sum of attention weights on feature j across all steps for sample i. Different observations rely on different features — particularly valuable for multi-entity TS (multiple stores/products) where different entities rely on genuinely different drivers.</p>
+              <PC pros={[
+                "Instance-level importance: different samples can rely on different features — captures entity heterogeneity",
+                "Sparsemax produces exactly sparse masks — cleaner than sigmoid",
+                "Feature importance available at inference time with no additional computation",
+                "Natural fit for multi-entity TS where heterogeneous feature usage is expected",
+              ]} cons={[
+                "Often outperformed by gradient boosting on medium-sized TS datasets",
+                "Training sensitive to batch size and learning rate",
+                "Multi-step attention harder to interpret than single-level",
+                "Sequential processing design not optimal for long-horizon temporal dependencies",
+              ]}/>
+                            <C desc="TabNet attention mask aggregation for population-level importance" code={`<span class="cm"># pip install pytorch-tabnet</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> pytorch_tabnet.tab_model <span class="kw">import</span> TabNetRegressor
+
+<span class="kw">def</span> <span class="fn">tabnet_importance</span>(X_train, y_train, X_val) -> pd.DataFrame:
+    <span class="st">"""TabNet per-instance and population-level feature importance.
+    Cluster instances by attention to detect entity heterogeneity."""</span>
+    model = TabNetRegressor(verbose=<span class="nu">0</span>, seed=<span class="nu">42</span>)
+    model.fit(X_train.values.astype(<span class="st">'float32'</span>),
+              y_train.values.reshape(-<span class="nu">1</span>,<span class="nu">1</span>).astype(<span class="st">'float32'</span>),
+              eval_set=[(X_val.values.astype(<span class="st">'float32'</span>),
+                         np.zeros((len(X_val),<span class="nu">1</span>)).astype(<span class="st">'float32'</span>))])
+    <span class="cm"># Per-instance attention weights: shape (n_val, n_features)</span>
+    _, masks = model.explain(X_val.values.astype(<span class="st">'float32'</span>))
+    instance_imp = np.sum([m <span class="kw">for</span> m <span class="kw">in</span> masks.values()], axis=<span class="nu">0</span>)  <span class="cm"># sum across steps</span>
+    global_imp   = pd.Series(instance_imp.mean(axis=<span class="nu">0</span>), index=X_train.columns)
+    <span class="kw">return</span> global_imp.sort_values(ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Entity-Specific Importance Clustering">
+                For multi-entity TS, cluster instances by attention pattern vectors (cosine similarity). If a feature appears important in one cluster but not others, check whether clusters correspond to meaningful entity segments. If clusters are arbitrary, heterogeneous importance likely reflects overfitting to entity-specific noise.
+              </N>
+            </MC>
+
+            <MC num="5.4" name="Integrated Gradients" fam="deep">
+              <span className="xr">v2.1 §5.4</span>
+              <T>Mechanics</T>
+              <p>IG (Sundararajan et al., 2017) integrates the model gradient along a path from baseline x' to actual input x: IG_j(x) = (x_j - x'_j) × ∫₀¹ (∂F(x'+α(x-x'))/∂x_j) dα. The completeness axiom: Σ_j IG_j(x) = F(x) - F(x') — attributions sum exactly to the output difference from baseline. The go-to attribution method for RNNs, LSTMs, and Transformer forecasters where TreeSHAP is inapplicable. Baseline choice encodes an explicit counterfactual: zero baseline = "how much does each feature move prediction from zero?"; mean baseline = "how much beyond average behaviour?"</p>
+              <F>IG_j(x) = (x_j - x'_j) * (1/n_steps) * sum_k dF(x' + k/n_steps*(x-x')) / dx_j</F>
+              <PC pros={[
+                "Completeness axiom: attributions sum exactly to F(x) - F(baseline)",
+                "Sensitivity axiom: if a feature changes F(x), IG gives it non-zero attribution",
+                "Works for any differentiable model — LSTM, Transformer, MLP",
+                "Baseline choice makes the counterfactual question explicit",
+              ]} cons={[
+                "Requires n_steps × forward passes per sample — slow for complex models",
+                "Baseline choice significantly affects attribution — no universally correct baseline",
+                "For sequence models, attributes at input feature level — cannot distinguish time step importance",
+                "Noisy for ReLU networks — SmoothGrad averaging helps",
+              ]}/>
+                            <C desc="Integrated Gradients via captum for LSTM/Transformer forecasters" code={`<span class="cm"># pip install captum</span>
+<span class="kw">from</span> captum.attr <span class="kw">import</span> IntegratedGradients
+<span class="kw">import</span> torch, numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">ig_ts</span>(model, X_test: torch.Tensor, feature_names, n_steps=<span class="nu">50</span>, baseline=<span class="st">'mean'</span>) -> pd.Series:
+    <span class="st">"""Integrated Gradients for any differentiable TS model.
+    X_test: (batch, seq_len, n_features). baseline='mean' is most interpretable for TS."""</span>
+    model.eval()
+    ig = IntegratedGradients(model)
+    bl = (torch.zeros_like(X_test) <span class="kw">if</span> baseline==<span class="st">'zero'</span> <span class="kw">else</span>
+          X_test.mean(dim=<span class="nu">0</span>, keepdim=<span class="nm">True</span>).expand_as(X_test))
+    attrs, delta = ig.attribute(X_test, baselines=bl, n_steps=n_steps,
+                                return_convergence_delta=<span class="nm">True</span>)
+    print(f<span class="st">f"Convergence delta (should be near 0): {delta.abs().mean():.4f}"</span>)
+    imp = attrs.abs().mean(dim=(<span class="nu">0</span>,<span class="nu">1</span>)).detach().numpy()
+    <span class="kw">return</span> pd.Series(imp, index=feature_names).sort_values(ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Baseline Sensitivity Check">
+                Compute IG with three baselines (zero, mean, random). Features ranking consistently high across all three are genuinely important — their importance doesn't depend on arbitrary baseline choice. Features important under one baseline but not others are baseline-dependent artefacts.
+              </N>
+            </MC>
+
+            <MC num="5.5" name="Attention Rollout" fam="deep">
+              <span className="xr">v2.1 §5.5</span>
+              <T>Mechanics</T>
+              <p>For Transformer forecasters, raw single-layer attention weights are unreliable for attribution: deeper layer attention is conditional on earlier layers' processing. Attention rollout (Abnar & Zuidema, 2020) computes combined attention through all layers: R_0 = I, R_l = R_{l-1} × (0.5·A_l + 0.5·I), where the identity accounts for residual connections. The final R_L matrix represents how much each input position contributes to each output position through the full network depth — a more faithful attribution than any single layer's attention.</p>
+              <PC pros={[
+                "Multi-layer attribution: captures how attention propagates through full depth",
+                "Computationally cheap: just matrix multiplications over stored attention weights",
+                "No additional backward passes required — pure forward-pass information",
+                "Available without any additional training modifications",
+              ]} cons={[
+                "Residual connection weighting (0.5) is an approximation",
+                "Does not account for value transformations between layers",
+                "Less theoretically grounded than IG or SHAP",
+                "For token-mixing models, patch-level importance requires mapping back to original features",
+              ]}/>
+                            <C desc="Attention rollout through all Transformer layers for input attribution" code={`<span class="kw">import</span> numpy <span class="kw">as</span> np, torch, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">attention_rollout</span>(attention_weights: list, feature_names: list) -> pd.Series:
+    <span class="st">"""
+    attention_weights: list of tensors, one per layer, shape (batch, heads, seq, seq).
+    Computes rollout: R = product of (0.5*A_l + 0.5*I) across all layers.
+    Returns per-position importance aggregated over output positions.
+    """</span>
+    R = torch.eye(attention_weights[<span class="nu">0</span>].shape[-<span class="nu">1</span>])
+    <span class="kw">for</span> attn <span class="kw">in</span> attention_weights:
+        A = attn.mean(dim=<span class="nu">1</span>).mean(dim=<span class="nu">0</span>)   <span class="cm"># avg over batch and heads</span>
+        R = R @ (<span class="nu">0.5</span> * A + <span class="nu">0.5</span> * torch.eye(A.shape[<span class="nu">0</span>]))
+    importance = R.sum(dim=<span class="nu">0</span>).detach().numpy()  <span class="cm"># sum over output positions</span>
+    importance = importance / importance.sum()
+    <span class="kw">return</span> pd.Series(importance, index=feature_names).sort_values(ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Rollout vs. IG Agreement">
+                Rollout is fast but less principled; IG satisfies formal axioms but is slow. Features ranking highly under both methods are most trustworthy. Features with high rollout but low IG importance are likely inflated by the rollout approximation's residual handling. Use IG as the gold standard for final decisions; rollout for continuous production monitoring where IG's cost is prohibitive.
+              </N>
+            </MC>
+          </div>
+        )}
+
+        {/* ══ CAUSAL & HYBRID TAB ══════════════════════════════════════════ */}
+        {tab==="causal" && (
+          <div>
+            <div className="chh">
+              <span className="chn">6</span>
+              <div className="chi">
+                <div className="chf">Causal & Hybrid Methods</div>
+                <div className="cht">Beyond Correlation — Directed Graphs, Stability & FDR Guarantees</div>
+              </div>
+            </div>
+            <p>Causal and hybrid methods move beyond measuring association to asking questions about directed influence, invariance under intervention, and statistical guarantees about spurious selections. More assumption-laden than filter or embedded methods, but their outputs are qualitatively different: a causal graph edge is much stronger evidence for feature inclusion than a correlation coefficient.</p>
+
+            <MC num="6.1" name="PCMCI / PCMCI+" fam="causal">
+              <span className="xr">v2.1 §6.1</span>
+              <T>Mechanics</T>
+              <p>PCMCI (Runge et al., 2019) extends the PC algorithm with momentary conditional independence (MCI) tests that condition on the parents of both X and Y simultaneously, dramatically reducing the false positive rate from shared autocorrelation — the Achilles heel of Granger causality. PCMCI+ extends to contemporaneous (lag-0) causal links. The output is a directed time-lagged causal graph whose edges represent genuine causal relationships, not just predictive associations.</p>
+              <CausalDAG title="FIGURE 6.1 — PCMCI+ output: directed time-lagged causal graph (solid=direct cause, dashed=via common driver)"
+                nodes={[{id:"x1",x:80,y:90,label:"price(t-1)"},{id:"x2",x:240,y:50,label:"weather(t-2)"},{id:"z",x:240,y:140,label:"demand(t-1)"},{id:"y",x:400,y:90,label:"sales(t)",target:true}]}
+                edges={[{from:"x1",to:"y",label:"0.42"},{from:"x2",to:"y",col:"#f4a261",dash:true,label:"?",arc:30},{from:"z",to:"y",label:"0.61"},{from:"x2",to:"z",label:"0.28"}]}/>
+              <PC pros={[
+                "Directed causal graph — much stronger evidence for feature inclusion than correlation",
+                "Conditions on the full multivariate system simultaneously — low false positive rate from shared autocorrelation",
+                "PCMCI+ handles contemporaneous links — common in aggregated or coarsely-sampled data",
+                "Linear (ParCorr) and nonlinear (CMIknn) independence tests available",
+              ]} cons={[
+                "Assumes no unobserved confounders (use FCI §6.2 when latent variables are suspected)",
+                "CMIknn nonlinear CI test is computationally expensive — O(n² log n) per test",
+                "Requires sufficient time series length for reliable conditional independence testing",
+                "Causal graph interpretation requires domain expertise to validate",
+              ]}/>
+                            <C desc="PCMCI+ with tigramite — linear and nonlinear CI tests" code={`<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> tigramite <span class="kw">import</span> data_processing <span class="kw">as</span> pp
+<span class="kw">from</span> tigramite.pcmci <span class="kw">import</span> PCMCI
+<span class="kw">from</span> tigramite.independence_tests.parcorr <span class="kw">import</span> ParCorr
+<span class="kw">from</span> tigramite.independence_tests.cmiknn <span class="kw">import</span> CMIknn
+
+<span class="kw">def</span> <span class="fn">pcmci_plus_ts</span>(data, var_names, target_idx, max_lag=<span class="nu">12</span>, alpha=<span class="nu">0.01</span>, mode=<span class="st">'linear'</span>) -> pd.DataFrame:
+    <span class="st">"""PCMCI+ causal discovery. mode='nonlinear' uses CMIknn (slow but model-free)."""</span>
+    df   = pp.DataFrame(data, datatime={<span class="nu">0</span>: np.arange(len(data))}, var_names=var_names)
+    ci   = ParCorr() <span class="kw">if</span> mode==<span class="st">'linear'</span> <span class="kw">else</span> CMIknn()
+    pcmci = PCMCI(dataframe=df, cond_ind_test=ci, verbosity=<span class="nu">0</span>)
+    res  = pcmci.run_pcmciplus(tau_min=<span class="nu">1</span>, tau_max=max_lag, pc_alpha=alpha)
+    links = [
+        {<span class="st">'feature'</span>: var_names[fi], <span class="st">'lag'</span>: lag, <span class="st">'strength'</span>: abs(res[<span class="st">'val_matrix'</span>][fi,target_idx,lag])}
+        <span class="kw">for</span> fi <span class="kw">in</span> range(len(var_names)) <span class="kw">if</span> fi != target_idx
+        <span class="kw">for</span> lag <span class="kw">in</span> range(<span class="nu">1</span>, max_lag+<span class="nu">1</span>)
+        <span class="kw">if</span> res[<span class="st">'p_matrix'</span>][fi, target_idx, lag] < alpha
+    ]
+    <span class="kw">return</span> pd.DataFrame(links).sort_values(<span class="st">'strength'</span>, ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Graph Edge Validation">
+                For each PCMCI+ edge, check: (1) Is the causal lag mechanistically plausible? (2) Does the edge persist with the CMIknn nonlinear test or only with ParCorr? (3) Is the edge robust to different α thresholds (0.05 and 0.01)? Edges surviving all three checks are the most credible. Edges present only under ParCorr (linear test) suggest a spurious linear dependency not genuine nonlinear causation.
+              </N>
+            </MC>
+
+            <MC num="6.2" name="FCI — Fast Causal Inference" fam="causal">
+              <span className="xr">v2.1 §6.2</span>
+              <T>Mechanics</T>
+              <p>FCI (Spirtes et al., 1995) relaxes PCMCI's assumption of no latent confounders, producing a Partial Ancestral Graph (PAG) whose edges distinguish: X → Y (X directly causes Y), X o→ Y (X is an ancestor of Y OR a latent confounder drives both), and X o-o Y (direction uncertain or confounder). For feature selection, "-->" edges give the strongest evidence for inclusion; "o→" and "o-o" edges indicate the feature is predictive but not necessarily the direct cause.</p>
+              <PC pros={[
+                "Explicitly handles latent confounders — honest when unobserved variables are suspected",
+                "PAG edge types provide nuanced information: direct cause vs. proxy for confounder",
+                "Available in causal-learn with both linear (fisherz) and nonlinear (kci) CI tests",
+                "Appropriate when macro/policy variables share hidden drivers with the target",
+              ]} cons={[
+                "Computationally expensive: constraint-based algorithm with exponential worst case",
+                "PAG interpretation is more complex than PCMCI's directed graph",
+                "Requires faithfulness and causal Markov condition assumptions",
+                "Less temporal-TS-specific than PCMCI — designed for general DAGs",
+              ]}/>
+                            <C desc="FCI with causal-learn — handles latent confounders via PAG" code={`<span class="cm"># pip install causal-learn</span>
+<span class="kw">from</span> causallearn.search.ConstraintBased.FCI <span class="kw">import</span> fci
+<span class="kw">from</span> causallearn.utils.cit <span class="kw">import</span> fisherz
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">fci_ts</span>(data: np.ndarray, var_names: list, target_idx: int, alpha=<span class="nu">0.05</span>) -> pd.DataFrame:
+    <span class="st">"""FCI PAG discovery. Edges to target classified as:
+    direct_cause=True: X --> Y  |  latent_conf_possible=True: X o-> Y or X o-o Y"""</span>
+    graph, edges = fci(data, independence_test_method=fisherz, alpha=alpha, verbose=<span class="nm">False</span>)
+    rows = []
+    <span class="kw">for</span> edge <span class="kw">in</span> edges:
+        i_src = int(edge.get_node1().get_name().replace(<span class="st">'X'</span>,<span class="st">''</span>)) - <span class="nu">1</span>
+        i_dst = int(edge.get_node2().get_name().replace(<span class="st">'X'</span>,<span class="st">''</span>)) - <span class="nu">1</span>
+        <span class="kw">if</span> i_dst != target_idx: <span class="kw">continue</span>
+        ep1 = str(edge.get_endpoint1()); ep2 = str(edge.get_endpoint2())
+        rows.append({<span class="st">'feature'</span>: var_names[i_src],
+                     <span class="st">'edge'</span>: ep1 + <span class="st">"->"</span> + ep2,
+                     <span class="st">'direct_cause'</span>: ep1==<span class="st">'TAIL'</span> <span class="kw">and</span> ep2==<span class="st">'ARROW'</span>,
+                     <span class="st">'latent_conf_possible'</span>: <span class="st">'CIRCLE'</span> <span class="kw">in</span> (ep1, ep2)})
+    <span class="kw">return</span> pd.DataFrame(rows)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Bidirectional FCI Edges">
+                X o→ Y where Y o→ X (both have "o" endpoints): strong signal of a latent confounder Z driving both. Including X still gives predictive value (Z → X structure), but the relationship may not be stable across regimes if Z changes character over time. Try to identify Z and include it directly rather than relying on a proxy.
+              </N>
+            </MC>
+
+            <MC num="6.3" name="Transfer Entropy" fam="causal">
+              <span className="xr">v2.1 §6.3</span>
+              <T>Mechanics</T>
+              <p>Transfer entropy TE(X→Y) = H(Y_t|Y_past) - H(Y_t|Y_past, X_past) measures the reduction in uncertainty of Y's future given both Y's past and X's past — equivalent to conditional mutual information and strictly more general than Granger causality. For Gaussian variables, TE equals the Granger test log-likelihood ratio. Directional (TE(X→Y) ≠ TE(Y→X)). Nonparametric — no linearity assumption. Use IDTxl or pyInform for estimation.</p>
+              <F>TE(X to Y) = H(Y_t | Y_past) - H(Y_t | Y_past, X_past) = MI(Y_future ; X_past | Y_past)</F>
+              <PC pros={[
+                "Nonlinear generalisation of Granger causality — no linearity assumption",
+                "Directional: asymmetric measure distinguishes X→Y from Y→X",
+                "Exactly zero for conditionally independent variables",
+                "Theoretically cleaner than Granger for nonlinear TS relationships",
+              ]} cons={[
+                "Estimation is expensive: O(n·k·lags·bins) per feature",
+                "Bin count and lag choice are sensitive hyperparameters",
+                "Still subject to spurious results from shared autocorrelation — same issue as Granger",
+                "Less computationally accessible than Granger in standard ML pipelines",
+              ]}/>
+                            <C desc="Transfer entropy screening via IDTxl" code={`<span class="cm"># pip install idtxl</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> idtxl.bivariate_te <span class="kw">import</span> BivariateTE
+<span class="kw">from</span> idtxl.data <span class="kw">import</span> Data
+
+<span class="kw">def</span> <span class="fn">transfer_entropy_ts</span>(X_train: pd.DataFrame, y_train: pd.Series, max_lag=<span class="nu">5</span>) -> pd.DataFrame:
+    <span class="st">"""Bivariate transfer entropy: TE(X -> y) for each feature X.
+    Higher TE = X carries predictive information about y beyond y's own past."""</span>
+    rows = []
+    <span class="kw">for</span> col <span class="kw">in</span> X_train.columns:
+        <span class="kw">try</span>:
+            data_arr = np.array([X_train[col].values, y_train.values])
+            data = Data(data_arr.reshape(<span class="nu">2</span>,<span class="nu">1</span>,-<span class="nu">1</span>), dim_order=<span class="st">'prs'</span>)
+            te = BivariateTE()
+            results = te.analyse_single_target(
+                settings={<span class="st">'max_lag_sources'</span>: max_lag, <span class="st">'min_lag_sources'</span>: <span class="nu">1</span>,
+                          <span class="st">'cmi_estimator'</span>: <span class="st">'JidtKraskovCMI'</span>},
+                data=data, target=<span class="nu">1</span>)
+            te_val = results.get_single_target(<span class="nu">1</span>, fdr=<span class="nm">False</span>).omnibus_te
+            rows.append({<span class="st">'feature'</span>: col, <span class="st">'te'</span>: te_val})
+        <span class="kw">except</span>: rows.append({<span class="st">'feature'</span>: col, <span class="st">'te'</span>: <span class="nm">np.nan</span>})
+    <span class="kw">return</span> pd.DataFrame(rows).sort_values(<span class="st">'te'</span>, ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — TE vs. Granger Agreement">
+                When TE and Granger agree on which features are significant, the result is more trustworthy — the linear VAR test and the nonparametric information-theoretic test converge. When TE is significant but Granger is not, there is genuine nonlinear predictive causality the VAR model cannot capture. When Granger is significant but TE is not, the apparent Granger significance is driven by linear autocorrelation structure that TE correctly conditions away.
+              </N>
+            </MC>
+
+            <MC num="6.4" name="Dynamic Causal Modelling (DCM)" fam="causal">
+              <span className="xr">v2.1 §6.4</span>
+              <T>Mechanics</T>
+              <p>DCM (Friston et al., 2003) fits a Bayesian state-space model where latent states evolve according to a user-specified causal structure, and observed series are linked to states through an observation model. The posterior over causal connection strengths provides feature importance with full uncertainty quantification. Key: DCM requires competing causal hypotheses upfront — compare "Model A: X causes Y directly" against "Model B: X affects Y via Z" using Bayes factors. This is hypothesis-driven feature selection, not exploratory screening.</p>
+              <PC pros={[
+                "Full posterior uncertainty quantification over causal strengths",
+                "Hypothesis testing via Bayes factors: compare competing causal structures",
+                "Features with HDI excluding zero are 'significantly causal' in a Bayesian sense",
+                "Principled integration of prior domain knowledge via prior distributions",
+              ]} cons={[
+                "Requires explicit causal hypothesis specification — can't be used exploratorily on 100 features",
+                "MCMC inference is slow: minutes to hours per model",
+                "Model misspecification (wrong causal structure specified) produces incorrect posteriors",
+                "Requires Bayesian programming expertise to implement correctly",
+              ]}/>
+                            <C desc="Simplified DCM via PyMC state-space model with posterior inference" code={`<span class="cm"># pip install pymc</span>
+<span class="kw">import</span> pymc <span class="kw">as</span> pm, numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">dcm_posterior</span>(X_train, y_train, n_samples=<span class="nu">1000</span>) -> pd.DataFrame:
+    <span class="st">"""Bayesian regression with posterior HDI for each feature.
+    significant=True: 95% HDI excludes zero — evidence of genuine effect."""</span>
+    <span class="kw">with</span> pm.Model():
+        beta = pm.Normal(<span class="st">"beta"</span>, mu=<span class="nu">0</span>, sigma=<span class="nu">1</span>, shape=X_train.shape[<span class="nu">1</span>])
+        phi  = pm.Uniform(<span class="st">"phi"</span>, -<span class="nu">1</span>, <span class="nu">1</span>)
+        mu_y = phi * y_train.shift(<span class="nu">1</span>).fillna(<span class="nu">0</span>).values + X_train.values @ beta
+        pm.Normal(<span class="st">"y_obs"</span>, mu=mu_y, sigma=pm.HalfNormal(<span class="st">"sigma"</span>,<span class="nu">1</span>), observed=y_train.values)
+        trace = pm.sample(n_samples, tune=<span class="nu">500</span>, target_accept=<span class="nu">0.95</span>, progressbar=<span class="nm">False</span>)
+    post = trace.posterior[<span class="st">"beta"</span>].values.reshape(-<span class="nu">1</span>, X_train.shape[<span class="nu">1</span>])
+    <span class="kw">return</span> pd.DataFrame({
+        <span class="st">'feature'</span>:    X_train.columns,
+        <span class="st">'post_mean'</span>:  post.mean(axis=<span class="nu">0</span>),
+        <span class="st">'hdi_lower'</span>:  np.percentile(post, <span class="nu">2.5</span>, axis=<span class="nu">0</span>),
+        <span class="st">'hdi_upper'</span>:  np.percentile(post, <span class="nu">97.5</span>, axis=<span class="nu">0</span>),
+        <span class="st">'significant'</span>: (np.percentile(post, <span class="nu">2.5</span>, axis=<span class="nu">0</span>) > <span class="nu">0</span>) | (np.percentile(post, <span class="nu">97.5</span>, axis=<span class="nu">0</span>) < <span class="nu">0</span>)
+    }).sort_values(<span class="st">'post_mean'</span>, key=abs, ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Bayes Factor Model Comparison">
+                DCM's unique strength: compare Model A (X → Y directly) against Model B (X → Z → Y mediated). If the evidence strongly favours B, including X but not Z captures the pattern but misses the mechanism. For interventional forecasting (predicting effects of changing X), only Model B gives correct predictions. Bayes factor &gt; 10 in favour of a model is considered strong evidence in the Bayesian model comparison literature.
+              </N>
+            </MC>
+
+            <MC num="6.5" name="Conformal Prediction-Based Selection" fam="causal">
+              <span className="xr">v2.1 §6.5</span>
+              <T>Mechanics</T>
+              <p>Conformal feature selection computes p-values by comparing each feature's true effect (performance drop when set to zero) against a null distribution built from block-permuted versions of that feature. The empirical rank of the true delta among n_permutations permuted deltas yields a finite-sample valid p-value. Applying Benjamini-Hochberg correction gives FDR control at level q — provably valid in finite samples under exchangeability. This is the strongest statistical guarantee available in TS feature selection, not relying on Gaussian noise or asymptotic approximations.</p>
+              <PC pros={[
+                "Finite-sample FDR guarantee — valid in finite samples under block exchangeability",
+                "Model-agnostic: any fitted model can be used to compute feature effects",
+                "Block permutation within the conformal test correctly handles TS autocorrelation",
+                "No distributional assumptions beyond exchangeability within blocks",
+              ]} cons={[
+                "Exchangeability assumption is approximate for non-stationary TS",
+                "O(n·p·n_permutations) model evaluations — expensive for large p",
+                "FDR guarantee assumes null features have exchangeable effects — may not hold under strong confounding",
+                "Less familiar to practitioners — harder to explain than LASSO or SHAP",
+              ]}/>
+                            <C desc="Conformal p-value feature selection with BH FDR control" code={`<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> mean_absolute_error
+<span class="kw">from</span> statsmodels.stats.multitest <span class="kw">import</span> multipletests
+
+<span class="kw">def</span> <span class="fn">conformal_select_ts</span>(model, X_train, y_train, n_perm=<span class="nu">100</span>, block=<span class="nu">7</span>, fdr_q=<span class="nu">0.1</span>) -> pd.DataFrame:
+    <span class="st">"""Conformal p-value feature selection (finite-sample FDR guarantee).
+    Each feature's p-value = rank of true effect among block-permuted null effects."""</span>
+    rng = np.random.default_rng(<span class="nu">42</span>)
+    model.fit(X_train, y_train)
+    base = mean_absolute_error(y_train, model.predict(X_train))
+    n = len(X_train); nb = n // block; rows = []
+    <span class="kw">for</span> feat <span class="kw">in</span> X_train.columns:
+        X_null = X_train.copy(); X_null[feat] = <span class="nu">0</span>
+        true_delta = mean_absolute_error(y_train, model.predict(X_null)) - base
+        nulls = []
+        <span class="kw">for</span> _ <span class="kw">in</span> range(n_perm):
+            Xp = X_train.copy()
+            bid = rng.permutation(nb)
+            shuf = np.concatenate([X_train[feat].values[b*block:(b+<span class="nu">1</span>)*block] <span class="kw">for</span> b <span class="kw">in</span> bid])
+            Xp[feat] = np.concatenate([shuf, X_train[feat].values[nb*block:]])
+            nulls.append(mean_absolute_error(y_train, model.predict(Xp)) - base)
+        pv = (np.sum(np.array(nulls) >= true_delta) + <span class="nu">1</span>) / (n_perm + <span class="nu">1</span>)
+        rows.append({<span class="st">'feature'</span>: feat, <span class="st">'true_delta'</span>: true_delta, <span class="st">'conformal_p'</span>: pv})
+    df = pd.DataFrame(rows)
+    reject, df[<span class="st">'p_adj'</span>], _, _ = multipletests(df[<span class="st">'conformal_p'</span>], alpha=fdr_q, method=<span class="st">'fdr_bh'</span>)
+    df[<span class="st">'selected'</span>] = reject
+    <span class="kw">return</span> df.sort_values(<span class="st">'conformal_p'</span>)`}/>
+<N t="ng" icon="✓" title="The Statistical Guarantee">
+                Under block exchangeability, the conformal p-value is valid in finite samples — not just asymptotically. BH correction then controls FDR at level q. This is the strongest guarantee: with q=0.1, at most 10% of selected features are expected to be spurious. Validate empirically on synthetic data with known support before deploying to a new domain.
+              </N>
+            </MC>
+
+            <MC num="6.6" name="IRM — Invariant Risk Minimisation" fam="causal">
+              <span className="xr">v2.1 §6.6</span>
+              <T>Mechanics</T>
+              <p>IRM (Arjovsky et al., 2019) selects features whose predictive relationship with the target is invariant across different environments — different time windows, market regimes, or seasonal conditions. The IRM objective finds a predictor that simultaneously minimises risk in all environments AND is simultaneously optimal in all environments (the invariance constraint). Features selected by IRM are more likely to remain predictive under distribution shift — critical for live forecasting models where deployment distribution differs from training.</p>
+              <PC pros={[
+                "Selects causally stable features — more robust to distribution shift than ERM features",
+                "Directly addresses the deployment gap between training and live performance",
+                "Provides theoretical motivation for feature stability across regimes",
+                "Applicable to any differentiable model via gradient-based optimisation",
+              ]} cons={[
+                "Requires multiple distinct environments — how to define 'environments' for TS is non-trivial",
+                "IRM objective is non-convex — optimisation can be unstable",
+                "Theoretically motivated but empirically inconsistent results on complex real-world datasets",
+                "Environment definition quality critically affects which features are selected",
+              ]}/>
+                            <C desc="IRM with time-window environments for stable feature selection" code={`<span class="kw">import</span> torch, torch.nn <span class="kw">as</span> nn, numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">irm_feature_selection</span>(X_envs: list, y_envs: list, n_epochs=<span class="nu">200</span>, lam=<span class="nu">1.0</span>) -> pd.Series:
+    <span class="st">"""IRM: finds features with invariant predictive relationship across all environments.
+    X_envs: list of (n_e, p) arrays for each time-window environment.
+    Features with large IRM importance are stable across regimes."""</span>
+    p = X_envs[<span class="nu">0</span>].shape[<span class="nu">1</span>]
+    w = nn.Parameter(torch.zeros(p, <span class="nu">1</span>))
+    opt = torch.optim.Adam([w], lr=<span class="nu">0.01</span>)
+    <span class="kw">for</span> _ <span class="kw">in</span> range(n_epochs):
+        total_loss = <span class="nu">0</span>
+        <span class="kw">for</span> Xe, ye <span class="kw">in</span> zip(X_envs, y_envs):
+            Xt = torch.tensor(Xe, dtype=torch.float32)
+            yt = torch.tensor(ye, dtype=torch.float32).unsqueeze(<span class="nu">1</span>)
+            err   = (Xt @ w - yt).pow(<span class="nu">2</span>).mean()
+            grad  = torch.autograd.grad(err, w, create_graph=<span class="nm">True</span>)[<span class="nu">0</span>]
+            total_loss += err + lam * (grad * w).pow(<span class="nu">2</span>).sum()
+        opt.zero_grad(); total_loss.backward(); opt.step()
+    imp = torch.abs(w).detach().squeeze().numpy()
+    <span class="kw">return</span> pd.Series(imp)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — Environment Design Matters">
+                The quality of IRM's invariance test depends entirely on how environments are defined. If all environments share the same spurious correlations (e.g., all from the same economic regime), IRM won't remove them. Good environment choices: different years, different market regimes (expansion/recession), different seasons. Validate that your selected features actually show similar predictive strength across the environments you defined — if they don't, IRM has overfitted to the specific environment definition.
+              </N>
+            </MC>
+
+            <MC num="6.7" name="ICA — Independent Component Analysis" fam="causal">
+              <span className="xr">v2.1 §6.7</span>
+              <T>Mechanics</T>
+              <p>ICA (Hyvärinen & Oja, 2000) decomposes a multivariate feature matrix into statistically independent latent components — distinct underlying drivers. Unlike PCA which finds uncorrelated components, ICA finds components that are genuinely independent (a much stronger condition). For TS feature selection, ICA applied to the exogenous feature matrix reveals latent themes (market sentiment, weather regime, supply cycle) that often predict the target better than any raw feature. ICA is a <em>feature discovery</em> tool: it produces new features (components) that must then be ranked using methods from Sections 2–4.</p>
+              <PC pros={[
+                "Discovers latent drivers that explain shared variation across multiple raw features",
+                "Components often have more interpretable physical meaning than individual raw features",
+                "Reduces dimensionality while preserving independent signal",
+                "Denoises features by separating signal from shared noise components",
+              ]} cons={[
+                "ICA components are not causal — independence does not imply causal distinctness",
+                "Sign and ordering of components is arbitrary — requires human interpretation",
+                "Assumes linear mixing model — fails for nonlinearly entangled features",
+                "Number of components n_components is a critical hyperparameter",
+              ]}/>
+                            <C desc="FastICA feature discovery with component ranking by target correlation" code={`<span class="kw">from</span> sklearn.decomposition <span class="kw">import</span> FastICA
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> scipy.stats <span class="kw">import</span> spearmanr
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">ica_discover</span>(X_train, y_train, n_components=<span class="nu">10</span>, top_k=<span class="nu">5</span>) -> tuple:
+    <span class="st">"""ICA feature discovery. Components ranked by Spearman with target.
+    Use as feature engineering, not direct selection — feed components into
+    a selector from Sections 2-4 for final feature set construction."""</span>
+    sc  = StandardScaler(); X_sc = sc.fit_transform(X_train)
+    ica = FastICA(n_components=n_components, random_state=<span class="nu">42</span>, max_iter=<span class="nu">1000</span>)
+    comps = ica.fit_transform(X_sc)
+    ranking = pd.Series(
+        [abs(spearmanr(comps[:,i], y_train.values)[<span class="nu">0</span>]) <span class="kw">for</span> i <span class="kw">in</span> range(n_components)],
+        index=[f<span class="st">"IC"</span>+str(i+<span class="nu">1</span>) <span class="kw">for</span> i <span class="kw">in</span> range(n_components)]
+    ).sort_values(ascending=<span class="nm">False</span>)
+    loadings = pd.DataFrame(ica.mixing_, index=X_train.columns,
+                            columns=ranking.index)
+    <span class="kw">for</span> ic <span class="kw">in</span> ranking.head(top_k).index:
+        print(str(ic) + <span class="st">" top drivers: "</span> + str(loadings[ic].abs().nlargest(<span class="nu">3</span>).index.tolist()))
+    <span class="kw">return</span> ranking.head(top_k), ica, sc`}/>
+<N t="nw" icon="⚠️" title="ICA Components Are Not Causal">
+                ICA separates statistically independent signals — not causally distinct ones. A component highly correlated with the target is a good predictor but not necessarily a cause. For causal interpretation, combine ICA with PCMCI+ or FCI on the extracted components rather than interpreting the mixing matrix directly.
+              </N>
+            </MC>
+
+            <MC num="6.8" name="Stability Selection & Boruta-TS" fam="hybrid">
+              <span className="xr">v2.1 §6.8</span>
+              <T>Mechanics</T>
+              <p>Stability selection (Meinshausen & Bühlmann, 2010) runs a feature selector on many block-bootstrap subsamples of the training data and accepts only features selected in a high fraction (≥80%) of rounds. Single-pass selection is unreliable — bootstrap variance in tree importances, noisy MI estimates, and regime-dependent correlations all cause instability. Boruta extends stability selection by creating shadow features (randomly shuffled copies of each original feature) and requiring each real feature to outperform the best shadow feature's importance to be accepted. For time series, block bootstrap subsampling preserves temporal autocorrelation structure within each subsample.</p>
+              <StabHeat title="FIGURE 6.8 — Stability selection frequency heatmap across 50 block-bootstrap rounds"
+                feats={[{n:"lag_1",p:.05},{n:"lag_7",p:.08},{n:"roll_7",p:.12},{n:"price",p:.18},{n:"noise_1",p:.82},{n:"noise_2",p:.88}]}
+                folds={5}/>
+              <PC pros={[
+                "Provides selection frequency as a continuous stability score — not just binary selected/not",
+                "Block bootstrap naturally preserves temporal structure within subsamples",
+                "Boruta's shadow feature comparison gives an automatic significance threshold",
+                "Aggregates over many base selector runs — dramatically reduces variance of single-run selections",
+              ]} cons={[
+                "Computationally expensive: B × base_selector_cost",
+                "Selection threshold (80%) is somewhat arbitrary — though theoretically motivated by Meinshausen & Bühlmann",
+                "Block size is a hyperparameter that must be tuned to the autocorrelation horizon",
+                "Cannot detect features that are only jointly important (pure interaction effects)",
+              ]}/>
+                            <C desc="Block bootstrap stability selection with selection frequency output" code={`<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestRegressor
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+
+<span class="kw">def</span> <span class="fn">block_stability_select</span>(X, y, block=<span class="nu">30</span>, n_boot=<span class="nu">50</span>, ratio=<span class="nu">0.6</span>, thresh=<span class="nu">0.8</span>, top_k=<span class="nu">20</span>) -> pd.DataFrame:
+    <span class="st">"""Stability selection via block bootstrap. thresh=0.8: feature selected in >= 80% of rounds.
+    Block size should match dominant autocorrelation horizon (e.g., 30 for daily data)."""</span>
+    n, nb = len(X), len(X)//block
+    counts = defaultdict(int)
+    <span class="kw">for</span> b <span class="kw">in</span> range(n_boot):
+        n_samp = int(nb * ratio)
+        bids = np.random.choice(nb, size=n_samp, replace=<span class="nm">True</span>)
+        idx  = np.concatenate([np.arange(bi*block, min((bi+<span class="nu">1</span>)*block,n)) <span class="kw">for</span> bi <span class="kw">in</span> bids])
+        rf   = RandomForestRegressor(n_estimators=<span class="nu">200</span>, max_features=<span class="st">'sqrt'</span>, n_jobs=-<span class="nu">1</span>, random_state=b)
+        rf.fit(X.iloc[idx], y.iloc[idx])
+        <span class="kw">for</span> f <span class="kw">in</span> pd.Series(rf.feature_importances_,index=X.columns).nlargest(top_k).index: counts[f] += <span class="nu">1</span>
+    result = pd.DataFrame([{<span class="st">'feature'</span>:f,<span class="st">'freq'</span>:c/n_boot} <span class="kw">for</span> f,c <span class="kw">in</span> counts.items()])
+    result[<span class="st">'stable'</span>] = result[<span class="st">'freq'</span>] >= thresh
+    print(f<span class="st">f"{result['stable'].sum()} stable features (>={thresh:.0%})"</span>)
+    <span class="kw">return</span> result.sort_values(<span class="st">'freq'</span>, ascending=<span class="nm">False</span>)`}/>
+<N t="nv" icon="🔍" title="Spurious vs. Genuine — The 80% Threshold">
+                Features selected in 60–80% of rounds are in a grey zone: likely genuine but not stable enough to trust unconditionally. These "borderline" features warrant additional investigation: run AR-adjusted correlation (§2.9) and SHAP temporal analysis (§4.10) on them. If all three methods agree the feature is relevant, promote it to the final set. If any method raises a red flag, exclude it.
+              </N>
+            </MC>
+          </div>
+        )}
+
+        {/* ══ PIPELINES & CASES ════════════════════════════════════════════ */}
+        {tab==="pipelines" && (
+          <div>
+            <div className="chh">
+              <span className="chn">7</span>
+              <div className="chi">
+                <div className="chf">Pipelines & Cases</div>
+                <div className="cht">Production Pipelines, Multi-Objective Selection & Case Study</div>
+              </div>
+            </div>
+
+            <MC num="7.1" name="Walk-Forward CV Wrapper" fam="hybrid">
+              <span className="xr">v2.1 §7.1</span>
+              <T>Mechanics</T>
+              <p>Every feature selection method must be fit exclusively on training-fold data. This universal wrapper accepts any sklearn-compatible selector, runs it independently on each walk-forward fold, and aggregates selections by frequency. Features selected in ≥ stability_freq fraction of folds are retained. This transforms any single-pass selector into a stability-aware walk-forward selector.</p>
+              <C desc="Universal walk-forward selector — accepts any sklearn-compatible selector" code={`<span class="kw">from</span> sklearn.base <span class="kw">import</span> BaseEstimator, TransformerMixin, clone
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit
+<span class="kw">from</span> collections <span class="kw">import</span> Counter
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="kw">class</span> <span class="nm">WalkForwardSelector</span>(BaseEstimator, TransformerMixin):
+    <span class="st">"""Wraps any sklearn selector in walk-forward CV with stability aggregation."""</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, selector, n_splits=<span class="nu">5</span>, gap=<span class="nu">1</span>, stability=<span class="nu">0.6</span>):
+        self.selector, self.n_splits, self.gap, self.stability = selector, n_splits, gap, stability
+    <span class="kw">def</span> <span class="fn">fit</span>(self, X: pd.DataFrame, y: pd.Series):
+        tscv, counts = TimeSeriesSplit(n_splits=self.n_splits, gap=self.gap), Counter()
+        <span class="kw">for</span> tr, _ <span class="kw">in</span> tscv.split(X):
+            s = clone(self.selector)
+            s.fit(X.iloc[tr], y.iloc[tr])
+            sel = s.selected_ <span class="kw">if</span> hasattr(s,<span class="st">'selected_'</span>) <span class="kw">else</span> X.columns[s.get_support()].tolist()
+            counts.update(sel)
+        self.freq_ = pd.Series(counts) / self.n_splits
+        self.selected_ = self.freq_[self.freq_ >= self.stability].index.tolist()
+        print(f<span class="st">f"WalkForwardSelector: {len(self.selected_)} stable features"</span>)
+        <span class="kw">return</span> self
+    <span class="kw">def</span> <span class="fn">transform</span>(self, X: pd.DataFrame) -> pd.DataFrame:
+        <span class="kw">return</span> X[self.selected_]`}/>
+            </MC>
+
+            <MC num="7.2" name="Multi-Horizon Feature Selection" fam="hybrid">
+              <span className="xr">v2.1 §7.2</span>
+              <T>Mechanics</T>
+              <p>Feature importance changes with forecast horizon H: high-frequency lag features dominate short horizons (H=1,2,3); trend and calendar features dominate long horizons (H=7,14,30). Three strategies, in order of computational cost and accuracy:</p>
+              <ul>
+                <li><strong>Per-horizon selection:</strong> Run independent selector for each H. Reveals that high-frequency features dominate short horizons while trend/seasonal features dominate long horizons. Most accurate; most expensive.</li>
+                <li><strong>Union selection:</strong> Union of features selected across all horizons. Conservative, safe, slightly redundant.</li>
+                <li><strong>DIRECT multi-output SHAP:</strong> Fit a multi-output model and aggregate SHAP values across horizons. Efficient; captures horizon-specific importance variation in a single model fit.</li>
+              </ul>
+            </MC>
+
+            <MC num="7.3" name="Multi-Objective Feature Selection (NSGA-II)" fam="hybrid">
+              <span className="xr">v2.1 §7.3</span>
+              <T>Mechanics</T>
+              <p>Real feature selection is rarely single-objective. You want good predictive performance, but also interpretability (fewer features), low inference latency (cheaper features — avoid expensive rolling statistics or external API calls), and minimal data acquisition cost. NSGA-II explores the Pareto front — the set of feature subsets where no objective can be improved without degrading another — giving stakeholders a choice of trade-off points rather than a single opinionated selection.</p>
+              <ParetoFront title="FIGURE 7.3 — NSGA-II Pareto front: MAE vs. feature count (green=non-dominated, red=dominated)"/>
+              <C desc="NSGA-II three-objective feature selection: MAE vs. count vs. compute cost" code={`<span class="cm"># pip install pymoo</span>
+<span class="kw">from</span> pymoo.core.problem <span class="kw">import</span> ElementwiseProblem
+<span class="kw">from</span> pymoo.algorithms.moo.nsga2 <span class="kw">import</span> NSGA2
+<span class="kw">from</span> pymoo.operators.sampling.rnd <span class="kw">import</span> BinaryRandomSampling
+<span class="kw">from</span> pymoo.operators.crossover.sbx <span class="kw">import</span> SBX
+<span class="kw">from</span> pymoo.operators.mutation.bitflip <span class="kw">import</span> BitflipMutation
+<span class="kw">from</span> pymoo.optimize <span class="kw">import</span> minimize
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit, cross_val_score
+<span class="kw">from</span> lightgbm <span class="kw">import</span> LGBMRegressor
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">class</span> <span class="nm">TSFSProblem</span>(ElementwiseProblem):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, X, y, costs, n_splits=<span class="nu">5</span>):
+        super().__init__(n_var=X.shape[<span class="nu">1</span>], n_obj=<span class="nu">3</span>, xl=<span class="nu">0</span>, xu=<span class="nu">1</span>, type_var=bool)
+        self.X, self.y, self.costs = X, y, costs
+        self.tscv = TimeSeriesSplit(n_splits=n_splits, gap=<span class="nu">1</span>)
+    <span class="kw">def</span> <span class="fn">_evaluate</span>(self, x, out, *args, **kwargs):
+        mask = x.astype(bool)
+        <span class="kw">if</span> mask.sum() == <span class="nu">0</span>: out[<span class="st">"F"</span>] = [<span class="nu">1e9</span>]*<span class="nu">3</span>; <span class="kw">return</span>
+        mae = -cross_val_score(LGBMRegressor(n_estimators=<span class="nu">150</span>, verbose=-<span class="nu">1</span>),
+                               self.X.iloc[:,mask], self.y,
+                               cv=self.tscv, scoring=<span class="st">'neg_mean_absolute_error'</span>).mean()
+        out[<span class="st">"F"</span>] = [mae, mask.sum(), self.costs[mask].mean()]
+
+<span class="kw">def</span> <span class="fn">nsga2_fs_ts</span>(X, y, costs, pop=<span class="nu">40</span>, gen=<span class="nu">30</span>) -> pd.DataFrame:
+    res = minimize(TSFSProblem(X, y, costs),
+                   NSGA2(pop_size=pop, sampling=BinaryRandomSampling(),
+                         crossover=SBX(.9), mutation=BitflipMutation(.1)),
+                   (<span class="st">'n_gen'</span>, gen), seed=<span class="nu">42</span>, verbose=<span class="nm">False</span>)
+    pareto = pd.DataFrame(res.F, columns=[<span class="st">'mae'</span>,<span class="st">'n_feats'</span>,<span class="st">'mean_cost'</span>])
+    pareto[<span class="st">'selected'</span>] = [X.columns[m.astype(bool)].tolist() <span class="kw">for</span> m <span class="kw">in</span> res.X]
+    <span class="kw">return</span> pareto.sort_values(<span class="st">'mae'</span>)`}/>
+              <N t="ng" icon="💡" title="Choosing a Pareto Point">
+                With the Pareto front in hand: engineering picks the point matching their latency budget, product picks the one matching interpretability requirements, data science confirms the performance floor. This is structurally better than arguing about a single "optimal" feature set that inevitably compromises some stakeholder's constraint.
+              </N>
+            </MC>
+
+            <MC num="7.4" name="Full Production Pipeline" fam="hybrid">
+              <span className="xr">v2.1 §7.4</span>
+              <T>Three-Stage Selection Architecture</T>
+              <p>The recommended production architecture runs three stages in sequence: a fast MI filter to reduce dimensionality, an ElasticNet refinement for sparse linear selection, and a final LightGBM model. All three stages run inside walk-forward CV with stability aggregation. The final feature set must pass the six-step diagnostic framework (Section II) before deployment.</p>
+              <C desc="Full three-stage sklearn-compatible pipeline with walk-forward stability" code={`<span class="kw">from</span> sklearn.pipeline <span class="kw">import</span> Pipeline
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> sklearn.feature_selection <span class="kw">import</span> mutual_info_regression
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> ElasticNetCV
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> TimeSeriesSplit, cross_val_score
+<span class="kw">from</span> sklearn.base <span class="kw">import</span> BaseEstimator, TransformerMixin
+<span class="kw">from</span> lightgbm <span class="kw">import</span> LGBMRegressor
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+
+<span class="kw">class</span> <span class="nm">MIFilter</span>(BaseEstimator, TransformerMixin):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, k=<span class="nu">40</span>, max_lag=<span class="nu">12</span>): self.k, self.max_lag, self.mask_=k,max_lag,<span class="nm">None</span>
+    <span class="kw">def</span> <span class="fn">fit</span>(self, X, y):
+        Xd, ys = pd.DataFrame(X), pd.Series(y)
+        scores = {c: max([mutual_info_regression(
+            Xd[c].shift(l).dropna().values.reshape(-<span class="nu">1</span>,<span class="nu">1</span>),
+            ys.iloc[l:].values, random_state=<span class="nu">0</span>)[<span class="nu">0</span>]
+            <span class="kw">for</span> l <span class="kw">in</span> range(<span class="nu">1</span>, self.max_lag+<span class="nu">1</span>)]+[<span class="nu">0</span>]) <span class="kw">for</span> c <span class="kw">in</span> Xd.columns}
+        top = sorted(scores, key=scores.get, reverse=<span class="nm">True</span>)[:self.k]
+        self.mask_ = [c <span class="kw">in</span> top <span class="kw">for</span> c <span class="kw">in</span> Xd.columns]
+        <span class="kw">return</span> self
+    <span class="kw">def</span> <span class="fn">transform</span>(self, X): <span class="kw">return</span> pd.DataFrame(X).iloc[:,self.mask_].values
+
+<span class="kw">class</span> <span class="nm">ENetMask</span>(BaseEstimator, TransformerMixin):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, n_splits=<span class="nu">5</span>): self.n_splits, self.mask_=n_splits, <span class="nm">None</span>
+    <span class="kw">def</span> <span class="fn">fit</span>(self, X, y):
+        en = ElasticNetCV(l1_ratio=[.<span class="nu">5</span>,.<span class="nu">9</span>,<span class="nu">1.</span>],
+                          cv=TimeSeriesSplit(self.n_splits), max_iter=<span class="nu">5000</span>)
+        en.fit(StandardScaler().fit_transform(X), y)
+        self.mask_ = en.coef_ != <span class="nu">0</span>
+        <span class="kw">if</span> self.mask_.sum()==<span class="nu">0</span>: self.mask_=np.ones(X.shape[<span class="nu">1</span>],dtype=bool)
+        <span class="kw">return</span> self
+    <span class="kw">def</span> <span class="fn">transform</span>(self, X): <span class="kw">return</span> X[:,self.mask_]
+
+pipeline = Pipeline([
+    (<span class="st">'sc1'</span>, StandardScaler()),
+    (<span class="st">'mi'</span>,  MIFilter(k=<span class="nu">40</span>, max_lag=<span class="nu">12</span>)),     <span class="cm"># Stage 1: coarse MI filter</span>
+    (<span class="st">'sc2'</span>, StandardScaler()),
+    (<span class="st">'en'</span>,  ENetMask(n_splits=<span class="nu">5</span>)),             <span class="cm"># Stage 2: sparse refinement</span>
+    (<span class="st">'lgbm'</span>,LGBMRegressor(n_estimators=<span class="nu">500</span>,    <span class="cm"># Stage 3: final model</span>
+                           learning_rate=<span class="nu">.05</span>, verbose=-<span class="nu">1</span>))
+])
+scores = cross_val_score(pipeline, X_train, y_train,
+                         cv=TimeSeriesSplit(n_splits=<span class="nu">5</span>, gap=<span class="nu">1</span>),
+                         scoring=<span class="st">'neg_mean_absolute_error'</span>)
+print(f<span class="st">f"Walk-forward MAE: {-scores.mean():.4f} +/- {scores.std():.4f}"</span>)`}/>
+            </MC>
+
+            {/* CLOSING */}
+            <div className="ch">
+              <div className="chh">
+                <span className="chn">C</span>
+                <div className="chi">
+                  <div className="chf">Closing Framework</div>
+                  <div className="cht">Decision Framework for Trusting a Feature Set</div>
+                </div>
+              </div>
+              <p>A feature set is trustworthy for production deployment when and only when it satisfies all nine of the following criteria. No individual criterion is sufficient alone — it is the conjunction that matters.</p>
+              {[
+                ["No future leakage","Every feature uses only information available at prediction time t. Exogenous feature release dates have been audited against forecast timestamps."],
+                ["Selection inside CV folds","selector.fit() is called exclusively on X_train in each fold. The full dataset, validation data, and test data never touched the selector."],
+                ["Stationarity preprocessed","ADF/KPSS tests run on all features and target. Non-stationary series first-differenced before use in statistical filter methods."],
+                ["Gap parameter set","TimeSeriesSplit(gap=H) with H equal to forecast horizon. Prevents train/val boundary leakage from autocorrelation at the split edge."],
+                ["Fold stability verified","Jaccard similarity between fold-selected sets ≥ 0.6. Features selected in < 60% of folds are excluded or re-investigated."],
+                ["Cross-method triangulation passed","At least one filter method and one embedded method agree on the core feature set. Features in only one method's output are flagged for additional scrutiny."],
+                ["AR-residual check clean","No feature with spurious_gap > 0.15 is included without domain-knowledge justification for its mechanistic relationship with the target."],
+                ["Block permutation validated","All selected features have positive block permutation importance on the held-out validation set. No features with negative (harmful) importance included."],
+                ["Out-of-time holdout passed","Model with selected features outperforms a model with only the top-3 most stable features by a margin that is economically meaningful — not just statistically significant. Both outperform the random noise baseline by at least 30%."],
+              ].map(([t,d])=>(
+                <div className="ds" key={t}>
+                  <div className="dn">✓</div>
+                  <div className="dbt"><div className="dbtit">{t}</div><div className="dbde">{d}</div></div>
+                </div>
+              ))}
+
+              <div style={{marginTop:"52px",paddingTop:"26px",borderTop:"1px solid var(--bd)",display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:"16px",alignItems:"flex-start"}}>
+                <div>
+                  <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:"9px",letterSpacing:"2px",textTransform:"uppercase",color:"var(--txd)",marginBottom:"8px"}}>References</div>
+                  <div style={{fontSize:"11px",color:"var(--txd)",lineHeight:"1.9"}}>
+                    Runge et al. (2019) PCMCI · Spirtes et al. (1995) FCI<br/>
+                    Peng et al. (2005) mRMR · Székely & Rizzo (2007) dCor<br/>
+                    Gretton et al. (2005) HSIC · Bogdan et al. (2015) SLOPE<br/>
+                    Strobl et al. (2008) Conditional Perm Imp<br/>
+                    Simon et al. (2013) Sparse Group LASSO<br/>
+                    Friston et al. (2003) DCM · Vovk et al. (2005) Conformal<br/>
+                    Lundberg & Lee (2017) SHAP · Yamada et al. (2020) STG<br/>
+                    Lim et al. (2021) TFT · Arik & Pfister (2021) TabNet<br/>
+                    Sundararajan et al. (2017) IG · Deb et al. (2002) NSGA-II<br/>
+                    Meinshausen & Bühlmann (2010) Stability Selection
+                  </div>
+                </div>
+                <div style={{textAlign:"right"}}>
+                  <div style={{fontFamily:"'DM Serif Display',serif",fontSize:"13px",color:"var(--txd)",fontStyle:"italic",maxWidth:"240px",lineHeight:"1.65"}}>Feature importance is not a measurement.<br/>It is a model-conditioned, sample-specific,<br/>assumption-laden estimate.</div>
+                  <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:"9px",color:"var(--teal)",marginTop:"10px",letterSpacing:"1px"}}>Deep Dive Companion · v1.0 · 47 Methods · 2025</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}

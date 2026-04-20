@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAG in 2026: Still Essential, No Longer Default</title>
+  <meta name="description" content="" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=DM+Serif+Display&family=Instrument+Sans:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- React / Recharts / Babel (UMD from unpkg) -->
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+  <script crossorigin src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+</head>
+<body>
+  <!-- Compact header bar -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">RAG in 2026: Still Essential, No Longer Default</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date"></span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+        
+      </div>
+      <a class="index-link" href="../index.html">All articles</a>
+    </div>
+  </header>
+
+  <!-- Render target -->
+  <main class="article-container">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem; font-family:serif;">
+        This article requires JavaScript to render the embedded React/Recharts components.
+      </p>
+    </noscript>
+    <div id="error-boundary" style="display:none; padding:2rem; background:#fff3f3; border:1px solid #f5c2c2; border-radius:8px; font-family:ui-monospace,monospace;"></div>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>rag-2026-definitive-guide</code> &middot; category: <code>general</code></span>
+      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Expose React hooks + Recharts components into global scope for the JSX block -->
+  <script>
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useMemo = React.useMemo;
+    window.useRef = React.useRef;
+    window.useCallback = React.useCallback;
+    window.useReducer = React.useReducer;
+    window.useLayoutEffect = React.useLayoutEffect;
+    window.useContext = React.useContext;
+    window.Fragment = React.Fragment;
+
+    // Expose Recharts components into global scope
+    const _R = window.Recharts || {};
+    [
+      'LineChart','BarChart','AreaChart','ScatterChart','RadarChart','PieChart',
+      'XAxis','YAxis','CartesianGrid','Tooltip','Legend','Line','Bar','Area',
+      'Scatter','Pie','Cell','ResponsiveContainer','ReferenceLine','ReferenceArea',
+      'ComposedChart','Treemap','Radar','PolarGrid','PolarAngleAxis','PolarRadiusAxis',
+      'RadialBar','RadialBarChart','FunnelChart','Funnel','LabelList','Label','Brush',
+      'Sankey','Sector'
+    ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
+
+    // Simple error surface for Babel / runtime failures
+    window.addEventListener('error', function (e) {
+      var box = document.getElementById('error-boundary');
+      if (!box) return;
+      box.style.display = 'block';
+      box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
+    });
+  </script>
+
+  <!-- JSX payload compiled in-browser by Babel Standalone -->
+  <script type="text/babel" data-presets="react">
+    
+const C={bg:"#FAFBFC",card:"#FFFFFF",border:"#E2E8F0",accent:"#4F46E5",accentLight:"#EEF2FF",accentDark:"#312E81",text:"#1E293B",muted:"#64748B",light:"#94A3B8",code:"#1E1E2E",codeBg:"#F1F5F9",warn:"#F59E0B",warnBg:"#FFFBEB",info:"#3B82F6",infoBg:"#EFF6FF",green:"#10B981",red:"#EF4444",purple:"#7C3AED",orange:"#F97316",tipBg:"#F0FDF4",indigo:"#6366F1",violet:"#8B5CF6",sky:"#0EA5E9",amber:"#D97706",teal:"#0F766E"};
+const F={h:"'Newsreader',Georgia,serif",b:"'Inter',-apple-system,sans-serif",m:"'JetBrains Mono','Fira Code',monospace"};
+
+// ═══ DIAGRAMS ═══
+const RAGPipeline=()=>(<svg viewBox="0 0 860 170" style={{width:"100%",display:"block"}}><rect width="860" height="170" fill={C.bg} rx="8"/>{[{x:5,w:110,l:"User Query",sub:"natural language\nquestion",c:C.accent,icon:"💬"},{x:128,w:110,l:"Embedding",sub:"text → vector\n(1536-dim)",c:C.violet,icon:"🔢"},{x:251,w:110,l:"Retrieve",sub:"vector search\ntop-k chunks",c:C.sky,icon:"🔍"},{x:374,w:110,l:"Rerank",sub:"cross-encoder\nprecision filter",c:C.amber,icon:"🎯"},{x:497,w:110,l:"Augment",sub:"chunks → prompt\ncontext window",c:C.teal,icon:"📋"},{x:620,w:110,l:"Generate",sub:"LLM produces\ngrounded answer",c:C.green,icon:"✍️"},{x:743,w:110,l:"Cite",sub:"source attribution\naudit trail",c:C.orange,icon:"📎"}].map((b,i)=>(<g key={i}>{i>0&&<path d={`M${b.x-8},85 L${b.x},85`} stroke={C.border} strokeWidth="1.5" markerEnd="url(#rp)"/>}<rect x={b.x} y="10" width={b.w} height="150" rx="8" fill="#fff" stroke={b.c} strokeWidth="1.5"/><text x={b.x+b.w/2} y="38" textAnchor="middle" fontSize="18">{b.icon}</text>{b.l.split("\n").map((ln,li)=>(<text key={`l${li}`} x={b.x+b.w/2} y={56+li*13} textAnchor="middle" fill={C.text} fontSize="10" fontFamily={F.b} fontWeight="700">{ln}</text>))}{b.sub.split("\n").map((ln,li)=>(<text key={`s${li}`} x={b.x+b.w/2} y={82+li*12} textAnchor="middle" fill={C.muted} fontSize="8" fontFamily={F.m}>{ln}</text>))}</g>))}<defs><marker id="rp" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill={C.border}/></marker></defs></svg>);
+
+const ParadigmShift=()=>(<svg viewBox="0 0 760 220" style={{width:"100%",display:"block"}}><rect width="760" height="220" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/><text x="380" y="24" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">2023 → 2026: The Four Paradigm Shifts Challenging RAG</text>{[{x:30,w:165,title:"Long Context",sub:"Gemini 2M tokens\nClaude 200K\nGPT-4o 128K",c:C.sky,icon:"📏"},{x:210,w:165,title:"Agentic AI",sub:"Tool-use, MCP\nMulti-step reasoning\nReal-time search",c:C.accent,icon:"🤖"},{x:390,w:165,title:"Fine-Tuning",sub:"LoRA/QLoRA\nKnowledge distillation\nBake it in weights",c:C.amber,icon:"🧬"},{x:570,w:165,title:"GraphRAG",sub:"Knowledge graphs\nCommunity detection\nRelational reasoning",c:C.green,icon:"🕸️"}].map((p,i)=>(<g key={i}><rect x={p.x} y="42" width={p.w} height="150" rx="6" fill={p.c} opacity="0.08" stroke={p.c} strokeWidth="1.5"/><text x={p.x+p.w/2} y="62" textAnchor="middle" fontSize="20">{p.icon}</text><text x={p.x+p.w/2} y="82" textAnchor="middle" fill={p.c} fontSize="11" fontFamily={F.b} fontWeight="700">{p.title}</text>{p.sub.split("\n").map((ln,li)=>(<text key={li} x={p.x+p.w/2} y={100+li*14} textAnchor="middle" fill={C.text} fontSize="9" fontFamily={F.m}>{ln}</text>))}<text x={p.x+p.w/2} y="175" textAnchor="middle" fill={C.muted} fontSize="8" fontFamily={F.b}>{["When all docs fit","When agent can search","When data is stable","When relations matter"][i]}</text></g>))}<text x="380" y="212" textAnchor="middle" fill={C.light} fontSize="8" fontFamily={F.b}>Each shift reduces RAG's necessity for specific use cases — but none eliminates it entirely.</text></svg>);
+
+const DecisionMatrix=()=>(<svg viewBox="0 0 760 250" style={{width:"100%",display:"block"}}><rect width="760" height="250" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/><text x="380" y="24" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">Decision Matrix: RAG vs. Long Context vs. Fine-Tuning vs. Agentic</text><line x1="40" y1="50" x2="740" y2="50" stroke={C.border} strokeWidth="1"/>{["","RAG","Long Context","Fine-Tune","Agentic"].map((h,i)=>(<text key={i} x={40+i*140} y="44" fill={C.accent} fontSize="9" fontFamily={F.b} fontWeight="700">{h}</text>))}{[["Scale (100K+ docs)","✓✓✓","✗","✓","✓✓"],["Freshness (daily)","✓✓✓","✓✓","✗","✓✓✓"],["Cost per query","✓✓✓","✗","✓✓✓","✓✓"],["Citations/audit","✓✓✓","✓","✗","✓✓"],["Accuracy","✓✓","✓✓✓","✓✓","✓✓✓"],["Latency","✓✓","✓✓✓","✓✓✓","✓"],["Simplicity","✓✓","✓✓✓","✓","✗"],["Multi-hop reason","✓","✓✓","✓","✓✓✓"]].map((row,r)=>{const y=70+r*22;return(<g key={r}>{r%2===0&&<rect x="40" y={y-10} width="700" height="22" fill={C.codeBg} rx="2"/>}{row.map((cell,c)=>(<text key={c} x={c===0?45:40+c*140} y={y+2} fill={c===0?C.text:cell.length>6?C.green:cell.length>3?C.amber:C.red} fontSize="9" fontFamily={c===0?F.b:F.m} fontWeight={c===0?"600":"400"}>{cell}</text>))}</g>);})}<text x="380" y="242" textAnchor="middle" fill={C.light} fontSize="8" fontFamily={F.b}>✓✓✓ = strong fit · ✓✓ = adequate · ✓ = possible but not ideal · ✗ = poor fit</text></svg>);
+
+const AgenticRAGDiag=()=>(<svg viewBox="0 0 760 260" style={{width:"100%",display:"block"}}><rect width="760" height="260" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/><text x="380" y="24" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">Agentic RAG: The Agent Orchestrates When and How to Retrieve</text><rect x="280" y="45" width="200" height="55" rx="8" fill={C.accent} opacity="0.8"/><text x="380" y="68" textAnchor="middle" fill="#fff" fontSize="11" fontFamily={F.b} fontWeight="700">Orchestrator Agent</text><text x="380" y="85" textAnchor="middle" fill="#fff" fontSize="8" fontFamily={F.m}>plan · route · reflect · decide</text>{[{x:30,y:140,w:140,h:70,l:"Vector DB\nRetrieval",c:C.sky},{x:190,y:140,w:140,h:70,l:"Web Search\n(live data)",c:C.green},{x:350,y:140,w:140,h:70,l:"SQL / API\n(structured)",c:C.amber},{x:510,y:140,w:140,h:70,l:"Knowledge\nGraph",c:C.purple},{x:670,y:140,w:70,h:70,l:"LLM\nMemory",c:C.red}].map((t,i)=>(<g key={i}><rect x={t.x} y={t.y} width={t.w} height={t.h} rx="6" fill={t.c} opacity="0.6"/>{t.l.split("\n").map((ln,li)=>(<text key={li} x={t.x+t.w/2} y={t.y+22+li*16} textAnchor="middle" fill="#fff" fontSize="9" fontFamily={F.b} fontWeight={li===0?"700":"400"}>{ln}</text>))}<line x1={t.x+t.w/2} y1={t.y} x2="380" y2="100" stroke={C.border} strokeWidth="1" strokeDasharray="4,3"/></g>))}<text x="380" y="245" textAnchor="middle" fill={C.muted} fontSize="9" fontFamily={F.b}>The agent decides per-query: retrieve from vectors? search the web? query a database? use parametric memory? combine multiple?</text></svg>);
+
+const FrameworkLandscape=()=>(<svg viewBox="0 0 760 240" style={{width:"100%",display:"block"}}><rect width="760" height="240" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/><text x="380" y="24" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">RAG Framework Landscape (2026)</text><line x1="60" y1="215" x2="720" y2="215" stroke={C.border} strokeWidth="1"/><line x1="60" y1="215" x2="60" y2="45" stroke={C.border} strokeWidth="1"/><text x="390" y="234" textAnchor="middle" fill={C.light} fontSize="9" fontFamily={F.b}>Abstraction Level →</text><text x="25" y="133" textAnchor="middle" fill={C.light} fontSize="9" fontFamily={F.b} transform="rotate(-90,25,133)">Agentic Capability →</text>{[{n:"FAISS",x:110,y:185,r:12,c:C.light},{n:"Chroma",x:150,y:175,r:11,c:C.light},{n:"LangChain",x:320,y:95,r:20,c:C.accent},{n:"LlamaIndex",x:380,y:85,r:19,c:C.violet},{n:"Haystack",x:290,y:110,r:15,c:C.sky},{n:"DSPy",x:440,y:70,r:14,c:C.green},{n:"RAGFlow",x:250,y:140,r:13,c:C.amber},{n:"Vectara",x:500,y:115,r:13,c:C.orange},{n:"Bedrock KB",x:560,y:130,r:14,c:C.amber},{n:"Azure AI",x:600,y:110,r:13,c:C.sky},{n:"Vertex RAG",x:640,y:125,r:12,c:C.green},{n:"Pinecone",x:190,y:165,r:13,c:C.purple},{n:"Weaviate",x:220,y:155,r:13,c:C.teal}].map((d,i)=>(<g key={i}><circle cx={d.x} cy={d.y} r={d.r} fill={d.c} opacity="0.4" stroke={d.c} strokeWidth="1.5"/><text x={d.x} y={d.y+d.r+11} textAnchor="middle" fill={C.text} fontSize="7" fontFamily={F.b} fontWeight="600">{d.n}</text></g>))}<rect x="90" y="48" width="70" height="14" rx="3" fill={C.codeBg}/><text x="125" y="59" textAnchor="middle" fill={C.muted} fontSize="7" fontFamily={F.b}>Vector DBs</text><rect x="500" y="52" width="80" height="14" rx="3" fill={C.codeBg}/><text x="540" y="63" textAnchor="middle" fill={C.muted} fontSize="7" fontFamily={F.b}>Managed/Cloud</text></svg>);
+
+const EvalDiag=()=>(<svg viewBox="0 0 760 165" style={{width:"100%",display:"block"}}><rect width="760" height="165" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/><text x="380" y="22" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">RAG Evaluation: RAGAS Framework Metrics</text>{[{x:30,w:170,title:"Faithfulness",desc:"Is the answer supported\nby retrieved context?",c:C.green,icon:"✓"},{x:210,w:170,title:"Answer Relevance",desc:"Does the answer address\nthe original question?",c:C.accent,icon:"🎯"},{x:390,w:170,title:"Context Precision",desc:"Are retrieved chunks\nactually relevant?",c:C.sky,icon:"🔍"},{x:570,w:170,title:"Context Recall",desc:"Did retrieval find all\nneeded information?",c:C.amber,icon:"📦"}].map((m,i)=>(<g key={i}><rect x={m.x} y="35" width={m.w} height="115" rx="6" fill={m.c} opacity="0.08" stroke={m.c} strokeWidth="1"/><text x={m.x+m.w/2} y="55" textAnchor="middle" fontSize="16">{m.icon}</text><text x={m.x+m.w/2} y="73" textAnchor="middle" fill={m.c} fontSize="11" fontFamily={F.b} fontWeight="700">{m.title}</text>{m.desc.split("\n").map((ln,li)=>(<text key={li} x={m.x+m.w/2} y={93+li*14} textAnchor="middle" fill={C.text} fontSize="8.5" fontFamily={F.b}>{ln}</text>))}</g>))}</svg>);
+
+const ChunkDiag=()=>(<svg viewBox="0 0 760 190" style={{width:"100%",display:"block"}}><rect width="760" height="190" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/><text x="380" y="22" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">Chunking Strategies: The Most Important RAG Decision</text>{[{x:25,w:115,title:"Fixed-Size",desc:"512 tokens\nwith overlap",pro:"Simple, fast",con:"Breaks semantics",c:C.light},{x:150,w:115,title:"Sentence",desc:"NLP sentence\nboundaries",pro:"Natural units",con:"Uneven sizes",c:C.sky},{x:275,w:115,title:"Semantic",desc:"Embedding\nsimilarity split",pro:"Coherent topics",con:"Compute cost",c:C.accent},{x:400,w:115,title:"Recursive",desc:"Hierarchy:\nparagraph then\nsentence split",pro:"Respects structure",con:"Tuning needed",c:C.violet},{x:525,w:115,title:"Parent-Doc",desc:"Small chunks →\nretrieve parent",pro:"Precision + context",con:"More complex",c:C.green},{x:650,w:95,title:"Late\nChunking",desc:"Embed full doc\nchunk after",pro:"Best quality",con:"Newest, costly",c:C.amber}].map((s,i)=>(<g key={i}><rect x={s.x} y="35" width={s.w} height="140" rx="6" fill={s.c} opacity="0.08" stroke={s.c} strokeWidth="1"/><text x={s.x+s.w/2} y="52" textAnchor="middle" fill={s.c} fontSize="10" fontFamily={F.b} fontWeight="700">{s.title}</text>{s.desc.split("\n").map((ln,li)=>(<text key={`d${li}`} x={s.x+s.w/2} y={68+li*12} textAnchor="middle" fill={C.text} fontSize="8" fontFamily={F.m}>{ln}</text>))}<text x={s.x+s.w/2} y={108} textAnchor="middle" fill={C.green} fontSize="8" fontFamily={F.b}>+ {s.pro}</text><text x={s.x+s.w/2} y={122} textAnchor="middle" fill={C.red} fontSize="8" fontFamily={F.b}>− {s.con}</text></g>))}<text x="380" y="182" textAnchor="middle" fill={C.light} fontSize="8" fontFamily={F.b}>Chunking quality determines RAG quality more than any other single factor.</text></svg>);
+
+const VerdictDiag=()=>(<svg viewBox="0 0 760 170" style={{width:"100%",display:"block"}}><rect width="760" height="170" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/><text x="380" y="22" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">The 2026 Verdict: RAG Is Not Dead — It's Specialised</text>{[{x:30,w:165,title:"RAG Essential",items:"100K+ doc scale\nDaily-changing data\nCitations required\nCost-sensitive",c:C.green},{x:210,w:165,title:"Long Context Wins",items:"Small doc sets\nUnder 200K tokens\nSimple Q&A\nSpeed matters",c:C.sky},{x:390,w:165,title:"Agentic Wins",items:"Multi-step reasoning\nLive data needed\nTool orchestration\nVerification loops",c:C.accent},{x:570,w:165,title:"Fine-Tune Wins",items:"Stable domain knowledge\nLatency-critical\nHigh volume\nNo citations needed",c:C.amber}].map((v,i)=>(<g key={i}><rect x={v.x} y="35" width={v.w} height="120" rx="6" fill={v.c} opacity="0.1" stroke={v.c} strokeWidth="1.5"/><text x={v.x+v.w/2} y="55" textAnchor="middle" fill={v.c} fontSize="10" fontFamily={F.b} fontWeight="700">{v.title}</text>{v.items.split("\n").map((ln,li)=>(<text key={li} x={v.x+v.w/2} y={73+li*14} textAnchor="middle" fill={C.text} fontSize="8.5" fontFamily={F.b}>{ln}</text>))}</g>))}</svg>);
+
+// ═══ COMPONENTS ═══
+const Code=({children,title})=>(<div style={{margin:"24px 0",borderRadius:8,overflow:"hidden",border:`1px solid ${C.border}`}}>{title&&<div style={{background:C.code,padding:"8px 16px",fontFamily:F.m,fontSize:11,color:"#A78BFA",letterSpacing:"0.05em"}}>{title}</div>}<pre style={{background:C.code,padding:"16px 20px",margin:0,overflowX:"auto",fontSize:12.5,lineHeight:1.7,fontFamily:F.m,color:"#E2E8F0"}}><code>{children}</code></pre></div>);
+const NB=({children,title,n})=>(<div style={{margin:"24px 0",borderRadius:8,overflow:"hidden",border:`1px solid ${C.border}`,borderLeft:`3px solid ${C.green}`}}><div style={{background:C.code,padding:"8px 16px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontFamily:F.m,fontSize:11,color:"#A78BFA",letterSpacing:"0.05em"}}>{title}</span><span style={{fontFamily:F.m,fontSize:10,color:C.green,background:"rgba(16,185,129,0.15)",padding:"2px 8px",borderRadius:4}}>Cell {n}</span></div><pre style={{background:C.code,padding:"16px 20px",margin:0,overflowX:"auto",fontSize:12.5,lineHeight:1.7,fontFamily:F.m,color:"#E2E8F0"}}><code>{children}</code></pre></div>);
+const Callout=({type="info",title,children})=>{const s={info:{bg:C.infoBg,border:C.info,icon:"💡"},warn:{bg:C.warnBg,border:C.warn,icon:"⚠️"},tip:{bg:C.tipBg,border:C.green,icon:"✅"}}[type];return(<div style={{margin:"28px 0",padding:"20px 24px",background:s.bg,borderLeft:`4px solid ${s.border}`,borderRadius:"0 8px 8px 0"}}><div style={{fontFamily:F.b,fontSize:13,fontWeight:700,color:s.border,marginBottom:6}}>{s.icon} {title}</div><div style={{fontFamily:F.b,fontSize:14,lineHeight:1.7,color:C.text}} dangerouslySetInnerHTML={{__html:children}}/></div>);};
+const Sec=({n,title,children})=>(<div style={{margin:"56px 0 0"}}><div style={{display:"flex",alignItems:"baseline",gap:12,marginBottom:20}}><span style={{fontFamily:F.m,fontSize:13,color:C.accent,fontWeight:700}}>§{n}</span><h2 style={{fontFamily:F.h,fontSize:28,fontWeight:700,color:C.text,lineHeight:1.2}}>{title}</h2></div>{children}</div>);
+const P=({children})=>(<p style={{fontFamily:F.b,fontSize:16,lineHeight:1.8,color:C.text,margin:"0 0 18px"}} dangerouslySetInnerHTML={{__html:children}}/>);
+const H3=({children})=>(<h3 style={{fontFamily:F.h,fontSize:20,fontWeight:600,color:C.text,margin:"28px 0 12px"}}>{children}</h3>);
+const Cap=({children})=>(<div style={{fontFamily:F.b,fontSize:12,color:C.light,marginTop:8,marginBottom:28}}>{children}</div>);
+
+function Article(){return(<div style={{background:C.bg,minHeight:"100vh",margin:0,padding:0}}>
+<style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{background:${C.bg}}`}</style>
+<div style={{background:C.accent,padding:"12px 24px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}><span style={{fontFamily:F.m,fontSize:11,color:"#E0E7FF",letterSpacing:"0.1em",textTransform:"uppercase"}}>Technical Encyclopaedic Article</span><span style={{fontFamily:F.m,fontSize:11,color:"#E0E7FF"}}>GenAI · RAG · Agentic AI · 2026</span></div>
+<div style={{maxWidth:820,margin:"0 auto",padding:"60px 24px 0"}}><div style={{fontFamily:F.m,fontSize:12,color:C.accent,fontWeight:600,letterSpacing:"0.08em",marginBottom:12}}>RETRIEVAL-AUGMENTED GENERATION IN THE AGE OF AGENTS</div><h1 style={{fontFamily:F.h,fontSize:"clamp(28px,4.5vw,44px)",fontWeight:700,color:C.text,lineHeight:1.15,marginBottom:20}}>RAG in 2026: Still Essential, No Longer Default</h1><p style={{fontFamily:F.b,fontSize:18,color:C.muted,lineHeight:1.6,maxWidth:680,marginBottom:12}}>Long-context models can swallow 2 million tokens. Agents can search, verify, and reason in real time. Fine-tuning bakes knowledge into weights. So why are enterprises still building RAG pipelines — and when should they stop? An honest, evidence-based assessment.</p><div style={{fontFamily:F.b,fontSize:13,color:C.light,marginBottom:40}}>LangChain · LlamaIndex · OpenAI · Anthropic · Google · Pinecone · FAISS · RAGAS · Self-RAG · CRAG · GraphRAG · 2024–2026</div><div style={{height:1,background:C.border,marginBottom:20}}/></div>
+<div style={{maxWidth:820,margin:"0 auto",padding:"0 24px 80px"}}>
+
+<Sec n="1" title="The Question Everyone Is Asking">
+  <P>{`It's April 2026. Your team has spent six months building a RAG pipeline — chunking 50,000 internal documents, embedding them with OpenAI's text-embedding-3-large, storing them in Pinecone, retrieving top-5 chunks per query, reranking with Cohere Rerank, and generating answers with Claude. The pipeline works. Accuracy is 87% on your evaluation set. Latency is 2.3 seconds. Cost is $0.004 per query. Then your CTO reads an article about Gemini 2.0 with its 2-million-token context window, watches a demo of an AI agent that searches the web and reads documents in real time, and asks: "Why are we maintaining all this infrastructure when the model can just read everything?"`}</P>
+  <P>{`It's a fair question. In 2023, when context windows were 8K tokens and models hallucinated constantly, RAG was the only viable architecture for knowledge-grounded AI. In 2026, four paradigm shifts — long-context models, agentic AI, fine-tuning advances, and graph-based retrieval — have fundamentally changed the calculus. RAG is not dead. But it is no longer the default answer to every knowledge-grounding problem. The decision is now: <strong>retrieval vs. context stuffing vs. fine-tuning vs. agentic tool-use</strong> — and the answer depends on scale, freshness, cost, auditability, and accuracy requirements.`}</P>
+  <P>{`This article covers everything: the original RAG formulation and why it was a breakthrough; the paradigm shifts that challenge its relevance; where RAG remains essential and where it's being replaced; the competitive landscape of frameworks and managed services; advanced patterns from Self-RAG to Agentic RAG; evaluation methodology; and an honest decision framework for 2026. Every concept section contains a runnable notebook cell — green-bordered cells 0–9 form a complete working RAG pipeline.`}</P>
+</Sec>
+
+<NB title="00_setup.py" n={0}>{`# pip install langchain langchain-openai chromadb sentence-transformers ragas
+# pip install langchain-community tiktoken
+import os
+# os.environ["OPENAI_API_KEY"] = "sk-..."  # set your key
+
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.document_loaders import TextLoader
+from langchain.schema import Document
+import numpy as np
+
+# Generate synthetic corpus: 50 internal policy documents
+np.random.seed(42)
+topics = ["remote work policy","expense reimbursement","data security",
+          "hiring process","performance reviews","leave policy",
+          "travel guidelines","IT support","onboarding","code of conduct"]
+documents = []
+for i in range(50):
+    topic = topics[i % len(topics)]
+    text = f"Document {"{"}i+1{"}"}: {"{"}topic.title(){"}"} Policy\\n\\n"
+    text += f"This document outlines the company's {"{"}topic{"}"} procedures. "
+    text += f"Effective date: 2025-0{"{"}(i%9)+1{"}"}-01. Version {"{"}i//10 + 1{"}"}.{"{"}i%10{"}"}.\\n\\n"
+    text += f"Section 1: Overview of {"{"}topic{"}"}. " * 5
+    text += f"\\nSection 2: Detailed procedures for {"{"}topic{"}"}. " * 8
+    text += f"\\nSection 3: Exceptions and escalation for {"{"}topic{"}"}. " * 4
+    documents.append(Document(page_content=text, metadata={"{"}"source": f"doc_{"{"}i+1{"}"}", "topic": topic{"}"}))
+
+print(f"Created {"{"}len(documents){"}"} synthetic documents")`}</NB>
+
+<Callout type="info" title="Notebook Map">{`<strong>Cells 0–9</strong> woven throughout: <code>Cell 0</code> Setup (§1) · <code>Cell 1</code> Chunking (§3) · <code>Cell 2</code> Embedding + Vector Store (§4) · <code>Cell 3</code> Retrieval + Reranking (§5) · <code>Cell 4</code> RAG Chain (§6) · <code>Cell 5</code> Self-RAG Pattern (§9) · <code>Cell 6</code> Agentic RAG (§10) · <code>Cell 7</code> Evaluation (§14) · <code>Cell 8</code> Long Context Comparison (§7) · <code>Cell 9</code> Decision Router (§17)`}</Callout>
+
+<RAGPipeline/>
+<Cap>The classic RAG pipeline: query → embed → retrieve → rerank → augment prompt → generate → cite. Each stage maps to a notebook cell in this article.</Cap>
+
+<Sec n="2" title="The Original RAG: Lewis et al. (NeurIPS 2020)">
+  <P>{`Retrieval-Augmented Generation was formalised by Patrick Lewis, Ethan Perez, and colleagues at Meta AI (FAIR) in their NeurIPS 2020 paper. The core idea: instead of relying solely on the parametric knowledge stored in a language model's weights, augment the generation process with non-parametric memory — a retrieval step that fetches relevant documents from an external corpus. The probabilistic formulation is: <code>p(y|x) = Σ_z p(y|x,z) · p(z|x)</code>, where <em>x</em> is the input query, <em>z</em> is a retrieved document, and <em>y</em> is the generated output. The model marginalises over retrieved documents, combining retrieval probability with generation probability.`}</P>
+  <P>{`The original implementation used DPR (Dense Passage Retrieval, Karpukhin et al. 2020) as the retriever — a dual-encoder architecture that embeds queries and passages into a shared vector space, where relevance is measured by inner product. The generator was BART (Lewis et al. 2020), a sequence-to-sequence model. Two variants were proposed: RAG-Sequence (one document per generation) and RAG-Token (different documents can be retrieved for different tokens). The paper demonstrated state-of-the-art results on open-domain QA, fact verification, and knowledge-intensive NLP tasks — outperforming models with 25x more parameters.`}</P>
+  <P>{`Why this was a breakthrough: it decoupled knowledge storage from knowledge use. A language model no longer needed to memorise every fact during pre-training — it could look facts up at inference time from an updatable external store. This meant knowledge could be refreshed without retraining, attributed to specific sources, and controlled by the operator. These three properties — freshness, attribution, and control — remain the core value proposition of RAG in 2026, even as the implementation details have changed entirely.`}</P>
+</Sec>
+
+<Sec n="3" title="Chunking: The Most Important RAG Decision">
+  <P>{`Before retrieval can work, documents must be split into chunks — segments small enough to be embedded and retrieved individually but large enough to carry meaningful context. This sounds like plumbing. In practice, chunking quality determines RAG quality more than the choice of embedding model, vector database, or LLM. A poorly chunked corpus produces irrelevant retrievals regardless of how good the rest of the pipeline is.`}</P>
+  <ChunkDiag/>
+  <Cap>Six chunking strategies, from simplest (fixed-size) to most sophisticated (late chunking). Each trades off simplicity against semantic coherence. Parent-document and recursive chunking are the current production defaults.</Cap>
+  <P>{`<strong>Fixed-size chunking</strong> (512 tokens with 50-token overlap) is the simplest: it's fast, deterministic, and requires no NLP. But it breaks sentences mid-thought and splits related paragraphs into separate chunks. <strong>Sentence-level chunking</strong> respects natural language boundaries but produces uneven chunk sizes. <strong>Semantic chunking</strong> uses embedding similarity to detect topic shifts and splits at natural breakpoints — more expensive but produces coherent topical chunks. <strong>Recursive chunking</strong> (LangChain's default) splits hierarchically: first by double-newlines, then by single-newlines, then by sentences — respecting document structure. <strong>Parent-document chunking</strong> retrieves small chunks for precision but returns the larger parent document for context — the best of both worlds for many use cases. <strong>Late chunking</strong> (Jina AI, 2024) embeds the full document first, then chunks after embedding — preserving cross-chunk context that other methods lose.`}</P>
+  <NB title="01_chunking.py" n={1}>{`# Recursive chunking — the production default
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,         # target chunk size in chars
+    chunk_overlap=50,       # overlap to preserve context
+    separators=["\\n\\n", "\\n", ". ", " ", ""],  # hierarchy
+    length_function=len,
+)
+
+chunks = splitter.split_documents(documents)
+print(f"Split {"{"}len(documents){"}"} docs into {"{"}len(chunks){"}"} chunks")
+print(f"Avg chunk size: {"{"}np.mean([len(c.page_content) for c in chunks]):.0f{"}"} chars")
+# Each chunk retains metadata from the parent document`}</NB>
+</Sec>
+
+<Sec n="4" title="Embeddings and Vector Search">
+  <P>{`Chunks become vectors through embedding models — neural networks that map text to dense numerical representations where semantic similarity corresponds to geometric proximity. The embedding landscape in 2026 is dominated by a handful of models: OpenAI's text-embedding-3-large (3072 dimensions, best-in-class on MTEB benchmarks), Cohere's embed-v3 (1024 dimensions, multilingual), BGE (BAAI, open-source, strong on retrieval tasks), E5-mistral (Microsoft, instruction-tuned), GTE (Alibaba), and Jina's v3 embeddings (late-interaction architecture). The choice matters less than most practitioners think — the top 5 models are within 2-3% of each other on standard benchmarks. What matters more is matching the embedding model to your domain and keeping the chunking strategy consistent.`}</P>
+  <P>{`Vector databases store these embeddings and support fast approximate nearest-neighbour (ANN) search. The landscape: <strong>Pinecone</strong> (fully managed, serverless, simplest to operate), <strong>Weaviate</strong> (hybrid search built-in, strong filtering), <strong>Qdrant</strong> (Rust-based, fast, good developer experience), <strong>Milvus</strong> (distributed, petabyte-scale), <strong>Chroma</strong> (lightweight, Python-native, great for prototyping), <strong>pgvector</strong> (PostgreSQL extension, use when you already have Postgres), <strong>FAISS</strong> (Meta, in-memory, fastest for pure vector search but no database features). For production enterprise RAG, Pinecone and Weaviate dominate; for prototyping and small-scale, Chroma; for existing Postgres infrastructure, pgvector.`}</P>
+  <NB title="02_embed_store.py" n={2}>{`# Embed chunks and store in Chroma (local, for prototyping)
+embedding_model = HuggingFaceEmbeddings(
+    model_name="BAAI/bge-small-en-v1.5",  # lightweight, good quality
+    model_kwargs={"{"}"device": "cpu"{"}"},
+)
+
+vectorstore = Chroma.from_documents(
+    documents=chunks,
+    embedding=embedding_model,
+    collection_name="policy_docs",
+)
+print(f"Stored {"{"}len(chunks){"}"} chunks in Chroma")
+# For production: replace with Pinecone, Weaviate, or Qdrant`}</NB>
+</Sec>
+
+<Sec n="5" title="Retrieval and Reranking">
+  <P>{`Raw vector search returns the top-k chunks by cosine similarity — but similarity is not relevance. A chunk about "work from home policies" and a chunk about "home insurance coverage" may have similar embeddings but very different relevance to a question about remote work. This is where reranking enters: a cross-encoder model that takes the query and each candidate chunk as a pair and scores their relevance more precisely than the bi-encoder used for initial retrieval. Cross-encoders like Cohere Rerank, ColBERT (Khattab, Stanford), and BGE-reranker-v2 can improve retrieval precision by 15-30% on typical benchmarks.`}</P>
+  <P>{`<strong>Hybrid search</strong> — combining BM25 (keyword/lexical) with dense (vector) retrieval — is now the production default. BM25 catches exact term matches that dense retrieval misses (acronyms, product codes, legal clause numbers); dense retrieval catches semantic matches that BM25 misses ("What's our WFH policy?" matching a document titled "Remote Work Guidelines"). The fusion is typically done via Reciprocal Rank Fusion (RRF): <code>score = Σ 1/(k + rank_i)</code> across the retrieval methods. Weaviate and Elasticsearch support hybrid search natively; for other vector stores, implement it at the application layer.`}</P>
+  <P>{`The key insight: <strong>retrieval precision matters more than retrieval recall for generation quality.</strong> Retrieving 10 chunks of which 3 are relevant produces better generation than retrieving 20 chunks of which 3 are relevant — because the irrelevant chunks dilute the signal and can mislead the generator. This is the "retrieved garbage in, hallucinated garbage out" problem. Reranking is the most cost-effective intervention to fix it.`}</P>
+  <NB title="03_retrieve_rerank.py" n={3}>{`# Basic retrieval
+retriever = vectorstore.as_retriever(
+    search_type="similarity",
+    search_kwargs={"{"}"k": 10{"}"},  # retrieve more, then rerank
+)
+
+query = "What is the company's remote work policy?"
+raw_results = retriever.invoke(query)
+print(f"Retrieved {"{"}len(raw_results){"}"} chunks")
+for i, doc in enumerate(raw_results[:3]):
+    print(f"  [{"{"}i{"}"}] {"{"}doc.metadata.get('topic','?'){"}"} — {"{"}doc.page_content[:80]{"}"}...")
+
+# In production: add reranking
+# from langchain.retrievers import ContextualCompressionRetriever
+# from langchain_cohere import CohereRerank
+# reranker = CohereRerank(top_n=5)
+# retriever = ContextualCompressionRetriever(
+#     base_compressor=reranker, base_retriever=retriever
+# )`}</NB>
+</Sec>
+
+<Sec n="6" title="The RAG Chain: Retrieval Meets Generation">
+  <P>{`The RAG chain connects retrieval to generation: retrieved chunks are formatted into a prompt, sent to an LLM alongside the user's question, and the LLM generates an answer grounded in the retrieved context. The prompt template is critical — it must instruct the model to answer only from the provided context, cite its sources, and say "I don't know" when the context doesn't contain the answer. Without these instructions, the model will happily hallucinate an answer using its parametric knowledge, defeating the purpose of retrieval.`}</P>
+  <P>{`In 2026, the RAG chain is typically orchestrated via LangChain's LCEL (LangChain Expression Language) or LlamaIndex's query engine abstraction. The key design decisions are: how many chunks to include (typically 3–7 after reranking), whether to include metadata (source document, page number, date), and how to handle multi-turn conversations (retrieve fresh context per turn, or carry forward previous context). For multi-turn, the standard approach is to reformulate the user's follow-up question into a standalone query before retrieval — otherwise the retriever sees "What about the exceptions?" without knowing which policy is being discussed.`}</P>
+  <NB title="04_rag_chain.py" n={4}>{`from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+# For real usage: from langchain_openai import ChatOpenAI
+# llm = ChatOpenAI(model="gpt-4o-mini")
+
+# RAG prompt template
+template = """Answer the question based ONLY on the following context.
+If the context doesn't contain the answer, say "I don't have enough information."
+Cite the source document for each claim.
+
+Context:
+{"{"}context{"}"}
+
+Question: {"{"}question{"}"}
+
+Answer:"""
+
+prompt = ChatPromptTemplate.from_template(template)
+
+def format_docs(docs):
+    return "\\n\\n".join(
+        f"[Source: {"{"}d.metadata.get('source','?'){"}"}] {"{"}d.page_content{"}"}"
+        for d in docs
+    )
+
+# The RAG chain (pseudo — requires LLM API key to run)
+# chain = (
+#     {"{"}"context": retriever | format_docs, "question": RunnablePassthrough(){"}"}
+#     | prompt
+#     | llm
+#     | StrOutputParser()
+# )
+# answer = chain.invoke("What is the remote work policy?")
+
+# Demo without LLM:
+context = format_docs(raw_results[:3])
+filled = template.format(context=context, question=query)
+print("Prompt length:", len(filled), "chars")
+print("\\n--- Formatted prompt (first 500 chars) ---")
+print(filled[:500])`}</NB>
+</Sec>
+
+<Sec n="7" title="The Long-Context Challenge: When Stuffing Beats Retrieval">
+  <P>{`In February 2024, Google announced Gemini 1.5 Pro with a 1-million-token context window. By late 2025, Gemini 2.0 extended this to 2 million tokens. Claude supports 200K tokens. GPT-4o handles 128K. If your entire knowledge base fits in the context window, why retrieve at all? Just stuff everything in and let the model find what it needs.`}</P>
+  <P>{`The empirical evidence is nuanced. Google's "Needle in a Haystack" tests show near-perfect recall across 1M tokens for simple factual lookups. But the "lost in the middle" phenomenon (Liu et al., 2023) persists: models attend more to the beginning and end of long contexts, with degraded attention to information in the middle. For complex reasoning over long contexts, accuracy drops significantly compared to the same information presented in a short, focused context. And then there's cost: processing 1M tokens through Gemini costs roughly 100x more than retrieving 5 relevant chunks and processing 2K tokens through a smaller model.`}</P>
+  <P>{`<strong>Long context wins when:</strong> the corpus is small (under 200K tokens total), the task is simple factual lookup, latency matters more than cost, or the question requires holistic understanding of the entire corpus (summarisation, theme extraction). <strong>RAG wins when:</strong> the corpus exceeds any context window (100K+ documents), cost matters ($0.004/query vs. $0.40/query), specific citation is required, or the knowledge changes frequently and you can't afford to re-cache the entire context. The honest answer in 2026: for most enterprise use cases, the corpus is too large and changes too frequently for context stuffing to be practical. RAG is not being replaced by long context — it's being <em>complemented</em> by it.`}</P>
+  <NB title="08_long_context_compare.py" n={8}>{`# Compare: RAG retrieval vs. context stuffing
+# (Conceptual — shows the cost/token tradeoff)
+
+full_corpus_tokens = sum(len(d.page_content.split()) * 1.3 for d in documents)
+rag_context_tokens = sum(len(d.page_content.split()) * 1.3 for d in raw_results[:5])
+
+print(f"Full corpus: ~{"{"}full_corpus_tokens:,.0f{"}"} tokens")
+print(f"RAG context (top 5): ~{"{"}rag_context_tokens:,.0f{"}"} tokens")
+print(f"Reduction: {"{"}rag_context_tokens/full_corpus_tokens:.1%{"}"} of corpus")
+print()
+
+# Cost comparison (approximate, GPT-4o-mini pricing)
+cost_per_1k_input = 0.00015  # $/1K input tokens
+stuff_cost = full_corpus_tokens / 1000 * cost_per_1k_input
+rag_cost = rag_context_tokens / 1000 * cost_per_1k_input
+
+print(f"Cost per query (stuff all): ${"{"}stuff_cost:.4f{"}"}")
+print(f"Cost per query (RAG top-5): ${"{"}rag_cost:.6f{"}"}")
+print(f"RAG is {"{"}stuff_cost/rag_cost:.0f{"}"}x cheaper per query")`}</NB>
+</Sec>
+
+<Sec n="8" title="The Agentic AI Challenge: When the Agent Subsumes Retrieval">
+  <P>{`The more fundamental challenge to RAG comes not from longer context windows but from agentic AI architectures. An agent equipped with tool-use capabilities — web search, document reading, SQL queries, API calls, and computation — can dynamically decide what information it needs, fetch it in real time, verify it against multiple sources, and reason over it iteratively. This is fundamentally different from RAG's static pipeline, where retrieval happens once and the generator works with whatever was retrieved.`}</P>
+  <ParadigmShift/>
+  <Cap>Four paradigm shifts challenging RAG's default status: long-context models, agentic AI, fine-tuning, and graph-based retrieval. Each reduces RAG's necessity for specific use cases — but none eliminates it entirely.</Cap>
+  <P>{`The Agentic RAG survey (Singh et al., arXiv 2501.09136, January 2025 — updated April 2026) provides the definitive taxonomy. Traditional RAG follows a fixed pipeline: query → retrieve → generate. Agentic RAG embeds autonomous agents into the pipeline, adding four capabilities: <strong>reflection</strong> (the agent evaluates whether the retrieved information is sufficient), <strong>planning</strong> (the agent decomposes complex queries into sub-queries), <strong>tool use</strong> (the agent can search the web, query databases, or call APIs alongside vector retrieval), and <strong>multi-agent collaboration</strong> (specialised agents handle different aspects of retrieval and generation). The key insight: in Agentic RAG, retrieval is one tool among many, not the only tool.`}</P>
+  <P>{`Anthropic's Model Context Protocol (MCP), released in late 2024, formalises this: LLMs can connect to external tools — Google Drive, Slack, databases, web search — through a standardised protocol. An agent with MCP doesn't need a pre-built RAG pipeline to access documents; it can read them directly from their source systems. This doesn't eliminate the need for vector retrieval — MCP tools are slow for searching across 100K documents — but it changes the architecture from "build a RAG pipeline" to "give the agent access to tools and let it decide when to retrieve."`}</P>
+</Sec>
+
+<AgenticRAGDiag/>
+<Cap>Agentic RAG: the orchestrator agent decides per-query whether to retrieve from vectors, search the web, query structured data, traverse a knowledge graph, or use parametric memory — and can combine multiple sources in a single reasoning chain.</Cap>
+
+<Sec n="9" title="Self-RAG and Corrective RAG: The Model Decides When to Retrieve">
+  <P>{`Self-RAG (Asai et al., arXiv 2023) introduced a paradigm shift: instead of always retrieving, the model learns to decide <em>when</em> retrieval is helpful and <em>how</em> to use retrieved information. The model is trained with special reflection tokens that trigger retrieval, evaluate the relevance of retrieved documents, and assess whether the generated response is supported by the evidence. This addresses the core problem of naive RAG: retrieving irrelevant information is worse than not retrieving at all.`}</P>
+  <P>{`Corrective RAG (CRAG, Yan et al., arXiv 2401.15884, January 2024) takes this further. A lightweight retrieval evaluator (based on T5-large, 0.77B parameters) assesses the quality of retrieved documents and triggers three possible actions: <strong>Correct</strong> (documents are relevant → proceed with generation), <strong>Incorrect</strong> (documents are irrelevant → fall back to web search), or <strong>Ambiguous</strong> (partial relevance → combine corpus results with web search). A decompose-then-recompose algorithm selectively extracts key information from retrieved documents while filtering noise. CRAG demonstrated significant improvements over standard RAG on PopQA, Biography, PubHealth, and ARC-Challenge benchmarks.`}</P>
+  <P>{`SCMRAG (AAMAS 2025) pushed further still, integrating a dynamic knowledge graph that evolves based on the system's interactions. When information is missing, SCMRAG autonomously generates a new retrieval query and searches external sources — making the retrieval system self-correcting and adaptive. This is where RAG meets agentic AI: the system doesn't just retrieve; it reasons about what to retrieve, evaluates what it found, and corrects its own mistakes.`}</P>
+  <NB title="05_self_rag_pattern.py" n={5}>{`# Self-RAG / CRAG pattern (conceptual implementation)
+# The model decides whether retrieval is needed
+
+def should_retrieve(query, llm_response=None):
+    """Simple heuristic: retrieve if query asks about specific facts."""
+    fact_indicators = ["what is", "how does", "policy", "procedure",
+                       "when", "deadline", "requirement", "limit"]
+    return any(ind in query.lower() for ind in fact_indicators)
+
+def evaluate_retrieval(query, retrieved_docs, threshold=0.3):
+    """CRAG-style: evaluate if retrieved docs are relevant."""
+    # In production: use a trained evaluator (T5-large fine-tuned)
+    # Here: simple keyword overlap heuristic
+    query_words = set(query.lower().split())
+    scores = []
+    for doc in retrieved_docs:
+        doc_words = set(doc.page_content.lower().split())
+        overlap = len(query_words & doc_words) / max(len(query_words), 1)
+        scores.append(overlap)
+    avg_score = np.mean(scores) if scores else 0
+    if avg_score > threshold:
+        return "CORRECT", retrieved_docs
+    elif avg_score > threshold / 2:
+        return "AMBIGUOUS", retrieved_docs  # combine with web search
+    else:
+        return "INCORRECT", []  # fall back to web search
+
+query = "What is the remote work policy?"
+if should_retrieve(query):
+    docs = retriever.invoke(query)
+    action, filtered = evaluate_retrieval(query, docs)
+    print(f"Query: {"{"}query{"}"}")
+    print(f"Retrieval action: {"{"}action{"}"}")
+    print(f"Docs passed to generator: {"{"}len(filtered){"}"}")
+else:
+    print("No retrieval needed — using parametric knowledge")`}</NB>
+</Sec>
+
+<Sec n="10" title="Agentic RAG: Retrieval as One Tool Among Many">
+  <P>{`The most important architectural evolution in 2026 is the transition from RAG-as-a-pipeline to RAG-as-a-tool. In a pipeline architecture, every query triggers the same sequence: embed → retrieve → rerank → generate. In an agentic architecture, the orchestrator agent decides per-query: should I retrieve from the vector store? Search the web? Query the SQL database? Use my parametric knowledge? Combine multiple sources? The retrieval system becomes one tool the agent can invoke — not the only tool.`}</P>
+  <P>{`This is what the RAGFlow year-end review (December 2025) calls the evolution "from RAG to Context Engine" — where RAG's core capability is "intelligent retrieval" serving as the data foundation for agents. The retrieval component doesn't disappear; it becomes the knowledge layer that agents query when they need grounded, private, or structured information. The VentureBeat prediction that "contextual memory will surpass RAG for agentic AI" is accurate in one sense (agents manage their own state) but misleading in another (the memory system still needs a retrieval mechanism — it's just orchestrated differently).`}</P>
+  <P>{`In practice, Agentic RAG in 2026 looks like this: a LangGraph or LlamaIndex agent with access to multiple tools — a vector retriever for internal documents, a web search tool for live data, a SQL tool for structured data, and a calculator for numerical reasoning. The agent's planning module decomposes complex queries into sub-tasks, routes each sub-task to the appropriate tool, and synthesises the results. This is more powerful than any single RAG pipeline — but it's also more complex to build, test, evaluate, and maintain.`}</P>
+  <NB title="06_agentic_rag.py" n={6}>{`# Agentic RAG: the agent decides which tool to use
+# (Conceptual — shows the routing logic)
+
+def route_query(query):
+    """Simple router: decide which tool(s) to use per query."""
+    query_lower = query.lower()
+
+    tools_needed = []
+
+    # Vector retrieval for internal knowledge
+    if any(w in query_lower for w in ["policy","procedure","guideline","internal"]):
+        tools_needed.append("vector_retrieval")
+
+    # Web search for live/external data
+    if any(w in query_lower for w in ["latest","today","current","news","price"]):
+        tools_needed.append("web_search")
+
+    # SQL for structured data
+    if any(w in query_lower for w in ["how many","total","count","average","revenue"]):
+        tools_needed.append("sql_query")
+
+    # Default to vector retrieval if nothing matched
+    if not tools_needed:
+        tools_needed.append("vector_retrieval")
+
+    return tools_needed
+
+# Test routing
+test_queries = [
+    "What is our remote work policy?",
+    "What's the latest news about AI regulation?",
+    "How many employees were hired last quarter?",
+    "What are the exceptions to the travel guidelines?",
+]
+for q in test_queries:
+    tools = route_query(q)
+    print(f"  '{"{"}q[:50]{"}"}...' → {"{"}tools{"}"}")`}</NB>
+</Sec>
+
+<Sec n="11" title="Where RAG Remains Essential in 2026">
+  <P>{`Despite the paradigm shifts, RAG remains the right architecture for a specific — and large — set of production use cases. <strong>Enterprise scale:</strong> organisations with 100K+ documents, petabytes of unstructured data, and thousands of users cannot stuff their corpus into any context window. Amazon's internal documentation, a hospital's medical records, a law firm's case files — these exceed any model's context capacity. RAG scales to millions of documents with sub-second latency; context stuffing does not.`}</P>
+  <P>{`<strong>Regulatory compliance and audit:</strong> In regulated industries — finance, healthcare, insurance, legal — the ability to attribute every claim in a generated response to a specific source document is non-negotiable. RAG provides provenance: "This answer was derived from Document X, Section 3, paragraph 2, last updated January 15, 2026." Pure generation cannot do this. Long-context stuffing can cite sources but with less precision. Under the EU AI Act's Article 13 transparency requirements for high-risk systems, source attribution is a compliance requirement, not a feature request.`}</P>
+  <P>{`<strong>Freshness:</strong> Knowledge that changes daily — news, pricing, inventory levels, legal filings, security advisories — cannot be captured by fine-tuning (too slow to retrain) or long-context caching (too expensive to refresh). RAG's external knowledge store can be updated in minutes. A customer support system that answers questions about this week's product releases needs retrieval, not parametric memory. <strong>Cost:</strong> For high-volume applications (thousands of queries per hour), RAG + a small model (GPT-4o-mini, Claude Haiku) costs $0.001–0.01 per query. Context-stuffing 1M tokens through a frontier model costs $0.10–1.00 per query. At enterprise scale, this is a 100x cost difference.`}</P>
+</Sec>
+
+<Sec n="12" title="Where RAG Is Being Replaced">
+  <P>{`<strong>Simple Q&A over small document sets.</strong> If you have 50 product specification PDFs totalling 100K tokens, context stuffing with Gemini or Claude is simpler, cheaper, and more accurate than building a RAG pipeline. No chunking, no embedding, no vector database — just upload the documents and ask questions. For sub-200K-token corpora, this is now the default.`}</P>
+  <P>{`<strong>Agentic workflows where the agent can search and verify.</strong> An agent with web search, MCP document access, and multi-step reasoning can answer questions about live data more accurately than a RAG pipeline with a static index. The agent verifies its answers across multiple sources; the RAG pipeline trusts whatever it retrieves. For questions like "What did the Fed announce yesterday?" an agent with web search is categorically better than RAG over a stale corpus.`}</P>
+  <P>{`<strong>Tasks where the model already knows the answer.</strong> Asking a frontier model "What is gradient descent?" doesn't benefit from retrieval — the model's parametric knowledge is comprehensive and accurate for well-established topics. Retrieval adds 1–2 seconds of latency without improving quality. <strong>Low-stakes creative tasks.</strong> Drafting a marketing email, brainstorming product names, or writing a blog post outline — these don't need grounded retrieval. The model's creativity is the value; retrieval constraints reduce it.`}</P>
+</Sec>
+
+<Sec n="13" title="The Framework Landscape">
+  <FrameworkLandscape/>
+  <Cap>RAG frameworks positioned by abstraction level (x-axis) and agentic capability (y-axis). Vector databases (bottom-left) provide storage. Frameworks (centre) provide orchestration. Managed services (right) provide end-to-end solutions.</Cap>
+  <P>{`<strong>LangChain</strong> (Harrison Chase): The most widely adopted RAG framework, with LCEL for composable chains, LangGraph for agentic workflows, and LangSmith for evaluation/monitoring. Strengths: massive ecosystem, rapid feature development, extensive integrations. Weakness: historically unstable API, "framework tax" on debugging. <strong>LlamaIndex</strong> (Jerry Liu): Purpose-built for RAG with deep indexing strategies — tree, keyword, knowledge graph, vector, and hybrid indices. Stronger than LangChain for complex document structures; weaker on general agent orchestration. <strong>Haystack</strong> (deepset): Pipeline-based, production-focused, strong on hybrid search and European enterprise deployments. <strong>DSPy</strong> (Omar Khattab, Stanford): The "retrieval as programming" paradigm — compiles natural language signatures into optimised prompting strategies. Conceptually different from other frameworks; treats RAG as a programming problem, not an infrastructure problem.`}</P>
+  <P>{`<strong>Managed services:</strong> Amazon Bedrock Knowledge Bases (fully managed RAG on AWS, integrated with S3 and OpenSearch), Azure AI Search + OpenAI (enterprise-grade, integrated with Microsoft 365), Google Vertex AI RAG (Gemini-native, supports 1M+ token context), Cohere RAG (optimised for Cohere's own embedding and reranking models), Vectara (end-to-end RAG API with built-in hallucination detection). <strong>The "RAG-as-a-feature" trend:</strong> RAG is being absorbed into model APIs themselves — Perplexity (search-augmented generation as a product), ChatGPT with browsing, Claude with web search and document tools. The standalone RAG pipeline is becoming an implementation detail rather than a product category.`}</P>
+</Sec>
+
+<Sec n="14" title="RAG Evaluation: RAGAS and Beyond">
+  <P>{`You cannot improve what you cannot measure. RAG evaluation requires metrics for both retrieval quality and generation quality — and the interaction between them. The RAGAS framework (Shahul Es et al., 2023) defines four core metrics that have become the industry standard.`}</P>
+  <EvalDiag/>
+  <Cap>The four RAGAS metrics: Faithfulness (is the answer grounded in context?), Answer Relevance (does it address the question?), Context Precision (are retrieved chunks relevant?), Context Recall (did retrieval find everything needed?).</Cap>
+  <P>{`<strong>Faithfulness</strong>: Is every claim in the generated answer supported by the retrieved context? This catches hallucination — the model inventing facts not present in the retrieved chunks. <strong>Answer Relevance</strong>: Does the answer actually address the user's question? This catches off-topic responses. <strong>Context Precision</strong>: Of the retrieved chunks, how many were actually relevant? This evaluates the retriever + reranker. <strong>Context Recall</strong>: Of all the information needed to answer the question, how much was retrieved? This catches cases where relevant documents exist in the corpus but weren't found. Additional tools: TruLens (traces, feedback functions), DeepEval (unit-test-style evaluation), LangSmith (LangChain-native tracing and evaluation).`}</P>
+  <NB title="07_evaluation.py" n={7}>{`# RAG evaluation metrics (simplified implementation)
+# In production: use ragas library
+
+def faithfulness_score(answer, context):
+    """Simplified: what fraction of answer words appear in context?"""
+    answer_words = set(answer.lower().split())
+    context_words = set(context.lower().split())
+    if not answer_words:
+        return 0.0
+    return len(answer_words & context_words) / len(answer_words)
+
+def context_precision(query, retrieved_docs, relevant_topics):
+    """What fraction of retrieved docs are on-topic?"""
+    on_topic = sum(1 for d in retrieved_docs
+                   if d.metadata.get("topic") in relevant_topics)
+    return on_topic / len(retrieved_docs) if retrieved_docs else 0
+
+# Evaluate our retrieval
+precision = context_precision(
+    query, raw_results[:5],
+    relevant_topics=["remote work policy"]
+)
+print(f"Context precision (top 5): {"{"}precision:.1%{"}"}")
+
+# Full RAGAS evaluation:
+# from ragas import evaluate
+# from ragas.metrics import faithfulness, answer_relevancy,
+#                           context_precision, context_recall
+# result = evaluate(dataset, metrics=[faithfulness, answer_relevancy,
+#                                      context_precision, context_recall])`}</NB>
+</Sec>
+
+<Sec n="15" title="GraphRAG: When Relationships Matter More Than Similarity">
+  <P>{`Microsoft's GraphRAG (Edge et al., 2024) and the broader Graph RAG literature (surveyed in ACM Transactions on Information Systems, 2025) address a fundamental limitation of vector-based RAG: it retrieves by semantic similarity, which misses relational structure. Questions like "How does Department A's policy differ from Department B's?" or "What are the downstream effects of changing the travel reimbursement limit?" require understanding relationships between entities — not just finding similar text chunks.`}</P>
+  <P>{`GraphRAG works by constructing a knowledge graph from the corpus (entity extraction + relationship extraction via LLM), applying community detection (Leiden algorithm) to identify clusters of related entities, and generating summaries at each community level. When a query arrives, the system retrieves not just similar chunks but the relevant subgraph — entities, relationships, and community summaries. This enables global queries ("Summarise the main themes across all policy documents") that vector RAG fundamentally cannot answer because it retrieves individual chunks, not corpus-level patterns.`}</P>
+  <P>{`The tradeoff: GraphRAG is significantly more expensive to build (the indexing phase requires many LLM calls for entity/relationship extraction) and more complex to maintain (the knowledge graph must be updated when documents change). For simple factual Q&A, vector RAG is faster, cheaper, and good enough. For analytical, cross-document, or relationship-heavy queries, GraphRAG is superior. HybGRAG (ICLR 2025 submission) combines both: vector retrieval for factual queries, graph retrieval for relational queries, with a router that decides which to use per-query.`}</P>
+</Sec>
+
+<Sec n="16" title="The Honest Verdict for 2026">
+  <VerdictDiag/>
+  <Cap>The 2026 verdict: RAG is essential for large-scale, fresh, cost-sensitive, citation-requiring use cases. Long context wins for small corpora. Agentic wins for multi-step reasoning. Fine-tuning wins for stable, high-volume, latency-critical domains.</Cap>
+  <P>{`RAG is not dead — but "vanilla, 2023-style RAG where you chunk documents, throw them in Pinecone, and call it a day" (to quote one industry observer) is absolutely dead. What survives and thrives is <strong>advanced RAG</strong>: hybrid search + cross-encoder reranking + query transformation + agentic orchestration + evaluation-driven iteration. The RAGFlow year-end review captures it well: RAG is evolving from "Retrieval-Augmented Generation" into a "Context Engine" — the intelligent retrieval layer that feeds agents, dashboards, and applications with the right information at the right time.`}</P>
+  <P>{`The future is probably <strong>Agentic RAG</strong>: the agent orchestrates retrieval as one tool among many, deciding per-query whether to use vector search, web search, SQL, knowledge graphs, or parametric memory. The retrieval infrastructure doesn't disappear — it becomes the data backbone that agents depend on. For practitioners, this means: invest in retrieval quality (chunking, embedding, reranking, evaluation) over framework complexity. The frameworks will change; the quality of your retrieval will determine the quality of your AI system regardless of the orchestration layer on top.`}</P>
+</Sec>
+
+<Sec n="17" title="Decision Framework: What to Build in 2026">
+  <DecisionMatrix/>
+  <Cap>Decision matrix: RAG vs. Long Context vs. Fine-Tuning vs. Agentic across 8 evaluation criteria. No single approach dominates all dimensions — the right choice depends on your specific constraints.</Cap>
+
+  <NB title="09_decision_router.py" n={9}>{`# Decision router: which architecture for your use case?
+def recommend_architecture(
+    corpus_size_docs, changes_daily, needs_citations,
+    queries_per_day, latency_ms_budget, multi_hop_reasoning
+):
+    scores = {"{"}"RAG": 0, "Long Context": 0, "Fine-Tune": 0, "Agentic": 0{"}"}
+
+    if corpus_size_docs > 1000:    scores["RAG"] += 3
+    elif corpus_size_docs < 100:   scores["Long Context"] += 3
+    else:                          scores["RAG"] += 1; scores["Long Context"] += 1
+
+    if changes_daily:              scores["RAG"] += 3; scores["Agentic"] += 2
+    else:                          scores["Fine-Tune"] += 2
+
+    if needs_citations:            scores["RAG"] += 3
+    if queries_per_day > 10000:    scores["Fine-Tune"] += 2; scores["RAG"] += 1
+    if latency_ms_budget < 500:    scores["Fine-Tune"] += 2; scores["Long Context"] += 1
+    if multi_hop_reasoning:        scores["Agentic"] += 3
+
+    winner = max(scores, key=scores.get)
+    return winner, scores
+
+# Example: enterprise HR chatbot
+winner, scores = recommend_architecture(
+    corpus_size_docs=5000, changes_daily=True, needs_citations=True,
+    queries_per_day=500, latency_ms_budget=3000, multi_hop_reasoning=False
+)
+print(f"Recommended: {"{"}winner{"}"}")
+print(f"Scores: {"{"}scores{"}"}")
+
+# Example: research assistant
+winner2, scores2 = recommend_architecture(
+    corpus_size_docs=50, changes_daily=False, needs_citations=False,
+    queries_per_day=50, latency_ms_budget=5000, multi_hop_reasoning=True
+)
+print(f"\\nRecommended: {"{"}winner2{"}"}")
+print(f"Scores: {"{"}scores2{"}"}")`}</NB>
+
+  <div style={{background:"#fff",border:`1px solid ${C.border}`,borderRadius:8,padding:28,margin:"20px 0"}}>
+    <div style={{fontFamily:F.b,fontSize:15,lineHeight:2.2,color:C.text}}>
+      <div style={{marginBottom:8}}><span style={{color:C.green,fontWeight:700,fontSize:16}}>✓ Build RAG when:</span></div>
+      <div style={{paddingLeft:24,fontSize:14,lineHeight:2}}>
+        Corpus exceeds 1,000 documents or any model's context window.<br/>
+        Knowledge changes daily or weekly (news, pricing, legal, inventory).<br/>
+        Citations and source attribution are required (regulated industries).<br/>
+        Cost per query must stay under $0.01 (high-volume applications).<br/>
+        You need an audit trail for compliance (EU AI Act, GDPR, SOC2).<br/>
+        Multiple user groups need different access controls over the same corpus.
+      </div>
+      <div style={{marginTop:20,marginBottom:8}}><span style={{color:C.red,fontWeight:700,fontSize:16}}>✗ Don't build RAG when:</span></div>
+      <div style={{paddingLeft:24,fontSize:14,lineHeight:2}}>
+        Your corpus fits in a 200K-token context window → use long context directly.<br/>
+        The task requires live, multi-source reasoning → use an agentic architecture.<br/>
+        The knowledge is stable and well-established → fine-tune instead.<br/>
+        The model already knows the answer from training → just ask it.<br/>
+        You need creative generation, not factual grounding → retrieval constrains creativity.<br/>
+        You don't have the engineering capacity to maintain chunking, embedding, and evaluation pipelines.
+      </div>
+    </div>
+  </div>
+</Sec>
+
+<Sec n="18" title="The People Behind the Paradigm">
+  <P>{`<strong>Patrick Lewis, Ethan Perez, et al.</strong> (Meta AI / FAIR): The original RAG paper (NeurIPS 2020) that started it all. Lewis is now at Cohere; Perez is at Anthropic, working on AI safety. <strong>Vladimir Karpukhin</strong> (Meta): DPR (Dense Passage Retrieval), the retrieval backbone of the original RAG. <strong>Omar Khattab</strong> (Stanford → Databricks): ColBERT (late-interaction retrieval), ColBERTv2, and DSPy — the "retrieval as programming" paradigm that treats RAG as a compilation problem. <strong>Jerry Liu</strong> (LlamaIndex): Built the most RAG-specific framework, with deep indexing strategies that other frameworks lack. <strong>Harrison Chase</strong> (LangChain): Built the most widely adopted LLM framework, with LangGraph for agentic workflows and LangSmith for evaluation. <strong>Akari Asai</strong> (University of Washington): Self-RAG, the model that learns when to retrieve. <strong>Jia-Chen Gu</strong> (UCLA): CRAG, the corrective retrieval mechanism. <strong>Aditi Singh</strong> (Colorado State): The Agentic RAG survey that defined the 2025–2026 taxonomy.`}</P>
+</Sec>
+
+<Sec n="19" title="Where RAG Goes Next">
+  <P>{`Three trajectories are clear. First, <strong>RAG becomes invisible infrastructure</strong> — embedded into model APIs (Perplexity, ChatGPT browsing, Claude web search), cloud platforms (Bedrock, Vertex, Azure), and agent frameworks (LangGraph, LlamaIndex agents). Practitioners won't "build RAG pipelines"; they'll configure retrieval as a tool in an agentic system. The RAGFlow review calls this the evolution into a "Context Engine."  Second, <strong>multimodal RAG matures</strong> — retrieving not just text but images, tables, charts, and video frames. ColPali (2024) demonstrated vision-language retrieval that indexes document images directly, bypassing text extraction entirely. By 2027, RAG pipelines that handle only text will be considered incomplete.`}</P>
+  <P>{`Third, <strong>evaluation-driven RAG becomes standard practice</strong>. The gap between "we built a RAG system" and "we built a RAG system that works reliably" is measured by evaluation. RAGAS, TruLens, DeepEval, and LangSmith are making RAG evaluation as routine as model evaluation. The next frontier: continuous evaluation in production, where RAG quality metrics are monitored alongside model performance — and retrieval quality degrades trigger automatic reindexing, rechunking, or reranking threshold adjustments. RAG in 2026 is not a project you build and forget. It's a system you operate — and the organisations that treat it as operational infrastructure, not a one-time integration, will get the most value from it.`}</P>
+</Sec>
+
+<Callout type="tip" title="End of notebook">{`Cells 0–9 complete: setup → chunking → embedding → retrieval → RAG chain → Self-RAG pattern → agentic routing → evaluation → long-context comparison → decision router. Copy the green-bordered cells in order into a <code>.ipynb</code> for a working end-to-end example.`}</Callout>
+
+<div style={{marginTop:60,paddingTop:24,borderTop:`1px solid ${C.border}`}}>
+  <div style={{fontFamily:F.b,fontSize:12,color:C.light,lineHeight:1.8}}>
+    <strong>Sources:</strong> Lewis et al. NeurIPS 2020 (original RAG); Karpukhin et al. 2020 (DPR); Asai et al. arXiv 2023 (Self-RAG); Yan et al. arXiv 2401.15884 2024 (CRAG); Singh et al. arXiv 2501.09136 Jan 2025, updated Apr 2026 (Agentic RAG Survey); GraphRAG ACM TOIS 2025; SCMRAG AAMAS 2025; Liu et al. 2023 (Lost in the Middle); Shahul Es et al. 2023 (RAGAS); Khattab Stanford (ColBERT, DSPy); RAGFlow year-end review Dec 2025; VentureBeat "6 data predictions for 2026." <strong>Frameworks:</strong> LangChain, LlamaIndex, Haystack, DSPy, RAGFlow, Vectara documentation. <strong>Managed:</strong> AWS Bedrock KB, Azure AI Search, Google Vertex RAG, Cohere RAG docs.
+  </div>
+  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12,marginTop:16}}>
+    <div style={{fontFamily:F.m,fontSize:11,color:C.light}}>LangChain 0.3+ · LlamaIndex 0.11+ · RAGAS · Chroma · 2024–2026</div>
+    <div style={{fontFamily:F.m,fontSize:11,color:C.light}}>Article length determined by information surface area, not word count</div>
+  </div>
+</div>
+</div></div>);}
+
+
+    try {
+      ReactDOM.createRoot(document.getElementById('root')).render(
+        React.createElement(Article)
+      );
+    } catch (err) {
+      var box = document.getElementById('error-boundary');
+      if (box) {
+        box.style.display = 'block';
+        box.textContent = '[render error] ' + (err && err.message ? err.message : err);
+      }
+      console.error(err);
+    }
+  </script>
+</body>
+</html>
