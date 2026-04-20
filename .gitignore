@@ -3,3 +3,9 @@ __pycache__/
 *.pyc
 .serena/
 .playwright-mcp/
+
+# Auto-ingest runtime artefacts
+articles/.ingest.lock
+articles/_run_ledger.json
+articles/_INGEST_HALTED
+articles/_rejected/
