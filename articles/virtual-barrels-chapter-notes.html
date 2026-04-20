@@ -191,41 +191,6 @@ const H4 = ({ children }) => (
   <h4 style={{ fontFamily: F.h, fontSize: 17, fontWeight: 600, color: C.text, margin: "24px 0 10px" }}>{children}</h4>
 );
 
-function VirtualBarrelsChapterNotes() {
-  return (
-    <div style={{ background: C.bg, minHeight: "100vh" }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{background:${C.bg}}`}</style>
-
-      <div style={{ background: C.accent, padding: "12px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
-        <span style={{ fontFamily: F.m, fontSize: 11, color: "#FEF3C7", letterSpacing: "0.1em", textTransform: "uppercase" }}>Chapter Notes · Reference</span>
-        <span style={{ fontFamily: F.m, fontSize: 11, color: "#FEF3C7" }}>Virtual Barrels · Bouchouev · Chapters 1–10</span>
-      </div>
-
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 24px 0" }}>
-        <div style={{ fontFamily: F.m, fontSize: 12, color: C.accent, fontWeight: 600, letterSpacing: "0.08em", marginBottom: 12 }}>QUANTITATIVE OIL TRADING · FULL CHAPTER NOTES</div>
-        <h1 style={{ fontFamily: F.h, fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 700, color: C.text, lineHeight: 1.15, marginBottom: 20 }}>Virtual Barrels — Chapter Notes</h1>
-        <p style={{ fontFamily: F.b, fontSize: 18, color: C.muted, lineHeight: 1.6, maxWidth: 720, marginBottom: 12 }}>Full chapter-by-chapter reference extracted verbatim from the library's Virtual Barrels chapter summaries. No synthesis, no editorial framing — every Key Technical Concept, Technical Overview, and Detailed Foundation rendered in order.</p>
-        <div style={{ fontFamily: F.b, fontSize: 13, color: C.light, marginBottom: 24 }}>Source: <em>Virtual Barrels: Quantitative Trading in the Oil Market</em> — Ilia Bouchouev · Chapter summaries mirrored from <code>library/chapter_summaries/</code></div>
-
-        <div style={{ padding: "18px 22px", background: C.infoBg, borderLeft: `4px solid ${C.info}`, borderRadius: "0 8px 8px 0", marginBottom: 8 }}>
-          <div style={{ fontFamily: F.b, fontSize: 13, fontWeight: 700, color: C.info, marginBottom: 8 }}>📚 Table of contents</div>
-          <ul style={{ fontFamily: F.b, fontSize: 14, lineHeight: 1.8, color: C.text, margin: 0, paddingLeft: 22 }}>
-            <li>§1 — Introduction to Real Options and Oil Market Dynamics</li>
-            <li>§2 — Oil Inventory Dynamics, Futures Markets, and the Financialization of Oil</li>
-            <li>§3 — Oil's Role in Macroeconomics, Finance, and Systematic Commodity Trading</li>
-            <li>§4 — Advanced Strategies in Energy Trading: Spread Trading, Statistical Arbitrage, and Macro Considerations</li>
-            <li>§5 — Advanced Oil Trading Strategies: Arbitrage, Macro Models, and Volatility</li>
-            <li>§6 — Advanced Volatility Trading in Oil Markets: From Risk Premium Harvesting to Relative Value Strategies</li>
-            <li>§7 — Advanced Oil Volatility Modeling and Option Pricing: From Black-Scholes to Quadratic Normal and Beyond</li>
-            <li>§8 — Advanced Volatility Modeling and Spread Option Pricing in Energy Markets</li>
-            <li>§9 — Advanced Spread Option Valuation and Market Dynamics in Commodity Trading</li>
-            <li>§10 — Advanced Volatility Modeling and the Volatility Risk Premium</li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 24px 80px" }}>
 const Ch1Vis1 = () => (
   <svg viewBox="0 0 760 300" width="100%" style={{ maxWidth: 760, display: "block", margin: "0 auto" }}>
     <defs>
@@ -336,10 +301,790 @@ const Ch1Vis2 = () => (
   </svg>
 );
 
+const Ch2Vis1 = () => {
+  const data = [
+    { inv: 5,  contango: -14.2, convYield: 16.0 },
+    { inv: 15, contango: -9.8,  convYield: 11.2 },
+    { inv: 25, contango: -5.1,  convYield: 6.8 },
+    { inv: 35, contango: -1.4,  convYield: 3.4 },
+    { inv: 45, contango:  1.2,  convYield: 1.6 },
+    { inv: 55, contango:  2.6,  convYield: 0.9 },
+    { inv: 65, contango:  3.4,  convYield: 0.6 },
+    { inv: 75, contango:  3.9,  convYield: 0.4 },
+    { inv: 85, contango:  4.2,  convYield: 0.3 },
+    { inv: 95, contango:  4.3,  convYield: 0.25 },
+  ];
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart data={data} margin={{ top: 12, right: 24, left: 8, bottom: 28 }}>
+        <CartesianGrid stroke={C.grid} strokeDasharray="2 4" />
+        <XAxis
+          dataKey="inv"
+          stroke={C.muted}
+          tick={{ fill: C.muted, fontSize: 11, fontFamily: F.b }}
+          label={{ value: "Inventory level (% of working capacity)", position: "insideBottom", offset: -14, fill: C.muted, fontSize: 11, fontFamily: F.b }}
+        />
+        <YAxis
+          stroke={C.muted}
+          tick={{ fill: C.muted, fontSize: 11, fontFamily: F.b }}
+          label={{ value: "$/bbl", angle: -90, position: "insideLeft", fill: C.muted, fontSize: 11, fontFamily: F.b }}
+        />
+        <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.grid}`, fontFamily: F.b, fontSize: 12 }} />
+        <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 11, color: C.muted }} />
+        <ReferenceLine y={0} stroke={C.muted} strokeDasharray="3 3" />
+        <ReferenceLine x={10} stroke={C.accent} strokeDasharray="4 4" label={{ value: "X_min (stock-out risk)", position: "top", fill: C.accent, fontSize: 10, fontFamily: F.b }} />
+        <ReferenceLine x={90} stroke={C.accent} strokeDasharray="4 4" label={{ value: "X_max (tank-top)", position: "top", fill: C.accent, fontSize: 10, fontFamily: F.b }} />
+        <Line type="monotone" dataKey="contango" name="Futures spread (F - S)" stroke={C.text} strokeWidth={2} dot={{ r: 3 }} />
+        <Line type="monotone" dataKey="convYield" name="Convenience yield" stroke={C.accent} strokeWidth={2} dot={{ r: 3 }} />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+};
+
+const Ch2Vis2 = () => {
+  const data = [
+    { t: "Apr 14", wti: 20.1, phase: "Pre-collapse" },
+    { t: "Apr 15", wti: 19.8, phase: "Pre-collapse" },
+    { t: "Apr 16", wti: 19.9, phase: "Pre-collapse" },
+    { t: "Apr 17", wti: 18.3, phase: "Pre-collapse" },
+    { t: "Apr 20 am", wti: 11.0, phase: "Storage panic" },
+    { t: "Apr 20 pm", wti: -13.1, phase: "Storage panic" },
+    { t: "Apr 20 close", wti: -37.6, phase: "Settlement" },
+    { t: "Apr 21", wti: 10.0, phase: "Rebound" },
+    { t: "Apr 22", wti: 13.8, phase: "Rebound" },
+  ];
+  return (
+    <ResponsiveContainer width="100%" height={290}>
+      <AreaChart data={data} margin={{ top: 12, right: 24, left: 8, bottom: 28 }}>
+        <CartesianGrid stroke={C.grid} strokeDasharray="2 4" />
+        <XAxis dataKey="t" stroke={C.muted} tick={{ fill: C.muted, fontSize: 10, fontFamily: F.b }} />
+        <YAxis stroke={C.muted} tick={{ fill: C.muted, fontSize: 11, fontFamily: F.b }} label={{ value: "WTI May-20 settle ($/bbl)", angle: -90, position: "insideLeft", fill: C.muted, fontSize: 11, fontFamily: F.b }} />
+        <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.grid}`, fontFamily: F.b, fontSize: 12 }} />
+        <ReferenceLine y={0} stroke={C.muted} strokeDasharray="3 3" />
+        <Area type="monotone" dataKey="wti" stroke={C.accent} fill={C.accent} fillOpacity={0.22} strokeWidth={2} />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
+};
+
+const Ch3Vis1 = () => {
+  const data = [
+    { year: "1973", wti: 4, cpi: 6.2, shock: 1 },
+    { year: "1974", wti: 10, cpi: 11.0, shock: 1 },
+    { year: "1979", wti: 25, cpi: 11.3, shock: 1 },
+    { year: "1980", wti: 37, cpi: 13.5, shock: 1 },
+    { year: "1986", wti: 15, cpi: 1.9, shock: 0 },
+    { year: "1990", wti: 24, cpi: 5.4, shock: 1 },
+    { year: "1998", wti: 12, cpi: 1.6, shock: 0 },
+    { year: "2000", wti: 30, cpi: 3.4, shock: 1 },
+    { year: "2001", wti: 26, cpi: 2.8, shock: 0 },
+    { year: "2005", wti: 57, cpi: 3.4, shock: 0 },
+    { year: "2008", wti: 100, cpi: 3.8, shock: 1 },
+    { year: "2009", wti: 62, cpi: -0.4, shock: 0 },
+    { year: "2011", wti: 95, cpi: 3.2, shock: 0 },
+    { year: "2014", wti: 93, cpi: 1.6, shock: 0 },
+    { year: "2016", wti: 43, cpi: 1.3, shock: 0 },
+    { year: "2020", wti: 39, cpi: 1.2, shock: 0 },
+    { year: "2022", wti: 95, cpi: 8.0, shock: 1 },
+    { year: "2023", wti: 78, cpi: 4.1, shock: 0 },
+  ];
+  return (
+    <div style={{ width: "100%", margin: "12px 0 6px 0" }}>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={data} margin={{ top: 12, right: 36, left: 8, bottom: 8 }}>
+          <CartesianGrid stroke={C.rule} strokeDasharray="2 4" />
+          <XAxis dataKey="year" stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 11, fill: C.muted }} />
+          <YAxis yAxisId="L" stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 11, fill: C.muted }} label={{ value: "WTI $/bbl", angle: -90, position: "insideLeft", fill: C.muted, fontFamily: F.b, fontSize: 11 }} />
+          <YAxis yAxisId="R" orientation="right" stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 11, fill: C.muted }} label={{ value: "CPI YoY %", angle: 90, position: "insideRight", fill: C.muted, fontFamily: F.b, fontSize: 11 }} />
+          <Tooltip contentStyle={{ fontFamily: F.b, fontSize: 12, background: C.bg, border: `1px solid ${C.rule}` }} />
+          <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12 }} />
+          <ReferenceLine yAxisId="R" y={0} stroke={C.rule} />
+          <Line yAxisId="L" type="monotone" dataKey="wti" name="WTI ($/bbl)" stroke={C.accent} strokeWidth={2} dot={{ r: 2 }} />
+          <Line yAxisId="R" type="monotone" dataKey="cpi" name="US CPI YoY (%)" stroke={C.text} strokeWidth={2} strokeDasharray="4 3" dot={{ r: 2 }} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+const Ch3Vis2 = () => {
+  return (
+    <div style={{ width: "100%", margin: "12px 0 6px 0", display: "flex", justifyContent: "center" }}>
+      <svg viewBox="0 0 760 300" width="100%" style={{ maxWidth: 760 }}>
+        <rect x="0" y="0" width="760" height="300" fill={C.bg} />
+        <text x="380" y="22" textAnchor="middle" fontFamily={F.h} fontSize="14" fill={C.text}>Systematic Oil Futures: The Three-Signal Stack</text>
+        <g>
+          <rect x="30" y="55" width="210" height="200" fill="none" stroke={C.accent} strokeWidth="1.5" />
+          <text x="135" y="80" textAnchor="middle" fontFamily={F.h} fontSize="13" fill={C.accent}>MOMENTUM</text>
+          <text x="135" y="105" textAnchor="middle" fontFamily={F.b} fontSize="11" fill={C.text}>Trends persist</text>
+          <text x="135" y="125" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Lookback return &gt; 0 -&gt; buy</text>
+          <text x="135" y="142" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Moving avgs, returns</text>
+          <text x="135" y="175" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Weak economic base</text>
+          <text x="135" y="192" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Overfitting risk</text>
+          <text x="135" y="225" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Complexity: O(n)</text>
+        </g>
+        <g>
+          <rect x="275" y="55" width="210" height="200" fill="none" stroke={C.accent} strokeWidth="1.5" />
+          <text x="380" y="80" textAnchor="middle" fontFamily={F.h} fontSize="13" fill={C.accent}>CARRY</text>
+          <text x="380" y="105" textAnchor="middle" fontFamily={F.b} fontSize="11" fill={C.text}>Shape of the curve</text>
+          <text x="380" y="125" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Backwardation -&gt; buy</text>
+          <text x="380" y="142" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Contango -&gt; sell</text>
+          <text x="380" y="175" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Grounded in theory</text>
+          <text x="380" y="192" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>of storage</text>
+          <text x="380" y="225" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Complexity: O(1)</text>
+        </g>
+        <g>
+          <rect x="520" y="55" width="210" height="200" fill="none" stroke={C.accent} strokeWidth="1.5" />
+          <text x="625" y="80" textAnchor="middle" fontFamily={F.h} fontSize="13" fill={C.accent}>VALUE</text>
+          <text x="625" y="105" textAnchor="middle" fontFamily={F.b} fontSize="11" fill={C.text}>Mean reversion</text>
+          <text x="625" y="125" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Deviation from fair</text>
+          <text x="625" y="142" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Contrarian by design</text>
+          <text x="625" y="175" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Fair value is hard</text>
+          <text x="625" y="192" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Carry erodes edge</text>
+          <text x="625" y="225" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Complexity: O(MA len)</text>
+        </g>
+        <text x="380" y="282" textAnchor="middle" fontFamily={F.b} fontSize="11" fill={C.muted}>Blend + dynamic sizing + vol target -&gt; composite systematic strategy</text>
+      </svg>
+    </div>
+  );
+};
+
+const Ch4Vis1 = () => {
+  const W = 760, H = 300, pad = 40;
+  const N = 120;
+  // Simulate a cointegrated spread oscillating around a mean with a regime shift
+  const data = Array.from({ length: N }, (_, i) => {
+    const mean = i < 70 ? 2.0 : 2.8; // small regime shift mid-series
+    const osc = Math.sin(i / 6) * 1.1 + Math.sin(i / 13) * 0.6;
+    const noise = ((i * 1103515245 + 12345) % 1000) / 1000 - 0.5;
+    return { t: i, spread: mean + osc + noise * 0.6, mean };
+  });
+  const ys = data.map(d => d.spread);
+  const yMin = Math.min(...ys) - 0.4;
+  const yMax = Math.max(...ys) + 0.4;
+  const sx = t => pad + (t / (N - 1)) * (W - 2 * pad);
+  const sy = v => H - pad - ((v - yMin) / (yMax - yMin)) * (H - 2 * pad);
+  const linePath = data.map((d, i) => `${i === 0 ? "M" : "L"}${sx(d.t)},${sy(d.spread)}`).join(" ");
+  const meanPath = data.map((d, i) => `${i === 0 ? "M" : "L"}${sx(d.t)},${sy(d.mean)}`).join(" ");
+  const upperPath = data.map((d, i) => `${i === 0 ? "M" : "L"}${sx(d.t)},${sy(d.mean + 1.5)}`).join(" ");
+  const lowerPath = data.map((d, i) => `${i === 0 ? "M" : "L"}${sx(d.t)},${sy(d.mean - 1.5)}`).join(" ");
+  // Signal dots at band crossings
+  const signals = data.filter(d => Math.abs(d.spread - d.mean) > 1.5);
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ maxWidth: W, display: "block", margin: "0 auto", background: C.panel, borderRadius: 6 }}>
+      <text x={pad} y={22} style={{ fontFamily: F.s, fontSize: 13, fill: C.text, fontWeight: 600 }}>WCS–WTI spread with mean-reversion bands</text>
+      <text x={W - pad} y={22} textAnchor="end" style={{ fontFamily: F.m, fontSize: 11, fill: C.muted }}>simulated</text>
+      {/* y-axis guides */}
+      {[0, 1, 2, 3, 4].map(v => (
+        <g key={v}>
+          <line x1={pad} y1={sy(v)} x2={W - pad} y2={sy(v)} stroke={C.border} strokeWidth={0.5} strokeDasharray="2 3" />
+          <text x={pad - 6} y={sy(v) + 3} textAnchor="end" style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>{v.toFixed(1)}</text>
+        </g>
+      ))}
+      {/* bands */}
+      <path d={upperPath} stroke={C.accent || "#c77"} strokeWidth={1} strokeDasharray="4 3" fill="none" opacity={0.7} />
+      <path d={lowerPath} stroke={C.accent || "#c77"} strokeWidth={1} strokeDasharray="4 3" fill="none" opacity={0.7} />
+      {/* mean */}
+      <path d={meanPath} stroke={C.muted} strokeWidth={1.2} fill="none" />
+      {/* spread */}
+      <path d={linePath} stroke={C.text} strokeWidth={1.6} fill="none" />
+      {/* signals */}
+      {signals.map((d, i) => (
+        <circle key={i} cx={sx(d.t)} cy={sy(d.spread)} r={3} fill={d.spread > d.mean ? "#c55" : "#5a8"} stroke={C.panel} strokeWidth={1} />
+      ))}
+      {/* legend */}
+      <g transform={`translate(${pad + 6}, ${H - 18})`}>
+        <line x1={0} y1={0} x2={18} y2={0} stroke={C.text} strokeWidth={1.6} />
+        <text x={22} y={3} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>spread</text>
+        <line x1={80} y1={0} x2={98} y2={0} stroke={C.muted} strokeWidth={1.2} />
+        <text x={102} y={3} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>rolling mean</text>
+        <line x1={190} y1={0} x2={208} y2={0} stroke={C.accent || "#c77"} strokeWidth={1} strokeDasharray="4 3" />
+        <text x={212} y={3} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>+/-1.5 σ bands</text>
+        <circle cx={324} cy={0} r={3} fill="#c55" />
+        <text x={330} y={3} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>sell signal</text>
+        <circle cx={394} cy={0} r={3} fill="#5a8" />
+        <text x={400} y={3} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>buy signal</text>
+      </g>
+      <text x={W / 2} y={H - 4} textAnchor="middle" style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>trading days →</text>
+    </svg>
+  );
+};
+
+const Ch4Vis2 = () => {
+  const W = 760, H = 290;
+  const families = [
+    { x: 40, y: 60, label: "Calendar", sub: "same commodity,\ndifferent months", example: "M1 − M2 WTI", col: "#5a8" },
+    { x: 220, y: 60, label: "Locational", sub: "same commodity,\ndifferent venues", example: "WTI Cushing − Brent N. Sea", col: "#58a" },
+    { x: 400, y: 60, label: "Intercommodity", sub: "different but\nrelated products", example: "Gasoline − Heating Oil", col: "#a58" },
+    { x: 580, y: 60, label: "Crack", sub: "crude vs refined\n(refining margin)", example: "3:2:1 crack", col: "#c77" },
+    { x: 40, y: 180, label: "Time (front)", sub: "M1 − M2 carry", example: "WTI prompt spread", col: "#5a8" },
+    { x: 220, y: 180, label: "Convexity", sub: "carry of the carry\n(3 contracts)", example: "M1−2M2+M3", col: "#58a" },
+    { x: 400, y: 180, label: "WCS − WTI", sub: "pipeline-constrained\nquality spread", example: "Canadian heavy vs WTI", col: "#a58" },
+    { x: 580, y: 180, label: "Cross-curve", sub: "WTI vs Brent\ncurve shape", example: "M1/M6 ratio", col: "#c77" }
+  ];
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ maxWidth: W, display: "block", margin: "0 auto", background: C.panel, borderRadius: 6 }}>
+      <text x={W / 2} y={24} textAnchor="middle" style={{ fontFamily: F.s, fontSize: 13, fill: C.text, fontWeight: 600 }}>Eight spread families used in energy trading</text>
+      {families.map((f, i) => (
+        <g key={i} transform={`translate(${f.x}, ${f.y})`}>
+          <rect width={160} height={96} rx={4} ry={4} fill={C.bg || "#111"} stroke={f.col} strokeWidth={1.4} />
+          <rect x={0} y={0} width={6} height={96} fill={f.col} />
+          <text x={16} y={22} style={{ fontFamily: F.s, fontSize: 12, fill: C.text, fontWeight: 700 }}>{f.label}</text>
+          {f.sub.split("\n").map((ln, j) => (
+            <text key={j} x={16} y={42 + j * 13} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>{ln}</text>
+          ))}
+          <text x={16} y={82} style={{ fontFamily: F.m, fontSize: 10, fill: f.col, fontStyle: "italic" }}>{f.example}</text>
+        </g>
+      ))}
+    </svg>
+  );
+};
+
+const Ch5Vis1 = () => (
+  <svg viewBox="0 0 760 380" style={{ width: "100%", height: "auto", background: C.bg, fontFamily: F.b }}>
+    <defs>
+      <linearGradient id="ch5spread" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stopColor={C.accent} stopOpacity="0.35"/>
+        <stop offset="100%" stopColor={C.accent} stopOpacity="0.02"/>
+      </linearGradient>
+    </defs>
+
+    {/* Title strip */}
+    <text x="24" y="28" fill={C.text} fontFamily={F.h} fontSize="16" fontWeight="600">
+      The three engines of advanced oil trading
+    </text>
+    <text x="24" y="48" fill={C.muted} fontSize="12">
+      Cross-asset arbitrage · Macro fair-value · Volatility surface
+    </text>
+
+    {/* Panel 1: Cointegration spread (top-left) */}
+    <g transform="translate(24,72)">
+      <rect x="0" y="0" width="230" height="130" fill="none" stroke={C.muted} strokeOpacity="0.25"/>
+      <text x="8" y="16" fill={C.text} fontSize="11" fontWeight="600">Cointegrated spread (WTI − β·XOP)</text>
+      <line x1="0" y1="70" x2="230" y2="70" stroke={C.muted} strokeOpacity="0.4" strokeDasharray="3 3"/>
+      <text x="195" y="66" fill={C.muted} fontSize="9">mean</text>
+      <line x1="0" y1="40" x2="230" y2="40" stroke={C.muted} strokeOpacity="0.25" strokeDasharray="2 4"/>
+      <line x1="0" y1="100" x2="230" y2="100" stroke={C.muted} strokeOpacity="0.25" strokeDasharray="2 4"/>
+      <text x="190" y="36" fill={C.muted} fontSize="9">+2σ</text>
+      <text x="190" y="112" fill={C.muted} fontSize="9">−2σ</text>
+      <path d="M 0 70 Q 20 55 40 60 T 80 80 Q 100 95 120 85 T 160 50 Q 180 35 200 55 T 230 72"
+            fill="none" stroke={C.accent} strokeWidth="2"/>
+      <circle cx="160" cy="50" r="4" fill={C.accent}/>
+      <text x="168" y="44" fill={C.accent} fontSize="9">sell spread</text>
+      <circle cx="80" cy="80" r="4" fill={C.muted}/>
+      <text x="44" y="96" fill={C.muted} fontSize="9">buy spread</text>
+    </g>
+
+    {/* Panel 2: Macro fair-value stack (top-right) */}
+    <g transform="translate(272,72)">
+      <rect x="0" y="0" width="230" height="130" fill="none" stroke={C.muted} strokeOpacity="0.25"/>
+      <text x="8" y="16" fill={C.text} fontSize="11" fontWeight="600">Macro fair-value decomposition</text>
+      <text x="8" y="34" fill={C.muted} fontSize="10">WTI_fair = β₁·USDCAD + β₂·XOP + β₃·CPI</text>
+      <g transform="translate(10,52)">
+        <rect x="0" y="0" width="180" height="14" fill={C.accent} opacity="0.85"/>
+        <text x="188" y="11" fill={C.text} fontSize="9">USDCAD  β₁</text>
+        <rect x="0" y="22" width="130" height="14" fill={C.accent} opacity="0.6"/>
+        <text x="188" y="33" fill={C.text} fontSize="9">XOP     β₂</text>
+        <rect x="0" y="44" width="70" height="14" fill={C.accent} opacity="0.35"/>
+        <text x="188" y="55" fill={C.text} fontSize="9">CPI     β₃</text>
+      </g>
+      <text x="8" y="122" fill={C.muted} fontSize="9">Rolling-window betas adapt to market regime</text>
+    </g>
+
+    {/* Panel 3: Volatility skew + Samuelson (bottom) */}
+    <g transform="translate(24,222)">
+      <rect x="0" y="0" width="478" height="130" fill="none" stroke={C.muted} strokeOpacity="0.25"/>
+      <text x="8" y="16" fill={C.text} fontSize="11" fontWeight="600">Volatility skew &amp; Samuelson term-structure</text>
+
+      {/* skew curve */}
+      <g transform="translate(16,28)">
+        <text x="0" y="10" fill={C.muted} fontSize="9">IV (%)</text>
+        <line x1="0" y1="90" x2="200" y2="90" stroke={C.muted} strokeOpacity="0.4"/>
+        <line x1="0" y1="20" x2="0" y2="90" stroke={C.muted} strokeOpacity="0.4"/>
+        <path d="M 0 30 Q 40 50 100 70 T 200 85" fill="none" stroke={C.accent} strokeWidth="2"/>
+        <text x="2" y="28" fill={C.accent} fontSize="9">OTM put</text>
+        <text x="160" y="82" fill={C.muted} fontSize="9">OTM call</text>
+        <line x1="100" y1="65" x2="100" y2="95" stroke={C.muted} strokeOpacity="0.4" strokeDasharray="2 2"/>
+        <text x="86" y="105" fill={C.muted} fontSize="9">ATM strike</text>
+      </g>
+
+      {/* Samuelson bars */}
+      <g transform="translate(260,40)">
+        <text x="0" y="-4" fill={C.muted} fontSize="9">Implied vol by maturity</text>
+        <rect x="0"   y="10" width="24" height="60" fill={C.accent} opacity="0.9"/>
+        <rect x="36"  y="28" width="24" height="42" fill={C.accent} opacity="0.7"/>
+        <rect x="72"  y="40" width="24" height="30" fill={C.accent} opacity="0.55"/>
+        <rect x="108" y="48" width="24" height="22" fill={C.accent} opacity="0.4"/>
+        <rect x="144" y="54" width="24" height="16" fill={C.accent} opacity="0.3"/>
+        <text x="0"   y="84" fill={C.muted} fontSize="9">M1</text>
+        <text x="36"  y="84" fill={C.muted} fontSize="9">M3</text>
+        <text x="72"  y="84" fill={C.muted} fontSize="9">M6</text>
+        <text x="108" y="84" fill={C.muted} fontSize="9">M12</text>
+        <text x="144" y="84" fill={C.muted} fontSize="9">M24</text>
+      </g>
+    </g>
+
+    {/* Legend footer */}
+    <text x="24" y="372" fill={C.muted} fontSize="10">
+      Three families, one discipline: identify a statistical relationship, quantify the deviation, trade the convergence.
+    </text>
+  </svg>
+);
+
+const Ch6Vis1 = () => {
+  const data = [
+    { yr: "2005", iv: 36, rv: 28, vrp: 8 },
+    { yr: "2007", iv: 34, rv: 27, vrp: 7 },
+    { yr: "2009", iv: 62, rv: 58, vrp: 4 },
+    { yr: "2011", iv: 32, rv: 26, vrp: 6 },
+    { yr: "2013", iv: 22, rv: 18, vrp: 4 },
+    { yr: "2015", iv: 44, rv: 41, vrp: 3 },
+    { yr: "2017", iv: 28, rv: 26, vrp: 2 },
+    { yr: "2019", iv: 32, rv: 30, vrp: 2 },
+    { yr: "2020", iv: 78, rv: 84, vrp: -6 },
+    { yr: "2022", iv: 46, rv: 45, vrp: 1 },
+    { yr: "2024", iv: 30, rv: 29, vrp: 1 },
+  ];
+  return (
+    <div style={{ width: "100%", maxWidth: 760, margin: "24px auto", background: C.panel, border: `1px solid ${C.line}`, borderRadius: 6, padding: 18 }}>
+      <div style={{ fontFamily: F.h, fontSize: 14, color: C.text, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>Fig. 6.1 — Oil VRP decay: implied vs realized vol, and residual premium</div>
+      <ResponsiveContainer width="100%" height={320}>
+        <ComposedChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
+          <CartesianGrid stroke={C.line} strokeDasharray="2 4" />
+          <XAxis dataKey="yr" stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 12 }} />
+          <YAxis stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 12 }} label={{ value: "Vol (%)", angle: -90, position: "insideLeft", fill: C.muted, fontSize: 12 }} />
+          <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.line}`, fontFamily: F.b, fontSize: 12 }} />
+          <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12 }} />
+          <Bar dataKey="vrp" name="VRP (IV - RV)" fill={C.accent || "#b8860b"} />
+          <Line type="monotone" dataKey="iv" name="Implied Vol" stroke={C.text} strokeWidth={2} dot={{ r: 3 }} />
+          <Line type="monotone" dataKey="rv" name="Realized Vol" stroke={C.muted} strokeWidth={2} strokeDasharray="4 3" dot={{ r: 3 }} />
+        </ComposedChart>
+      </ResponsiveContainer>
+      <div style={{ fontFamily: F.b, fontSize: 12, color: C.muted, marginTop: 6, fontStyle: "italic" }}>Stylised schematic — VRP compresses over two decades as shale-era producer hedging floods the supply of volatility; 2020 inverts briefly as realised vol overshoots.</div>
+    </div>
+  );
+};
+
+const Ch6Vis2 = () => {
+  const pts = [];
+  for (let f = 30; f <= 110; f += 2) {
+    const longPut = Math.max(65 - f, 0);
+    const shortCall = -Math.max(f - 85, 0);
+    const shortPut = -Math.max(45 - f, 0);
+    const net = longPut + shortCall + shortPut;
+    pts.push({ price: f, collar: Math.max(65 - f, 0) - Math.max(f - 85, 0), threeWay: net });
+  }
+  return (
+    <div style={{ width: "100%", maxWidth: 760, margin: "24px auto", background: C.panel, border: `1px solid ${C.line}`, borderRadius: 6, padding: 18 }}>
+      <div style={{ fontFamily: F.h, fontSize: 14, color: C.text, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>Fig. 6.2 — Producer hedge payoffs: costless collar vs three-way collar</div>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={pts} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
+          <CartesianGrid stroke={C.line} strokeDasharray="2 4" />
+          <XAxis dataKey="price" stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 12 }} label={{ value: "Oil price at expiry ($/bbl)", position: "insideBottom", offset: -2, fill: C.muted, fontSize: 12 }} />
+          <YAxis stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 12 }} label={{ value: "Hedge P&L ($/bbl)", angle: -90, position: "insideLeft", fill: C.muted, fontSize: 12 }} />
+          <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.line}`, fontFamily: F.b, fontSize: 12 }} />
+          <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12 }} />
+          <ReferenceLine y={0} stroke={C.muted} />
+          <Line type="linear" dataKey="collar" name="Costless collar (long 65P / short 85C)" stroke={C.text} strokeWidth={2} dot={false} />
+          <Line type="linear" dataKey="threeWay" name="Three-way (long 65P / short 85C / short 45P)" stroke={C.accent || "#b8860b"} strokeWidth={2} dot={false} />
+        </LineChart>
+      </ResponsiveContainer>
+      <div style={{ fontFamily: F.b, fontSize: 12, color: C.muted, marginTop: 6, fontStyle: "italic" }}>The three-way collar sells an extra low-strike put (45) to cheapen or monetise the hedge, re-introducing tail exposure below the short-put strike — the structural source of the modern oil volatility-supply glut.</div>
+    </div>
+  );
+};
+
+const Ch7Vis1 = () => (
+  <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", background: C.bg2, borderRadius: 6 }}>
+    <defs>
+      <marker id="ch7arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill={C.muted} />
+      </marker>
+    </defs>
+    <text x="380" y="22" fill={C.text} fontFamily={F.s} fontSize="13" fontWeight="600" textAnchor="middle">Evolution of Oil Option Pricing Models</text>
+    <text x="380" y="38" fill={C.muted} fontFamily={F.b} fontSize="10" textAnchor="middle">increasing flexibility in capturing the volatility smile and fat tails  --&gt;</text>
+
+    {/* Five boxes in a row */}
+    <g fontFamily={F.s} fontSize="11" fill={C.text}>
+      <rect x="20" y="70" width="130" height="110" rx="6" fill={C.bg} stroke={C.muted} />
+      <text x="85" y="90" textAnchor="middle" fontWeight="600">Black-Scholes</text>
+      <text x="85" y="106" textAnchor="middle" fontSize="9" fill={C.muted}>1973 equity</text>
+      <text x="85" y="126" textAnchor="middle" fontSize="9" fontFamily={F.b}>GBM, lognormal</text>
+      <text x="85" y="140" textAnchor="middle" fontSize="9" fontFamily={F.b}>flat vol, sigma const</text>
+      <text x="85" y="158" textAnchor="middle" fontSize="9" fontFamily={F.b}>fails: neg prices,</text>
+      <text x="85" y="170" textAnchor="middle" fontSize="9" fontFamily={F.b}>deep-OTM, smile</text>
+
+      <rect x="170" y="70" width="130" height="110" rx="6" fill={C.bg} stroke={C.muted} />
+      <text x="235" y="90" textAnchor="middle" fontWeight="600">Black-76 / Bachelier</text>
+      <text x="235" y="106" textAnchor="middle" fontSize="9" fill={C.muted}>forward / normal</text>
+      <text x="235" y="126" textAnchor="middle" fontSize="9" fontFamily={F.b}>symmetric delta,</text>
+      <text x="235" y="140" textAnchor="middle" fontSize="9" fontFamily={F.b}>handles negatives</text>
+      <text x="235" y="158" textAnchor="middle" fontSize="9" fontFamily={F.b}>still no smile,</text>
+      <text x="235" y="170" textAnchor="middle" fontSize="9" fontFamily={F.b}>thin tails</text>
+
+      <rect x="320" y="70" width="130" height="110" rx="6" fill={C.bg} stroke={C.muted} />
+      <text x="385" y="90" textAnchor="middle" fontWeight="600">Local Volatility</text>
+      <text x="385" y="106" textAnchor="middle" fontSize="9" fill={C.muted}>Dupire 1994</text>
+      <text x="385" y="126" textAnchor="middle" fontSize="9" fontFamily={F.b}>sigma(F,t) surface</text>
+      <text x="385" y="140" textAnchor="middle" fontSize="9" fontFamily={F.b}>fits smile exactly</text>
+      <text x="385" y="158" textAnchor="middle" fontSize="9" fontFamily={F.b}>unstable calib,</text>
+      <text x="385" y="170" textAnchor="middle" fontSize="9" fontFamily={F.b}>poor forward dyn</text>
+
+      <rect x="470" y="70" width="130" height="110" rx="6" fill={C.bg} stroke={C.muted} />
+      <text x="535" y="90" textAnchor="middle" fontWeight="600">SABR / Stoch-Vol</text>
+      <text x="535" y="106" textAnchor="middle" fontSize="9" fill={C.muted}>Hagan 2002</text>
+      <text x="535" y="126" textAnchor="middle" fontSize="9" fontFamily={F.b}>random vol process</text>
+      <text x="535" y="140" textAnchor="middle" fontSize="9" fontFamily={F.b}>captures tail dyn</text>
+      <text x="535" y="158" textAnchor="middle" fontSize="9" fontFamily={F.b}>complex, costly</text>
+      <text x="535" y="170" textAnchor="middle" fontSize="9" fontFamily={F.b}>to calibrate</text>
+
+      <rect x="620" y="70" width="130" height="110" rx="6" fill={C.accent} stroke={C.text} strokeWidth="1.3" />
+      <text x="685" y="90" textAnchor="middle" fontWeight="700" fill={C.bg}>Quadratic Normal</text>
+      <text x="685" y="106" textAnchor="middle" fontSize="9" fill={C.bg}>Bouchouev oil</text>
+      <text x="685" y="126" textAnchor="middle" fontSize="9" fontFamily={F.b} fill={C.bg}>Bachelier + eps(F)</text>
+      <text x="685" y="140" textAnchor="middle" fontSize="9" fontFamily={F.b} fill={C.bg}>closed-form, skew</text>
+      <text x="685" y="158" textAnchor="middle" fontSize="9" fontFamily={F.b} fill={C.bg}>+ kurtosis via</text>
+      <text x="685" y="170" textAnchor="middle" fontSize="9" fontFamily={F.b} fill={C.bg}>straddle / collar / strangle</text>
+    </g>
+
+    {/* arrows */}
+    <g stroke={C.muted} strokeWidth="1.2" fill="none" markerEnd="url(#ch7arrow)">
+      <line x1="150" y1="125" x2="170" y2="125" />
+      <line x1="300" y1="125" x2="320" y2="125" />
+      <line x1="450" y1="125" x2="470" y2="125" />
+      <line x1="600" y1="125" x2="620" y2="125" />
+    </g>
+
+    {/* footer axis: flexibility / tractability */}
+    <g fontFamily={F.b} fontSize="9" fill={C.muted}>
+      <line x1="20" y1="210" x2="750" y2="210" stroke={C.muted} strokeWidth="0.8" />
+      <text x="20" y="226">constant sigma</text>
+      <text x="235" y="226" textAnchor="middle">forward + normal tails</text>
+      <text x="385" y="226" textAnchor="middle">full local surface</text>
+      <text x="535" y="226" textAnchor="middle">stochastic vol dynamics</text>
+      <text x="750" y="226" textAnchor="end">oil-calibrated smile + tails</text>
+
+      <text x="20" y="246" fill={C.text} fontSize="10" fontWeight="600">tractability</text>
+      <text x="750" y="246" textAnchor="end" fill={C.text} fontSize="10" fontWeight="600">realism for oil</text>
+    </g>
+  </svg>
+);
+
+const Ch7Vis2 = () => (
+  <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", background: C.bg2, borderRadius: 6 }}>
+    <text x="380" y="22" fill={C.text} fontFamily={F.s} fontSize="13" fontWeight="600" textAnchor="middle">The Oil Volatility Smile: what the models must explain</text>
+    <text x="380" y="38" fill={C.muted} fontFamily={F.b} fontSize="10" textAnchor="middle">implied vol (y) vs strike K (x); curved wings = fat tails; asymmetry = skew</text>
+
+    {/* axes */}
+    <g stroke={C.muted} strokeWidth="1" fill="none">
+      <line x1="70" y1="220" x2="720" y2="220" />
+      <line x1="70" y1="60" x2="70" y2="220" />
+    </g>
+    {/* ATM marker */}
+    <line x1="395" y1="60" x2="395" y2="220" stroke={C.muted} strokeDasharray="3 3" strokeWidth="0.8" />
+    <text x="395" y="234" fontFamily={F.b} fontSize="9" fill={C.muted} textAnchor="middle">ATM (K = F)</text>
+    <text x="80" y="234" fontFamily={F.b} fontSize="9" fill={C.muted}>OTM put</text>
+    <text x="700" y="234" fontFamily={F.b} fontSize="9" fill={C.muted} textAnchor="end">OTM call</text>
+    <text x="55" y="65" fontFamily={F.b} fontSize="9" fill={C.muted} textAnchor="end">IV</text>
+
+    {/* flat smile (Black / Bachelier) */}
+    <path d="M 90 180 L 720 180" stroke={C.muted} strokeWidth="1.2" fill="none" strokeDasharray="4 4" />
+    <text x="725" y="184" fontFamily={F.b} fontSize="9" fill={C.muted}>Black/Bachelier (flat)</text>
+
+    {/* Observed oil smile: skewed parabola, steeper on downside */}
+    <path d="M 90 90 Q 250 140 395 150 Q 540 145 720 110" stroke={C.accent} strokeWidth="2" fill="none" />
+    <text x="100" y="82" fontFamily={F.b} fontSize="9" fill={C.accent}>downside skew</text>
+    <text x="700" y="100" fontFamily={F.b} fontSize="9" fill={C.accent} textAnchor="end">upside tail</text>
+
+    {/* Annotations */}
+    <g fontFamily={F.b} fontSize="9" fill={C.text}>
+      <text x="120" y="108">producer gamma,</text>
+      <text x="120" y="120">margin-call spiral</text>
+      <text x="560" y="122">supply disruption,</text>
+      <text x="560" y="134">spare-capacity shock</text>
+      <text x="310" y="170">parabolic QN fit</text>
+    </g>
+
+    {/* legend */}
+    <g fontFamily={F.b} fontSize="9">
+      <rect x="80" y="50" width="220" height="14" fill="none" />
+      <line x1="84" y1="57" x2="104" y2="57" stroke={C.muted} strokeWidth="1.2" strokeDasharray="4 4" />
+      <text x="110" y="60" fill={C.muted}>constant-sigma model (flat smile)</text>
+    </g>
+    <g fontFamily={F.b} fontSize="9">
+      <line x1="444" y1="57" x2="464" y2="57" stroke={C.accent} strokeWidth="2" />
+      <text x="470" y="60" fill={C.text}>observed oil smile / QN</text>
+    </g>
+  </svg>
+);
+
+const Ch8Vis1 = () => (
+  <svg viewBox="0 0 760 360" style={{ width: "100%", height: "auto", background: C.bg2, border: `1px solid ${C.line}`, fontFamily: F.s }}>
+    <text x="380" y="28" textAnchor="middle" fontSize="14" fontWeight="700" fill={C.text}>From Implied Volatility to Local Volatility: The Bootstrapping Cascade</text>
+    <text x="380" y="46" textAnchor="middle" fontSize="11" fill={C.muted}>Market quotes on the left; recursively derived local vols on the right; Dupire links them across strikes</text>
+
+    {/* Left column: Implied vols observed */}
+    <text x="100" y="78" textAnchor="middle" fontSize="12" fontWeight="600" fill={C.text}>Market-observed v(K,T)</text>
+    <rect x="40" y="90" width="120" height="36" fill={C.bg} stroke={C.line}/>
+    <text x="100" y="108" textAnchor="middle" fontSize="11" fill={C.text}>T1 = 1M  v=32%</text>
+    <text x="100" y="121" textAnchor="middle" fontSize="10" fill={C.muted}>shortest maturity</text>
+    <rect x="40" y="136" width="120" height="36" fill={C.bg} stroke={C.line}/>
+    <text x="100" y="154" textAnchor="middle" fontSize="11" fill={C.text}>T2 = 3M  v=35%</text>
+    <text x="100" y="167" textAnchor="middle" fontSize="10" fill={C.muted}>cumulative avg</text>
+    <rect x="40" y="182" width="120" height="36" fill={C.bg} stroke={C.line}/>
+    <text x="100" y="200" textAnchor="middle" fontSize="11" fill={C.text}>T3 = 6M  v=37%</text>
+    <text x="100" y="213" textAnchor="middle" fontSize="10" fill={C.muted}>cumulative avg</text>
+    <rect x="40" y="228" width="120" height="36" fill={C.bg} stroke={C.line}/>
+    <text x="100" y="246" textAnchor="middle" fontSize="11" fill={C.text}>T4 = 12M v=38%</text>
+    <text x="100" y="259" textAnchor="middle" fontSize="10" fill={C.muted}>cumulative avg</text>
+
+    {/* Recursion arrows */}
+    <path d="M 170 108 L 280 108" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
+    <path d="M 170 154 L 280 154" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
+    <path d="M 170 200 L 280 200" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
+    <path d="M 170 246 L 280 246" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
+
+    {/* Centre: recursive decomposition box */}
+    <rect x="280" y="90" width="200" height="174" fill={C.bg} stroke={C.line}/>
+    <text x="380" y="108" textAnchor="middle" fontSize="11" fontWeight="600" fill={C.text}>Bootstrapping recursion</text>
+    <text x="380" y="128" textAnchor="middle" fontSize="10" fill={C.muted}>σ1² · T1 = v1² · T1</text>
+    <text x="380" y="146" textAnchor="middle" fontSize="10" fill={C.muted}>σ2² · ΔT = v2² · T2 − σ1² · T1</text>
+    <text x="380" y="164" textAnchor="middle" fontSize="10" fill={C.muted}>σ3² · ΔT = v3² · T3 − Σ prior</text>
+    <text x="380" y="182" textAnchor="middle" fontSize="10" fill={C.muted}>…</text>
+    <text x="380" y="208" textAnchor="middle" fontSize="10" fontStyle="italic" fill={C.muted}>decompose cumulative variance</text>
+    <text x="380" y="224" textAnchor="middle" fontSize="10" fontStyle="italic" fill={C.muted}>into time-bucketed forward vols</text>
+    <text x="380" y="250" textAnchor="middle" fontSize="10" fill={C.accent}>Dupire links across K too</text>
+
+    <path d="M 480 108 L 580 108" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
+    <path d="M 480 154 L 580 154" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
+    <path d="M 480 200 L 580 200" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
+    <path d="M 480 246 L 580 246" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
+
+    {/* Right column: derived local vols */}
+    <text x="650" y="78" textAnchor="middle" fontSize="12" fontWeight="600" fill={C.text}>Local vol σ(S,t)</text>
+    <rect x="580" y="90" width="130" height="36" fill={C.bg} stroke={C.line}/>
+    <text x="645" y="108" textAnchor="middle" fontSize="11" fill={C.text}>σ1 ≈ 32.0%</text>
+    <text x="645" y="121" textAnchor="middle" fontSize="10" fill={C.muted}>[0,T1]</text>
+    <rect x="580" y="136" width="130" height="36" fill={C.bg} stroke={C.line}/>
+    <text x="645" y="154" textAnchor="middle" fontSize="11" fill={C.text}>σ2 ≈ 36.4%</text>
+    <text x="645" y="167" textAnchor="middle" fontSize="10" fill={C.muted}>[T1,T2] forward</text>
+    <rect x="580" y="182" width="130" height="36" fill={C.bg} stroke={C.line}/>
+    <text x="645" y="200" textAnchor="middle" fontSize="11" fill={C.text}>σ3 ≈ 39.1%</text>
+    <text x="645" y="213" textAnchor="middle" fontSize="10" fill={C.muted}>[T2,T3] forward</text>
+    <rect x="580" y="228" width="130" height="36" fill={C.bg} stroke={C.line}/>
+    <text x="645" y="246" textAnchor="middle" fontSize="11" fill={C.text}>σ4 ≈ 39.8%</text>
+    <text x="645" y="259" textAnchor="middle" fontSize="10" fill={C.muted}>[T3,T4] forward</text>
+
+    {/* Footer: model spectrum */}
+    <line x1="40" y1="290" x2="720" y2="290" stroke={C.line} strokeDasharray="3 3"/>
+    <text x="40" y="310" fontSize="11" fontWeight="600" fill={C.text}>Spread-option model spectrum</text>
+    <rect x="40" y="320" width="150" height="30" fill={C.bg} stroke={C.line}/>
+    <text x="115" y="339" textAnchor="middle" fontSize="10" fill={C.text}>Bachelier  dS = σ dW</text>
+    <rect x="200" y="320" width="150" height="30" fill={C.bg} stroke={C.line}/>
+    <text x="275" y="339" textAnchor="middle" fontSize="10" fill={C.text}>QN: σ(S) quadratic</text>
+    <rect x="360" y="320" width="170" height="30" fill={C.bg} stroke={C.line}/>
+    <text x="445" y="339" textAnchor="middle" fontSize="10" fill={C.text}>2D lognormal + Kirk approx</text>
+    <rect x="540" y="320" width="180" height="30" fill={C.bg} stroke={C.line}/>
+    <text x="630" y="339" textAnchor="middle" fontSize="10" fill={C.text}>stochastic vol / jump-diffusion</text>
+
+    <defs>
+      <marker id="ch8arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill={C.accent}/>
+      </marker>
+    </defs>
+  </svg>
+);
+
+const Ch9Vis1 = () => (
+  <svg viewBox="0 0 760 420" style={{ width: "100%", height: "auto", background: C.panel, borderRadius: 6, margin: "18px 0" }}>
+    <defs>
+      <linearGradient id="ch9g1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor={C.accent} stopOpacity="0.35" />
+        <stop offset="100%" stopColor={C.accent} stopOpacity="0.02" />
+      </linearGradient>
+      <linearGradient id="ch9g2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stopColor="#6aa1d4" stopOpacity="0.85" />
+        <stop offset="100%" stopColor="#d48a6a" stopOpacity="0.85" />
+      </linearGradient>
+    </defs>
+    <text x="380" y="26" textAnchor="middle" fill={C.text} fontFamily={F.h} fontSize="15" fontWeight="600">
+      Spread Option Value as a Function of Correlation
+    </text>
+    <text x="380" y="44" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="11">
+      Margrabe / Kirk intuition: rho down -&gt; sigma_spread up -&gt; option up
+    </text>
+    <line x1="80" y1="340" x2="720" y2="340" stroke={C.muted} strokeWidth="1" />
+    <line x1="80" y1="80" x2="80" y2="340" stroke={C.muted} strokeWidth="1" />
+    <text x="400" y="380" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="12">correlation rho (S1, S2)</text>
+    <text x="28" y="210" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="12" transform="rotate(-90 28 210)">spread option value</text>
+    {[-1, -0.5, 0, 0.5, 1].map((r, i) => (
+      <g key={i}>
+        <line x1={80 + i * 160} y1="340" x2={80 + i * 160} y2="345" stroke={C.muted} />
+        <text x={80 + i * 160} y="360" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="11">{r.toFixed(1)}</text>
+      </g>
+    ))}
+    <path d="M80,100 C200,130 360,220 520,280 L720,330 L720,340 L80,340 Z" fill="url(#ch9g1)" />
+    <path d="M80,100 C200,130 360,220 520,280 L720,330" fill="none" stroke={C.accent} strokeWidth="2.4" />
+    <circle cx="80" cy="100" r="4" fill="#6aa1d4" />
+    <text x="92" y="96" fill={C.text} fontFamily={F.b} fontSize="11">rho=-1: sigma_spread maximised</text>
+    <circle cx="400" cy="220" r="4" fill={C.accent} />
+    <text x="410" y="216" fill={C.text} fontFamily={F.b} fontSize="11">rho=0: independent factors</text>
+    <circle cx="720" cy="330" r="4" fill="#d48a6a" />
+    <text x="630" y="320" fill={C.text} fontFamily={F.b} fontSize="11">rho=+1: spread collapses</text>
+    <rect x="520" y="90" width="190" height="84" rx="4" fill={C.bg} stroke={C.muted} strokeWidth="0.6" />
+    <text x="530" y="108" fill={C.text} fontFamily={F.h} fontSize="12" fontWeight="600">Margrabe (K=0):</text>
+    <text x="530" y="126" fill={C.muted} fontFamily={F.b} fontSize="11">sigma^2 = sigma1^2 + sigma2^2</text>
+    <text x="530" y="142" fill={C.muted} fontFamily={F.b} fontSize="11">           - 2 rho sigma1 sigma2</text>
+    <text x="530" y="162" fill={C.muted} fontFamily={F.b} fontSize="11">Kirk: extends to K &gt; 0</text>
+  </svg>
+);
+
+const Ch9Vis2 = () => (
+  <svg viewBox="0 0 760 340" style={{ width: "100%", height: "auto", background: C.panel, borderRadius: 6, margin: "18px 0" }}>
+    <text x="380" y="26" textAnchor="middle" fill={C.text} fontFamily={F.h} fontSize="15" fontWeight="600">
+      Valuation Workflow: From Market Data to Hedged Spread Option
+    </text>
+    {[
+      { x: 40, label: "Data" },
+      { x: 180, label: "Model select" },
+      { x: 320, label: "Calibrate" },
+      { x: 460, label: "Price (MC / FD)" },
+      { x: 600, label: "Risk / hedge" },
+    ].map((s, i) => (
+      <g key={i}>
+        <rect x={s.x} y={130} width={120} height={60} rx={6} fill={C.bg} stroke={C.accent} strokeWidth="1.2" />
+        <text x={s.x + 60} y={165} textAnchor="middle" fill={C.text} fontFamily={F.b} fontSize="12">{s.label}</text>
+        {i < 4 && (
+          <path d={`M ${s.x + 120} 160 L ${s.x + 180} 160`} stroke={C.muted} strokeWidth="1.4" markerEnd="url(#ch9arrow)" fill="none" />
+        )}
+      </g>
+    ))}
+    <defs>
+      <marker id="ch9arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill={C.muted} />
+      </marker>
+    </defs>
+    <text x="100" y="230" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">historical px,</text>
+    <text x="100" y="244" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">IV surface</text>
+    <text x="240" y="230" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">Margrabe,</text>
+    <text x="240" y="244" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">Kirk, Heston</text>
+    <text x="380" y="230" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">GARCH sigma,</text>
+    <text x="380" y="244" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">rho(t), liquid opts</text>
+    <text x="520" y="230" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">paths or grid,</text>
+    <text x="520" y="244" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">Crank-Nicolson</text>
+    <text x="660" y="230" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">delta hedge,</text>
+    <text x="660" y="244" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">stress test</text>
+    <text x="380" y="290" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="11">
+      Feedback: market P&amp;L and squeeze events re-enter via fundamental overlay
+    </text>
+    <path d="M660 195 C 660 280, 100 280, 100 195" fill="none" stroke={C.muted} strokeWidth="0.8" strokeDasharray="4 3" />
+  </svg>
+);
+
+const Ch10Vis1 = () => {
+  const data = [
+    { tenor: "1W",  implied: 38.2, realized: 34.1, vrp: 4.1 },
+    { tenor: "2W",  implied: 37.0, realized: 33.0, vrp: 4.0 },
+    { tenor: "1M",  implied: 35.8, realized: 31.6, vrp: 4.2 },
+    { tenor: "2M",  implied: 34.1, realized: 29.8, vrp: 4.3 },
+    { tenor: "3M",  implied: 32.7, realized: 28.3, vrp: 4.4 },
+    { tenor: "6M",  implied: 30.9, realized: 26.5, vrp: 4.4 },
+    { tenor: "9M",  implied: 29.8, realized: 25.7, vrp: 4.1 },
+    { tenor: "12M", implied: 29.1, realized: 25.4, vrp: 3.7 },
+    { tenor: "18M", implied: 28.4, realized: 25.1, vrp: 3.3 },
+    { tenor: "24M", implied: 27.9, realized: 24.9, vrp: 3.0 },
+  ];
+  return (
+    <div style={{ background: C.panel, border: `1px solid ${C.border}`, padding: 16, margin: "14px 0" }}>
+      <div style={{ fontFamily: F.h, fontSize: 13, color: C.muted, letterSpacing: 1.5, marginBottom: 8 }}>
+        FIGURE 10.1 — TERM STRUCTURE OF IMPLIED VOL, REALIZED VOL, AND THE VRP
+      </div>
+      <ResponsiveContainer width="100%" height={300}>
+        <ComposedChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
+          <CartesianGrid stroke={C.border} strokeDasharray="2 4" />
+          <XAxis dataKey="tenor" stroke={C.muted} tick={{ fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
+          <YAxis yAxisId="left" stroke={C.muted} tick={{ fill: C.muted, fontFamily: F.b, fontSize: 12 }} label={{ value: "vol (%)", angle: -90, position: "insideLeft", fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
+          <YAxis yAxisId="right" orientation="right" stroke={C.muted} tick={{ fill: C.muted, fontFamily: F.b, fontSize: 12 }} label={{ value: "VRP (vol pts)", angle: 90, position: "insideRight", fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
+          <Tooltip contentStyle={{ background: C.bg, border: `1px solid ${C.border}`, fontFamily: F.b, fontSize: 12 }} />
+          <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12, color: C.text }} />
+          <Bar yAxisId="right" dataKey="vrp" name="VRP (RHS)" fill={C.accent} opacity={0.45} />
+          <Line yAxisId="left" type="monotone" dataKey="implied" name="Implied Vol" stroke={C.text} strokeWidth={2} dot={{ r: 3 }} />
+          <Line yAxisId="left" type="monotone" dataKey="realized" name="Realized Vol" stroke={C.muted} strokeWidth={2} strokeDasharray="5 4" dot={{ r: 3 }} />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+const Ch10Vis2 = () => {
+  const data = [
+    { strike: "80% K",  calm: 5.2, stress: 2.1 },
+    { strike: "90% K",  calm: 4.0, stress: 1.4 },
+    { strike: "95% K",  calm: 3.4, stress: 0.9 },
+    { strike: "ATM",    calm: 2.9, stress: 0.4 },
+    { strike: "105% K", calm: 3.1, stress: 0.7 },
+    { strike: "110% K", calm: 3.8, stress: 1.6 },
+    { strike: "120% K", calm: 5.0, stress: 2.8 },
+  ];
+  return (
+    <div style={{ background: C.panel, border: `1px solid ${C.border}`, padding: 16, margin: "14px 0" }}>
+      <div style={{ fontFamily: F.h, fontSize: 13, color: C.muted, letterSpacing: 1.5, marginBottom: 8 }}>
+        FIGURE 10.2 — VRP SMILE: CALM REGIME vs STRESS REGIME (VRP IN VOL POINTS)
+      </div>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
+          <CartesianGrid stroke={C.border} strokeDasharray="2 4" />
+          <XAxis dataKey="strike" stroke={C.muted} tick={{ fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
+          <YAxis stroke={C.muted} tick={{ fill: C.muted, fontFamily: F.b, fontSize: 12 }} label={{ value: "VRP (vol pts)", angle: -90, position: "insideLeft", fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
+          <Tooltip contentStyle={{ background: C.bg, border: `1px solid ${C.border}`, fontFamily: F.b, fontSize: 12 }} />
+          <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12, color: C.text }} />
+          <Line type="monotone" dataKey="calm" name="Calm regime" stroke={C.text} strokeWidth={2} dot={{ r: 4 }} />
+          <Line type="monotone" dataKey="stress" name="Stress regime" stroke={C.accent} strokeWidth={2} strokeDasharray="5 4" dot={{ r: 4 }} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+function VirtualBarrelsChapterNotes() {
+  return (
+    <div style={{ background: C.bg, minHeight: "100vh" }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{background:${C.bg}}`}</style>
+
+      <div style={{ background: C.accent, padding: "12px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+        <span style={{ fontFamily: F.m, fontSize: 11, color: "#FEF3C7", letterSpacing: "0.1em", textTransform: "uppercase" }}>Chapter Notes · Reference</span>
+        <span style={{ fontFamily: F.m, fontSize: 11, color: "#FEF3C7" }}>Virtual Barrels · Bouchouev · Chapters 1–10</span>
+      </div>
+
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 24px 0" }}>
+        <div style={{ fontFamily: F.m, fontSize: 12, color: C.accent, fontWeight: 600, letterSpacing: "0.08em", marginBottom: 12 }}>QUANTITATIVE OIL TRADING · FULL CHAPTER NOTES</div>
+        <h1 style={{ fontFamily: F.h, fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 700, color: C.text, lineHeight: 1.15, marginBottom: 20 }}>Virtual Barrels — Chapter Notes</h1>
+        <p style={{ fontFamily: F.b, fontSize: 18, color: C.muted, lineHeight: 1.6, maxWidth: 720, marginBottom: 12 }}>Full chapter-by-chapter reference extracted verbatim from the library's Virtual Barrels chapter summaries. No synthesis, no editorial framing — every Key Technical Concept, Technical Overview, and Detailed Foundation rendered in order.</p>
+        <div style={{ fontFamily: F.b, fontSize: 13, color: C.light, marginBottom: 24 }}>Source: <em>Virtual Barrels: Quantitative Trading in the Oil Market</em> — Ilia Bouchouev · Chapter summaries mirrored from <code>library/chapter_summaries/</code></div>
+
+        <div style={{ padding: "18px 22px", background: C.infoBg, borderLeft: `4px solid ${C.info}`, borderRadius: "0 8px 8px 0", marginBottom: 8 }}>
+          <div style={{ fontFamily: F.b, fontSize: 13, fontWeight: 700, color: C.info, marginBottom: 8 }}>📚 Table of contents</div>
+          <ul style={{ fontFamily: F.b, fontSize: 14, lineHeight: 1.8, color: C.text, margin: 0, paddingLeft: 22 }}>
+            <li>§1 — Introduction to Real Options and Oil Market Dynamics</li>
+            <li>§2 — Oil Inventory Dynamics, Futures Markets, and the Financialization of Oil</li>
+            <li>§3 — Oil's Role in Macroeconomics, Finance, and Systematic Commodity Trading</li>
+            <li>§4 — Advanced Strategies in Energy Trading: Spread Trading, Statistical Arbitrage, and Macro Considerations</li>
+            <li>§5 — Advanced Oil Trading Strategies: Arbitrage, Macro Models, and Volatility</li>
+            <li>§6 — Advanced Volatility Trading in Oil Markets: From Risk Premium Harvesting to Relative Value Strategies</li>
+            <li>§7 — Advanced Oil Volatility Modeling and Option Pricing: From Black-Scholes to Quadratic Normal and Beyond</li>
+            <li>§8 — Advanced Volatility Modeling and Spread Option Pricing in Energy Markets</li>
+            <li>§9 — Advanced Spread Option Valuation and Market Dynamics in Commodity Trading</li>
+            <li>§10 — Advanced Volatility Modeling and the Volatility Risk Premium</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 24px 80px" }}>
 <Sec n="1" title="Chapter 1: Introduction to Real Options and Oil Market Dynamics">
-  <P>{`Bouchouev opens `}<em>{`Virtual Barrels`}</em>{` by reframing the entire oil complex through a single, unifying lens: `}<strong>{`real options`}</strong>{`. A producer sitting on a reservoir, a pipeline operator weighing whether to dispatch a tanker, a storage tank with empty capacity, a refiner deciding how hard to run its crackers — each is holding a right without an obligation, and each therefore owns something whose value exceeds the simple arithmetic of expected cash flows. Flexibility, Bouchouev argues, is itself an asset. It has a price, it is sensitive to volatility, and it can be analysed with the same machinery that prices financial options.`}</P>
-  <P>{`From this foundation the chapter builds outwards. Production becomes a call on the future price of oil; transport becomes an option on a location spread; storage is an option on a time spread; refining is a spread option on the crack between product and crude. Hedging ties the structure together, letting participants lock in, floor, or cap the cash flows that those operational options throw off. Woven through the exposition is a more subversive idea — that oil, by virtue of its scale, indispensability, and deep derivatives market, functions as a form of `}<em>{`money`}</em>{`, complete with its own Keynesian `}<strong>{`own rate of interest`}</strong>{` that captures the trade-off between consuming a barrel today and storing it for tomorrow.`}</P>
-  <P>{`Alongside the mathematics, Bouchouev insists on the role of `}<strong>{`mental models`}</strong>{` — the simplified, biased, adaptive heuristics traders carry in their heads. These models drive behaviour even when they are wrong, which is precisely why the oil market's textbook certainties tend to break. Chief among those broken certainties is the direction of price discovery itself: in oil, the spot price is usually `}<em>{`derived from`}</em>{` the nearest-to-expire futures contract plus a basis, not the other way round. The chapter closes on the fragility of a `}<strong>{`just-in-time`}</strong>{` energy system whose lack of slack guarantees volatility, and on the growing cast of new entrants — inflation hedgers, quant funds, option specialists — whose presence has reshaped how risk is priced, transferred, and exploited.`}</P>
+  <P>{`Bouchouev opens <em>Virtual Barrels</em> by reframing the entire oil complex through a single, unifying lens: <strong>real options</strong>. A producer sitting on a reservoir, a pipeline operator weighing whether to dispatch a tanker, a storage tank with empty capacity, a refiner deciding how hard to run its crackers — each is holding a right without an obligation, and each therefore owns something whose value exceeds the simple arithmetic of expected cash flows. Flexibility, Bouchouev argues, is itself an asset. It has a price, it is sensitive to volatility, and it can be analysed with the same machinery that prices financial options.`}</P>
+  <P>{`From this foundation the chapter builds outwards. Production becomes a call on the future price of oil; transport becomes an option on a location spread; storage is an option on a time spread; refining is a spread option on the crack between product and crude. Hedging ties the structure together, letting participants lock in, floor, or cap the cash flows that those operational options throw off. Woven through the exposition is a more subversive idea — that oil, by virtue of its scale, indispensability, and deep derivatives market, functions as a form of <em>money</em>, complete with its own Keynesian <strong>own rate of interest</strong> that captures the trade-off between consuming a barrel today and storing it for tomorrow.`}</P>
+  <P>{`Alongside the mathematics, Bouchouev insists on the role of <strong>mental models</strong> — the simplified, biased, adaptive heuristics traders carry in their heads. These models drive behaviour even when they are wrong, which is precisely why the oil market's textbook certainties tend to break. Chief among those broken certainties is the direction of price discovery itself: in oil, the spot price is usually <em>derived from</em> the nearest-to-expire futures contract plus a basis, not the other way round. The chapter closes on the fragility of a <strong>just-in-time</strong> energy system whose lack of slack guarantees volatility, and on the growing cast of new entrants — inflation hedgers, quant funds, option specialists — whose presence has reshaped how risk is priced, transferred, and exploited.`}</P>
 
   <Ch1Vis1 />
   <Cap>{`Figure 1.1 — The oil value chain as a sequence of real options. Each stage carries an exercise rule; the surrounding just-in-time ecosystem amplifies shocks and raises the premium on flexibility itself.`}</Cap>
@@ -363,7 +1108,7 @@ const Ch1Vis2 = () => (
 
   <H3>Technical Overview — synthesis</H3>
   <P>{`Viewed as a whole, Chapter 1 recasts the oil market as a network of interlocking real options rather than a chain of simple cash-and-carry transactions. Each segment — production, transportation, storage, refining — is a decision with optional exercise, and the value of the system is dominated by the flexibility those options grant their holders. This framework supplants naive net-present-value thinking and explains why operators who appear to run "uneconomic" assets during downturns are rationally paying for the right to re-exercise later.`}</P>
-  <P>{`Market participants navigate this network through mental models — compressed, often biased representations built from fundamentals, technicals, and experience. Bouchouev is explicit that these models are necessary but imperfect, and that their failures are themselves a source of alpha for traders equipped with better ones. Two specific textbook failures are highlighted: the belief that futures derive from spot (in oil, the opposite generally holds, with physical trades quoted against prompt futures plus a basis); and the belief that oil is merely a commodity. The chapter's boldest conceptual move treats oil as a form of money with its own `}<em>{`own rate of interest`}</em>{` — the return on lending a barrel denominated in barrels, shaped by storage costs, convenience yield, and forward-price expectations — and sketches a dual-currency economy in which oil and fiat coexist as units of account.`}</P>
+  <P>{`Market participants navigate this network through mental models — compressed, often biased representations built from fundamentals, technicals, and experience. Bouchouev is explicit that these models are necessary but imperfect, and that their failures are themselves a source of alpha for traders equipped with better ones. Two specific textbook failures are highlighted: the belief that futures derive from spot (in oil, the opposite generally holds, with physical trades quoted against prompt futures plus a basis); and the belief that oil is merely a commodity. The chapter's boldest conceptual move treats oil as a form of money with its own <em>own rate of interest</em> — the return on lending a barrel denominated in barrels, shaped by storage costs, convenience yield, and forward-price expectations — and sketches a dual-currency economy in which oil and fiat coexist as units of account.`}</P>
   <P>{`The final overview theme is instability. The global oil system is optimised to the point of fragility: there is almost no slack, so geopolitical events, natural disasters, and supply outages propagate into large price moves. Financial derivatives — futures, options, swaps — exist to absorb, transfer, and speculate on that volatility, and their sheer liquidity underscores their centrality. Over the past two decades the cast of users has broadened from traditional hedgers to inflation hedgers, quantitative funds, and dedicated option traders, whose behaviour has driven the evolution of oil-market analysis from fundamental-first to quantitatively sophisticated.`}</P>
   <P>{`The chapter functions as scaffolding for what follows: it installs the vocabulary (real option, mental model, own rate of interest, basis, crack spread, just-in-time), it previews the analytical toolkit (option pricing adapted for real assets, dual-currency accounting), and it sets an intellectual tone in which flexibility is the primary quantity of interest and derivatives are not peripheral instruments but the very fabric of price discovery.`}</P>
 
@@ -484,76 +1229,10 @@ const Ch1Vis2 = () => (
   <P>{`The chapter also emphasises system-level fragility: the just-in-time nature of the global oil ecosystem produces persistent volatility, which in turn explains the size and liquidity of the derivatives market and the influx of inflation hedgers, quant funds, and option traders. The combination of optionality, fragility, and financialisation is what makes modern oil markets quantitatively tractable and, at the same time, analytically rich.`}</P>
   <P>{`The takeaways for the reader are three: real options are valuable tools for pricing flexibility; mental models — both one's own and other market participants' — matter as much as cash flows; and the oil market has idiosyncratic features (inverted price discovery, money-like properties, just-in-time fragility) that reward operators who think in options and punish those who don't. These ideas form the scaffolding for the increasingly technical chapters that follow.`}</P>
 </Sec>
-const Ch2Vis1 = () => {
-  const data = [
-    { inv: 5,  contango: -14.2, convYield: 16.0 },
-    { inv: 15, contango: -9.8,  convYield: 11.2 },
-    { inv: 25, contango: -5.1,  convYield: 6.8 },
-    { inv: 35, contango: -1.4,  convYield: 3.4 },
-    { inv: 45, contango:  1.2,  convYield: 1.6 },
-    { inv: 55, contango:  2.6,  convYield: 0.9 },
-    { inv: 65, contango:  3.4,  convYield: 0.6 },
-    { inv: 75, contango:  3.9,  convYield: 0.4 },
-    { inv: 85, contango:  4.2,  convYield: 0.3 },
-    { inv: 95, contango:  4.3,  convYield: 0.25 },
-  ];
-  return (
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={data} margin={{ top: 12, right: 24, left: 8, bottom: 28 }}>
-        <CartesianGrid stroke={C.grid} strokeDasharray="2 4" />
-        <XAxis
-          dataKey="inv"
-          stroke={C.muted}
-          tick={{ fill: C.muted, fontSize: 11, fontFamily: F.b }}
-          label={{ value: "Inventory level (% of working capacity)", position: "insideBottom", offset: -14, fill: C.muted, fontSize: 11, fontFamily: F.b }}
-        />
-        <YAxis
-          stroke={C.muted}
-          tick={{ fill: C.muted, fontSize: 11, fontFamily: F.b }}
-          label={{ value: "$/bbl", angle: -90, position: "insideLeft", fill: C.muted, fontSize: 11, fontFamily: F.b }}
-        />
-        <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.grid}`, fontFamily: F.b, fontSize: 12 }} />
-        <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 11, color: C.muted }} />
-        <ReferenceLine y={0} stroke={C.muted} strokeDasharray="3 3" />
-        <ReferenceLine x={10} stroke={C.accent} strokeDasharray="4 4" label={{ value: "X_min (stock-out risk)", position: "top", fill: C.accent, fontSize: 10, fontFamily: F.b }} />
-        <ReferenceLine x={90} stroke={C.accent} strokeDasharray="4 4" label={{ value: "X_max (tank-top)", position: "top", fill: C.accent, fontSize: 10, fontFamily: F.b }} />
-        <Line type="monotone" dataKey="contango" name="Futures spread (F - S)" stroke={C.text} strokeWidth={2} dot={{ r: 3 }} />
-        <Line type="monotone" dataKey="convYield" name="Convenience yield" stroke={C.accent} strokeWidth={2} dot={{ r: 3 }} />
-      </LineChart>
-    </ResponsiveContainer>
-  );
-};
-
-const Ch2Vis2 = () => {
-  const data = [
-    { t: "Apr 14", wti: 20.1, phase: "Pre-collapse" },
-    { t: "Apr 15", wti: 19.8, phase: "Pre-collapse" },
-    { t: "Apr 16", wti: 19.9, phase: "Pre-collapse" },
-    { t: "Apr 17", wti: 18.3, phase: "Pre-collapse" },
-    { t: "Apr 20 am", wti: 11.0, phase: "Storage panic" },
-    { t: "Apr 20 pm", wti: -13.1, phase: "Storage panic" },
-    { t: "Apr 20 close", wti: -37.6, phase: "Settlement" },
-    { t: "Apr 21", wti: 10.0, phase: "Rebound" },
-    { t: "Apr 22", wti: 13.8, phase: "Rebound" },
-  ];
-  return (
-    <ResponsiveContainer width="100%" height={290}>
-      <AreaChart data={data} margin={{ top: 12, right: 24, left: 8, bottom: 28 }}>
-        <CartesianGrid stroke={C.grid} strokeDasharray="2 4" />
-        <XAxis dataKey="t" stroke={C.muted} tick={{ fill: C.muted, fontSize: 10, fontFamily: F.b }} />
-        <YAxis stroke={C.muted} tick={{ fill: C.muted, fontSize: 11, fontFamily: F.b }} label={{ value: "WTI May-20 settle ($/bbl)", angle: -90, position: "insideLeft", fill: C.muted, fontSize: 11, fontFamily: F.b }} />
-        <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.grid}`, fontFamily: F.b, fontSize: 12 }} />
-        <ReferenceLine y={0} stroke={C.muted} strokeDasharray="3 3" />
-        <Area type="monotone" dataKey="wti" stroke={C.accent} fill={C.accent} fillOpacity={0.22} strokeWidth={2} />
-      </AreaChart>
-    </ResponsiveContainer>
-  );
-};
-
 <Sec n="2" title="Chapter 2: Oil Inventory Dynamics, Futures Markets, and the Financialization of Oil">
   <P>{`Oil is a storable commodity, and storage is what binds its physical and financial lives together. Bouchouev builds Chapter 2 around a single organising idea: that the shape of the futures curve, the level of spot prices, and the behaviour of speculators and hedgers all trace back to inventories moving inside narrow physical boundaries. Supply and demand meet not in an abstract equilibrium but in steel tanks, salt caverns, and floating VLCCs, each with a minimum working capacity and a tank-top ceiling.`}</P>
 
-  <P>{`The accounting is deceptively simple — inventory changes by the difference between supply and demand, `}<code>{`dx = (S - D)dt`}</code>{` — but the consequences are not. Because oil's short-run price elasticity is low, small persistent imbalances compress into large price moves whenever stocks approach the boundaries. The mere possibility of a stock-out generates a nonlinear rise in the convenience yield, pushing spot prices up even when inventories are still comfortably above zero. Symmetrically, the approach to tank-tops depresses prices well before the last barrel of storage is filled. Bouchouev's mental image is of a driver braking in advance of a wall: the wall influences behaviour at a distance, and the closer it gets, the more violent the adjustment.`}</P>
+  <P>{`The accounting is deceptively simple — inventory changes by the difference between supply and demand, <code>dx = (S - D)dt</code> — but the consequences are not. Because oil's short-run price elasticity is low, small persistent imbalances compress into large price moves whenever stocks approach the boundaries. The mere possibility of a stock-out generates a nonlinear rise in the convenience yield, pushing spot prices up even when inventories are still comfortably above zero. Symmetrically, the approach to tank-tops depresses prices well before the last barrel of storage is filled. Bouchouev's mental image is of a driver braking in advance of a wall: the wall influences behaviour at a distance, and the closer it gets, the more violent the adjustment.`}</P>
 
   <P>{`On top of this physical skeleton the chapter layers three financial ideas. First, the theory of storage links inventories to the spot-futures spread: high stocks produce contango, low stocks produce backwardation. Second, Keynes's normal backwardation and its modern risk-premium reformulation explain why speculators are compensated — producers hedge more aggressively than consumers, so futures trade at a discount to expected spot. Third, financialization — the growing share of oil futures open interest held by passive funds, commodity-index investors, and macro speculators — can amplify volatility and occasionally break the link between the curve and physical fundamentals altogether.`}</P>
 
@@ -568,9 +1247,9 @@ const Ch2Vis2 = () => {
 
   <Callout type="info" title="Convenience Yield">{`The convenience yield represents the premium embedded in the spot price of a commodity due to the benefits of physically holding it. These benefits can include the ability to profit from short-term shortages, mitigate the impact of production disruptions, or meet unexpected demand surges. It's the value of having immediate access to the physical commodity. For example, a manufacturer relying on a specific type of steel benefits from holding inventory. If a supply disruption occurs, the manufacturer with existing steel inventory can continue production, while those without inventory may face costly shutdowns. This advantage translates into a higher spot price for the steel, reflecting the convenience yield. In the oil market, the convenience yield is heavily influenced by the zero-inventory boundary condition. As inventories decline and the risk of a stock-out increases, the convenience yield rises, pushing up spot prices. This dynamic creates a strong incentive for market participants to hold inventories, especially during periods of uncertainty or anticipated supply disruptions.`}</Callout>
 
-  <Callout type="info" title="Inventory Dynamics">{`The change in inventory level over time is governed by the fundamental balance between supply and demand. This relationship is expressed mathematically as `}<code>{`dx = (S - D)dt`}</code>{`, where `}<code>{`dx`}</code>{` represents the change in inventory, `}<code>{`S`}</code>{` is the supply rate, `}<code>{`D`}</code>{` is the demand rate, and `}<code>{`dt`}</code>{` is a small time increment. This equation is a fundamental accounting identity, not a predictive model. It simply states that inventory changes are driven by the difference between inflows (supply) and outflows (demand). This is analogous to tracking the water level in a tank – the level changes based on the inflow and outflow rates. Understanding inventory dynamics is crucial for analyzing price movements in commodity markets. Persistent imbalances between supply and demand lead to changes in inventory levels, which, in turn, influence spot and futures prices through the convenience yield and carry arbitrage mechanisms.`}</Callout>
+  <Callout type="info" title="Inventory Dynamics">{`The change in inventory level over time is governed by the fundamental balance between supply and demand. This relationship is expressed mathematically as <code>dx = (S - D)dt</code>, where <code>dx</code> represents the change in inventory, <code>S</code> is the supply rate, <code>D</code> is the demand rate, and <code>dt</code> is a small time increment. This equation is a fundamental accounting identity, not a predictive model. It simply states that inventory changes are driven by the difference between inflows (supply) and outflows (demand). This is analogous to tracking the water level in a tank – the level changes based on the inflow and outflow rates. Understanding inventory dynamics is crucial for analyzing price movements in commodity markets. Persistent imbalances between supply and demand lead to changes in inventory levels, which, in turn, influence spot and futures prices through the convenience yield and carry arbitrage mechanisms.`}</Callout>
 
-  <Callout type="info" title="Storage Constraints">{`Oil inventories are subject to physical limitations. These constraints play a significant role in price dynamics, particularly during periods of high or low inventory levels. There's a minimum operating capacity (`}<code>{`X_min`}</code>{`) below which inventories cannot fall due to operational requirements, such as maintaining pipeline pressure or ensuring sufficient working inventory for refineries. There's also a maximum operating capacity (`}<code>{`X_max`}</code>{`) representing the practical storage limit, often below the theoretical maximum (`}<code>{`X`}</code>{`) due to logistical constraints or the availability of suitable storage facilities. These constraints create boundaries that significantly influence price dynamics. Similar to a warehouse with limited space, as oil storage facilities approach full capacity, the cost of storing additional oil increases, potentially depressing prices. Conversely, as inventories approach the minimum operating capacity, the risk of a stock-out increases, driving up prices.`}</Callout>
+  <Callout type="info" title="Storage Constraints">{`Oil inventories are subject to physical limitations. These constraints play a significant role in price dynamics, particularly during periods of high or low inventory levels. There's a minimum operating capacity (<code>X_min</code>) below which inventories cannot fall due to operational requirements, such as maintaining pipeline pressure or ensuring sufficient working inventory for refineries. There's also a maximum operating capacity (<code>X_max</code>) representing the practical storage limit, often below the theoretical maximum (<code>X</code>) due to logistical constraints or the availability of suitable storage facilities. These constraints create boundaries that significantly influence price dynamics. Similar to a warehouse with limited space, as oil storage facilities approach full capacity, the cost of storing additional oil increases, potentially depressing prices. Conversely, as inventories approach the minimum operating capacity, the risk of a stock-out increases, driving up prices.`}</Callout>
 
   <Callout type="info" title="Price Elasticity of Demand and Supply">{`Price elasticity measures the responsiveness of demand and supply to changes in price. It is calculated as the percentage change in quantity demanded or supplied divided by the percentage change in price. A low elasticity implies that even large price swings induce only small changes in the quantity demanded or supplied. Oil exhibits relatively low price elasticity, both for demand and supply, especially in the short term. This inelasticity has profound implications for price volatility, particularly near the inventory boundaries. For example, even with significant increases in gasoline prices, people still need gasoline for their daily commutes, leading to relatively small reductions in demand. This inelasticity, combined with the storage constraints, can amplify price swings when supply is disrupted or demand unexpectedly surges. In the long run, elasticity tends to be higher as consumers and producers have more time to adjust their behavior.`}</Callout>
 
@@ -590,7 +1269,7 @@ const Ch2Vis2 = () => {
 
   <P>{`The theory of storage is the chapter's organising frame: inventory levels determine the relationship between spot and futures prices. When stocks are high, the convenience yield is low and the curve slopes into contango, with futures trading above spot to cover storage and financing. When stocks are low, the convenience yield dominates and the curve inverts into backwardation, with futures below spot as the market signals scarcity. Both states are disciplined by the carry-arbitrage condition that links the spread to observable costs and the inventory-driven yield.`}</P>
 
-  <P>{`Because supply and demand evolve randomly, inventories do too. Bouchouev models `}<code>{`x(t)`}</code>{` as a stochastic process — typically a mean-reverting Ornstein-Uhlenbeck process — that wanders around a long-run equilibrium level but is capped by the hard boundaries `}<code>{`X_min`}</code>{` and `}<code>{`X_max`}</code>{`. Those boundaries, together with oil's low short-run price elasticity, generate the nonlinear convenience-yield function and translate routine inventory draws and builds into outsized price moves. Availability — the sum of current supply plus existing inventory — becomes the intertemporal resource that market participants allocate between consumption today and storage for tomorrow.`}</P>
+  <P>{`Because supply and demand evolve randomly, inventories do too. Bouchouev models <code>x(t)</code> as a stochastic process — typically a mean-reverting Ornstein-Uhlenbeck process — that wanders around a long-run equilibrium level but is capped by the hard boundaries <code>X_min</code> and <code>X_max</code>. Those boundaries, together with oil's low short-run price elasticity, generate the nonlinear convenience-yield function and translate routine inventory draws and builds into outsized price moves. Availability — the sum of current supply plus existing inventory — becomes the intertemporal resource that market participants allocate between consumption today and storage for tomorrow.`}</P>
 
   <P>{`The futures spread is treated as a derivative of the inventory state. Its theoretical value is computed under the no-arbitrage principle as the expected payoff under risk-neutral probabilities, though the chapter is careful to distinguish this from the real-world distribution used when estimating the risk premium directly. Market participants split naturally into producers and consumers (who hedge), and speculators (who absorb the residual risk). Keynes's normal backwardation gives the original rationale for a positive risk premium; the modern decomposition splits that premium into an expected spot-price change and an observable spot-futures difference, matching the two archetypes Bouchouev labels "prophets" and "risk-bearers".`}</P>
 
@@ -666,7 +1345,7 @@ const Ch2Vis2 = () => {
 
   <H3>Programming Implementation</H3>
 
-  <P>{`Implementations span two paradigms — <strong>object-oriented programming</strong>, which gives modular, reusable components for stochastic processes, pricing routines, and I/O; and <strong>functional programming</strong>, which shines for pure mathematical transformations. Two canonical functions define the API surface: `}<code>{`simulate_inventory(initial_inventory, model_parameters, time_horizon)`}</code>{` for path generation, and `}<code>{`calculate_futures_price(spot_price, storage_costs, convenience_yield, stochastic_model)`}</code>{` for spread pricing.`}</P>
+  <P>{`Implementations span two paradigms — <strong>object-oriented programming</strong>, which gives modular, reusable components for stochastic processes, pricing routines, and I/O; and <strong>functional programming</strong>, which shines for pure mathematical transformations. Two canonical functions define the API surface: <code>simulate_inventory(initial_inventory, model_parameters, time_horizon)</code> for path generation, and <code>calculate_futures_price(spot_price, storage_costs, convenience_yield, stochastic_model)</code> for spread pricing.`}</P>
 
   <P>{`The natural <strong>data structures</strong> are time series for historical and simulated paths, and arrays for parameters and numerical tensors. <strong>Algorithmic patterns</strong> lean on iteration for path simulation and recursion for dynamic-programming value functions. <strong>Performance</strong> gains come from vectorisation (operating on arrays rather than scalars) and caching of frequently accessed results. <strong>Error handling</strong> uses exception handling for invalid inputs and numerical overflow, paired with logging for auditability. <strong>Integration points</strong> include APIs to trading platforms and data vendors, and databases for persistence of both inputs and simulation outputs.`}</P>
 
@@ -682,88 +1361,6 @@ const Ch2Vis2 = () => {
 
   <P>{`The 2020 negative-price event is the chapter's stress test and its coda. Traditional storage theory, applied naively, cannot explain a negative settlement; the combination of COVID-19 demand destruction, Cushing tank-tops, the mechanics of physical-delivery futures, and financialized long participants caught at expiry is what produces the observed outcome. The broader lesson is that inventory boundaries, participant behaviour, and financial flows must all be modelled jointly — and that the tools introduced in this chapter (stochastic dynamic programming, Ornstein-Uhlenbeck processes, reduced-form calibration, and the explicit treatment of X_min and X_max) are the minimum apparatus required to do so.`}</P>
 </Sec>
-const Ch3Vis1 = () => {
-  const data = [
-    { year: "1973", wti: 4, cpi: 6.2, shock: 1 },
-    { year: "1974", wti: 10, cpi: 11.0, shock: 1 },
-    { year: "1979", wti: 25, cpi: 11.3, shock: 1 },
-    { year: "1980", wti: 37, cpi: 13.5, shock: 1 },
-    { year: "1986", wti: 15, cpi: 1.9, shock: 0 },
-    { year: "1990", wti: 24, cpi: 5.4, shock: 1 },
-    { year: "1998", wti: 12, cpi: 1.6, shock: 0 },
-    { year: "2000", wti: 30, cpi: 3.4, shock: 1 },
-    { year: "2001", wti: 26, cpi: 2.8, shock: 0 },
-    { year: "2005", wti: 57, cpi: 3.4, shock: 0 },
-    { year: "2008", wti: 100, cpi: 3.8, shock: 1 },
-    { year: "2009", wti: 62, cpi: -0.4, shock: 0 },
-    { year: "2011", wti: 95, cpi: 3.2, shock: 0 },
-    { year: "2014", wti: 93, cpi: 1.6, shock: 0 },
-    { year: "2016", wti: 43, cpi: 1.3, shock: 0 },
-    { year: "2020", wti: 39, cpi: 1.2, shock: 0 },
-    { year: "2022", wti: 95, cpi: 8.0, shock: 1 },
-    { year: "2023", wti: 78, cpi: 4.1, shock: 0 },
-  ];
-  return (
-    <div style={{ width: "100%", margin: "12px 0 6px 0" }}>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={data} margin={{ top: 12, right: 36, left: 8, bottom: 8 }}>
-          <CartesianGrid stroke={C.rule} strokeDasharray="2 4" />
-          <XAxis dataKey="year" stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 11, fill: C.muted }} />
-          <YAxis yAxisId="L" stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 11, fill: C.muted }} label={{ value: "WTI $/bbl", angle: -90, position: "insideLeft", fill: C.muted, fontFamily: F.b, fontSize: 11 }} />
-          <YAxis yAxisId="R" orientation="right" stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 11, fill: C.muted }} label={{ value: "CPI YoY %", angle: 90, position: "insideRight", fill: C.muted, fontFamily: F.b, fontSize: 11 }} />
-          <Tooltip contentStyle={{ fontFamily: F.b, fontSize: 12, background: C.bg, border: `1px solid ${C.rule}` }} />
-          <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12 }} />
-          <ReferenceLine yAxisId="R" y={0} stroke={C.rule} />
-          <Line yAxisId="L" type="monotone" dataKey="wti" name="WTI ($/bbl)" stroke={C.accent} strokeWidth={2} dot={{ r: 2 }} />
-          <Line yAxisId="R" type="monotone" dataKey="cpi" name="US CPI YoY (%)" stroke={C.text} strokeWidth={2} strokeDasharray="4 3" dot={{ r: 2 }} />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  );
-};
-
-const Ch3Vis2 = () => {
-  return (
-    <div style={{ width: "100%", margin: "12px 0 6px 0", display: "flex", justifyContent: "center" }}>
-      <svg viewBox="0 0 760 300" width="100%" style={{ maxWidth: 760 }}>
-        <rect x="0" y="0" width="760" height="300" fill={C.bg} />
-        <text x="380" y="22" textAnchor="middle" fontFamily={F.h} fontSize="14" fill={C.text}>Systematic Oil Futures: The Three-Signal Stack</text>
-        <g>
-          <rect x="30" y="55" width="210" height="200" fill="none" stroke={C.accent} strokeWidth="1.5" />
-          <text x="135" y="80" textAnchor="middle" fontFamily={F.h} fontSize="13" fill={C.accent}>MOMENTUM</text>
-          <text x="135" y="105" textAnchor="middle" fontFamily={F.b} fontSize="11" fill={C.text}>Trends persist</text>
-          <text x="135" y="125" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Lookback return &gt; 0 -&gt; buy</text>
-          <text x="135" y="142" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Moving avgs, returns</text>
-          <text x="135" y="175" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Weak economic base</text>
-          <text x="135" y="192" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Overfitting risk</text>
-          <text x="135" y="225" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Complexity: O(n)</text>
-        </g>
-        <g>
-          <rect x="275" y="55" width="210" height="200" fill="none" stroke={C.accent} strokeWidth="1.5" />
-          <text x="380" y="80" textAnchor="middle" fontFamily={F.h} fontSize="13" fill={C.accent}>CARRY</text>
-          <text x="380" y="105" textAnchor="middle" fontFamily={F.b} fontSize="11" fill={C.text}>Shape of the curve</text>
-          <text x="380" y="125" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Backwardation -&gt; buy</text>
-          <text x="380" y="142" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Contango -&gt; sell</text>
-          <text x="380" y="175" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Grounded in theory</text>
-          <text x="380" y="192" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>of storage</text>
-          <text x="380" y="225" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Complexity: O(1)</text>
-        </g>
-        <g>
-          <rect x="520" y="55" width="210" height="200" fill="none" stroke={C.accent} strokeWidth="1.5" />
-          <text x="625" y="80" textAnchor="middle" fontFamily={F.h} fontSize="13" fill={C.accent}>VALUE</text>
-          <text x="625" y="105" textAnchor="middle" fontFamily={F.b} fontSize="11" fill={C.text}>Mean reversion</text>
-          <text x="625" y="125" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Deviation from fair</text>
-          <text x="625" y="142" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Contrarian by design</text>
-          <text x="625" y="175" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Fair value is hard</text>
-          <text x="625" y="192" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Carry erodes edge</text>
-          <text x="625" y="225" textAnchor="middle" fontFamily={F.b} fontSize="10" fill={C.muted}>Complexity: O(MA len)</text>
-        </g>
-        <text x="380" y="282" textAnchor="middle" fontFamily={F.b} fontSize="11" fill={C.muted}>Blend + dynamic sizing + vol target -&gt; composite systematic strategy</text>
-      </svg>
-    </div>
-  );
-};
-
 <Sec n="3" title="Chapter 3: Oil's Role in Macroeconomics, Finance, and Systematic Commodity Trading">
 
 <P>{`Oil began the twentieth century as an energy commodity and ended it as a financial asset. Chapter 3 traces that transformation and the machinery it spawned. Since the 1970s, any year in which US crude rose more than fifty per cent above its three-year average has been followed, almost without exception, by a US recession — the 1973 embargo, the 1979 revolution, 1990, 2000–01 and the 2008 Global Financial Crisis all fit the pattern. Only the COVID-19 shock breaks it, because demand, not supply, collapsed first. Oil prices feed through to inflation twice: directly, because gasoline sits inside the CPI basket, and indirectly, because crude is an input into virtually every manufactured good, so a sustained move ripples out as higher consumer prices, wage pressure, and eventually an inflationary spiral. Consumers use the pump price as their personal inflation gauge, which makes the feedback loop partly self-fulfilling.`}</P>
@@ -872,7 +1469,7 @@ const Ch3Vis2 = () => {
 
 <H3>Programming Implementation</H3>
 
-<P>{`Practical implementations tend to combine vectorised backtesting using NumPy and pandas with object-oriented design that encapsulates strategies, signals and sub-components as classes. Typical building-block functions include <code>{`calculate_momentum(prices, lookback_period)`}</code> for lookback-period returns, <code>{`calculate_carry(futures_price, spot_price)`}</code> for the spot–futures differential, and <code>{`calculate_value(price, moving_average)`}</code> for deviation from a moving average. Data sits in pandas DataFrames for manipulation and in NumPy arrays for numerical work. Two patterns recur: sliding windows for moving averages and other rolling statistics, and vectorisation for speed. Profiling identifies bottlenecks; optimisation targets both CPU and memory. Error handling uses try-except blocks plus structured logging. Integration points are market-data APIs for ticks and exchange APIs for order flow.`}</P>
+<P>{`Practical implementations tend to combine vectorised backtesting using NumPy and pandas with object-oriented design that encapsulates strategies, signals and sub-components as classes. Typical building-block functions include <code>calculate_momentum(prices, lookback_period)</code> for lookback-period returns, <code>calculate_carry(futures_price, spot_price)</code> for the spot–futures differential, and <code>calculate_value(price, moving_average)</code> for deviation from a moving average. Data sits in pandas DataFrames for manipulation and in NumPy arrays for numerical work. Two patterns recur: sliding windows for moving averages and other rolling statistics, and vectorisation for speed. Profiling identifies bottlenecks; optimisation targets both CPU and memory. Error handling uses try-except blocks plus structured logging. Integration points are market-data APIs for ticks and exchange APIs for order flow.`}</P>
 
 <H3>Advanced Topics and Extensions</H3>
 
@@ -883,97 +1480,6 @@ const Ch3Vis2 = () => {
 <P>{`Chapter 3's integrated picture is this: oil price shocks have been a near-infallible recession warning since the 1970s; oil is mechanically and psychologically linked to CPI and to TIPS-implied inflation expectations; risk parity and the broader financialisation of the asset class have inverted the curve into persistent contango with a structural negative risk premium; and systematic trading in oil futures is organised around three signals — momentum, carry and value — blended with dynamic sizing and volatility targeting. The theory of storage and the theory of hedging pressure remain the indispensable tools for reading the curve, and rigorous risk management, validation and out-of-sample testing are what separate durable strategies from curve-fitted ones. The takeaway is unambiguous: oil is no longer simply an energy commodity. It is a complex financial asset with profound implications for the global economy and financial markets, and anyone trading, hedging or regulating it needs to think in both languages.`}</P>
 
 </Sec>
-const Ch4Vis1 = () => {
-  const W = 760, H = 300, pad = 40;
-  const N = 120;
-  // Simulate a cointegrated spread oscillating around a mean with a regime shift
-  const data = Array.from({ length: N }, (_, i) => {
-    const mean = i < 70 ? 2.0 : 2.8; // small regime shift mid-series
-    const osc = Math.sin(i / 6) * 1.1 + Math.sin(i / 13) * 0.6;
-    const noise = ((i * 1103515245 + 12345) % 1000) / 1000 - 0.5;
-    return { t: i, spread: mean + osc + noise * 0.6, mean };
-  });
-  const ys = data.map(d => d.spread);
-  const yMin = Math.min(...ys) - 0.4;
-  const yMax = Math.max(...ys) + 0.4;
-  const sx = t => pad + (t / (N - 1)) * (W - 2 * pad);
-  const sy = v => H - pad - ((v - yMin) / (yMax - yMin)) * (H - 2 * pad);
-  const linePath = data.map((d, i) => `${i === 0 ? "M" : "L"}${sx(d.t)},${sy(d.spread)}`).join(" ");
-  const meanPath = data.map((d, i) => `${i === 0 ? "M" : "L"}${sx(d.t)},${sy(d.mean)}`).join(" ");
-  const upperPath = data.map((d, i) => `${i === 0 ? "M" : "L"}${sx(d.t)},${sy(d.mean + 1.5)}`).join(" ");
-  const lowerPath = data.map((d, i) => `${i === 0 ? "M" : "L"}${sx(d.t)},${sy(d.mean - 1.5)}`).join(" ");
-  // Signal dots at band crossings
-  const signals = data.filter(d => Math.abs(d.spread - d.mean) > 1.5);
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ maxWidth: W, display: "block", margin: "0 auto", background: C.panel, borderRadius: 6 }}>
-      <text x={pad} y={22} style={{ fontFamily: F.s, fontSize: 13, fill: C.text, fontWeight: 600 }}>WCS–WTI spread with mean-reversion bands</text>
-      <text x={W - pad} y={22} textAnchor="end" style={{ fontFamily: F.m, fontSize: 11, fill: C.muted }}>simulated</text>
-      {/* y-axis guides */}
-      {[0, 1, 2, 3, 4].map(v => (
-        <g key={v}>
-          <line x1={pad} y1={sy(v)} x2={W - pad} y2={sy(v)} stroke={C.border} strokeWidth={0.5} strokeDasharray="2 3" />
-          <text x={pad - 6} y={sy(v) + 3} textAnchor="end" style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>{v.toFixed(1)}</text>
-        </g>
-      ))}
-      {/* bands */}
-      <path d={upperPath} stroke={C.accent || "#c77"} strokeWidth={1} strokeDasharray="4 3" fill="none" opacity={0.7} />
-      <path d={lowerPath} stroke={C.accent || "#c77"} strokeWidth={1} strokeDasharray="4 3" fill="none" opacity={0.7} />
-      {/* mean */}
-      <path d={meanPath} stroke={C.muted} strokeWidth={1.2} fill="none" />
-      {/* spread */}
-      <path d={linePath} stroke={C.text} strokeWidth={1.6} fill="none" />
-      {/* signals */}
-      {signals.map((d, i) => (
-        <circle key={i} cx={sx(d.t)} cy={sy(d.spread)} r={3} fill={d.spread > d.mean ? "#c55" : "#5a8"} stroke={C.panel} strokeWidth={1} />
-      ))}
-      {/* legend */}
-      <g transform={`translate(${pad + 6}, ${H - 18})`}>
-        <line x1={0} y1={0} x2={18} y2={0} stroke={C.text} strokeWidth={1.6} />
-        <text x={22} y={3} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>spread</text>
-        <line x1={80} y1={0} x2={98} y2={0} stroke={C.muted} strokeWidth={1.2} />
-        <text x={102} y={3} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>rolling mean</text>
-        <line x1={190} y1={0} x2={208} y2={0} stroke={C.accent || "#c77"} strokeWidth={1} strokeDasharray="4 3" />
-        <text x={212} y={3} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>+/-1.5 σ bands</text>
-        <circle cx={324} cy={0} r={3} fill="#c55" />
-        <text x={330} y={3} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>sell signal</text>
-        <circle cx={394} cy={0} r={3} fill="#5a8" />
-        <text x={400} y={3} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>buy signal</text>
-      </g>
-      <text x={W / 2} y={H - 4} textAnchor="middle" style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>trading days →</text>
-    </svg>
-  );
-};
-
-const Ch4Vis2 = () => {
-  const W = 760, H = 290;
-  const families = [
-    { x: 40, y: 60, label: "Calendar", sub: "same commodity,\ndifferent months", example: "M1 − M2 WTI", col: "#5a8" },
-    { x: 220, y: 60, label: "Locational", sub: "same commodity,\ndifferent venues", example: "WTI Cushing − Brent N. Sea", col: "#58a" },
-    { x: 400, y: 60, label: "Intercommodity", sub: "different but\nrelated products", example: "Gasoline − Heating Oil", col: "#a58" },
-    { x: 580, y: 60, label: "Crack", sub: "crude vs refined\n(refining margin)", example: "3:2:1 crack", col: "#c77" },
-    { x: 40, y: 180, label: "Time (front)", sub: "M1 − M2 carry", example: "WTI prompt spread", col: "#5a8" },
-    { x: 220, y: 180, label: "Convexity", sub: "carry of the carry\n(3 contracts)", example: "M1−2M2+M3", col: "#58a" },
-    { x: 400, y: 180, label: "WCS − WTI", sub: "pipeline-constrained\nquality spread", example: "Canadian heavy vs WTI", col: "#a58" },
-    { x: 580, y: 180, label: "Cross-curve", sub: "WTI vs Brent\ncurve shape", example: "M1/M6 ratio", col: "#c77" }
-  ];
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ maxWidth: W, display: "block", margin: "0 auto", background: C.panel, borderRadius: 6 }}>
-      <text x={W / 2} y={24} textAnchor="middle" style={{ fontFamily: F.s, fontSize: 13, fill: C.text, fontWeight: 600 }}>Eight spread families used in energy trading</text>
-      {families.map((f, i) => (
-        <g key={i} transform={`translate(${f.x}, ${f.y})`}>
-          <rect width={160} height={96} rx={4} ry={4} fill={C.bg || "#111"} stroke={f.col} strokeWidth={1.4} />
-          <rect x={0} y={0} width={6} height={96} fill={f.col} />
-          <text x={16} y={22} style={{ fontFamily: F.s, fontSize: 12, fill: C.text, fontWeight: 700 }}>{f.label}</text>
-          {f.sub.split("\n").map((ln, j) => (
-            <text key={j} x={16} y={42 + j * 13} style={{ fontFamily: F.m, fontSize: 10, fill: C.muted }}>{ln}</text>
-          ))}
-          <text x={16} y={82} style={{ fontFamily: F.m, fontSize: 10, fill: f.col, fontStyle: "italic" }}>{f.example}</text>
-        </g>
-      ))}
-    </svg>
-  );
-};
-
 <Sec n="4" title="Chapter 4: Advanced Strategies in Energy Trading: Spread Trading, Statistical Arbitrage, and Macro Considerations">
 
 <P>{`Chapter 4 moves the reader from directional speculation to the craft of relative-value energy trading — the domain where profit comes not from guessing whether crude rallies or falls, but from correctly pricing the gap between two instruments that should move together. The chapter's organising insight is that most of the informational edge in mature energy markets lives inside spreads: between delivery months, between delivery points, between a barrel of crude and the refined products cracked out of it, and between grades that differ only in density, sulphur, or pipeline access. Trading the spread rather than the flat price hedges out the lion's share of macro volatility, freeing the analyst to focus on the far thinner slice of risk that corresponds to actual mispricing.`}</P>
@@ -1117,7 +1623,7 @@ const Ch4Vis2 = () => {
   else:
     do_nothing()`}</Code>
 
-<P>{`Three helper functions do the actual work: `calculate_moving_average(data, lookback_period)` takes a time series and a lookback integer and returns the rolling mean; `generate_buy_signal()` and `generate_sell_signal()` are parameter-free side-effectful emitters that the execution engine subscribes to. Time-series data is stored as a simple array or list. The algorithmic pattern is deliberately minimal — compute the moving average, define the bands, emit a signal — and its performance is optimised by careful choice of the lookback period and band width, which together determine turnover, signal-to-noise, and drawdown characteristics. Error handling prevents system failures; debugging relies on logging and code analysis. The algorithm integrates with market-data APIs to consume price streams and with trading platforms to route the orders it generates.`}</P>
+<P>{`Three helper functions do the actual work: <code>calculate_moving_average(data, lookback_period)</code> takes a time series and a lookback integer and returns the rolling mean; <code>generate_buy_signal()</code> and <code>generate_sell_signal()</code> are parameter-free side-effectful emitters that the execution engine subscribes to. Time-series data is stored as a simple array or list. The algorithmic pattern is deliberately minimal — compute the moving average, define the bands, emit a signal — and its performance is optimised by careful choice of the lookback period and band width, which together determine turnover, signal-to-noise, and drawdown characteristics. Error handling prevents system failures; debugging relies on logging and code analysis. The algorithm integrates with market-data APIs to consume price streams and with trading platforms to route the orders it generates.`}</P>
 
 <H3>Advanced Topics and Extensions</H3>
 
@@ -1132,97 +1638,6 @@ const Ch4Vis2 = () => {
 <P>{`The practical significance of these advanced strategies lies in their ability to generate consistent returns while controlling risk. By understanding the mechanics of spread trading, the statistical logic of stat-arb, and the macro context in which both operate, traders can sharpen their decision-making and improve performance. The chapter closes with a glimpse of what comes next — cutting-edge research, open problems, and alternative approaches — framing the energy-trading craft as a field in continuous, technology-driven evolution.`}</P>
 
 </Sec>
-const Ch5Vis1 = () => (
-  <svg viewBox="0 0 760 380" style={{ width: "100%", height: "auto", background: C.bg, fontFamily: F.b }}>
-    <defs>
-      <linearGradient id="ch5spread" x1="0" x2="0" y1="0" y2="1">
-        <stop offset="0%" stopColor={C.accent} stopOpacity="0.35"/>
-        <stop offset="100%" stopColor={C.accent} stopOpacity="0.02"/>
-      </linearGradient>
-    </defs>
-
-    {/* Title strip */}
-    <text x="24" y="28" fill={C.text} fontFamily={F.h} fontSize="16" fontWeight="600">
-      The three engines of advanced oil trading
-    </text>
-    <text x="24" y="48" fill={C.muted} fontSize="12">
-      Cross-asset arbitrage · Macro fair-value · Volatility surface
-    </text>
-
-    {/* Panel 1: Cointegration spread (top-left) */}
-    <g transform="translate(24,72)">
-      <rect x="0" y="0" width="230" height="130" fill="none" stroke={C.muted} strokeOpacity="0.25"/>
-      <text x="8" y="16" fill={C.text} fontSize="11" fontWeight="600">Cointegrated spread (WTI − β·XOP)</text>
-      <line x1="0" y1="70" x2="230" y2="70" stroke={C.muted} strokeOpacity="0.4" strokeDasharray="3 3"/>
-      <text x="195" y="66" fill={C.muted} fontSize="9">mean</text>
-      <line x1="0" y1="40" x2="230" y2="40" stroke={C.muted} strokeOpacity="0.25" strokeDasharray="2 4"/>
-      <line x1="0" y1="100" x2="230" y2="100" stroke={C.muted} strokeOpacity="0.25" strokeDasharray="2 4"/>
-      <text x="190" y="36" fill={C.muted} fontSize="9">+2σ</text>
-      <text x="190" y="112" fill={C.muted} fontSize="9">−2σ</text>
-      <path d="M 0 70 Q 20 55 40 60 T 80 80 Q 100 95 120 85 T 160 50 Q 180 35 200 55 T 230 72"
-            fill="none" stroke={C.accent} strokeWidth="2"/>
-      <circle cx="160" cy="50" r="4" fill={C.accent}/>
-      <text x="168" y="44" fill={C.accent} fontSize="9">sell spread</text>
-      <circle cx="80" cy="80" r="4" fill={C.muted}/>
-      <text x="44" y="96" fill={C.muted} fontSize="9">buy spread</text>
-    </g>
-
-    {/* Panel 2: Macro fair-value stack (top-right) */}
-    <g transform="translate(272,72)">
-      <rect x="0" y="0" width="230" height="130" fill="none" stroke={C.muted} strokeOpacity="0.25"/>
-      <text x="8" y="16" fill={C.text} fontSize="11" fontWeight="600">Macro fair-value decomposition</text>
-      <text x="8" y="34" fill={C.muted} fontSize="10">WTI_fair = β₁·USDCAD + β₂·XOP + β₃·CPI</text>
-      <g transform="translate(10,52)">
-        <rect x="0" y="0" width="180" height="14" fill={C.accent} opacity="0.85"/>
-        <text x="188" y="11" fill={C.text} fontSize="9">USDCAD  β₁</text>
-        <rect x="0" y="22" width="130" height="14" fill={C.accent} opacity="0.6"/>
-        <text x="188" y="33" fill={C.text} fontSize="9">XOP     β₂</text>
-        <rect x="0" y="44" width="70" height="14" fill={C.accent} opacity="0.35"/>
-        <text x="188" y="55" fill={C.text} fontSize="9">CPI     β₃</text>
-      </g>
-      <text x="8" y="122" fill={C.muted} fontSize="9">Rolling-window betas adapt to market regime</text>
-    </g>
-
-    {/* Panel 3: Volatility skew + Samuelson (bottom) */}
-    <g transform="translate(24,222)">
-      <rect x="0" y="0" width="478" height="130" fill="none" stroke={C.muted} strokeOpacity="0.25"/>
-      <text x="8" y="16" fill={C.text} fontSize="11" fontWeight="600">Volatility skew &amp; Samuelson term-structure</text>
-
-      {/* skew curve */}
-      <g transform="translate(16,28)">
-        <text x="0" y="10" fill={C.muted} fontSize="9">IV (%)</text>
-        <line x1="0" y1="90" x2="200" y2="90" stroke={C.muted} strokeOpacity="0.4"/>
-        <line x1="0" y1="20" x2="0" y2="90" stroke={C.muted} strokeOpacity="0.4"/>
-        <path d="M 0 30 Q 40 50 100 70 T 200 85" fill="none" stroke={C.accent} strokeWidth="2"/>
-        <text x="2" y="28" fill={C.accent} fontSize="9">OTM put</text>
-        <text x="160" y="82" fill={C.muted} fontSize="9">OTM call</text>
-        <line x1="100" y1="65" x2="100" y2="95" stroke={C.muted} strokeOpacity="0.4" strokeDasharray="2 2"/>
-        <text x="86" y="105" fill={C.muted} fontSize="9">ATM strike</text>
-      </g>
-
-      {/* Samuelson bars */}
-      <g transform="translate(260,40)">
-        <text x="0" y="-4" fill={C.muted} fontSize="9">Implied vol by maturity</text>
-        <rect x="0"   y="10" width="24" height="60" fill={C.accent} opacity="0.9"/>
-        <rect x="36"  y="28" width="24" height="42" fill={C.accent} opacity="0.7"/>
-        <rect x="72"  y="40" width="24" height="30" fill={C.accent} opacity="0.55"/>
-        <rect x="108" y="48" width="24" height="22" fill={C.accent} opacity="0.4"/>
-        <rect x="144" y="54" width="24" height="16" fill={C.accent} opacity="0.3"/>
-        <text x="0"   y="84" fill={C.muted} fontSize="9">M1</text>
-        <text x="36"  y="84" fill={C.muted} fontSize="9">M3</text>
-        <text x="72"  y="84" fill={C.muted} fontSize="9">M6</text>
-        <text x="108" y="84" fill={C.muted} fontSize="9">M12</text>
-        <text x="144" y="84" fill={C.muted} fontSize="9">M24</text>
-      </g>
-    </g>
-
-    {/* Legend footer */}
-    <text x="24" y="372" fill={C.muted} fontSize="10">
-      Three families, one discipline: identify a statistical relationship, quantify the deviation, trade the convergence.
-    </text>
-  </svg>
-);
-
 <Sec n="5" title="Chapter 5: Advanced Oil Trading Strategies: Arbitrage, Macro Models, and Volatility">
   <P>{`Chapter 5 takes the quantitative toolkit beyond single-contract futures trading and into three interlocking families of advanced strategy: cross-asset statistical arbitrage, macroeconomic fair-value modelling, and the mathematics of option-implied volatility. The unifying discipline is the same in each case — identify a statistically credible relationship between oil and something else, quantify deviations from that relationship, and trade the convergence — but the objects of study differ. Cross-asset arbitrage looks sideways at the equities of oil producers and ETFs such as XOP; macro fair value looks upward at currencies, inflation swaps, and broad economic factors; volatility modelling looks inward at the option surface itself, where implied volatility varies with strike and maturity.`}</P>
 
@@ -1359,69 +1774,6 @@ const Ch5Vis1 = () => (
 
   <P>{`Chapter 5 delivers three linked toolkits — cross-asset arbitrage, macro fair-value modelling, and volatility surface analysis — grounded in a shared statistical discipline. Cointegration provides the theoretical spine; rolling regressions provide the implementation machinery; look-ahead bias, overfitting, and tail risk define the hazards. The standardised-ETF, customised-basket, and hedging-ratio-incorporation methodologies offer ascending complexity for cross-asset work, while macro models translate the same thinking into currency, equity, and inflation-linked factor space. Algorithmic patterns cluster around the rolling window, system architectures around event-driven modularity, and evaluation around Sharpe, drawdown, and win rate. Hedge funds, CTAs, producers, refiners, and transport operators all find use cases; AQR and Two Sigma serve as public reference points. At the frontier sit machine learning, HFT microstructure, news sentiment, non-linear and multivariate volatility models, and agent-based and econometric alternatives. The through-line is uncompromising: establish the relationship, validate it out-of-sample, trade the deviation, manage the tails, and keep iterating as markets and regulations evolve.`}</P>
 </Sec>
-const Ch6Vis1 = () => {
-  const data = [
-    { yr: "2005", iv: 36, rv: 28, vrp: 8 },
-    { yr: "2007", iv: 34, rv: 27, vrp: 7 },
-    { yr: "2009", iv: 62, rv: 58, vrp: 4 },
-    { yr: "2011", iv: 32, rv: 26, vrp: 6 },
-    { yr: "2013", iv: 22, rv: 18, vrp: 4 },
-    { yr: "2015", iv: 44, rv: 41, vrp: 3 },
-    { yr: "2017", iv: 28, rv: 26, vrp: 2 },
-    { yr: "2019", iv: 32, rv: 30, vrp: 2 },
-    { yr: "2020", iv: 78, rv: 84, vrp: -6 },
-    { yr: "2022", iv: 46, rv: 45, vrp: 1 },
-    { yr: "2024", iv: 30, rv: 29, vrp: 1 },
-  ];
-  return (
-    <div style={{ width: "100%", maxWidth: 760, margin: "24px auto", background: C.panel, border: `1px solid ${C.line}`, borderRadius: 6, padding: 18 }}>
-      <div style={{ fontFamily: F.h, fontSize: 14, color: C.text, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>Fig. 6.1 — Oil VRP decay: implied vs realized vol, and residual premium</div>
-      <ResponsiveContainer width="100%" height={320}>
-        <ComposedChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid stroke={C.line} strokeDasharray="2 4" />
-          <XAxis dataKey="yr" stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 12 }} />
-          <YAxis stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 12 }} label={{ value: "Vol (%)", angle: -90, position: "insideLeft", fill: C.muted, fontSize: 12 }} />
-          <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.line}`, fontFamily: F.b, fontSize: 12 }} />
-          <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12 }} />
-          <Bar dataKey="vrp" name="VRP (IV - RV)" fill={C.accent || "#b8860b"} />
-          <Line type="monotone" dataKey="iv" name="Implied Vol" stroke={C.text} strokeWidth={2} dot={{ r: 3 }} />
-          <Line type="monotone" dataKey="rv" name="Realized Vol" stroke={C.muted} strokeWidth={2} strokeDasharray="4 3" dot={{ r: 3 }} />
-        </ComposedChart>
-      </ResponsiveContainer>
-      <div style={{ fontFamily: F.b, fontSize: 12, color: C.muted, marginTop: 6, fontStyle: "italic" }}>Stylised schematic — VRP compresses over two decades as shale-era producer hedging floods the supply of volatility; 2020 inverts briefly as realised vol overshoots.</div>
-    </div>
-  );
-};
-
-const Ch6Vis2 = () => {
-  const pts = [];
-  for (let f = 30; f <= 110; f += 2) {
-    const longPut = Math.max(65 - f, 0);
-    const shortCall = -Math.max(f - 85, 0);
-    const shortPut = -Math.max(45 - f, 0);
-    const net = longPut + shortCall + shortPut;
-    pts.push({ price: f, collar: Math.max(65 - f, 0) - Math.max(f - 85, 0), threeWay: net });
-  }
-  return (
-    <div style={{ width: "100%", maxWidth: 760, margin: "24px auto", background: C.panel, border: `1px solid ${C.line}`, borderRadius: 6, padding: 18 }}>
-      <div style={{ fontFamily: F.h, fontSize: 14, color: C.text, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>Fig. 6.2 — Producer hedge payoffs: costless collar vs three-way collar</div>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={pts} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid stroke={C.line} strokeDasharray="2 4" />
-          <XAxis dataKey="price" stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 12 }} label={{ value: "Oil price at expiry ($/bbl)", position: "insideBottom", offset: -2, fill: C.muted, fontSize: 12 }} />
-          <YAxis stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 12 }} label={{ value: "Hedge P&L ($/bbl)", angle: -90, position: "insideLeft", fill: C.muted, fontSize: 12 }} />
-          <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.line}`, fontFamily: F.b, fontSize: 12 }} />
-          <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12 }} />
-          <ReferenceLine y={0} stroke={C.muted} />
-          <Line type="linear" dataKey="collar" name="Costless collar (long 65P / short 85C)" stroke={C.text} strokeWidth={2} dot={false} />
-          <Line type="linear" dataKey="threeWay" name="Three-way (long 65P / short 85C / short 45P)" stroke={C.accent || "#b8860b"} strokeWidth={2} dot={false} />
-        </LineChart>
-      </ResponsiveContainer>
-      <div style={{ fontFamily: F.b, fontSize: 12, color: C.muted, marginTop: 6, fontStyle: "italic" }}>The three-way collar sells an extra low-strike put (45) to cheapen or monetise the hedge, re-introducing tail exposure below the short-put strike — the structural source of the modern oil volatility-supply glut.</div>
-    </div>
-  );
-};
-
 <Sec n="6" title="Chapter 6: Advanced Volatility Trading in Oil Markets: From Risk Premium Harvesting to Relative Value Strategies">
   <P>{`Bouchouev opens Chapter 6 by tracing a two-decade arc in oil volatility trading — from the era when simply selling options and delta-hedging them harvested a structural volatility risk premium (VRP), to the present regime where that outright premium has all but disappeared and the edge lives in the relative pricing of one strike against another. The story is, at root, a story about who supplies volatility and who demands it: in the early 2000s, risk-averse end users paid insistently for protection, and insurers capturing that fear earned a wide gap between implied and realized vol. As the market matured, as the structural futures risk premium evaporated, and above all as US shale producers industrialised the sale of upside optionality through three-way collars, the supply of volatility overwhelmed demand, compressing the aggregate VRP toward zero.`}</P>
 
@@ -1588,130 +1940,6 @@ const Ch6Vis2 = () => {
 
   <P>{`Above all, the chapter is a lesson in adaptation. Market dynamics evolve; producer hedging programmes evolve; models must evolve to match. Traders who stand still get picked off; traders who continuously refine their models, stress-test their assumptions, and respect the limits of their frameworks build durable edge. And because volatility strategies touch end users whose own P&L turns on oil prices, the chapter closes with an ethical reminder: trade within the rules, avoid manipulation, and remember that the market's stability is a shared good. The combination of rigour, humility, and ethical discipline is what separates a durable volatility business from a spectacular blow-up.`}</P>
 </Sec>
-const Ch7Vis1 = () => (
-  <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", background: C.bg2, borderRadius: 6 }}>
-    <defs>
-      <marker id="ch7arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-        <path d="M0,0 L10,5 L0,10 z" fill={C.muted} />
-      </marker>
-    </defs>
-    <text x="380" y="22" fill={C.text} fontFamily={F.s} fontSize="13" fontWeight="600" textAnchor="middle">Evolution of Oil Option Pricing Models</text>
-    <text x="380" y="38" fill={C.muted} fontFamily={F.b} fontSize="10" textAnchor="middle">increasing flexibility in capturing the volatility smile and fat tails  --&gt;</text>
-
-    {/* Five boxes in a row */}
-    <g fontFamily={F.s} fontSize="11" fill={C.text}>
-      <rect x="20" y="70" width="130" height="110" rx="6" fill={C.bg} stroke={C.muted} />
-      <text x="85" y="90" textAnchor="middle" fontWeight="600">Black-Scholes</text>
-      <text x="85" y="106" textAnchor="middle" fontSize="9" fill={C.muted}>1973 equity</text>
-      <text x="85" y="126" textAnchor="middle" fontSize="9" fontFamily={F.b}>GBM, lognormal</text>
-      <text x="85" y="140" textAnchor="middle" fontSize="9" fontFamily={F.b}>flat vol, sigma const</text>
-      <text x="85" y="158" textAnchor="middle" fontSize="9" fontFamily={F.b}>fails: neg prices,</text>
-      <text x="85" y="170" textAnchor="middle" fontSize="9" fontFamily={F.b}>deep-OTM, smile</text>
-
-      <rect x="170" y="70" width="130" height="110" rx="6" fill={C.bg} stroke={C.muted} />
-      <text x="235" y="90" textAnchor="middle" fontWeight="600">Black-76 / Bachelier</text>
-      <text x="235" y="106" textAnchor="middle" fontSize="9" fill={C.muted}>forward / normal</text>
-      <text x="235" y="126" textAnchor="middle" fontSize="9" fontFamily={F.b}>symmetric delta,</text>
-      <text x="235" y="140" textAnchor="middle" fontSize="9" fontFamily={F.b}>handles negatives</text>
-      <text x="235" y="158" textAnchor="middle" fontSize="9" fontFamily={F.b}>still no smile,</text>
-      <text x="235" y="170" textAnchor="middle" fontSize="9" fontFamily={F.b}>thin tails</text>
-
-      <rect x="320" y="70" width="130" height="110" rx="6" fill={C.bg} stroke={C.muted} />
-      <text x="385" y="90" textAnchor="middle" fontWeight="600">Local Volatility</text>
-      <text x="385" y="106" textAnchor="middle" fontSize="9" fill={C.muted}>Dupire 1994</text>
-      <text x="385" y="126" textAnchor="middle" fontSize="9" fontFamily={F.b}>sigma(F,t) surface</text>
-      <text x="385" y="140" textAnchor="middle" fontSize="9" fontFamily={F.b}>fits smile exactly</text>
-      <text x="385" y="158" textAnchor="middle" fontSize="9" fontFamily={F.b}>unstable calib,</text>
-      <text x="385" y="170" textAnchor="middle" fontSize="9" fontFamily={F.b}>poor forward dyn</text>
-
-      <rect x="470" y="70" width="130" height="110" rx="6" fill={C.bg} stroke={C.muted} />
-      <text x="535" y="90" textAnchor="middle" fontWeight="600">SABR / Stoch-Vol</text>
-      <text x="535" y="106" textAnchor="middle" fontSize="9" fill={C.muted}>Hagan 2002</text>
-      <text x="535" y="126" textAnchor="middle" fontSize="9" fontFamily={F.b}>random vol process</text>
-      <text x="535" y="140" textAnchor="middle" fontSize="9" fontFamily={F.b}>captures tail dyn</text>
-      <text x="535" y="158" textAnchor="middle" fontSize="9" fontFamily={F.b}>complex, costly</text>
-      <text x="535" y="170" textAnchor="middle" fontSize="9" fontFamily={F.b}>to calibrate</text>
-
-      <rect x="620" y="70" width="130" height="110" rx="6" fill={C.accent} stroke={C.text} strokeWidth="1.3" />
-      <text x="685" y="90" textAnchor="middle" fontWeight="700" fill={C.bg}>Quadratic Normal</text>
-      <text x="685" y="106" textAnchor="middle" fontSize="9" fill={C.bg}>Bouchouev oil</text>
-      <text x="685" y="126" textAnchor="middle" fontSize="9" fontFamily={F.b} fill={C.bg}>Bachelier + eps(F)</text>
-      <text x="685" y="140" textAnchor="middle" fontSize="9" fontFamily={F.b} fill={C.bg}>closed-form, skew</text>
-      <text x="685" y="158" textAnchor="middle" fontSize="9" fontFamily={F.b} fill={C.bg}>+ kurtosis via</text>
-      <text x="685" y="170" textAnchor="middle" fontSize="9" fontFamily={F.b} fill={C.bg}>straddle / collar / strangle</text>
-    </g>
-
-    {/* arrows */}
-    <g stroke={C.muted} strokeWidth="1.2" fill="none" markerEnd="url(#ch7arrow)">
-      <line x1="150" y1="125" x2="170" y2="125" />
-      <line x1="300" y1="125" x2="320" y2="125" />
-      <line x1="450" y1="125" x2="470" y2="125" />
-      <line x1="600" y1="125" x2="620" y2="125" />
-    </g>
-
-    {/* footer axis: flexibility / tractability */}
-    <g fontFamily={F.b} fontSize="9" fill={C.muted}>
-      <line x1="20" y1="210" x2="750" y2="210" stroke={C.muted} strokeWidth="0.8" />
-      <text x="20" y="226">constant sigma</text>
-      <text x="235" y="226" textAnchor="middle">forward + normal tails</text>
-      <text x="385" y="226" textAnchor="middle">full local surface</text>
-      <text x="535" y="226" textAnchor="middle">stochastic vol dynamics</text>
-      <text x="750" y="226" textAnchor="end">oil-calibrated smile + tails</text>
-
-      <text x="20" y="246" fill={C.text} fontSize="10" fontWeight="600">tractability</text>
-      <text x="750" y="246" textAnchor="end" fill={C.text} fontSize="10" fontWeight="600">realism for oil</text>
-    </g>
-  </svg>
-);
-
-const Ch7Vis2 = () => (
-  <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", background: C.bg2, borderRadius: 6 }}>
-    <text x="380" y="22" fill={C.text} fontFamily={F.s} fontSize="13" fontWeight="600" textAnchor="middle">The Oil Volatility Smile: what the models must explain</text>
-    <text x="380" y="38" fill={C.muted} fontFamily={F.b} fontSize="10" textAnchor="middle">implied vol (y) vs strike K (x); curved wings = fat tails; asymmetry = skew</text>
-
-    {/* axes */}
-    <g stroke={C.muted} strokeWidth="1" fill="none">
-      <line x1="70" y1="220" x2="720" y2="220" />
-      <line x1="70" y1="60" x2="70" y2="220" />
-    </g>
-    {/* ATM marker */}
-    <line x1="395" y1="60" x2="395" y2="220" stroke={C.muted} strokeDasharray="3 3" strokeWidth="0.8" />
-    <text x="395" y="234" fontFamily={F.b} fontSize="9" fill={C.muted} textAnchor="middle">ATM (K = F)</text>
-    <text x="80" y="234" fontFamily={F.b} fontSize="9" fill={C.muted}>OTM put</text>
-    <text x="700" y="234" fontFamily={F.b} fontSize="9" fill={C.muted} textAnchor="end">OTM call</text>
-    <text x="55" y="65" fontFamily={F.b} fontSize="9" fill={C.muted} textAnchor="end">IV</text>
-
-    {/* flat smile (Black / Bachelier) */}
-    <path d="M 90 180 L 720 180" stroke={C.muted} strokeWidth="1.2" fill="none" strokeDasharray="4 4" />
-    <text x="725" y="184" fontFamily={F.b} fontSize="9" fill={C.muted}>Black/Bachelier (flat)</text>
-
-    {/* Observed oil smile: skewed parabola, steeper on downside */}
-    <path d="M 90 90 Q 250 140 395 150 Q 540 145 720 110" stroke={C.accent} strokeWidth="2" fill="none" />
-    <text x="100" y="82" fontFamily={F.b} fontSize="9" fill={C.accent}>downside skew</text>
-    <text x="700" y="100" fontFamily={F.b} fontSize="9" fill={C.accent} textAnchor="end">upside tail</text>
-
-    {/* Annotations */}
-    <g fontFamily={F.b} fontSize="9" fill={C.text}>
-      <text x="120" y="108">producer gamma,</text>
-      <text x="120" y="120">margin-call spiral</text>
-      <text x="560" y="122">supply disruption,</text>
-      <text x="560" y="134">spare-capacity shock</text>
-      <text x="310" y="170">parabolic QN fit</text>
-    </g>
-
-    {/* legend */}
-    <g fontFamily={F.b} fontSize="9">
-      <rect x="80" y="50" width="220" height="14" fill="none" />
-      <line x1="84" y1="57" x2="104" y2="57" stroke={C.muted} strokeWidth="1.2" strokeDasharray="4 4" />
-      <text x="110" y="60" fill={C.muted}>constant-sigma model (flat smile)</text>
-    </g>
-    <g fontFamily={F.b} fontSize="9">
-      <line x1="444" y1="57" x2="464" y2="57" stroke={C.accent} strokeWidth="2" />
-      <text x="470" y="60" fill={C.text}>observed oil smile / QN</text>
-    </g>
-  </svg>
-);
-
 <Sec n="7" title="Chapter 7: Advanced Oil Volatility Modeling and Option Pricing: From Black-Scholes to Quadratic Normal and Beyond">
 
 <P>{`Option pricing for equities began with a clean assumption: asset returns are lognormal, volatility is constant, and the volatility plotted against strike should be a flat line. Oil markets have never cooperated. Plot the at-the-money implied volatility (ATM INV) of a WTI option against the underlying futures price and the relationship is not the proportional straight line a constant implied basis volatility (IBV) would predict; it is a pronounced parabola that steepens when futures fall and flattens when they rise. Plot implied vol across strikes for a single maturity and the "smile" is not flat but a skewed curve whose wings bend upward faster than any Gaussian can justify. Those two empirical shapes — the parabolic INV-vs-F relation and the fat-tailed smile — are the central facts this chapter exists to explain, and they drive the entire evolution of oil option pricing from Black-Scholes through Bachelier, local volatility, stochastic volatility, and finally to the Quadratic Normal (QN) model that Bouchouev treats as the practical working tool of the oil derivatives desk.`}</P>
@@ -1753,11 +1981,11 @@ const Ch7Vis2 = () => (
 
 <H3>Technical Overview — synthesis</H3>
 
-<P>{`The chapter's argument unfolds as a sequence of model failures and responses. Black-Scholes, which prices a European call as `}<code>{`C = S N(d1) - K e^{-rT} N(d2)`}</code>{` under geometric Brownian motion, delivers a closed-form solution and an entire calculus of Greeks — but only if the underlying is strictly positive and its volatility constant. Oil satisfies neither: WTI printed negative in April 2020, and its ATM INV moves with F in a distinctly non-proportional way. Bachelier's arithmetic Brownian motion, `}<code>{`dF = σ dW`}</code>{`, repairs the negative-price defect and produces deltas that are genuinely symmetric (+50%/-50% ATM), but it still assumes a single flat σ and so cannot produce any smile at all.`}</P>
+<P>{`The chapter's argument unfolds as a sequence of model failures and responses. Black-Scholes, which prices a European call as <code>C = S N(d1) - K e^{-rT} N(d2)</code> under geometric Brownian motion, delivers a closed-form solution and an entire calculus of Greeks — but only if the underlying is strictly positive and its volatility constant. Oil satisfies neither: WTI printed negative in April 2020, and its ATM INV moves with F in a distinctly non-proportional way. Bachelier's arithmetic Brownian motion, <code>dF = σ dW</code>, repairs the negative-price defect and produces deltas that are genuinely symmetric (+50%/-50% ATM), but it still assumes a single flat σ and so cannot produce any smile at all.`}</P>
 
-<P>{`Dupire's local volatility answers the smile question by allowing σ to be a deterministic function of state and time, `}<code>{`σloc(F,t)`}</code>{`, and — via `}<code>{`σloc^2 = 2 (∂C/∂T) / (K^2 ∂²C/∂K²)`}</code>{` — fits any arbitrage-free European option surface exactly. The cost is paid elsewhere: calibration is unstable against noisy quotes, forward smile dynamics are unrealistic, and extracting analytic Greeks becomes painful. Stochastic volatility models such as SABR replace the deterministic σ(F,t) with a second SDE `}<code>{`dα = ν α dZ`}</code>{` correlated to the price process, producing richer tail dynamics at the price of heavier computation and calibration cost.`}</P>
+<P>{`Dupire's local volatility answers the smile question by allowing σ to be a deterministic function of state and time, <code>σloc(F,t)</code>, and — via <code>σloc^2 = 2 (∂C/∂T) / (K^2 ∂²C/∂K²)</code> — fits any arbitrage-free European option surface exactly. The cost is paid elsewhere: calibration is unstable against noisy quotes, forward smile dynamics are unrealistic, and extracting analytic Greeks becomes painful. Stochastic volatility models such as SABR replace the deterministic σ(F,t) with a second SDE <code>dα = ν α dZ</code> correlated to the price process, producing richer tail dynamics at the price of heavier computation and calibration cost.`}</P>
 
-<P>{`Bouchouev's working answer — the Quadratic Normal model — takes the perturbation route. Start from Bachelier as a tractable base and add a quadratic correction `}<code>{`ε(F) = a + b(F - F0) + c(F - F0)^2`}</code>{` that absorbs variance, skew and kurtosis. Because the base is Bachelier, the closed-form structure survives: the QN price is Bachelier vega multiplied by correction terms whose parameters a, b, c tie one-for-one to three observables traders already quote — the ATM straddle (level), the costless collar (skew), and the OTM strangle (kurtosis). That market-level interpretability is what has made QN the oil desk's default for skewed, fat-tailed flat-price and OTC books.`}</P>
+<P>{`Bouchouev's working answer — the Quadratic Normal model — takes the perturbation route. Start from Bachelier as a tractable base and add a quadratic correction <code>ε(F) = a + b(F - F0) + c(F - F0)^2</code> that absorbs variance, skew and kurtosis. Because the base is Bachelier, the closed-form structure survives: the QN price is Bachelier vega multiplied by correction terms whose parameters a, b, c tie one-for-one to three observables traders already quote — the ATM straddle (level), the costless collar (skew), and the OTM strangle (kurtosis). That market-level interpretability is what has made QN the oil desk's default for skewed, fat-tailed flat-price and OTC books.`}</P>
 
 <P>{`The book extends from vanillas to term-structure-sensitive products. Any over-the-counter contract whose payoff references more than one futures maturity — APOs averaging the settlement across a calendar month, swaptions where the underlying is a swap, calendar spread options — requires forward-local-volatility dynamics, and the implied vol quoted on them is effectively a time-average of the local vol surface along the option's life. QN and its perturbation extensions generalise cleanly here; higher-order polynomial perturbations can sharpen accuracy, though Bouchouev warns that in the lognormal (Black) base the same machinery is less robust.`}</P>
 
@@ -1798,7 +2026,7 @@ const Ch7Vis2 = () => (
 
 <H4>The perturbation method in practice</H4>
 
-<P>{`The perturbation method is the engine behind QN. Start with a base solution — Bachelier at a single σA — and Taylor-expand the unknown correction around it. The perturbation `}<code>{`ε(F)`}</code>{` is chosen to capture the specific stylised facts one wants — here, skewness and kurtosis of the oil price distribution. Because the base model is closed-form, the correction terms remain closed-form, and the resulting QN price is Bachelier vega times a polynomial correction. This analytical tractability is the method's virtue over pure numerical PDE/Monte Carlo approaches: in-production pricing and Greeks stay transparent.`}</P>
+<P>{`The perturbation method is the engine behind QN. Start with a base solution — Bachelier at a single σA — and Taylor-expand the unknown correction around it. The perturbation <code>ε(F)</code> is chosen to capture the specific stylised facts one wants — here, skewness and kurtosis of the oil price distribution. Because the base model is closed-form, the correction terms remain closed-form, and the resulting QN price is Bachelier vega times a polynomial correction. This analytical tractability is the method's virtue over pure numerical PDE/Monte Carlo approaches: in-production pricing and Greeks stay transparent.`}</P>
 
 <H4>The QN framework</H4>
 
@@ -1829,7 +2057,7 @@ const Ch7Vis2 = () => (
 
 <H4>Algorithms</H4>
 
-<P>{`Two algorithms carry most of the numerical weight. `}<strong>{`Bootstrapping local volatility`}</strong>{` extracts the `}<code>{`σloc(F,t)`}</code>{` surface from the term structure of implied vols by walking from the shortest maturity outward, at each step inverting the recursive relationship between implied variance over `}<code>{`[0, T_{n+1}]`}</code>{` and the local variance in the new interval `}<code>{`[T_n, T_{n+1}]`}</code>{`. `}<strong>{`QN calibration`}</strong>{` minimises (typically a sum-of-squared-errors) objective between model and market prices over `}<code>{`(a, b, c, σA)`}</code>{` via gradient descent, Levenberg-Marquardt, or MLE, iterating until the fit tolerance is met.`}</P>
+<P>{`Two algorithms carry most of the numerical weight. <strong>Bootstrapping local volatility</strong> extracts the <code>σloc(F,t)</code> surface from the term structure of implied vols by walking from the shortest maturity outward, at each step inverting the recursive relationship between implied variance over <code>[0, T_{n+1}]</code> and the local variance in the new interval <code>[T_n, T_{n+1}]</code>. <strong>QN calibration</strong> minimises (typically a sum-of-squared-errors) objective between model and market prices over <code>(a, b, c, σA)</code> via gradient descent, Levenberg-Marquardt, or MLE, iterating until the fit tolerance is met.`}</P>
 
 <H4>Complexity</H4>
 
@@ -1943,94 +2171,17 @@ const Ch7Vis2 = () => (
 
 <H3>Summary</H3>
 
-<P>{`The chapter's through-line is that oil option pricing demands a model that captures both the non-linear INV-vs-F relationship and the fat-tailed smile — phenomena driven by financialization, shale elasticity, storage constraints, and geopolitical supply risk. Black-Scholes cannot; Bachelier helps with negative prices and symmetric deltas but not with the smile; local volatility fits any given surface but calibrates unstably; stochastic volatility captures dynamics at computational cost. The Quadratic Normal model ends the chain: by perturbing Bachelier with `}<code>{`ε(F) = a + b(F - F0) + c(F - F0)^2`}</code>{`, it retains closed-form tractability while absorbing skew and kurtosis, and it ties its parameters directly to three instruments a trader already quotes — the ATM straddle, costless collar, and OTM strangle. QN is not the theoretical frontier, but it is the practical tool Bouchouev trusts for pricing and hedging real oil option books, and its perturbation machinery extends naturally to the term-structure-sensitive exotics (APOs, swaptions, calendar spreads) that dominate OTC flow.`}</P>
+<P>{`The chapter's through-line is that oil option pricing demands a model that captures both the non-linear INV-vs-F relationship and the fat-tailed smile — phenomena driven by financialization, shale elasticity, storage constraints, and geopolitical supply risk. Black-Scholes cannot; Bachelier helps with negative prices and symmetric deltas but not with the smile; local volatility fits any given surface but calibrates unstably; stochastic volatility captures dynamics at computational cost. The Quadratic Normal model ends the chain: by perturbing Bachelier with <code>ε(F) = a + b(F - F0) + c(F - F0)^2</code>, it retains closed-form tractability while absorbing skew and kurtosis, and it ties its parameters directly to three instruments a trader already quotes — the ATM straddle, costless collar, and OTM strangle. QN is not the theoretical frontier, but it is the practical tool Bouchouev trusts for pricing and hedging real oil option books, and its perturbation machinery extends naturally to the term-structure-sensitive exotics (APOs, swaptions, calendar spreads) that dominate OTC flow.`}</P>
 
 </Sec>
-const Ch8Vis1 = () => (
-  <svg viewBox="0 0 760 360" style={{ width: "100%", height: "auto", background: C.bg2, border: `1px solid ${C.line}`, fontFamily: F.s }}>
-    <text x="380" y="28" textAnchor="middle" fontSize="14" fontWeight="700" fill={C.text}>From Implied Volatility to Local Volatility: The Bootstrapping Cascade</text>
-    <text x="380" y="46" textAnchor="middle" fontSize="11" fill={C.muted}>Market quotes on the left; recursively derived local vols on the right; Dupire links them across strikes</text>
-
-    {/* Left column: Implied vols observed */}
-    <text x="100" y="78" textAnchor="middle" fontSize="12" fontWeight="600" fill={C.text}>Market-observed v(K,T)</text>
-    <rect x="40" y="90" width="120" height="36" fill={C.bg} stroke={C.line}/>
-    <text x="100" y="108" textAnchor="middle" fontSize="11" fill={C.text}>T1 = 1M  v=32%</text>
-    <text x="100" y="121" textAnchor="middle" fontSize="10" fill={C.muted}>shortest maturity</text>
-    <rect x="40" y="136" width="120" height="36" fill={C.bg} stroke={C.line}/>
-    <text x="100" y="154" textAnchor="middle" fontSize="11" fill={C.text}>T2 = 3M  v=35%</text>
-    <text x="100" y="167" textAnchor="middle" fontSize="10" fill={C.muted}>cumulative avg</text>
-    <rect x="40" y="182" width="120" height="36" fill={C.bg} stroke={C.line}/>
-    <text x="100" y="200" textAnchor="middle" fontSize="11" fill={C.text}>T3 = 6M  v=37%</text>
-    <text x="100" y="213" textAnchor="middle" fontSize="10" fill={C.muted}>cumulative avg</text>
-    <rect x="40" y="228" width="120" height="36" fill={C.bg} stroke={C.line}/>
-    <text x="100" y="246" textAnchor="middle" fontSize="11" fill={C.text}>T4 = 12M v=38%</text>
-    <text x="100" y="259" textAnchor="middle" fontSize="10" fill={C.muted}>cumulative avg</text>
-
-    {/* Recursion arrows */}
-    <path d="M 170 108 L 280 108" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
-    <path d="M 170 154 L 280 154" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
-    <path d="M 170 200 L 280 200" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
-    <path d="M 170 246 L 280 246" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
-
-    {/* Centre: recursive decomposition box */}
-    <rect x="280" y="90" width="200" height="174" fill={C.bg} stroke={C.line}/>
-    <text x="380" y="108" textAnchor="middle" fontSize="11" fontWeight="600" fill={C.text}>Bootstrapping recursion</text>
-    <text x="380" y="128" textAnchor="middle" fontSize="10" fill={C.muted}>σ1² · T1 = v1² · T1</text>
-    <text x="380" y="146" textAnchor="middle" fontSize="10" fill={C.muted}>σ2² · ΔT = v2² · T2 − σ1² · T1</text>
-    <text x="380" y="164" textAnchor="middle" fontSize="10" fill={C.muted}>σ3² · ΔT = v3² · T3 − Σ prior</text>
-    <text x="380" y="182" textAnchor="middle" fontSize="10" fill={C.muted}>…</text>
-    <text x="380" y="208" textAnchor="middle" fontSize="10" fontStyle="italic" fill={C.muted}>decompose cumulative variance</text>
-    <text x="380" y="224" textAnchor="middle" fontSize="10" fontStyle="italic" fill={C.muted}>into time-bucketed forward vols</text>
-    <text x="380" y="250" textAnchor="middle" fontSize="10" fill={C.accent}>Dupire links across K too</text>
-
-    <path d="M 480 108 L 580 108" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
-    <path d="M 480 154 L 580 154" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
-    <path d="M 480 200 L 580 200" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
-    <path d="M 480 246 L 580 246" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ch8arr)"/>
-
-    {/* Right column: derived local vols */}
-    <text x="650" y="78" textAnchor="middle" fontSize="12" fontWeight="600" fill={C.text}>Local vol σ(S,t)</text>
-    <rect x="580" y="90" width="130" height="36" fill={C.bg} stroke={C.line}/>
-    <text x="645" y="108" textAnchor="middle" fontSize="11" fill={C.text}>σ1 ≈ 32.0%</text>
-    <text x="645" y="121" textAnchor="middle" fontSize="10" fill={C.muted}>[0,T1]</text>
-    <rect x="580" y="136" width="130" height="36" fill={C.bg} stroke={C.line}/>
-    <text x="645" y="154" textAnchor="middle" fontSize="11" fill={C.text}>σ2 ≈ 36.4%</text>
-    <text x="645" y="167" textAnchor="middle" fontSize="10" fill={C.muted}>[T1,T2] forward</text>
-    <rect x="580" y="182" width="130" height="36" fill={C.bg} stroke={C.line}/>
-    <text x="645" y="200" textAnchor="middle" fontSize="11" fill={C.text}>σ3 ≈ 39.1%</text>
-    <text x="645" y="213" textAnchor="middle" fontSize="10" fill={C.muted}>[T2,T3] forward</text>
-    <rect x="580" y="228" width="130" height="36" fill={C.bg} stroke={C.line}/>
-    <text x="645" y="246" textAnchor="middle" fontSize="11" fill={C.text}>σ4 ≈ 39.8%</text>
-    <text x="645" y="259" textAnchor="middle" fontSize="10" fill={C.muted}>[T3,T4] forward</text>
-
-    {/* Footer: model spectrum */}
-    <line x1="40" y1="290" x2="720" y2="290" stroke={C.line} strokeDasharray="3 3"/>
-    <text x="40" y="310" fontSize="11" fontWeight="600" fill={C.text}>Spread-option model spectrum</text>
-    <rect x="40" y="320" width="150" height="30" fill={C.bg} stroke={C.line}/>
-    <text x="115" y="339" textAnchor="middle" fontSize="10" fill={C.text}>Bachelier  dS = σ dW</text>
-    <rect x="200" y="320" width="150" height="30" fill={C.bg} stroke={C.line}/>
-    <text x="275" y="339" textAnchor="middle" fontSize="10" fill={C.text}>QN: σ(S) quadratic</text>
-    <rect x="360" y="320" width="170" height="30" fill={C.bg} stroke={C.line}/>
-    <text x="445" y="339" textAnchor="middle" fontSize="10" fill={C.text}>2D lognormal + Kirk approx</text>
-    <rect x="540" y="320" width="180" height="30" fill={C.bg} stroke={C.line}/>
-    <text x="630" y="339" textAnchor="middle" fontSize="10" fill={C.text}>stochastic vol / jump-diffusion</text>
-
-    <defs>
-      <marker id="ch8arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-        <path d="M0,0 L10,5 L0,10 z" fill={C.accent}/>
-      </marker>
-    </defs>
-  </svg>
-);
-
 <Sec n="8" title="Chapter 8: Advanced Volatility Modeling and Spread Option Pricing in Energy Markets">
   <P>{`Constant-volatility models collapse the moment a trader tries to price anything path-dependent or anything that straddles two delivery months. Black-Scholes gives a single number; the oil options market quotes a surface whose shape changes from session to session. Chapter 8 sits at that gap. It begins with the mechanics of prising a time-varying, strike-varying volatility structure out of observed option premia, then shows how that structure feeds the most important instrument class in commodities: the spread option.`}</P>
 
-  <P>{`The method of extraction is volatility bootstrapping. Because an implied volatility `}<code>{`v(K,T)`}</code>{` is a cumulative average from today to maturity, successive maturities contain information about forward volatility, bucket by bucket. The shortest-dated option's implied vol is taken as the local volatility for that first window; every subsequent local vol is the residual variance once earlier buckets are stripped out. The Dupire equation generalises the same idea across strikes, linking the full local volatility surface `}<code>{`σ(S,t)`}</code>{` to an infinity of market-observed call prices via a partial differential equation that must be solved numerically and regularised against its ill-posed inverse.`}</P>
+  <P>{`The method of extraction is volatility bootstrapping. Because an implied volatility <code>v(K,T)</code> is a cumulative average from today to maturity, successive maturities contain information about forward volatility, bucket by bucket. The shortest-dated option's implied vol is taken as the local volatility for that first window; every subsequent local vol is the residual variance once earlier buckets are stripped out. The Dupire equation generalises the same idea across strikes, linking the full local volatility surface <code>σ(S,t)</code> to an infinity of market-observed call prices via a partial differential equation that must be solved numerically and regularised against its ill-posed inverse.`}</P>
 
   <P>{`A related object, the market-implied probability distribution, falls out almost for free. The second derivative of a call price with respect to strike — approximated in practice with butterfly spreads — yields a risk-neutral density that compresses the market's view of the underlying at maturity into a single curve. Sharp local maxima, fat tails, and bimodality that would be invisible in a single implied vol number all become legible.`}</P>
 
-  <P>{`The chapter then pivots to spread options — calendar spreads, crack spreads, locational spreads — where correlation-based two-dimensional lognormal models strain against reality. For calendar spread options (CSOs) in particular, the Bachelier model's arithmetic Brownian motion `}<code>{`dS = σ dW`}</code>{` is the more honest choice: it admits negative spreads, has a closed-form solution, and sidesteps the unstable correlation inputs that wreck lognormal approaches. The Quadratic Normal extension adds a sticky-smile capability for spreads that periodically dislocate. The practical message throughout is that model choice in energy is driven by what the spread can actually do — including go negative — not by theoretical tidiness.`}</P>
+  <P>{`The chapter then pivots to spread options — calendar spreads, crack spreads, locational spreads — where correlation-based two-dimensional lognormal models strain against reality. For calendar spread options (CSOs) in particular, the Bachelier model's arithmetic Brownian motion <code>dS = σ dW</code> is the more honest choice: it admits negative spreads, has a closed-form solution, and sidesteps the unstable correlation inputs that wreck lognormal approaches. The Quadratic Normal extension adds a sticky-smile capability for spreads that periodically dislocate. The practical message throughout is that model choice in energy is driven by what the spread can actually do — including go negative — not by theoretical tidiness.`}</P>
 
   <Ch8Vis1/>
   <Cap>{`Volatility bootstrapping decomposes cumulative implied variance into time-bucketed local vols. The Dupire equation extends the same idea across strikes. Below the dashed line: the spread-option model spectrum, from the Bachelier baseline to stochastic-volatility extensions.`}</Cap>
@@ -2039,9 +2190,9 @@ const Ch8Vis1 = () => (
 
   <Callout type="info" title="Volatility Bootstrapping">{`Volatility bootstrapping is a recursive algorithm used to derive the local volatility term structure from market-observed implied volatilities. It starts with the shortest-maturity option, assuming its implied volatility equals the local volatility for that period. The algorithm then recursively calculates local volatilities for subsequent periods using implied volatilities of longer-maturity options and previously calculated local volatilities. This process effectively decomposes the cumulative measure of implied volatility into its time-dependent components. The significance of bootstrapping lies in its ability to create a local volatility surface consistent with market prices, enabling more accurate pricing of complex derivatives. However, the basic bootstrapping algorithm assumes time-homogeneous volatility, which can be a significant limitation in real markets.`}</Callout>
 
-  <Callout type="info" title="Local Volatility">{`Local volatility, denoted as `}<code>{`σ(S,t)`}</code>{`, represents the instantaneous volatility of the underlying asset at a specific price S and time t. Unlike implied volatility, which is an average volatility over the option's life, local volatility captures the dynamic nature of volatility. It is a crucial input for pricing path-dependent options and for understanding the evolution of the underlying asset's price distribution. The local volatility surface, a graphical representation of local volatility across different asset prices and times, provides valuable insights into market expectations of future volatility. Constructing and calibrating this surface is a complex task, often requiring sophisticated numerical techniques.`}</Callout>
+  <Callout type="info" title="Local Volatility">{`Local volatility, denoted as <code>σ(S,t)</code>, represents the instantaneous volatility of the underlying asset at a specific price S and time t. Unlike implied volatility, which is an average volatility over the option's life, local volatility captures the dynamic nature of volatility. It is a crucial input for pricing path-dependent options and for understanding the evolution of the underlying asset's price distribution. The local volatility surface, a graphical representation of local volatility across different asset prices and times, provides valuable insights into market expectations of future volatility. Constructing and calibrating this surface is a complex task, often requiring sophisticated numerical techniques.`}</Callout>
 
-  <Callout type="info" title="Implied Volatility">{`Implied volatility, denoted as `}<code>{`v(K,T)`}</code>{`, is the market's expectation of average volatility over the option's life until maturity T, for a given strike price K. It is derived from option prices observed in the market. Implied volatility is a key input for many option pricing models, including the Black-Scholes model. The implied volatility surface, a plot of implied volatility across different strikes and maturities, often exhibits a "smile" or "skew," reflecting market sentiment and expectations about future price movements. Understanding the shape and dynamics of the implied volatility surface is crucial for option trading and risk management.`}</Callout>
+  <Callout type="info" title="Implied Volatility">{`Implied volatility, denoted as <code>v(K,T)</code>, is the market's expectation of average volatility over the option's life until maturity T, for a given strike price K. It is derived from option prices observed in the market. Implied volatility is a key input for many option pricing models, including the Black-Scholes model. The implied volatility surface, a plot of implied volatility across different strikes and maturities, often exhibits a "smile" or "skew," reflecting market sentiment and expectations about future price movements. Understanding the shape and dynamics of the implied volatility surface is crucial for option trading and risk management.`}</Callout>
 
   <Callout type="info" title="Market-Implied Probability Distribution">{`This distribution represents the market's view on the future distribution of the underlying asset's price, derived from option prices across different strikes. It is a risk-neutral probability distribution, not a real-world probability distribution. The distribution can be approximated by taking the second derivative of the call option price with respect to the strike price. In practice, this is often done using butterfly spreads. The market-implied probability distribution provides valuable insights into market expectations of future price movements and can be used to identify potential arbitrage opportunities.`}</Callout>
 
@@ -2063,11 +2214,11 @@ const Ch8Vis1 = () => (
 
   <H3>Technical Overview — synthesis</H3>
 
-  <P>{`The central problem of the chapter is that volatility is not a number, it is a surface — and in energy markets, that surface is both noisier and more structurally meaningful than in equities. Local volatility `}<code>{`σ(S,t)`}</code>{` captures the instantaneous dispersion of the underlying at a specific price and time; implied volatility `}<code>{`v(K,T)`}</code>{` is the time-averaged shadow of that object that the market quotes directly. Bootstrapping and the Dupire equation are two ways of running the film backward: inferring `}<code>{`σ(S,t)`}</code>{` from the observable `}<code>{`v(K,T)`}</code>{` grid. The basic bootstrapping recursion assumes time-homogeneous volatility within each bucket, which is a real limitation in markets where seasonality dominates.`}</P>
+  <P>{`The central problem of the chapter is that volatility is not a number, it is a surface — and in energy markets, that surface is both noisier and more structurally meaningful than in equities. Local volatility <code>σ(S,t)</code> captures the instantaneous dispersion of the underlying at a specific price and time; implied volatility <code>v(K,T)</code> is the time-averaged shadow of that object that the market quotes directly. Bootstrapping and the Dupire equation are two ways of running the film backward: inferring <code>σ(S,t)</code> from the observable <code>v(K,T)</code> grid. The basic bootstrapping recursion assumes time-homogeneous volatility within each bucket, which is a real limitation in markets where seasonality dominates.`}</P>
 
   <P>{`Option prices across strikes encode more than a surface — they encode a distribution. The risk-neutral density at maturity is (up to discounting) the second strike-derivative of the call price, and butterfly spreads approximate that derivative directly from liquid instruments. This is not the real-world distribution; it is the distribution under a risk-neutral measure where discounted expected payoffs equal current prices. Mis-reading that caveat is the single most common interpretive error in implied-distribution work. Properly handled, the density exposes market expectations — fat tails around OPEC meetings, bimodality when a binary event is pending, compression before scheduled data — that a headline implied vol number hides.`}</P>
 
-  <P>{`Spread options are where the chapter earns its keep. A spread — crack, calendar, locational — is algebraically a difference of two prices, but modelling it as such invites two pathologies. First, the spread can go negative (a refinery can lose money per barrel; a front-month can trade below the next). A lognormal process, which keeps prices positive, forbids that. Second, pricing spread options off the two legs plus a correlation requires a stable correlation, and in energy that stability is a fiction: the correlation between WTI prompts and deferred contracts jumps on inventory surprises. The Bachelier model sidesteps both — it lets the spread wander across zero under `}<code>{`dS = σ dW`}</code>{` and has a closed-form call `}<code>{`C = (F − K)·N(d) + σ·sqrt(T)·n(d)`}</code>{` — at the cost of constant vol. The QN model patches that cost by letting `}<code>{`σ(S)`}</code>{` be quadratic in the spread, producing a sticky smile that retains its shape across dislocations.`}</P>
+  <P>{`Spread options are where the chapter earns its keep. A spread — crack, calendar, locational — is algebraically a difference of two prices, but modelling it as such invites two pathologies. First, the spread can go negative (a refinery can lose money per barrel; a front-month can trade below the next). A lognormal process, which keeps prices positive, forbids that. Second, pricing spread options off the two legs plus a correlation requires a stable correlation, and in energy that stability is a fiction: the correlation between WTI prompts and deferred contracts jumps on inventory surprises. The Bachelier model sidesteps both — it lets the spread wander across zero under <code>dS = σ dW</code> and has a closed-form call <code>C = (F − K)·N(d) + σ·sqrt(T)·n(d)</code> — at the cost of constant vol. The QN model patches that cost by letting <code>σ(S)</code> be quadratic in the spread, producing a sticky smile that retains its shape across dislocations.`}</P>
 
   <P>{`Cutting across all of this is triangular arbitrage: the prices of a spread option, an option on leg one, and an option on leg two are not independent. Any consistent spread-option model must respect that constraint, and desk-level quoting systems build it in as a hard check. The chapter closes the loop by reminding the reader that every one of these models sits on top of assumptions — no-arbitrage, risk-neutral valuation, an efficient-enough market — and that those assumptions are benchmarks, not physics.`}</P>
 
@@ -2081,7 +2232,7 @@ const Ch8Vis1 = () => (
 
   <H4>Historical Development and Precedent Approaches</H4>
 
-  <P>{`Black-Scholes with constant volatility came first and broke first — the empirical smile and skew showed that the single-sigma assumption was wrong in every liquid market. Two strands of response followed. Stochastic volatility models promoted sigma itself to a stochastic process with its own diffusion. Local volatility models kept sigma deterministic but made it a function of `}<code>{`(S,t)`}</code>{`, chosen to fit observed option prices by construction. The two strands are not mutually exclusive — modern frameworks often combine them.`}</P>
+  <P>{`Black-Scholes with constant volatility came first and broke first — the empirical smile and skew showed that the single-sigma assumption was wrong in every liquid market. Two strands of response followed. Stochastic volatility models promoted sigma itself to a stochastic process with its own diffusion. Local volatility models kept sigma deterministic but made it a function of <code>(S,t)</code>, chosen to fit observed option prices by construction. The two strands are not mutually exclusive — modern frameworks often combine them.`}</P>
 
   <P>{`Spread options travelled a parallel path. The natural first approach was a two-dimensional lognormal for the two legs plus a correlation, which in closed form leads to the Kirk approximation. The approach struggles in energy markets: correlation is unstable, the legs can be close enough that small correlation errors blow up the spread's implied dynamics, and nothing in the lognormal framework admits a negative spread. The Bachelier-on-the-spread approach, and its QN extension, are the pragmatic response.`}</P>
 
@@ -2112,15 +2263,15 @@ const Ch8Vis1 = () => (
 
   <H4>Bachelier Model</H4>
 
-  <P>{`The Bachelier model replaces geometric Brownian motion with arithmetic Brownian motion: `}<code>{`dS = σ dW`}</code>{`. The asset (or spread) can go negative, which is exactly the property spread traders need. The closed-form European call is:`}</P>
+  <P>{`The Bachelier model replaces geometric Brownian motion with arithmetic Brownian motion: <code>dS = σ dW</code>. The asset (or spread) can go negative, which is exactly the property spread traders need. The closed-form European call is:`}</P>
 
-  <P>{`​`}<code>{`C = (F − K) · N(d) + σ · sqrt(T) · n(d)`}</code>{`, with `}<code>{`d = (F − K) / (σ · sqrt(T))`}</code></P>
+  <P>{`​<code>C = (F − K) · N(d) + σ · sqrt(T) · n(d)</code>, with `}<code>d = (F − K) / (σ · sqrt(T))</code></P>
 
-  <P>{`where `}<code>{`C`}</code>{` is the call price, `}<code>{`F`}</code>{` the forward, `}<code>{`K`}</code>{` the strike, `}<code>{`σ`}</code>{` the dollar volatility, `}<code>{`T`}</code>{` the time to maturity, `}<code>{`N(d)`}</code>{` the standard-normal CDF, and `}<code>{`n(d)`}</code>{` the standard-normal PDF. The formula is cheap to evaluate and easy to hedge.`}</P>
+  <P>{`where <code>C</code> is the call price, <code>F</code> the forward, <code>K</code> the strike, <code>σ</code> the dollar volatility, <code>T</code> the time to maturity, <code>N(d)</code> the standard-normal CDF, and <code>n(d)</code> the standard-normal PDF. The formula is cheap to evaluate and easy to hedge.`}</P>
 
   <H4>Quadratic Normal (QN) Model</H4>
 
-  <P>{`QN generalises Bachelier by making local volatility a quadratic function of the spread: `}<code>{`σ(S) = a + b·S + c·S²`}</code>{`. The quadratic shape reproduces the sticky smile commonly seen in spread markets, where the smile's shape survives changes in moneyness. QN handles the sharp dislocations typical of energy spreads around geopolitical events or supply shocks. Calibration is the price: the three coefficients must be fit to market option prices, typically by least-squares against a liquid strike ladder.`}</P>
+  <P>{`QN generalises Bachelier by making local volatility a quadratic function of the spread: <code>σ(S) = a + b·S + c·S²</code>. The quadratic shape reproduces the sticky smile commonly seen in spread markets, where the smile's shape survives changes in moneyness. QN handles the sharp dislocations typical of energy spreads around geopolitical events or supply shocks. Calibration is the price: the three coefficients must be fit to market option prices, typically by least-squares against a liquid strike ladder.`}</P>
 
   <H4>Two-Dimensional Lognormal Model</H4>
 
@@ -2152,13 +2303,13 @@ const Ch8Vis1 = () => (
 
   <H4>Detailed Algorithm Descriptions and Properties</H4>
 
-  <P>{`The volatility bootstrapping algorithm walks the maturity axis outward. For the first bucket `}<code>{`σ1² · T1 = v1² · T1`}</code>{`, so `}<code>{`σ1 = v1`}</code>{`. For each subsequent bucket, the local variance over that window is the residual once earlier buckets have been subtracted from the cumulative implied variance: `}<code>{`σk² · (Tk − Tk−1) = vk² · Tk − Σ σi² · (Ti − Ti−1)`}</code>{`. The Dupire equation solver extends the same idea across strikes and must be solved numerically — finite-difference schemes are the workhorse — with regularisation to tame the ill-posed inverse.`}</P>
+  <P>{`The volatility bootstrapping algorithm walks the maturity axis outward. For the first bucket <code>σ1² · T1 = v1² · T1</code>, so <code>σ1 = v1</code>. For each subsequent bucket, the local variance over that window is the residual once earlier buckets have been subtracted from the cumulative implied variance: <code>σk² · (Tk − Tk−1) = vk² · Tk − Σ σi² · (Ti − Ti−1)</code>. The Dupire equation solver extends the same idea across strikes and must be solved numerically — finite-difference schemes are the workhorse — with regularisation to tame the ill-posed inverse.`}</P>
 
   <H4>Complexity Analysis (Time and Space)</H4>
 
   <ul style={{ fontFamily: F.b, fontSize: 16, lineHeight: 1.8, color: C.text, margin: "0 0 18px 22px" }}>
     <li><strong>Volatility Bootstrapping:</strong> Time complexity is linear in the number of maturities.</li>
-    <li><strong>Dupire Equation Solver:</strong> Time complexity depends on the numerical scheme — finite differences scale with the grid in `}<code>(S,t,K){`</code>.</li>
+    <li><strong>Dupire Equation Solver:</strong> Time complexity depends on the numerical scheme — finite differences scale with the grid in <code>(S,t,K)</code>.</li>
   </ul>
 
   <H4>Data Flow and Processing Patterns</H4>
@@ -2232,11 +2383,11 @@ const Ch8Vis1 = () => (
 
   <H4>Detailed Implementation Approaches with Pseudocode Explanations</H4>
 
-  <P>{`The two canonical algorithms to pseudocode are volatility bootstrapping (a simple loop over sorted maturities, accumulating prior variance and solving for the next bucket's local vol) and the Dupire equation solver (set up a finite-difference grid in `}<code>{`(K,T)`}</code>{`, compute the required derivatives of the call-price surface, and extract `}<code>{`σ(S,t)`}</code>{` point-by-point).`}</P>
+  <P>{`The two canonical algorithms to pseudocode are volatility bootstrapping (a simple loop over sorted maturities, accumulating prior variance and solving for the next bucket's local vol) and the Dupire equation solver (set up a finite-difference grid in <code>(K,T)</code>, compute the required derivatives of the call-price surface, and extract <code>σ(S,t)</code> point-by-point).`}</P>
 
   <H4>Key Functions, Their Purposes, Parameters, and Return Values</H4>
 
-  <P>{`Every function in the pricing stack — from `}<code>{`bachelier_call(F, K, sigma, T)`}</code>{` to `}<code>{`dupire_local_vol(call_surface)`}</code>{` — needs documented parameters, units (dollar vs percentage volatility matters), return-value contracts, and numerical-stability notes.`}</P>
+  <P>{`Every function in the pricing stack — from <code>bachelier_call(F, K, sigma, T)</code> to <code>dupire_local_vol(call_surface)</code> — needs documented parameters, units (dollar vs percentage volatility matters), return-value contracts, and numerical-stability notes.`}</P>
 
   <H4>Complete Data Structures and Object Models Used</H4>
 
@@ -2282,92 +2433,6 @@ const Ch8Vis1 = () => (
 
   <P>{`The practical takeaways are straightforward: understand that volatility is dynamic and path-dependent; treat correlation estimates with suspicion in energy; favour models that handle negative prices when spreads are involved; respect triangular-arbitrage constraints across the spread and its legs; invest in robust numerical methods and careful parameter estimation; and keep an eye on market microstructure, which quietly drives more realised P&L than model choice does. The chapter closes by noting that volatility modelling is an active research area — rough vol, stochastic vol, ML-calibrated surfaces — and that continuous learning is the cost of doing business. The practical payoffs, visible in crack-spread hedging, volatility trading, and storage-asset valuation, justify the investment.`}</P>
 </Sec>
-const Ch9Vis1 = () => (
-  <svg viewBox="0 0 760 420" style={{ width: "100%", height: "auto", background: C.panel, borderRadius: 6, margin: "18px 0" }}>
-    <defs>
-      <linearGradient id="ch9g1" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={C.accent} stopOpacity="0.35" />
-        <stop offset="100%" stopColor={C.accent} stopOpacity="0.02" />
-      </linearGradient>
-      <linearGradient id="ch9g2" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#6aa1d4" stopOpacity="0.85" />
-        <stop offset="100%" stopColor="#d48a6a" stopOpacity="0.85" />
-      </linearGradient>
-    </defs>
-    <text x="380" y="26" textAnchor="middle" fill={C.text} fontFamily={F.h} fontSize="15" fontWeight="600">
-      Spread Option Value as a Function of Correlation
-    </text>
-    <text x="380" y="44" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="11">
-      Margrabe / Kirk intuition: rho down -&gt; sigma_spread up -&gt; option up
-    </text>
-    <line x1="80" y1="340" x2="720" y2="340" stroke={C.muted} strokeWidth="1" />
-    <line x1="80" y1="80" x2="80" y2="340" stroke={C.muted} strokeWidth="1" />
-    <text x="400" y="380" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="12">correlation rho (S1, S2)</text>
-    <text x="28" y="210" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="12" transform="rotate(-90 28 210)">spread option value</text>
-    {[-1, -0.5, 0, 0.5, 1].map((r, i) => (
-      <g key={i}>
-        <line x1={80 + i * 160} y1="340" x2={80 + i * 160} y2="345" stroke={C.muted} />
-        <text x={80 + i * 160} y="360" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="11">{r.toFixed(1)}</text>
-      </g>
-    ))}
-    <path d="M80,100 C200,130 360,220 520,280 L720,330 L720,340 L80,340 Z" fill="url(#ch9g1)" />
-    <path d="M80,100 C200,130 360,220 520,280 L720,330" fill="none" stroke={C.accent} strokeWidth="2.4" />
-    <circle cx="80" cy="100" r="4" fill="#6aa1d4" />
-    <text x="92" y="96" fill={C.text} fontFamily={F.b} fontSize="11">rho=-1: sigma_spread maximised</text>
-    <circle cx="400" cy="220" r="4" fill={C.accent} />
-    <text x="410" y="216" fill={C.text} fontFamily={F.b} fontSize="11">rho=0: independent factors</text>
-    <circle cx="720" cy="330" r="4" fill="#d48a6a" />
-    <text x="630" y="320" fill={C.text} fontFamily={F.b} fontSize="11">rho=+1: spread collapses</text>
-    <rect x="520" y="90" width="190" height="84" rx="4" fill={C.bg} stroke={C.muted} strokeWidth="0.6" />
-    <text x="530" y="108" fill={C.text} fontFamily={F.h} fontSize="12" fontWeight="600">Margrabe (K=0):</text>
-    <text x="530" y="126" fill={C.muted} fontFamily={F.b} fontSize="11">sigma^2 = sigma1^2 + sigma2^2</text>
-    <text x="530" y="142" fill={C.muted} fontFamily={F.b} fontSize="11">           - 2 rho sigma1 sigma2</text>
-    <text x="530" y="162" fill={C.muted} fontFamily={F.b} fontSize="11">Kirk: extends to K &gt; 0</text>
-  </svg>
-);
-
-const Ch9Vis2 = () => (
-  <svg viewBox="0 0 760 340" style={{ width: "100%", height: "auto", background: C.panel, borderRadius: 6, margin: "18px 0" }}>
-    <text x="380" y="26" textAnchor="middle" fill={C.text} fontFamily={F.h} fontSize="15" fontWeight="600">
-      Valuation Workflow: From Market Data to Hedged Spread Option
-    </text>
-    {[
-      { x: 40, label: "Data" },
-      { x: 180, label: "Model select" },
-      { x: 320, label: "Calibrate" },
-      { x: 460, label: "Price (MC / FD)" },
-      { x: 600, label: "Risk / hedge" },
-    ].map((s, i) => (
-      <g key={i}>
-        <rect x={s.x} y={130} width={120} height={60} rx={6} fill={C.bg} stroke={C.accent} strokeWidth="1.2" />
-        <text x={s.x + 60} y={165} textAnchor="middle" fill={C.text} fontFamily={F.b} fontSize="12">{s.label}</text>
-        {i < 4 && (
-          <path d={`M ${s.x + 120} 160 L ${s.x + 180} 160`} stroke={C.muted} strokeWidth="1.4" markerEnd="url(#ch9arrow)" fill="none" />
-        )}
-      </g>
-    ))}
-    <defs>
-      <marker id="ch9arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-        <path d="M0,0 L10,5 L0,10 z" fill={C.muted} />
-      </marker>
-    </defs>
-    <text x="100" y="230" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">historical px,</text>
-    <text x="100" y="244" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">IV surface</text>
-    <text x="240" y="230" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">Margrabe,</text>
-    <text x="240" y="244" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">Kirk, Heston</text>
-    <text x="380" y="230" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">GARCH sigma,</text>
-    <text x="380" y="244" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">rho(t), liquid opts</text>
-    <text x="520" y="230" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">paths or grid,</text>
-    <text x="520" y="244" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">Crank-Nicolson</text>
-    <text x="660" y="230" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">delta hedge,</text>
-    <text x="660" y="244" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="10">stress test</text>
-    <text x="380" y="290" textAnchor="middle" fill={C.muted} fontFamily={F.b} fontSize="11">
-      Feedback: market P&amp;L and squeeze events re-enter via fundamental overlay
-    </text>
-    <path d="M660 195 C 660 280, 100 280, 100 195" fill="none" stroke={C.muted} strokeWidth="0.8" strokeDasharray="4 3" />
-  </svg>
-);
-
 <Sec n="9" title="Chapter 9: Advanced Spread Option Valuation and Market Dynamics in Commodity Trading">
   <P>{`Spread options sit at the intersection of two deep currents in commodity trading: the statistical mechanics of joint price processes and the messy fundamentals of physical barrels moving between refineries, pipelines, and delivery months. Unlike a vanilla call on Brent, a spread option derives its entire value from a relationship — WTI versus Brent, Cushing versus the Gulf Coast, prompt versus deferred — so volatility alone is never enough. Correlation, and how correlation breaks, dominates the payoff.`}</P>
 
@@ -2506,71 +2571,6 @@ const Ch9Vis2 = () => (
 
   <P>{`Implementation discipline closes the loop. Accurate data, robust calibration, efficient computation, explicit edge-case handling, and effective risk management together turn theoretical fair values into actionable positions. The field itself continues to evolve — toward richer correlation processes, jumps and regimes, copula-based dependence, and real-option applications in physical assets — but the operational imperatives remain constant: combine the methodologies, respect the limits of each model, and hedge what you cannot forecast.`}</P>
 </Sec>
-const Ch10Vis1 = () => {
-  const data = [
-    { tenor: "1W",  implied: 38.2, realized: 34.1, vrp: 4.1 },
-    { tenor: "2W",  implied: 37.0, realized: 33.0, vrp: 4.0 },
-    { tenor: "1M",  implied: 35.8, realized: 31.6, vrp: 4.2 },
-    { tenor: "2M",  implied: 34.1, realized: 29.8, vrp: 4.3 },
-    { tenor: "3M",  implied: 32.7, realized: 28.3, vrp: 4.4 },
-    { tenor: "6M",  implied: 30.9, realized: 26.5, vrp: 4.4 },
-    { tenor: "9M",  implied: 29.8, realized: 25.7, vrp: 4.1 },
-    { tenor: "12M", implied: 29.1, realized: 25.4, vrp: 3.7 },
-    { tenor: "18M", implied: 28.4, realized: 25.1, vrp: 3.3 },
-    { tenor: "24M", implied: 27.9, realized: 24.9, vrp: 3.0 },
-  ];
-  return (
-    <div style={{ background: C.panel, border: `1px solid ${C.border}`, padding: 16, margin: "14px 0" }}>
-      <div style={{ fontFamily: F.h, fontSize: 13, color: C.muted, letterSpacing: 1.5, marginBottom: 8 }}>
-        FIGURE 10.1 — TERM STRUCTURE OF IMPLIED VOL, REALIZED VOL, AND THE VRP
-      </div>
-      <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
-          <CartesianGrid stroke={C.border} strokeDasharray="2 4" />
-          <XAxis dataKey="tenor" stroke={C.muted} tick={{ fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
-          <YAxis yAxisId="left" stroke={C.muted} tick={{ fill: C.muted, fontFamily: F.b, fontSize: 12 }} label={{ value: "vol (%)", angle: -90, position: "insideLeft", fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
-          <YAxis yAxisId="right" orientation="right" stroke={C.muted} tick={{ fill: C.muted, fontFamily: F.b, fontSize: 12 }} label={{ value: "VRP (vol pts)", angle: 90, position: "insideRight", fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
-          <Tooltip contentStyle={{ background: C.bg, border: `1px solid ${C.border}`, fontFamily: F.b, fontSize: 12 }} />
-          <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12, color: C.text }} />
-          <Bar yAxisId="right" dataKey="vrp" name="VRP (RHS)" fill={C.accent} opacity={0.45} />
-          <Line yAxisId="left" type="monotone" dataKey="implied" name="Implied Vol" stroke={C.text} strokeWidth={2} dot={{ r: 3 }} />
-          <Line yAxisId="left" type="monotone" dataKey="realized" name="Realized Vol" stroke={C.muted} strokeWidth={2} strokeDasharray="5 4" dot={{ r: 3 }} />
-        </ComposedChart>
-      </ResponsiveContainer>
-    </div>
-  );
-};
-
-const Ch10Vis2 = () => {
-  const data = [
-    { strike: "80% K",  calm: 5.2, stress: 2.1 },
-    { strike: "90% K",  calm: 4.0, stress: 1.4 },
-    { strike: "95% K",  calm: 3.4, stress: 0.9 },
-    { strike: "ATM",    calm: 2.9, stress: 0.4 },
-    { strike: "105% K", calm: 3.1, stress: 0.7 },
-    { strike: "110% K", calm: 3.8, stress: 1.6 },
-    { strike: "120% K", calm: 5.0, stress: 2.8 },
-  ];
-  return (
-    <div style={{ background: C.panel, border: `1px solid ${C.border}`, padding: 16, margin: "14px 0" }}>
-      <div style={{ fontFamily: F.h, fontSize: 13, color: C.muted, letterSpacing: 1.5, marginBottom: 8 }}>
-        FIGURE 10.2 — VRP SMILE: CALM REGIME vs STRESS REGIME (VRP IN VOL POINTS)
-      </div>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
-          <CartesianGrid stroke={C.border} strokeDasharray="2 4" />
-          <XAxis dataKey="strike" stroke={C.muted} tick={{ fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
-          <YAxis stroke={C.muted} tick={{ fill: C.muted, fontFamily: F.b, fontSize: 12 }} label={{ value: "VRP (vol pts)", angle: -90, position: "insideLeft", fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
-          <Tooltip contentStyle={{ background: C.bg, border: `1px solid ${C.border}`, fontFamily: F.b, fontSize: 12 }} />
-          <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12, color: C.text }} />
-          <Line type="monotone" dataKey="calm" name="Calm regime" stroke={C.text} strokeWidth={2} dot={{ r: 4 }} />
-          <Line type="monotone" dataKey="stress" name="Stress regime" stroke={C.accent} strokeWidth={2} strokeDasharray="5 4" dot={{ r: 4 }} />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  );
-};
-
 <Sec n="10" title="Chapter 10: Advanced Volatility Modeling and the Volatility Risk Premium">
 
 <P>{`Chapter 10 is Bouchouev's treatise on what option markets are really selling. Constant-volatility pricing - the Black-Scholes world of a single number applied identically to every strike and every tenor - survives as a teaching device, but no oil options desk has run on that assumption in decades. Crude volatility is itself a random variable, mean-reverting and occasionally explosive, and any serious pricing engine must model that second-order randomness directly. The chapter opens with the distinction between realized volatility, a backward-looking statistic computed from squared log returns on intraday or daily data, and implied volatility, the forward-looking figure that options prices embed. The gap between those two numbers is the volatility risk premium (VRP): the fee investors charge one another for bearing the risk that vol itself will move unpredictably.`}</P>
