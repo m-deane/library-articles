@@ -3,59 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Library Articles</title>
-  <meta name="description" content="Rich JSX React articles — companion to huggingface.co/spaces/helwyr55/library" />
+  <title>Articles — Data Science Library</title>
+  <meta name="description" content="Rich JSX React articles — companion to the Data Science Library at huggingface.co/spaces/helwyr55/library" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:wght@400;600&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet"
-  />
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <header class="article-header-bar">
-    <div class="header-inner">
-      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
-        &larr; Main Library
-      </a>
-      <div class="header-meta">
-        <span class="header-title">Library Articles</span>
-        <span class="header-sep">&middot;</span>
-        <span>13 articles</span>
+  <!-- Top navigation bar mirrors the main library sidebar -->
+  <nav class="top-nav">
+    <div class="top-nav-inner">
+      <span class="brand"><span class="emoji">📚</span> Data Science Library</span>
+      <div class="nav-links">
+        <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">🏠 Home</a>
+        <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">📋 Library</a>
+        <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">🎓 Courses</a>
+        <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">🗺️ Learning Paths</a>
+        <a href="./" class="active">📝 Articles</a>
+        <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">🔬 Projects</a>
       </div>
-      <a class="index-link" href="_manifest.json">manifest.json</a>
+      <span class="stats-chip" id="nav-stats">13 articles</span>
     </div>
-  </header>
+  </nav>
 
-  <section class="index-hero">
+  <!-- Hero matches the library's hero-section pattern -->
+  <section class="hero-section" style="margin: 1.5rem auto 2rem; max-width: 1200px;">
     <div class="hero-kicker">◆ Data Science Library &middot; Articles</div>
-    <h1>Rich JSX Articles</h1>
-    <p>
-      Interactive charts, custom SVG diagrams, magazine-quality typography.
-      Companion to the
-      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">main Data Science Library</a>.
+    <h1 class="hero-title">📝 Technical Articles</h1>
+    <p class="hero-subtitle">
+      Rich JSX React articles with interactive Recharts diagrams, custom SVG, and magazine-quality typography.
+      Every article written in Daily Dose of Data Science, Medium technical-DS, or encyclopaedic style.
     </p>
     <div class="hero-stats">
-      <span class="hero-stat"><strong>13</strong> articles</span>
+      <span class="hero-stat"><strong>13</strong> Articles</span>
       <span class="hero-stat">React 18 + Recharts</span>
-      <span class="hero-stat">Emerald Dark</span>
+      <span class="hero-stat">Live on HF Spaces</span>
     </div>
   </section>
 
-  <section class="index-filters">
-    <select id="filter-category" aria-label="Filter by category">
-      <option value="">All categories</option>
-    </select>
-    <select id="filter-style" aria-label="Filter by style">
-      <option value="">All styles</option>
-    </select>
-    <input type="search" id="filter-search" placeholder="Search titles, subtitles, tags…" />
-    <span class="filter-count" id="filter-count">13 shown</span>
-  </section>
+  <div class="index-content">
+    <h2 class="section-heading">Browse</h2>
+    <p class="section-caption">Filter by category, style, or search across all articles.</p>
 
-  <section class="index-grid" id="index-grid">
-    
+    <div class="index-filters">
+      <select id="filter-category" aria-label="Filter by category">
+        <option value="">All categories</option>
+      </select>
+      <select id="filter-style" aria-label="Filter by style">
+        <option value="">All styles</option>
+      </select>
+      <input type="search" id="filter-search" placeholder="Search titles, subtitles, tags…" />
+      <span class="filter-count" id="filter-count">13 shown</span>
+    </div>
+
+    <div class="index-grid" id="index-grid">
+      
     <a href="articles/test-chart-article.html" class="article-card" data-category="statistics" data-style="technical-ds" data-search="a visual guide to exponential decay a test article to verify jsx rendering with recharts. statistics visualisation test statistics technical-ds">
       <div class="card-meta">2026-04-20 &middot; 3 min <span class="badge badge-technical-ds">technical-ds</span> <span class="cat">statistics</span></div>
       <h2>A Visual Guide to Exponential Decay</h2>
@@ -146,19 +148,19 @@
       <p class="subtitle">Lags, rolling statistics, Fourier transforms, calendar features, and the leakage traps that lurk in every time series pipeline.</p>
       <div class="tags"></div>
     </a>
-  </section>
+    </div>
+  </div>
 
   <footer class="article-footer">
     <div class="footer-inner">
-      <span>Built with Babel Standalone + React 18 + Recharts, served as a HuggingFace static Space.</span>
+      <span>📊 13 articles · Static companion site · Built with React + Babel Standalone + Recharts</span>
       <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
-        Return to main library &rarr;
+        ← Return to Data Science Library
       </a>
     </div>
   </footer>
 
   <script>
-    // Simple client-side filtering
     (function () {
       var grid = document.getElementById('index-grid');
       var cards = Array.from(grid.querySelectorAll('.article-card'));
@@ -167,7 +169,6 @@
       var searchInp = document.getElementById('filter-search');
       var countEl = document.getElementById('filter-count');
 
-      // Populate category + style dropdowns from card data attributes
       var cats = new Set();
       var styles = new Set();
       cards.forEach(function (c) {
