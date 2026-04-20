@@ -59,6 +59,14 @@ SLUGS = [
     "stochastic-dp-encyclopaedic-article",
     "ts-feature-engineering-guide",
     "virtual-barrels",
+    "virtual-barrels-chapter-notes",
+    "forty-classic-crude-oil-trades-chapter-notes",
+    "advances-in-financial-machine-learning-chapter-notes",
+    "bayesian-analysis-with-python-chapter-notes",
+    "crude-oil-handbook-chapter-notes",
+    "python-for-algorithmic-trading-cookbook-chapter-notes",
+    "applied-bayesian-statistics-notes",
+    "forecasting-principles-and-practice-notes",
 ]
 
 
