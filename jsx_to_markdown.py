@@ -33,9 +33,17 @@ from typing import Callable
 
 sys.setrecursionlimit(10000)
 
-BASE = Path("/Users/matthewdeane/Documents/Data Science/python/_projects/____p-library")
-JSX_DIR = BASE / "library-articles" / "articles"
-MD_DIR = BASE / "library" / "articles"
+# Repo-relative resolution — works on any host (local macOS dev AND Ubuntu CI).
+# This script lives at library-articles/jsx_to_markdown.py; its parent is the
+# library-articles repo root. `library/` is a sibling repo; if that sibling
+# doesn't exist (e.g. CI checks out only this repo), MD_DIR is created inside
+# the working tree and downstream markdown emission is a no-op.
+_SCRIPT_DIR = Path(__file__).resolve().parent  # library-articles/
+_PARENT = _SCRIPT_DIR.parent                    # ____p-library/ (local) or repo parent (CI)
+BASE = _PARENT
+JSX_DIR = _SCRIPT_DIR / "articles"
+_SIBLING_MD = _PARENT / "library" / "articles"
+MD_DIR = _SIBLING_MD if _SIBLING_MD.exists() else _SCRIPT_DIR / "_markdown_mirror"
 
 SLUGS = [
     "catboost-guide",
@@ -1366,6 +1374,14 @@ def main() -> int:
             continue
         chars, lines = _update_md(slug, md_body)
         report.append((slug, chars, lines))
+    if not report:
+        # CI environments may lack the sibling `library/` checkout; nothing to
+        # write. Exit 0 so the build job doesn't fail for a missing-optional.
+        sys.stderr.write(
+            "[info] jsx_to_markdown: no slugs produced output (sibling library/ "
+            "not present or no articles found). Skipping markdown-mirror step.\n"
+        )
+        return 0
     width = max(len(s) for s, _, _ in report)
     for slug, chars, lines in report:
         print(f"{slug.ljust(width)}  {chars:>7d} chars  {lines:>4d} lines")
