@@ -70,7 +70,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0, token: ${{ secrets.GITHUB_TOKEN }} }
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Revert offending commit on main
         run: |
           git config user.email "actions@github.com"
