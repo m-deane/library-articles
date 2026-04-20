@@ -44,24 +44,6 @@
     "url": "articles/virtual-barrels-chapter-notes.html"
   },
   {
-    "slug": "crude-oil-handbook-chapter-notes",
-    "title": "Crude Oil Handbook \u2014 Chapter Notes",
-    "subtitle": "Full chapter-by-chapter reference synthesising the library's Crude Oil Handbook chapter summaries.",
-    "date": "2026-04-20",
-    "read_time": "48 min",
-    "category": "energy",
-    "style": "technical-ds",
-    "tags": [
-      "crude-oil",
-      "energy-markets",
-      "reference",
-      "commodities-trading",
-      "chapter-notes"
-    ],
-    "component": "CrudeOilHandbookChapterNotes",
-    "url": "articles/crude-oil-handbook-chapter-notes.html"
-  },
-  {
     "slug": "test-chart-article",
     "title": "A Visual Guide to Exponential Decay",
     "subtitle": "Why everything fades, and how fast \u2014 a short tour of the simplest half-life you'll ever meet.",
