@@ -522,8 +522,6 @@ def render_index(
         card = (
             f'<a class="article-card" href="articles/{slug_esc}.html" '
             f'data-category="{cat_esc}" data-style="{style_esc}" '
-            f'data-date="{html.escape(date_str)}" '
-            f'data-title="{title_esc}" '
             f'data-search="{search_esc}">'
             f'<div class="card-meta">{"".join(meta_bits)}</div>'
             f'<h3>{title_esc}</h3>'
