@@ -1,0 +1,19 @@
+{
+  "slug": "forecasting-principles-and-practice-notes",
+  "title": "Forecasting: Principles and Practice \u2014 Book Notes",
+  "subtitle": "Full book notes synthesising every chapter of Hyndman & Athanasopoulos' Forecasting: Principles and Practice.",
+  "date": "2026-04-20",
+  "read_time": "30 min",
+  "category": "time-series",
+  "style": "technical-ds",
+  "tags": [
+    "forecasting",
+    "time-series",
+    "textbook",
+    "hyndman",
+    "reference",
+    "book-notes"
+  ],
+  "component": "ForecastingPrinciplesAndPracticeNotes",
+  "url": "articles/forecasting-principles-and-practice-notes.html"
+}
