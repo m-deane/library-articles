@@ -52,6 +52,12 @@
       <select id="filter-style" aria-label="Filter by style">
         <option value="">All styles</option>
       </select>
+      <select id="filter-sort" aria-label="Sort order">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="title-asc">Title A–Z</option>
+        <option value="title-desc">Title Z–A</option>
+      </select>
       <input type="search" id="filter-search" placeholder="Search titles, subtitles, tags…" />
       <span class="filter-count" id="filter-count">{{ARTICLE_COUNT}} shown</span>
     </div>
@@ -76,6 +82,7 @@
       var cards = Array.from(grid.querySelectorAll('.article-card'));
       var catSel = document.getElementById('filter-category');
       var styleSel = document.getElementById('filter-style');
+      var sortSel = document.getElementById('filter-sort');
       var searchInp = document.getElementById('filter-search');
       var countEl = document.getElementById('filter-count');
 
@@ -96,6 +103,22 @@
         styleSel.appendChild(o);
       });
 
+      function sortCards() {
+        var mode = sortSel.value || 'newest';
+        var sorted = cards.slice().sort(function (a, b) {
+          var da = a.dataset.date || '';
+          var db = b.dataset.date || '';
+          var ta = (a.dataset.title || '').toLowerCase();
+          var tb = (b.dataset.title || '').toLowerCase();
+          if (mode === 'newest')     return db.localeCompare(da) || ta.localeCompare(tb);
+          if (mode === 'oldest')     return da.localeCompare(db) || ta.localeCompare(tb);
+          if (mode === 'title-asc')  return ta.localeCompare(tb);
+          if (mode === 'title-desc') return tb.localeCompare(ta);
+          return 0;
+        });
+        sorted.forEach(function (c) { grid.appendChild(c); });
+      }
+
       function apply() {
         var cat = catSel.value;
         var sty = styleSel.value;
@@ -111,11 +134,15 @@
           if (visible) shown++;
         });
         countEl.textContent = shown + ' shown';
+        sortCards();
       }
 
       catSel.addEventListener('change', apply);
       styleSel.addEventListener('change', apply);
+      sortSel.addEventListener('change', apply);
       searchInp.addEventListener('input', apply);
+
+      sortCards();
     })();
   </script>
 </body>
