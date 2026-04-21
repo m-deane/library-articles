@@ -195,14 +195,14 @@ const Ch2Vis1 = () => {
   return (
     <ResponsiveContainer width="100%" height={320}>
       <LineChart data={data} margin={{ top: 20, right: 30, left: 10, bottom: 10 }}>
-        <CartesianGrid stroke={C.border} strokeDasharray="3 3" />
-        <XAxis dataKey="m" stroke={C.axis} tick={{ fill: C.axis, fontFamily: F.m, fontSize: 11 }} />
-        <YAxis stroke={C.axis} tick={{ fill: C.axis, fontFamily: F.m, fontSize: 11 }} domain={[69, 76]} label={{ value: "USD / bbl", angle: -90, position: "insideLeft", fill: C.axis, fontFamily: F.m, fontSize: 11 }} />
-        <Tooltip contentStyle={{ background: C.codeBg, border: `1px solid ${C.border}`, color: C.text, fontFamily: F.m }} />
-        <Legend wrapperStyle={{ fontFamily: F.m, fontSize: 11, color: C.axis }} />
-        <ReferenceLine y={70} stroke={C.border} strokeDasharray="2 4" />
+        <CartesianGrid stroke={C.grid} strokeDasharray="3 3" />
+        <XAxis dataKey="m" stroke={C.axis} tick={{ fill: C.axis, fontFamily: F.mono, fontSize: 11 }} />
+        <YAxis stroke={C.axis} tick={{ fill: C.axis, fontFamily: F.mono, fontSize: 11 }} domain={[69, 76]} label={{ value: "USD / bbl", angle: -90, position: "insideLeft", fill: C.axis, fontFamily: F.mono, fontSize: 11 }} />
+        <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.grid}`, color: C.text, fontFamily: F.mono }} />
+        <Legend wrapperStyle={{ fontFamily: F.mono, fontSize: 11, color: C.axis }} />
+        <ReferenceLine y={70} stroke={C.grid} strokeDasharray="2 4" />
         <Line type="monotone" dataKey="contango" name="Contango curve" stroke={C.accent} strokeWidth={2} dot={{ r: 3, fill: C.accent }} />
-        <Line type="monotone" dataKey="backwardation" name="Backwardation curve" stroke={C.sky || C.text} strokeWidth={2} dot={{ r: 3, fill: C.sky || C.text }} />
+        <Line type="monotone" dataKey="backwardation" name="Backwardation curve" stroke={C.accent2 || C.text} strokeWidth={2} dot={{ r: 3, fill: C.accent2 || C.text }} />
       </LineChart>
     </ResponsiveContainer>
   );
@@ -218,10 +218,10 @@ const Ch2Vis2 = () => {
   return (
     <ResponsiveContainer width="100%" height={280}>
       <BarChart data={data} layout="vertical" margin={{ top: 10, right: 40, left: 40, bottom: 10 }}>
-        <CartesianGrid stroke={C.border} strokeDasharray="3 3" horizontal={false} />
-        <XAxis type="number" domain={[0, 70]} stroke={C.axis} tick={{ fill: C.axis, fontFamily: F.m, fontSize: 11 }} label={{ value: "% of globally priced barrels referenced", position: "bottom", fill: C.axis, fontFamily: F.m, fontSize: 11 }} />
-        <YAxis type="category" dataKey="p" stroke={C.axis} tick={{ fill: C.axis, fontFamily: F.m, fontSize: 12 }} width={70} />
-        <Tooltip contentStyle={{ background: C.codeBg, border: `1px solid ${C.border}`, color: C.text, fontFamily: F.m }} />
+        <CartesianGrid stroke={C.grid} strokeDasharray="3 3" horizontal={false} />
+        <XAxis type="number" domain={[0, 70]} stroke={C.axis} tick={{ fill: C.axis, fontFamily: F.mono, fontSize: 11 }} label={{ value: "% of globally priced barrels referenced", position: "bottom", fill: C.axis, fontFamily: F.mono, fontSize: 11 }} />
+        <YAxis type="category" dataKey="p" stroke={C.axis} tick={{ fill: C.axis, fontFamily: F.mono, fontSize: 12 }} width={70} />
+        <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.grid}`, color: C.text, fontFamily: F.mono }} />
         <Bar dataKey="share" fill={C.accent} />
       </BarChart>
     </ResponsiveContainer>
@@ -238,7 +238,7 @@ const Ch3Vis1 = () => {
     { year: "2010s", OSP: 1, Netback: 4, Formula: 95 },
   ];
   return (
-    <div style={{ background: C.codeBg, border: `1px solid ${C.border}`, borderRadius: 8, padding: 18, margin: "18px 0" }}>
+    <div style={{ background: C.panel, border: `1px solid ${C.border}`, borderRadius: 8, padding: 18, margin: "18px 0" }}>
       <div style={{ fontFamily: F.h, fontSize: 14, letterSpacing: 1.2, textTransform: "uppercase", color: C.muted, marginBottom: 10 }}>
         Figure 3.1 — Evolution of term-contract pricing mechanisms (indicative share, %)
       </div>
@@ -249,7 +249,7 @@ const Ch3Vis1 = () => {
           <YAxis stroke={C.muted} tick={{ fontFamily: F.b, fontSize: 12 }} />
           <Tooltip contentStyle={{ background: C.bg, border: `1px solid ${C.border}`, fontFamily: F.b }} />
           <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12 }} />
-          <Area type="monotone" dataKey="OSP" stackId="1" stroke={C.sky || "#b07d5e"} fill={C.sky || "#b07d5e"} fillOpacity={0.7} />
+          <Area type="monotone" dataKey="OSP" stackId="1" stroke={C.accent2 || "#b07d5e"} fill={C.accent2 || "#b07d5e"} fillOpacity={0.7} />
           <Area type="monotone" dataKey="Netback" stackId="1" stroke={C.accent3 || "#8a6fae"} fill={C.accent3 || "#8a6fae"} fillOpacity={0.7} />
           <Area type="monotone" dataKey="Formula" stackId="1" stroke={C.accent || "#3a6ea5"} fill={C.accent || "#3a6ea5"} fillOpacity={0.7} />
         </AreaChart>
@@ -268,7 +268,7 @@ const Ch3Vis2 = () => {
     { crude: "Maya Heavy Sour", differential: -6.2 },
   ];
   return (
-    <div style={{ background: C.codeBg, border: `1px solid ${C.border}`, borderRadius: 8, padding: 18, margin: "18px 0" }}>
+    <div style={{ background: C.panel, border: `1px solid ${C.border}`, borderRadius: 8, padding: 18, margin: "18px 0" }}>
       <div style={{ fontFamily: F.h, fontSize: 14, letterSpacing: 1.2, textTransform: "uppercase", color: C.muted, marginBottom: 10 }}>
         Figure 3.2 — Illustrative quality differentials vs Brent (USD/bbl)
       </div>
@@ -298,12 +298,12 @@ const Ch4Vis1 = () => {
     <div style={{ width: "100%", height: 320, margin: "18px 0 8px 0" }}>
       <Recharts.ResponsiveContainer>
         <Recharts.BarChart data={data} layout="vertical" margin={{ top: 10, right: 30, left: 40, bottom: 10 }}>
-          <Recharts.CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+          <Recharts.CartesianGrid strokeDasharray="3 3" stroke={C.grid} />
           <Recharts.XAxis type="number" stroke={C.text} tick={{ fontSize: 12, fill: C.text }} label={{ value: "Deadweight tonnage (thousand DWT)", position: "insideBottom", offset: -4, fill: C.text, fontSize: 12 }} />
           <Recharts.YAxis type="category" dataKey="class" stroke={C.text} tick={{ fontSize: 12, fill: C.text }} />
-          <Recharts.Tooltip contentStyle={{ background: C.codeBg, border: `1px solid ${C.border}`, color: C.text }} />
+          <Recharts.Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.grid}`, color: C.text }} />
           <Recharts.Legend wrapperStyle={{ color: C.text, fontSize: 12 }} />
-          <Recharts.Bar dataKey="dwtLow" stackId="a" fill={C.border} name="Floor DWT" />
+          <Recharts.Bar dataKey="dwtLow" stackId="a" fill={C.grid} name="Floor DWT" />
           <Recharts.Bar dataKey="dwtHigh" stackId="a" fill={C.accent} name="Ceiling DWT" />
         </Recharts.BarChart>
       </Recharts.ResponsiveContainer>
@@ -326,10 +326,10 @@ const Ch4Vis2 = () => {
     <div style={{ width: "100%", height: 300, margin: "18px 0 8px 0" }}>
       <Recharts.ResponsiveContainer>
         <Recharts.LineChart data={data} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>
-          <Recharts.CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+          <Recharts.CartesianGrid strokeDasharray="3 3" stroke={C.grid} />
           <Recharts.XAxis dataKey="year" stroke={C.text} tick={{ fontSize: 12, fill: C.text }} />
           <Recharts.YAxis stroke={C.text} tick={{ fontSize: 12, fill: C.text }} label={{ value: "Worldscale points", angle: -90, position: "insideLeft", fill: C.text, fontSize: 12 }} />
-          <Recharts.Tooltip contentStyle={{ background: C.codeBg, border: `1px solid ${C.border}`, color: C.text }} />
+          <Recharts.Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.grid}`, color: C.text }} />
           <Recharts.Legend wrapperStyle={{ color: C.text, fontSize: 12 }} />
           <Recharts.Line type="monotone" dataKey="spotWS" stroke={C.accent} strokeWidth={2} dot={false} name="Spot (WS)" />
           <Recharts.Line type="monotone" dataKey="termWS" stroke={C.text} strokeWidth={2} strokeDasharray="5 5" dot={false} name="Term (WS-equiv)" />
@@ -351,7 +351,7 @@ const Ch5Vis1 = () => {
     { api: 45, gasolineYield: 55, residualYield: 6, label: "Very Light / Condensate" },
   ];
   return (
-    <div style={{ background: C.codeBg, border: `1px solid ${C.border}`, padding: 20, borderRadius: 4, margin: "18px 0" }}>
+    <div style={{ background: C.panel, border: `1px solid ${C.border}`, padding: 20, borderRadius: 4, margin: "18px 0" }}>
       <div style={{ fontFamily: F.s, fontSize: 12, letterSpacing: 1.5, color: C.muted, marginBottom: 8, textTransform: "uppercase" }}>Figure 5.1 — Product yield as a function of API gravity</div>
       <Recharts.ResponsiveContainer width="100%" height={320}>
         <Recharts.LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
@@ -377,7 +377,7 @@ const Ch5Vis2 = () => {
     { month: "M12", spotBackward: 82, futBackward: 68, spotContango: 68, futContango: 81 },
   ];
   return (
-    <div style={{ background: C.codeBg, border: `1px solid ${C.border}`, padding: 20, borderRadius: 4, margin: "18px 0" }}>
+    <div style={{ background: C.panel, border: `1px solid ${C.border}`, padding: 20, borderRadius: 4, margin: "18px 0" }}>
       <div style={{ fontFamily: F.s, fontSize: 12, letterSpacing: 1.5, color: C.muted, marginBottom: 8, textTransform: "uppercase" }}>Figure 5.2 — Backwardation vs. contango term structures</div>
       <Recharts.ResponsiveContainer width="100%" height={300}>
         <Recharts.LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
@@ -408,7 +408,7 @@ const Ch6Vis1 = () => {
     { crude: "Maya", api: 22.0, sulfur: 3.30, region: "Mexico" },
   ];
   return (
-    <div style={{ background: C.codeBg, padding: 18, borderRadius: 6, border: `1px solid ${C.rule}` }}>
+    <div style={{ background: C.panel, padding: 18, borderRadius: 6, border: `1px solid ${C.rule}` }}>
       <div style={{ fontFamily: F.s, fontSize: 13, color: C.muted, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 10 }}>
         Benchmark Crude Grades — Quality Parameters
       </div>
@@ -441,7 +441,7 @@ const Ch6Vis2 = () => {
     { mech: "Netback", transparency: 50, stability: 65, flexibility: 55 },
   ];
   return (
-    <div style={{ background: C.codeBg, padding: 18, borderRadius: 6, border: `1px solid ${C.rule}` }}>
+    <div style={{ background: C.panel, padding: 18, borderRadius: 6, border: `1px solid ${C.rule}` }}>
       <div style={{ fontFamily: F.s, fontSize: 13, color: C.muted, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 10 }}>
         Pricing Mechanisms — Comparative Profile (0-100)
       </div>

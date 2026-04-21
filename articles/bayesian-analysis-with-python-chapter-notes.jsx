@@ -169,7 +169,7 @@ const Ch2Vis1 = () => {
   const path = (arr) => arr.map((d, i) => (i === 0 ? "M" : "L") + sx(d.x) + "," + sy(d.y)).join(" ");
   const axisColor = C.muted || "#888";
   return (
-    <svg viewBox={"0 0 " + W + " " + H} style={{ width: "100%", height: "auto", background: C.codeBg || "#0f1114" }}>
+    <svg viewBox={"0 0 " + W + " " + H} style={{ width: "100%", height: "auto", background: C.panel || "#0f1114" }}>
       <line x1={pad} y1={H - pad} x2={W - pad} y2={H - pad} stroke={axisColor} strokeWidth="1" />
       <line x1={pad} y1={pad} x2={pad} y2={H - pad} stroke={axisColor} strokeWidth="1" />
       <path d={path(prior)} fill="none" stroke="#8ab4f8" strokeWidth="2" strokeDasharray="4 4" />
@@ -206,7 +206,7 @@ const Ch2Vis2 = () => {
   const axisColor = C.muted || "#888";
   const best = models.reduce((a, b) => (a.loo > b.loo ? a : b));
   return (
-    <svg viewBox={"0 0 " + W + " " + H} style={{ width: "100%", height: "auto", background: C.codeBg || "#0f1114" }}>
+    <svg viewBox={"0 0 " + W + " " + H} style={{ width: "100%", height: "auto", background: C.panel || "#0f1114" }}>
       <line x1={pad} y1={H - pad} x2={W - pad} y2={H - pad} stroke={axisColor} strokeWidth="1" />
       <line x1={sx(best.loo)} y1={pad} x2={sx(best.loo)} y2={H - pad} stroke="#a6da95" strokeWidth="1" strokeDasharray="3 5" />
       {models.map((m, i) => (
@@ -239,18 +239,18 @@ const Ch3Vis1 = () => {
     };
   });
   return (
-    <div style={{ width: "100%", height: 320, background: C.codeBg, padding: 16, borderRadius: 6 }}>
+    <div style={{ width: "100%", height: 320, background: C.panel, padding: 16, borderRadius: 6 }}>
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
-          <CartesianGrid stroke={C.border} strokeDasharray="3 3" />
+          <CartesianGrid stroke={C.grid} strokeDasharray="3 3" />
           <XAxis dataKey="x" stroke={C.muted} tick={{ fill: C.muted, fontSize: 12 }} label={{ value: "predictor x", position: "insideBottom", offset: -5, fill: C.muted }} />
           <YAxis stroke={C.muted} tick={{ fill: C.muted, fontSize: 12 }} />
-          <Tooltip contentStyle={{ background: C.codeBg, border: `1px solid ${C.border}`, color: C.text }} />
+          <Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.grid}`, color: C.text }} />
           <Legend wrapperStyle={{ color: C.muted, fontSize: 12 }} />
-          <Area type="monotone" dataKey="ppdHi" stroke="none" fill={C.sky} fillOpacity={0.15} name="PPD upper" />
-          <Area type="monotone" dataKey="ppdLo" stroke="none" fill={C.codeBg} fillOpacity={1} name="PPD lower" />
+          <Area type="monotone" dataKey="ppdHi" stroke="none" fill={C.accent2} fillOpacity={0.15} name="PPD upper" />
+          <Area type="monotone" dataKey="ppdLo" stroke="none" fill={C.panel} fillOpacity={1} name="PPD lower" />
           <Area type="monotone" dataKey="hi" stroke="none" fill={C.accent} fillOpacity={0.25} name="mean upper" />
-          <Area type="monotone" dataKey="lo" stroke="none" fill={C.codeBg} fillOpacity={1} name="mean lower" />
+          <Area type="monotone" dataKey="lo" stroke="none" fill={C.panel} fillOpacity={1} name="mean lower" />
           <Line type="monotone" dataKey="mean" stroke={C.accent} strokeWidth={2} dot={false} name="posterior mean" />
         </ComposedChart>
       </ResponsiveContainer>
@@ -274,17 +274,17 @@ const Ch4Vis1 = () => {
     data.push({ x: Number(x.toFixed(2)), c1, c2, c3, mix: c1 + c2 + c3 });
   }
   return (
-    <div style={{ background: C.codeBg, border: "1px solid " + C.border, padding: 16, borderRadius: 4 }}>
+    <div style={{ background: C.panel, border: "1px solid " + C.border, padding: 16, borderRadius: 4 }}>
       <div style={{ fontFamily: F.h, fontSize: 12, letterSpacing: 2, color: C.muted, textTransform: "uppercase", marginBottom: 8 }}>Figure 4.1 — Three-component Gaussian mixture density</div>
       <ResponsiveContainer width="100%" height={320}>
         <ComposedChart data={data} margin={{ top: 10, right: 24, bottom: 24, left: 12 }}>
           <CartesianGrid stroke={C.border} strokeDasharray="3 3" />
           <XAxis dataKey="x" stroke={C.muted} tick={{ fill: C.muted, fontSize: 11, fontFamily: F.b }} label={{ value: "x", position: "insideBottom", offset: -6, fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
           <YAxis stroke={C.muted} tick={{ fill: C.muted, fontSize: 11, fontFamily: F.b }} label={{ value: "p(x)", angle: -90, position: "insideLeft", fill: C.muted, fontFamily: F.b, fontSize: 12 }} />
-          <Tooltip contentStyle={{ background: C.codeBg, border: "1px solid " + C.border, fontFamily: F.b, fontSize: 12 }} />
+          <Tooltip contentStyle={{ background: C.panel, border: "1px solid " + C.border, fontFamily: F.b, fontSize: 12 }} />
           <Legend wrapperStyle={{ fontFamily: F.b, fontSize: 12, color: C.text }} />
           <Area type="monotone" dataKey="c1" name="pi=0.30, mu=-3, sigma=0.9" stroke={C.accent} fill={C.accent} fillOpacity={0.18} />
-          <Area type="monotone" dataKey="c2" name="pi=0.45, mu=0.5, sigma=1.1" stroke={C.sky || C.accent} fill={C.sky || C.accent} fillOpacity={0.18} />
+          <Area type="monotone" dataKey="c2" name="pi=0.45, mu=0.5, sigma=1.1" stroke={C.accent2 || C.accent} fill={C.accent2 || C.accent} fillOpacity={0.18} />
           <Area type="monotone" dataKey="c3" name="pi=0.25, mu=4, sigma=0.8" stroke={C.muted} fill={C.muted} fillOpacity={0.18} />
           <Line type="monotone" dataKey="mix" name="Mixture p(x)" stroke={C.text} strokeWidth={2} dot={false} />
         </ComposedChart>
@@ -296,15 +296,15 @@ const Ch4Vis1 = () => {
 const Ch4Vis2 = () => {
   const segs = [
     { label: "v1=0.40", w: 0.40, color: C.accent },
-    { label: "v2=0.30 of 0.60", w: 0.18, color: C.sky || C.accent },
+    { label: "v2=0.30 of 0.60", w: 0.18, color: C.accent2 || C.accent },
     { label: "v3=0.50 of 0.42", w: 0.21, color: C.muted },
     { label: "v4=0.40 of 0.21", w: 0.084, color: C.border },
-    { label: "remainder", w: 0.126, color: C.codeBg },
+    { label: "remainder", w: 0.126, color: C.panel },
   ];
   let cursor = 0;
   const total = 1;
   return (
-    <div style={{ background: C.codeBg, border: "1px solid " + C.border, padding: 16, borderRadius: 4 }}>
+    <div style={{ background: C.panel, border: "1px solid " + C.border, padding: 16, borderRadius: 4 }}>
       <div style={{ fontFamily: F.h, fontSize: 12, letterSpacing: 2, color: C.muted, textTransform: "uppercase", marginBottom: 12 }}>Figure 4.2 — Stick-breaking construction of mixing weights</div>
       <svg viewBox="0 0 600 120" width="100%" height="120">
         <rect x="0" y="40" width="600" height="40" fill="none" stroke={C.border} />
@@ -344,10 +344,10 @@ const Ch5Vis1 = () => {
   return (
     <Recharts.ResponsiveContainer width="100%" height={320}>
       <Recharts.LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 40 }}>
-        <Recharts.CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+        <Recharts.CartesianGrid strokeDasharray="3 3" stroke={C.grid} />
         <Recharts.XAxis dataKey="x" stroke={C.text} label={{ value: "Predictor value (x)", position: "insideBottom", offset: -10, fill: C.text }} />
         <Recharts.YAxis stroke={C.text} label={{ value: "Predicted response", angle: -90, position: "insideLeft", fill: C.text }} />
-        <Recharts.Tooltip contentStyle={{ background: C.bg2, border: `1px solid ${C.border}`, color: C.text }} />
+        <Recharts.Tooltip contentStyle={{ background: C.bg2, border: `1px solid ${C.grid}`, color: C.text }} />
         <Recharts.Legend wrapperStyle={{ color: C.text }} />
         <Recharts.Line type="monotone" dataKey="ice1" stroke={C.muted} strokeWidth={1.2} dot={false} name="ICE obs. 1" />
         <Recharts.Line type="monotone" dataKey="ice2" stroke={C.muted} strokeWidth={1.2} dot={false} name="ICE obs. 2" />
@@ -372,11 +372,11 @@ const Ch5Vis2 = () => {
   return (
     <Recharts.ResponsiveContainer width="100%" height={320}>
       <Recharts.ComposedChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 40 }}>
-        <Recharts.CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+        <Recharts.CartesianGrid strokeDasharray="3 3" stroke={C.grid} />
         <Recharts.XAxis dataKey="var" stroke={C.text} label={{ value: "Variable (sequentially added)", position: "insideBottom", offset: -10, fill: C.text }} />
         <Recharts.YAxis yAxisId="left" stroke={C.text} domain={[0, 1]} label={{ value: "Split frequency", angle: -90, position: "insideLeft", fill: C.text }} />
         <Recharts.YAxis yAxisId="right" orientation="right" stroke={C.text} domain={[0, 1]} label={{ value: "R^2 vs full model", angle: 90, position: "insideRight", fill: C.text }} />
-        <Recharts.Tooltip contentStyle={{ background: C.bg2, border: `1px solid ${C.border}`, color: C.text }} />
+        <Recharts.Tooltip contentStyle={{ background: C.bg2, border: `1px solid ${C.grid}`, color: C.text }} />
         <Recharts.Legend wrapperStyle={{ color: C.text }} />
         <Recharts.Bar yAxisId="left" dataKey="importance" fill={C.accent} name="Variable importance" />
         <Recharts.Line yAxisId="right" type="monotone" dataKey="full_corr" stroke={C.text} strokeWidth={2} name="Pearson r^2 vs full" />
@@ -401,7 +401,7 @@ const Ch6Vis1 = () => {
     return { x: xi, sum, ensemble: ensemble + 0.4, t0: contributions[0] + 0.2, t1: contributions[3] + 0.2, t2: contributions[6] + 0.2 };
   });
   return (
-    <div style={{ width: "100%", height: 360, background: C.codeBg, border: `1px solid ${C.border}`, borderRadius: 6, padding: 16 }}>
+    <div style={{ width: "100%", height: 360, background: C.panel, border: `1px solid ${C.border}`, borderRadius: 6, padding: 16 }}>
       <div style={{ fontFamily: F.h, fontSize: 13, color: C.accent, textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
         Sum-of-Trees Decomposition
       </div>
@@ -410,7 +410,7 @@ const Ch6Vis1 = () => {
           <Recharts.CartesianGrid stroke={C.border} strokeDasharray="2 4" />
           <Recharts.XAxis dataKey="x" tickFormatter={(v) => v.toFixed(2)} stroke={C.muted} tick={{ fontSize: 11, fill: C.muted }} />
           <Recharts.YAxis stroke={C.muted} tick={{ fontSize: 11, fill: C.muted }} />
-          <Recharts.Tooltip contentStyle={{ background: C.codeBg, border: `1px solid ${C.border}`, fontSize: 12 }} />
+          <Recharts.Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.border}`, fontSize: 12 }} />
           <Recharts.Legend wrapperStyle={{ fontSize: 11 }} />
           <Recharts.Line type="monotone" dataKey="t0" stroke={C.muted} strokeWidth={1} dot={false} name="tree 1 (shifted)" />
           <Recharts.Line type="monotone" dataKey="t1" stroke={C.muted2 || C.muted} strokeWidth={1} dot={false} name="tree 4 (shifted)" />
@@ -435,7 +435,7 @@ const Ch6Vis2 = () => {
     return { it, c1, c2, c3, c4, rhat };
   });
   return (
-    <div style={{ width: "100%", height: 340, background: C.codeBg, border: `1px solid ${C.border}`, borderRadius: 6, padding: 16 }}>
+    <div style={{ width: "100%", height: 340, background: C.panel, border: `1px solid ${C.border}`, borderRadius: 6, padding: 16 }}>
       <div style={{ fontFamily: F.h, fontSize: 13, color: C.accent, textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
         MCMC Chain Mixing and R-hat Convergence
       </div>
@@ -445,7 +445,7 @@ const Ch6Vis2 = () => {
           <Recharts.XAxis dataKey="it" stroke={C.muted} tick={{ fontSize: 11, fill: C.muted }} label={{ value: "iteration", position: "insideBottom", offset: -2, fill: C.muted, fontSize: 11 }} />
           <Recharts.YAxis yAxisId="L" stroke={C.muted} tick={{ fontSize: 11, fill: C.muted }} />
           <Recharts.YAxis yAxisId="R" orientation="right" stroke={C.accent} tick={{ fontSize: 11, fill: C.accent }} domain={[0.9, 2.0]} />
-          <Recharts.Tooltip contentStyle={{ background: C.codeBg, border: `1px solid ${C.border}`, fontSize: 12 }} />
+          <Recharts.Tooltip contentStyle={{ background: C.panel, border: `1px solid ${C.border}`, fontSize: 12 }} />
           <Recharts.Legend wrapperStyle={{ fontSize: 11 }} />
           <Recharts.Line yAxisId="L" type="monotone" dataKey="c1" stroke={C.text} strokeWidth={1.2} dot={false} name="chain 1" />
           <Recharts.Line yAxisId="L" type="monotone" dataKey="c2" stroke={C.muted} strokeWidth={1.2} dot={false} name="chain 2" />
