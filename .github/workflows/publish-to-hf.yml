@@ -24,6 +24,8 @@ jobs:
         with: { python-version: "3.12" }
       - name: Install PyYAML
         run: pip install PyYAML
+      - name: Install esbuild static binary
+        run: bash tools/esbuild/install.sh linux-x64
       - name: Build
         run: python3 build.py
       - name: Convert JSX to markdown mirror

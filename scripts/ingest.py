@@ -35,6 +35,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent  # .../library-articles/
 ARTICLES_DIR = REPO_ROOT / "articles"
 ASSETS_DIR = REPO_ROOT / "assets"
+TOOLS_DIR = REPO_ROOT / "tools"
 BUILD_SCRIPT = REPO_ROOT / "build.py"
 JSX_TO_MD_SCRIPT = REPO_ROOT / "jsx_to_markdown.py"
 
@@ -226,9 +227,14 @@ def sandbox_validate(jsx: Path) -> tuple[bool, str]:
     """
     tmp_root = Path(tempfile.mkdtemp(prefix="ingest-sandbox-"))
     try:
-        # Mirror build.py + assets/
+        # Mirror build.py + assets/ + tools/esbuild/
+        # (esbuild is required for the Phase-1 pre-transpile path; without it
+        # build.py falls back to raw JSX which the current template cannot
+        # render at runtime.)
         shutil.copy2(BUILD_SCRIPT, tmp_root / "build.py")
         shutil.copytree(ASSETS_DIR, tmp_root / "assets")
+        if TOOLS_DIR.exists():
+            shutil.copytree(TOOLS_DIR, tmp_root / "tools")
 
         tmp_articles = tmp_root / "articles"
         tmp_articles.mkdir()

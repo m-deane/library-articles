@@ -6,23 +6,17 @@
   <title>A Visual Guide to Exponential Decay</title>
   <meta name="description" content="Why everything fades, and how fast — a short tour of the simplest half-life you&#x27;ll ever meet." />
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=DM+Serif+Display&family=Instrument+Sans:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+  <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
 
   <!-- Shared styles -->
   <link rel="stylesheet" href="../assets/styles.css" />
 
-  <!-- React / Recharts / Babel (UMD from unpkg) -->
-  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
-  <script crossorigin src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+  <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
+  <script src="../assets/vendor/react.production.min.js"></script>
+  <script src="../assets/vendor/react-dom.production.min.js"></script>
+  <script src="../assets/vendor/prop-types.min.js"></script>
+  <script src="../assets/vendor/recharts.js"></script>
 </head>
 <body>
   <!-- Compact header bar -->
@@ -84,47 +78,50 @@
       'Sankey','Sector','Customized','CartesianAxis','ErrorBar','Rectangle','Curve','Cross','Dot','Polygon','Symbols','Text'
     ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
 
-    // Simple error surface for Babel / runtime failures
+    // Simple error surface for runtime failures
     window.addEventListener('error', function (e) {
       var box = document.getElementById('error-boundary');
       if (!box) return;
       box.style.display = 'block';
       box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
     });
+
+    // Global <Photograph> helper (pre-transpiled React.createElement form)
+    window.Photograph = function (props) {
+      var src = props.src, alt = props.alt, caption = props.caption, credit = props.credit, href = props.href;
+      var children = [
+        React.createElement('img', { src: src, alt: alt || caption || '', loading: 'lazy', key: 'img' })
+      ];
+      if (caption || credit) {
+        var figCapChildren = [];
+        if (caption) figCapChildren.push(
+          React.createElement('span', { className: 'photo-caption', key: 'cap' }, caption)
+        );
+        if (credit) figCapChildren.push(
+          React.createElement('span', { className: 'photo-credit', key: 'cr' },
+            ' — ',
+            React.createElement('a', { href: href, target: '_blank', rel: 'noopener noreferrer' }, credit)
+          )
+        );
+        children.push(React.createElement('figcaption', { key: 'cap-root' }, figCapChildren));
+      }
+      return React.createElement('figure', { className: 'photo' }, children);
+    };
   </script>
 
-  <!-- Global <Photograph> helper — available to every article -->
-  <script type="text/babel" data-presets="react">
-    // Global Photograph helper — available to every article
-    window.Photograph = ({ src, alt, caption, credit, href }) => (
-      <figure className="photo">
-        <img src={src} alt={alt || caption || ""} loading="lazy" />
-        {(caption || credit) && (
-          <figcaption>
-            {caption && <span className="photo-caption">{caption}</span>}
-            {credit && (
-              <span className="photo-credit">
-                {" "}— <a href={href} target="_blank" rel="noopener noreferrer">{credit}</a>
-              </span>
-            )}
-          </figcaption>
-        )}
-      </figure>
-    );
-  </script>
-
-  <!-- JSX payload compiled in-browser by Babel Standalone -->
-  <script type="text/babel" data-presets="react">
-    const ARTICLE_DATA = {
+  <!-- Pre-transpiled JSX payload (esbuild --loader=jsx --jsx=transform, classic mode).
+       React.createElement(...) calls resolve against the UMD React global above. -->
+  <script>
+    try {
+      const ARTICLE_DATA = {
   title: "A Visual Guide to Exponential Decay",
-  subtitle: "Why everything fades, and how fast — a short tour of the simplest half-life you'll ever meet.",
+  subtitle: "Why everything fades, and how fast \u2014 a short tour of the simplest half-life you'll ever meet.",
   date: "2026-04-20",
   tags: ["statistics", "visualisation", "test"],
   read_time: "3 min",
   category: "statistics",
-  style: "technical-ds",
+  style: "technical-ds"
 };
-
 function TestChartArticle() {
   const data = React.useMemo(() => {
     const pts = [];
@@ -133,163 +130,131 @@ function TestChartArticle() {
     }
     return pts;
   }, []);
-
   const serif = "'Source Serif 4', Georgia, serif";
   const display = "'Playfair Display', Georgia, serif";
-
-  return (
-    <article style={{ color: "#1a1a1a", fontFamily: serif }}>
-      {/* Hero */}
-      <header style={{ marginBottom: "2rem" }}>
-        <div
-          style={{
-            fontFamily: "'Source Sans 3', system-ui, sans-serif",
-            fontSize: "0.8rem",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "#7c4dff",
-            fontWeight: 600,
-            marginBottom: "0.75rem",
-          }}
-        >
-          Statistics &middot; Technical DS
-        </div>
-        <h1
-          style={{
-            fontFamily: display,
-            fontSize: "2.8rem",
-            lineHeight: 1.1,
-            fontWeight: 700,
-            margin: "0 0 0.6rem",
-            letterSpacing: "-0.015em",
-          }}
-        >
-          A Visual Guide to Exponential Decay
-        </h1>
-        <p
-          style={{
-            fontFamily: serif,
-            fontSize: "1.2rem",
-            lineHeight: 1.5,
-            color: "#555",
-            margin: 0,
-            fontStyle: "italic",
-          }}
-        >
-          Why everything fades, and how fast — a short tour of the simplest
-          half-life you'll ever meet.
-        </p>
-      </header>
-
-      {/* Opening paragraph */}
-      <p style={{ fontSize: "1.05rem", lineHeight: 1.75 }}>
-        Exponential decay is the quiet workhorse of applied statistics. From
-        radioactive atoms to forgotten vocabulary, from cooling coffee to
-        decaying customer retention, the same small differential equation
-        shows up again and again: the rate of change is proportional to what
-        remains. Solve it and you get{" "}
-        <code style={{ background: "#f4f1ea", padding: "1px 6px", borderRadius: 4 }}>
-          y = e<sup>&ndash;&lambda;x</sup>
-        </code>
-        . The plot below uses &lambda; = 0.2 — a gentle, half-life of roughly
-        3.5 units.
-      </p>
-
-      {/* Chart */}
-      <figure style={{ margin: "2rem 0", padding: "1.25rem", background: "#fff", border: "1px solid #e5e2d9", borderRadius: 12 }}>
-        <figcaption
-          style={{
-            fontFamily: "'Source Sans 3', system-ui, sans-serif",
-            fontSize: "0.85rem",
-            color: "#666",
-            marginBottom: "0.75rem",
-            textTransform: "uppercase",
-            letterSpacing: "0.1em",
-          }}
-        >
-          y = exp(&minus;0.2 &middot; x), &nbsp; x &isin; [0, 20]
-        </figcaption>
-        <ResponsiveContainer width="100%" height={320}>
-          <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
-            <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-            <XAxis
-              dataKey="x"
-              type="number"
-              domain={[0, 20]}
-              tick={{ fill: "#666", fontSize: 12 }}
-              label={{ value: "x", position: "insideBottomRight", offset: -5, fill: "#666" }}
-            />
-            <YAxis
-              tick={{ fill: "#666", fontSize: 12 }}
-              domain={[0, 1]}
-              label={{ value: "y", angle: -90, position: "insideLeft", fill: "#666" }}
-            />
-            <Tooltip
-              formatter={(v) => Number(v).toFixed(4)}
-              contentStyle={{ fontFamily: serif, fontSize: "0.85rem" }}
-            />
-            <Line
-              type="monotone"
-              dataKey="y"
-              stroke="#7c4dff"
-              strokeWidth={2.5}
-              dot={false}
-            />
-            <ReferenceLine
-              y={0.5}
-              stroke="#aaa"
-              strokeDasharray="4 4"
-              label={{ value: "half-life", fill: "#888", position: "insideTopRight", fontSize: 11 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </figure>
-
-      {/* Pull quote */}
-      <blockquote
-        style={{
-          fontFamily: display,
-          fontStyle: "italic",
-          fontSize: "1.4rem",
-          lineHeight: 1.4,
-          color: "#333",
-          borderLeft: "3px solid #7c4dff",
-          margin: "2rem 0",
-          padding: "0.2rem 0 0.2rem 1.4rem",
-        }}
-      >
-        "Everything decays — what matters is the constant."
-      </blockquote>
-
-      {/* Closing */}
-      <p style={{ fontSize: "1.05rem", lineHeight: 1.75 }}>
-        The curve above never quite reaches zero, which is both
-        mathematically inconvenient and practically useful. It means a
-        tiny residual trace survives indefinitely — the same property that
-        lets carbon dating reach back tens of thousands of years. Shift
-        &lambda;, and you shift the timescale: double it and the half-life
-        halves. It is the single parameter that separates a breath of
-        perfume from a Roman villa's wall paint.
-      </p>
-
-      <p
-        style={{
-          fontFamily: "'Source Sans 3', system-ui, sans-serif",
-          fontSize: "0.85rem",
-          color: "#999",
-          marginTop: "3rem",
-          paddingTop: "1rem",
-          borderTop: "1px solid #e5e2d9",
-        }}
-      >
-        Test article &middot; rendered via Babel Standalone + Recharts UMD.
-      </p>
-    </article>
-  );
+  return /* @__PURE__ */ React.createElement("article", { style: { color: "#1a1a1a", fontFamily: serif } }, /* @__PURE__ */ React.createElement("header", { style: { marginBottom: "2rem" } }, /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        fontFamily: "'Source Sans 3', system-ui, sans-serif",
+        fontSize: "0.8rem",
+        letterSpacing: "0.18em",
+        textTransform: "uppercase",
+        color: "#7c4dff",
+        fontWeight: 600,
+        marginBottom: "0.75rem"
+      }
+    },
+    "Statistics \xB7 Technical DS"
+  ), /* @__PURE__ */ React.createElement(
+    "h1",
+    {
+      style: {
+        fontFamily: display,
+        fontSize: "2.8rem",
+        lineHeight: 1.1,
+        fontWeight: 700,
+        margin: "0 0 0.6rem",
+        letterSpacing: "-0.015em"
+      }
+    },
+    "A Visual Guide to Exponential Decay"
+  ), /* @__PURE__ */ React.createElement(
+    "p",
+    {
+      style: {
+        fontFamily: serif,
+        fontSize: "1.2rem",
+        lineHeight: 1.5,
+        color: "#555",
+        margin: 0,
+        fontStyle: "italic"
+      }
+    },
+    "Why everything fades, and how fast \u2014 a short tour of the simplest half-life you'll ever meet."
+  )), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.05rem", lineHeight: 1.75 } }, "Exponential decay is the quiet workhorse of applied statistics. From radioactive atoms to forgotten vocabulary, from cooling coffee to decaying customer retention, the same small differential equation shows up again and again: the rate of change is proportional to what remains. Solve it and you get", " ", /* @__PURE__ */ React.createElement("code", { style: { background: "#f4f1ea", padding: "1px 6px", borderRadius: 4 } }, "y = e", /* @__PURE__ */ React.createElement("sup", null, "\u2013\u03BBx")), ". The plot below uses \u03BB = 0.2 \u2014 a gentle, half-life of roughly 3.5 units."), /* @__PURE__ */ React.createElement("figure", { style: { margin: "2rem 0", padding: "1.25rem", background: "#fff", border: "1px solid #e5e2d9", borderRadius: 12 } }, /* @__PURE__ */ React.createElement(
+    "figcaption",
+    {
+      style: {
+        fontFamily: "'Source Sans 3', system-ui, sans-serif",
+        fontSize: "0.85rem",
+        color: "#666",
+        marginBottom: "0.75rem",
+        textTransform: "uppercase",
+        letterSpacing: "0.1em"
+      }
+    },
+    "y = exp(\u22120.2 \xB7 x), \xA0 x \u2208 [0, 20]"
+  ), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 320 }, /* @__PURE__ */ React.createElement(LineChart, { data, margin: { top: 10, right: 20, left: 0, bottom: 10 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { stroke: "#eee", strokeDasharray: "3 3" }), /* @__PURE__ */ React.createElement(
+    XAxis,
+    {
+      dataKey: "x",
+      type: "number",
+      domain: [0, 20],
+      tick: { fill: "#666", fontSize: 12 },
+      label: { value: "x", position: "insideBottomRight", offset: -5, fill: "#666" }
+    }
+  ), /* @__PURE__ */ React.createElement(
+    YAxis,
+    {
+      tick: { fill: "#666", fontSize: 12 },
+      domain: [0, 1],
+      label: { value: "y", angle: -90, position: "insideLeft", fill: "#666" }
+    }
+  ), /* @__PURE__ */ React.createElement(
+    Tooltip,
+    {
+      formatter: (v) => Number(v).toFixed(4),
+      contentStyle: { fontFamily: serif, fontSize: "0.85rem" }
+    }
+  ), /* @__PURE__ */ React.createElement(
+    Line,
+    {
+      type: "monotone",
+      dataKey: "y",
+      stroke: "#7c4dff",
+      strokeWidth: 2.5,
+      dot: false
+    }
+  ), /* @__PURE__ */ React.createElement(
+    ReferenceLine,
+    {
+      y: 0.5,
+      stroke: "#aaa",
+      strokeDasharray: "4 4",
+      label: { value: "half-life", fill: "#888", position: "insideTopRight", fontSize: 11 }
+    }
+  )))), /* @__PURE__ */ React.createElement(
+    "blockquote",
+    {
+      style: {
+        fontFamily: display,
+        fontStyle: "italic",
+        fontSize: "1.4rem",
+        lineHeight: 1.4,
+        color: "#333",
+        borderLeft: "3px solid #7c4dff",
+        margin: "2rem 0",
+        padding: "0.2rem 0 0.2rem 1.4rem"
+      }
+    },
+    '"Everything decays \u2014 what matters is the constant."'
+  ), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.05rem", lineHeight: 1.75 } }, "The curve above never quite reaches zero, which is both mathematically inconvenient and practically useful. It means a tiny residual trace survives indefinitely \u2014 the same property that lets carbon dating reach back tens of thousands of years. Shift \u03BB, and you shift the timescale: double it and the half-life halves. It is the single parameter that separates a breath of perfume from a Roman villa's wall paint."), /* @__PURE__ */ React.createElement(
+    "p",
+    {
+      style: {
+        fontFamily: "'Source Sans 3', system-ui, sans-serif",
+        fontSize: "0.85rem",
+        color: "#999",
+        marginTop: "3rem",
+        paddingTop: "1rem",
+        borderTop: "1px solid #e5e2d9"
+      }
+    },
+    "Test article \xB7 rendered via Babel Standalone + Recharts UMD."
+  ));
 }
 
-
-    try {
       ReactDOM.createRoot(document.getElementById('root')).render(
         React.createElement(TestChartArticle)
       );

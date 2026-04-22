@@ -14,7 +14,9 @@ from __future__ import annotations
 
 import html
 import json
+import platform
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -22,10 +24,92 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 ARTICLES_DIR = ROOT / "articles"
 ASSETS_DIR = ROOT / "assets"
+TOOLS_DIR = ROOT / "tools" / "esbuild"
 TEMPLATE_PATH = ASSETS_DIR / "template.html"
 INDEX_TEMPLATE_PATH = ASSETS_DIR / "index-template.html"
 INDEX_OUT = ROOT / "index.html"
 MANIFEST_OUT = ROOT / "_manifest.json"
+
+
+# -------------------------------------------------------------------
+# esbuild — JSX pre-transpile (replaces runtime Babel Standalone)
+# -------------------------------------------------------------------
+
+def _esbuild_binary() -> Path | None:
+    """Locate a bundled esbuild static binary for the current platform.
+
+    We commit pinned esbuild binaries under tools/esbuild/ so local builds
+    and CI agree on output. Fall back to a system-installed esbuild on PATH.
+    """
+    system = platform.system().lower()
+    machine = platform.machine().lower()
+    candidates: list[Path] = []
+    if system == "darwin":
+        if "arm" in machine or "aarch64" in machine:
+            candidates.append(TOOLS_DIR / "esbuild-darwin-arm64")
+        else:
+            candidates.append(TOOLS_DIR / "esbuild-darwin-x64")
+    elif system == "linux":
+        if "aarch64" in machine or "arm64" in machine:
+            candidates.append(TOOLS_DIR / "esbuild-linux-arm64")
+        else:
+            candidates.append(TOOLS_DIR / "esbuild-linux-x64")
+    for c in candidates:
+        if c.exists():
+            return c
+    # Fall back to system PATH
+    from shutil import which
+    which_path = which("esbuild")
+    if which_path:
+        return Path(which_path)
+    return None
+
+
+_ESBUILD_WARNED = False
+
+
+def transpile_jsx(jsx_source: str) -> str:
+    """Transpile a JSX source string to plain JS using esbuild (classic mode).
+
+    Uses --jsx=transform which emits React.createElement(...) calls. These
+    resolve against the UMD React global loaded ahead of the transpiled
+    payload, so we can drop Babel Standalone at runtime.
+
+    Returns the transpiled JS. If esbuild is unavailable, logs a warning once
+    and returns the original JSX unchanged — the caller's template must then
+    keep Babel Standalone as a fallback.
+    """
+    global _ESBUILD_WARNED
+    binary = _esbuild_binary()
+    if binary is None:
+        if not _ESBUILD_WARNED:
+            print(
+                "[warn] esbuild not found; JSX will not be pre-transpiled. "
+                "Install a static binary under tools/esbuild/ "
+                "(e.g. esbuild-darwin-arm64 or esbuild-linux-x64) "
+                "or put `esbuild` on PATH. Falling back to raw JSX output.",
+                file=sys.stderr,
+            )
+            _ESBUILD_WARNED = True
+        return jsx_source
+
+    try:
+        proc = subprocess.run(
+            [
+                str(binary),
+                "--loader=jsx",
+                "--jsx=transform",
+                "--target=es2018",
+            ],
+            input=jsx_source,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    except subprocess.CalledProcessError as e:
+        err = (e.stderr or "").strip()
+        raise RuntimeError(f"esbuild failed: {err or e}") from e
+    return proc.stdout
 
 
 # -------------------------------------------------------------------
@@ -473,7 +557,11 @@ def render_template(
     out = template
     for k, v in replacements.items():
         out = out.replace(k, v)
-    # JSX last — it can contain any characters, including `{{foo}}` patterns
+    # JS last — the transpiled payload can contain any characters, including
+    # `{{foo}}` patterns, so substitute it after all smaller placeholders.
+    # Templates use {{TRANSPILED_JS}} (pre-transpiled via esbuild); older
+    # templates used {{PROCESSED_JSX}} for the Babel-Standalone path.
+    out = out.replace("{{TRANSPILED_JS}}", processed_jsx)
     out = out.replace("{{PROCESSED_JSX}}", processed_jsx)
     return out
 
@@ -570,6 +658,25 @@ def main() -> int:
             meta = extract_metadata(source, slug)
             processed, component_name = process_jsx(source, slug)
 
+            # Strip any cross-origin @import url(...) for Google Fonts that
+            # some articles embed inside their own inline <style> blocks.
+            # The template already loads assets/fonts/fonts.css same-origin,
+            # so these @imports are both redundant and would reintroduce a
+            # runtime cross-origin fetch (breaking the offline-ready goal).
+            # Missing specialty families (Newsreader, IBM Plex, Libre Franklin)
+            # degrade to the Georgia/system fallback declared alongside them.
+            processed = re.sub(
+                r"@import\s+url\(['\"]?https?://fonts\.googleapis\.com[^'\")]+['\"]?\);?",
+                "",
+                processed,
+            )
+
+            # Pre-transpile JSX to plain JS via esbuild. If esbuild is not
+            # available, transpile_jsx() falls back to returning the raw JSX
+            # (the template must then keep Babel Standalone for runtime
+            # transpilation, which is the legacy path).
+            transpiled = transpile_jsx(processed)
+
             html_out = render_template(
                 template,
                 title=meta.get("title", slug),
@@ -579,7 +686,7 @@ def main() -> int:
                 style=meta.get("style", ""),
                 category=meta.get("category", "general"),
                 tags=meta.get("tags", []),
-                processed_jsx=processed,
+                processed_jsx=transpiled,
                 component_name=component_name,
                 slug=slug,
             )

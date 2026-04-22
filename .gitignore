@@ -9,3 +9,8 @@ articles/.ingest.lock
 articles/_run_ledger.json
 articles/_INGEST_HALTED
 articles/_rejected/
+
+# esbuild static binaries (~9 MB each) — too large for HF Space push and
+# not needed at serve time. Local dev and CI fetch them via
+# tools/esbuild/install.sh; see that script for pinned versions.
+tools/esbuild/esbuild-*
