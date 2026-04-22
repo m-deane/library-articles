@@ -6,17 +6,23 @@
   <title>Splitwise Python Article</title>
   <meta name="description" content="" />
 
-  <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
-  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=DM+Serif+Display&family=Instrument+Sans:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 
   <!-- Shared styles -->
   <link rel="stylesheet" href="../assets/styles.css" />
 
-  <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
-  <script src="../assets/vendor/react.production.min.js"></script>
-  <script src="../assets/vendor/react-dom.production.min.js"></script>
-  <script src="../assets/vendor/prop-types.min.js"></script>
-  <script src="../assets/vendor/recharts.js"></script>
+  <!-- React / Recharts / Babel (UMD from unpkg) -->
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+  <script crossorigin src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
 </head>
 <body>
   <!-- Compact header bar -->
@@ -78,43 +84,40 @@
       'Sankey','Sector','Customized','CartesianAxis','ErrorBar','Rectangle','Curve','Cross','Dot','Polygon','Symbols','Text'
     ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
 
-    // Simple error surface for runtime failures
+    // Simple error surface for Babel / runtime failures
     window.addEventListener('error', function (e) {
       var box = document.getElementById('error-boundary');
       if (!box) return;
       box.style.display = 'block';
       box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
     });
-
-    // Global <Photograph> helper (pre-transpiled React.createElement form)
-    window.Photograph = function (props) {
-      var src = props.src, alt = props.alt, caption = props.caption, credit = props.credit, href = props.href;
-      var children = [
-        React.createElement('img', { src: src, alt: alt || caption || '', loading: 'lazy', key: 'img' })
-      ];
-      if (caption || credit) {
-        var figCapChildren = [];
-        if (caption) figCapChildren.push(
-          React.createElement('span', { className: 'photo-caption', key: 'cap' }, caption)
-        );
-        if (credit) figCapChildren.push(
-          React.createElement('span', { className: 'photo-credit', key: 'cr' },
-            ' — ',
-            React.createElement('a', { href: href, target: '_blank', rel: 'noopener noreferrer' }, credit)
-          )
-        );
-        children.push(React.createElement('figcaption', { key: 'cap-root' }, figCapChildren));
-      }
-      return React.createElement('figure', { className: 'photo' }, children);
-    };
   </script>
 
-  <!-- Pre-transpiled JSX payload (esbuild --loader=jsx --jsx=transform, classic mode).
-       React.createElement(...) calls resolve against the UMD React global above. -->
-  <script>
-    try {
-      const styles = `
-  
+  <!-- Global <Photograph> helper — available to every article -->
+  <script type="text/babel" data-presets="react">
+    // Global Photograph helper — available to every article
+    window.Photograph = ({ src, alt, caption, credit, href }) => (
+      <figure className="photo">
+        <img src={src} alt={alt || caption || ""} loading="lazy" />
+        {(caption || credit) && (
+          <figcaption>
+            {caption && <span className="photo-caption">{caption}</span>}
+            {credit && (
+              <span className="photo-credit">
+                {" "}— <a href={href} target="_blank" rel="noopener noreferrer">{credit}</a>
+              </span>
+            )}
+          </figcaption>
+        )}
+      </figure>
+    );
+  </script>
+
+  <!-- JSX payload compiled in-browser by Babel Standalone -->
+  <script type="text/babel" data-presets="react">
+    
+const styles = `
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Libre+Franklin:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -141,7 +144,7 @@
     min-height: 100vh;
   }
 
-  /* \u2500\u2500 MASTHEAD \u2500\u2500 */
+  /* ── MASTHEAD ── */
   .masthead {
     border-bottom: 3px solid var(--ink);
     padding: 18px 0 14px;
@@ -154,7 +157,7 @@
     font-family: 'Libre Franklin', sans-serif;
   }
 
-  /* \u2500\u2500 HERO \u2500\u2500 */
+  /* ── HERO ── */
   .hero {
     max-width: 900px;
     margin: 0 auto;
@@ -243,14 +246,14 @@
     text-transform: uppercase;
   }
 
-  /* \u2500\u2500 LAYOUT \u2500\u2500 */
+  /* ── LAYOUT ── */
   .content-grid {
     max-width: 900px;
     margin: 0 auto;
     padding: 0 32px 80px;
   }
 
-  /* \u2500\u2500 TOC \u2500\u2500 */
+  /* ── TOC ── */
   .toc {
     background: var(--ink);
     color: var(--code-fg);
@@ -294,7 +297,7 @@
     flex-shrink: 0;
   }
 
-  /* \u2500\u2500 SECTION HEADERS \u2500\u2500 */
+  /* ── SECTION HEADERS ── */
   .section-rule {
     display: flex;
     align-items: center;
@@ -334,7 +337,7 @@
     margin: 32px 0 12px;
   }
 
-  /* \u2500\u2500 PROSE \u2500\u2500 */
+  /* ── PROSE ── */
   .prose p {
     margin-bottom: 1.4em;
     font-size: 1.02rem;
@@ -353,7 +356,7 @@
 
   .prose strong { font-weight: 600; }
 
-  /* \u2500\u2500 PULL QUOTE \u2500\u2500 */
+  /* ── PULL QUOTE ── */
   .pull-quote {
     border-top: 3px solid var(--ink);
     border-bottom: 3px solid var(--ink);
@@ -379,7 +382,7 @@
     text-transform: uppercase;
   }
 
-  /* \u2500\u2500 CALLOUT \u2500\u2500 */
+  /* ── CALLOUT ── */
   .callout {
     background: var(--accent-dim);
     border-left: 4px solid var(--accent);
@@ -413,7 +416,7 @@
 
   .callout-dark .callout-label { color: var(--highlight); }
 
-  /* \u2500\u2500 CODE \u2500\u2500 */
+  /* ── CODE ── */
   .code-block {
     background: var(--code-bg);
     border-radius: 0;
@@ -462,7 +465,7 @@
   .code-cls { color: #e5c07b; }
   .code-op { color: #c8c2ba; }
 
-  /* \u2500\u2500 DIAGRAM / SVG WRAPPER \u2500\u2500 */
+  /* ── DIAGRAM / SVG WRAPPER ── */
   .diagram-block {
     background: #fff;
     border: 1px solid var(--rule);
@@ -487,7 +490,7 @@
     overflow-x: auto;
   }
 
-  /* \u2500\u2500 COMPARISON TABLE \u2500\u2500 */
+  /* ── COMPARISON TABLE ── */
   .compare-table {
     width: 100%;
     border-collapse: collapse;
@@ -518,7 +521,7 @@
   .compare-table .check { color: var(--teal); font-size: 15px; }
   .compare-table .cross { color: var(--accent); font-size: 15px; }
 
-  /* \u2500\u2500 API REFERENCE \u2500\u2500 */
+  /* ── API REFERENCE ── */
   .api-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -548,7 +551,7 @@
     font-family: 'Libre Franklin', sans-serif;
   }
 
-  /* \u2500\u2500 INLINE CODE \u2500\u2500 */
+  /* ── INLINE CODE ── */
   code {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.83em;
@@ -557,7 +560,7 @@
     color: var(--accent);
   }
 
-  /* \u2500\u2500 SIDEBAR \u2500\u2500 */
+  /* ── SIDEBAR ── */
   .sidebar-note {
     float: right;
     width: 240px;
@@ -579,7 +582,7 @@
     margin-bottom: 10px;
   }
 
-  /* \u2500\u2500 FOOTER \u2500\u2500 */
+  /* ── FOOTER ── */
   .article-footer {
     background: var(--ink);
     color: #7a7470;
@@ -607,7 +610,7 @@
     margin-bottom: 8px;
   }
 
-  /* \u2500\u2500 RESPONSIVE \u2500\u2500 */
+  /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
     .toc-list { grid-template-columns: 1fr; }
     .api-grid { grid-template-columns: 1fr; }
@@ -616,36 +619,164 @@
     .headline { font-size: 2.2rem; }
   }
 `;
-const CodeBlock = ({ lang, label, code }) => /* @__PURE__ */ React.createElement("div", { className: "code-block" }, /* @__PURE__ */ React.createElement("div", { className: "code-header" }, /* @__PURE__ */ React.createElement("span", { className: "code-lang" }, lang), label && /* @__PURE__ */ React.createElement("span", { className: "code-label" }, label)), /* @__PURE__ */ React.createElement("div", { className: "code-body", dangerouslySetInnerHTML: { __html: code } }));
-const AuthDiagram = () => /* @__PURE__ */ React.createElement("div", { className: "diagram-block" }, /* @__PURE__ */ React.createElement("div", { className: "diagram-header" }, "FIGURE 1 \u2014 OAuth2 Authentication Flow"), /* @__PURE__ */ React.createElement("div", { className: "diagram-inner" }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 780 220", style: { width: "100%", fontFamily: "JetBrains Mono, monospace" } }, [["Your App", 90], ["Splitwise OAuth", 390], ["Access Token", 690]].map(([label, x]) => /* @__PURE__ */ React.createElement("g", { key: label }, /* @__PURE__ */ React.createElement("rect", { x: x - 80, y: 10, width: 160, height: 36, fill: "#1a1917", stroke: "#c0392b", strokeWidth: 1.5 }), /* @__PURE__ */ React.createElement("text", { x, y: 34, textAnchor: "middle", fill: "#e8d5d3", fontSize: 12, fontWeight: "bold" }, label))), [90, 390, 690].map((x) => /* @__PURE__ */ React.createElement("line", { key: x, x1: x, y1: 46, x2: x, y2: 210, stroke: "#2a2826", strokeWidth: 1, strokeDasharray: "4,3" })), [[90, 390, 80, "#c0392b", "\u2460 consumer_key + secret"], [390, 90, 130, "#61afef", "\u2461 authorize_url + state"], [90, 390, 180, "#c0392b", "\u2462 code + state (callback)"], [390, 690, 130, "#98c379", "\u2463 access_token (stored)"]].map(([x1, x2, y, color, label]) => {
-  const dir = x2 > x1 ? 1 : -1;
-  return /* @__PURE__ */ React.createElement("g", { key: label }, /* @__PURE__ */ React.createElement("line", { x1: x1 + dir * 82, y1: y, x2: x2 - dir * 82, y2: y, stroke: color, strokeWidth: 1.5, markerEnd: `url(#arr-${color.replace("#", "")})` }), /* @__PURE__ */ React.createElement("text", { x: (x1 + x2) / 2, y: y - 6, textAnchor: "middle", fill: color, fontSize: 10 }, label));
-}), /* @__PURE__ */ React.createElement("defs", null, ["c0392b", "61afef", "98c379"].map((c) => /* @__PURE__ */ React.createElement("marker", { key: c, id: `arr-${c}`, markerWidth: "7", markerHeight: "7", refX: "6", refY: "3.5", orient: "auto" }, /* @__PURE__ */ React.createElement("polygon", { points: "0 0, 7 3.5, 0 7", fill: `#${c}` })))), /* @__PURE__ */ React.createElement("rect", { x: 250, y: 192, width: 280, height: 20, fill: "#1a1917", stroke: "#f0c040", strokeWidth: 1 }), /* @__PURE__ */ React.createElement("text", { x: 390, y: 206, textAnchor: "middle", fill: "#f0c040", fontSize: 10 }, "\u26A1 API Key shortcut: skip \u2460-\u2462 for testing"))));
-const ObjectModelDiagram = () => /* @__PURE__ */ React.createElement("div", { className: "diagram-block" }, /* @__PURE__ */ React.createElement("div", { className: "diagram-header" }, "FIGURE 2 \u2014 Core Object Model"), /* @__PURE__ */ React.createElement("div", { className: "diagram-inner" }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 300", style: { width: "100%", fontFamily: "JetBrains Mono, monospace" } }, /* @__PURE__ */ React.createElement("rect", { x: 300, y: 110, width: 160, height: 44, fill: "#c0392b", rx: 2 }), /* @__PURE__ */ React.createElement("text", { x: 380, y: 138, textAnchor: "middle", fill: "#fff", fontSize: 13, fontWeight: "bold" }, "Splitwise"), [
-  [50, 40, "CurrentUser", "#1a7a6e"],
-  [50, 155, "Friend[]", "#1a7a6e"],
-  [50, 250, "Group[]", "#1a7a6e"],
-  [560, 40, "Expense[]", "#1a7a6e"],
-  [560, 155, "Category[]", "#1a7a6e"],
-  [560, 250, "Currency[]", "#1a7a6e"]
-].map(([x, y, label, fill]) => /* @__PURE__ */ React.createElement("g", { key: label }, /* @__PURE__ */ React.createElement("rect", { x, y, width: 130, height: 36, fill, rx: 2 }), /* @__PURE__ */ React.createElement("text", { x: x + 65, y: y + 23, textAnchor: "middle", fill: "#d2eae7", fontSize: 12 }, label), /* @__PURE__ */ React.createElement(
-  "line",
-  {
-    x1: x > 300 ? x : x + 130,
-    y1: y + 18,
-    x2: x > 300 ? 460 : 300,
-    y2: 132,
-    stroke: "#2a2826",
-    strokeWidth: 1.5,
-    strokeDasharray: "3,3"
-  }
-))), [["ExpenseUser", 480, 270], ["Debt[]", 560, 270], ["Comment[]", 640, 270]].map(([label, x, y]) => /* @__PURE__ */ React.createElement("g", { key: label }, /* @__PURE__ */ React.createElement("rect", { x: x - 48, y, width: 100, height: 26, fill: "#2a2826", stroke: "#61afef", strokeWidth: 1, rx: 1 }), /* @__PURE__ */ React.createElement("text", { x: x + 2, y: y + 17, textAnchor: "middle", fill: "#61afef", fontSize: 10 }, label), /* @__PURE__ */ React.createElement("line", { x1: x + 2, y1: y, x2: 625, y2: 76, stroke: "#61afef", strokeWidth: 1, opacity: 0.5 }))), /* @__PURE__ */ React.createElement("text", { x: 380, y: 292, textAnchor: "middle", fill: "#6a6660", fontSize: 10 }, "SDK object hierarchy \u2014 every node exposes typed getter/setter methods"))));
-const DebtDiagram = () => /* @__PURE__ */ React.createElement("div", { className: "diagram-block" }, /* @__PURE__ */ React.createElement("div", { className: "diagram-header" }, "FIGURE 3 \u2014 Debt Minimisation Algorithm"), /* @__PURE__ */ React.createElement("div", { className: "diagram-inner" }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 240", style: { width: "100%", fontFamily: "Libre Franklin, sans-serif" } }, /* @__PURE__ */ React.createElement("text", { x: 190, y: 22, textAnchor: "middle", fill: "#c0392b", fontSize: 11, fontWeight: "bold", letterSpacing: "0.1em" }, "BEFORE SIMPLIFICATION"), [["Alice", 60, 80], ["Bob", 190, 40], ["Carol", 320, 80], ["Dave", 190, 140]].map(([n, x, y]) => /* @__PURE__ */ React.createElement("g", { key: n }, /* @__PURE__ */ React.createElement("circle", { cx: x, cy: y, r: 26, fill: "#1a1917", stroke: "#6b6460", strokeWidth: 1.5 }), /* @__PURE__ */ React.createElement("text", { x, y: y + 5, textAnchor: "middle", fill: "#e8e3dc", fontSize: 12 }, n))), [[[86, 80], [164, 52], "$12"], [[86, 80], [164, 108], "$8"], [[216, 52], [294, 68], "$15"], [[216, 108], [294, 92], "$6"], [[190, 66], [190, 114], "$9"]].map(([[x1, y1], [x2, y2], label], i) => /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("line", { x1, y1, x2, y2, stroke: "#6b6460", strokeWidth: 1.5, markerEnd: "url(#arr-thin)" }), /* @__PURE__ */ React.createElement("text", { x: (x1 + x2) / 2 + 4, y: (y1 + y2) / 2 - 4, fill: "#f0c040", fontSize: 10 }, label))), /* @__PURE__ */ React.createElement("text", { x: 570, y: 22, textAnchor: "middle", fill: "#1a7a6e", fontSize: 11, fontWeight: "bold", letterSpacing: "0.1em" }, "AFTER SIMPLIFICATION"), [["Alice", 440, 80], ["Bob", 570, 40], ["Carol", 700, 80], ["Dave", 570, 140]].map(([n, x, y]) => /* @__PURE__ */ React.createElement("g", { key: n }, /* @__PURE__ */ React.createElement("circle", { cx: x, cy: y, r: 26, fill: "#1a1917", stroke: "#1a7a6e", strokeWidth: 1.5 }), /* @__PURE__ */ React.createElement("text", { x, y: y + 5, textAnchor: "middle", fill: "#d2eae7", fontSize: 12 }, n))), [[[466, 80], [544, 52], "$20"], [[596, 52], [674, 68], "$21"], [[570, 66], [570, 114], "$9"]].map(([[x1, y1], [x2, y2], label], i) => /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("line", { x1, y1, x2, y2, stroke: "#1a7a6e", strokeWidth: 2, markerEnd: "url(#arr-teal)" }), /* @__PURE__ */ React.createElement("text", { x: (x1 + x2) / 2 + 4, y: (y1 + y2) / 2 - 4, fill: "#f0c040", fontSize: 10 }, label))), /* @__PURE__ */ React.createElement("line", { x1: 390, y1: 20, x2: 390, y2: 200, stroke: "#2a2826", strokeWidth: 1.5, strokeDasharray: "6,4" }), /* @__PURE__ */ React.createElement("text", { x: 390, y: 215, textAnchor: "middle", fill: "#6a6660", fontSize: 10 }, "5 transactions \u2192 3 transactions (40% reduction)"), /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("marker", { id: "arr-thin", markerWidth: "6", markerHeight: "6", refX: "5", refY: "3", orient: "auto" }, /* @__PURE__ */ React.createElement("polygon", { points: "0 0,6 3,0 6", fill: "#6b6460" })), /* @__PURE__ */ React.createElement("marker", { id: "arr-teal", markerWidth: "6", markerHeight: "6", refX: "5", refY: "3", orient: "auto" }, /* @__PURE__ */ React.createElement("polygon", { points: "0 0,6 3,0 6", fill: "#1a7a6e" }))))));
+
+// ── SYNTAX-HIGHLIGHTED CODE BLOCKS ──────────────────────────────────────────
+
+const CodeBlock = ({ lang, label, code }) => (
+  <div className="code-block">
+    <div className="code-header">
+      <span className="code-lang">{lang}</span>
+      {label && <span className="code-label">{label}</span>}
+    </div>
+    <div className="code-body" dangerouslySetInnerHTML={{ __html: code }} />
+  </div>
+);
+
+// ── AUTHENTICATION DIAGRAM ───────────────────────────────────────────────────
+
+const AuthDiagram = () => (
+  <div className="diagram-block">
+    <div className="diagram-header">FIGURE 1 — OAuth2 Authentication Flow</div>
+    <div className="diagram-inner">
+      <svg viewBox="0 0 780 220" style={{ width: "100%", fontFamily: "JetBrains Mono, monospace" }}>
+        {/* Actors */}
+        {[["Your App", 90], ["Splitwise OAuth", 390], ["Access Token", 690]].map(([label, x]) => (
+          <g key={label}>
+            <rect x={x - 80} y={10} width={160} height={36} fill="#1a1917" stroke="#c0392b" strokeWidth={1.5} />
+            <text x={x} y={34} textAnchor="middle" fill="#e8d5d3" fontSize={12} fontWeight="bold">{label}</text>
+          </g>
+        ))}
+        {/* Lifelines */}
+        {[90, 390, 690].map(x => (
+          <line key={x} x1={x} y1={46} x2={x} y2={210} stroke="#2a2826" strokeWidth={1} strokeDasharray="4,3" />
+        ))}
+        {/* Arrow helper */}
+        {[[90, 390, 80, "#c0392b", "① consumer_key + secret"], [390, 90, 130, "#61afef", "② authorize_url + state"], [90, 390, 180, "#c0392b", "③ code + state (callback)"], [390, 690, 130, "#98c379", "④ access_token (stored)"]].map(([x1, x2, y, color, label]) => {
+          const dir = x2 > x1 ? 1 : -1;
+          return (
+            <g key={label}>
+              <line x1={x1 + dir * 82} y1={y} x2={x2 - dir * 82} y2={y} stroke={color} strokeWidth={1.5} markerEnd={`url(#arr-${color.replace('#','')})`} />
+              <text x={(x1 + x2) / 2} y={y - 6} textAnchor="middle" fill={color} fontSize={10}>{label}</text>
+            </g>
+          );
+        })}
+        <defs>
+          {["c0392b", "61afef", "98c379"].map(c => (
+            <marker key={c} id={`arr-${c}`} markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <polygon points="0 0, 7 3.5, 0 7" fill={`#${c}`} />
+            </marker>
+          ))}
+        </defs>
+        {/* API Key shortcut */}
+        <rect x={250} y={192} width={280} height={20} fill="#1a1917" stroke="#f0c040" strokeWidth={1} />
+        <text x={390} y={206} textAnchor="middle" fill="#f0c040" fontSize={10}>⚡ API Key shortcut: skip ①-③ for testing</text>
+      </svg>
+    </div>
+  </div>
+);
+
+// ── OBJECT MODEL DIAGRAM ─────────────────────────────────────────────────────
+
+const ObjectModelDiagram = () => (
+  <div className="diagram-block">
+    <div className="diagram-header">FIGURE 2 — Core Object Model</div>
+    <div className="diagram-inner">
+      <svg viewBox="0 0 760 300" style={{ width: "100%", fontFamily: "JetBrains Mono, monospace" }}>
+        {/* Central Splitwise */}
+        <rect x={300} y={110} width={160} height={44} fill="#c0392b" rx={2} />
+        <text x={380} y={138} textAnchor="middle" fill="#fff" fontSize={13} fontWeight="bold">Splitwise</text>
+        {/* Satellite objects */}
+        {[
+          [50, 40, "CurrentUser", "#1a7a6e"],
+          [50, 155, "Friend[]", "#1a7a6e"],
+          [50, 250, "Group[]", "#1a7a6e"],
+          [560, 40, "Expense[]", "#1a7a6e"],
+          [560, 155, "Category[]", "#1a7a6e"],
+          [560, 250, "Currency[]", "#1a7a6e"],
+        ].map(([x, y, label, fill]) => (
+          <g key={label}>
+            <rect x={x} y={y} width={130} height={36} fill={fill} rx={2} />
+            <text x={x + 65} y={y + 23} textAnchor="middle" fill="#d2eae7" fontSize={12}>{label}</text>
+            <line
+              x1={x > 300 ? x : x + 130} y1={y + 18}
+              x2={x > 300 ? 460 : 300} y2={132}
+              stroke="#2a2826" strokeWidth={1.5} strokeDasharray="3,3"
+            />
+          </g>
+        ))}
+        {/* Expense child objects */}
+        {[["ExpenseUser", 480, 270], ["Debt[]", 560, 270], ["Comment[]", 640, 270]].map(([label, x, y]) => (
+          <g key={label}>
+            <rect x={x - 48} y={y} width={100} height={26} fill="#2a2826" stroke="#61afef" strokeWidth={1} rx={1} />
+            <text x={x + 2} y={y + 17} textAnchor="middle" fill="#61afef" fontSize={10}>{label}</text>
+            <line x1={x + 2} y1={y} x2={625} y2={76} stroke="#61afef" strokeWidth={1} opacity={0.5} />
+          </g>
+        ))}
+        <text x={380} y={292} textAnchor="middle" fill="#6a6660" fontSize={10}>SDK object hierarchy — every node exposes typed getter/setter methods</text>
+      </svg>
+    </div>
+  </div>
+);
+
+// ── DEBT MINIMISATION DIAGRAM ─────────────────────────────────────────────────
+
+const DebtDiagram = () => (
+  <div className="diagram-block">
+    <div className="diagram-header">FIGURE 3 — Debt Minimisation Algorithm</div>
+    <div className="diagram-inner">
+      <svg viewBox="0 0 760 240" style={{ width: "100%", fontFamily: "Libre Franklin, sans-serif" }}>
+        {/* Before */}
+        <text x={190} y={22} textAnchor="middle" fill="#c0392b" fontSize={11} fontWeight="bold" letterSpacing="0.1em">BEFORE SIMPLIFICATION</text>
+        {[["Alice", 60, 80], ["Bob", 190, 40], ["Carol", 320, 80], ["Dave", 190, 140]].map(([n, x, y]) => (
+          <g key={n}>
+            <circle cx={x} cy={y} r={26} fill="#1a1917" stroke="#6b6460" strokeWidth={1.5} />
+            <text x={x} y={y + 5} textAnchor="middle" fill="#e8e3dc" fontSize={12}>{n}</text>
+          </g>
+        ))}
+        {[[[86,80],[164,52],"$12"],[[ 86,80],[164,108],"$8"],[[216,52],[294,68],"$15"],[[216,108],[294,92],"$6"],[[190,66],[190,114],"$9"]].map(([[x1,y1],[x2,y2],label],i) => (
+          <g key={i}>
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#6b6460" strokeWidth={1.5} markerEnd="url(#arr-thin)" />
+            <text x={(x1+x2)/2+4} y={(y1+y2)/2-4} fill="#f0c040" fontSize={10}>{label}</text>
+          </g>
+        ))}
+        {/* After */}
+        <text x={570} y={22} textAnchor="middle" fill="#1a7a6e" fontSize={11} fontWeight="bold" letterSpacing="0.1em">AFTER SIMPLIFICATION</text>
+        {[["Alice", 440, 80], ["Bob", 570, 40], ["Carol", 700, 80], ["Dave", 570, 140]].map(([n, x, y]) => (
+          <g key={n}>
+            <circle cx={x} cy={y} r={26} fill="#1a1917" stroke="#1a7a6e" strokeWidth={1.5} />
+            <text x={x} y={y + 5} textAnchor="middle" fill="#d2eae7" fontSize={12}>{n}</text>
+          </g>
+        ))}
+        {[[[466,80],[544,52],"$20"],[[596,52],[674,68],"$21"],[[570,66],[570,114],"$9"]].map(([[x1,y1],[x2,y2],label],i) => (
+          <g key={i}>
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#1a7a6e" strokeWidth={2} markerEnd="url(#arr-teal)" />
+            <text x={(x1+x2)/2+4} y={(y1+y2)/2-4} fill="#f0c040" fontSize={10}>{label}</text>
+          </g>
+        ))}
+        {/* Divider */}
+        <line x1={390} y1={20} x2={390} y2={200} stroke="#2a2826" strokeWidth={1.5} strokeDasharray="6,4" />
+        <text x={390} y={215} textAnchor="middle" fill="#6a6660" fontSize={10}>5 transactions → 3 transactions (40% reduction)</text>
+        <defs>
+          <marker id="arr-thin" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <polygon points="0 0,6 3,0 6" fill="#6b6460" />
+          </marker>
+          <marker id="arr-teal" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <polygon points="0 0,6 3,0 6" fill="#1a7a6e" />
+          </marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+);
+
+// ── CODE SNIPPETS ──────────────────────────────────────────────────────────────
+
 const code_install = `<span class="code-comment"># Install the official Python SDK</span>
 <span class="code-fn">pip</span> <span class="code-str">install splitwise</span>
 
 <span class="code-comment"># Optional: pandas for analytics, rich for pretty CLI output</span>
 <span class="code-fn">pip</span> <span class="code-str">install pandas rich python-dotenv</span>`;
+
 const code_auth_apikey = `<span class="code-kw">from</span> splitwise <span class="code-kw">import</span> <span class="code-cls">Splitwise</span>
 <span class="code-kw">import</span> os
 <span class="code-kw">from</span> dotenv <span class="code-kw">import</span> load_dotenv
@@ -661,6 +792,7 @@ sw = <span class="code-cls">Splitwise</span>(
 
 me = sw.getCurrentUser()
 <span class="code-fn">print</span>(<span class="code-str">f"Authenticated as: </span>{me.getFirstName()} {me.getLastName()}<span class="code-str">"</span>)`;
+
 const code_auth_oauth2 = `<span class="code-kw">from</span> flask <span class="code-kw">import</span> Flask, redirect, request, session
 <span class="code-kw">from</span> splitwise <span class="code-kw">import</span> <span class="code-cls">Splitwise</span>
 
@@ -685,6 +817,7 @@ app.secret_key = os.getenv(<span class="code-str">"FLASK_SECRET"</span>)
     token = sw.getOAuth2AccessToken(code, <span class="code-str">"http://localhost:5000/callback"</span>)
     session[<span class="code-str">"access_token"</span>] = token
     <span class="code-kw">return</span> redirect(<span class="code-str">"/"</span>)`;
+
 const code_read_expenses = `<span class="code-kw">from</span> datetime <span class="code-kw">import</span> datetime, timedelta
 <span class="code-kw">import</span> pandas <span class="code-kw">as</span> pd
 
@@ -728,6 +861,7 @@ const code_read_expenses = `<span class="code-kw">from</span> datetime <span cla
 expenses = fetch_expenses(sw)
 df = expenses_to_df(expenses, sw.getCurrentUser().getId())
 <span class="code-fn">print</span>(df.groupby(<span class="code-str">"category"</span>)[<span class="code-str">"my_share"</span>].sum().sort_values(ascending=<span class="code-kw">False</span>))`;
+
 const code_create_expense = `<span class="code-kw">from</span> splitwise.expense <span class="code-kw">import</span> <span class="code-cls">Expense</span>
 <span class="code-kw">from</span> splitwise.user <span class="code-kw">import</span> <span class="code-cls">ExpenseUser</span>
 
@@ -759,11 +893,12 @@ const code_create_expense = `<span class="code-kw">from</span> splitwise.expense
         <span class="code-kw">raise</span> <span class="code-cls">ValueError</span>(<span class="code-str">f"API errors: </span>{errors.getErrors()}<span class="code-str">"</span>)
     <span class="code-kw">return</span> created
 
-<span class="code-comment"># Example: \u20AC90 dinner, split 3 ways, Alice paid</span>
+<span class="code-comment"># Example: €90 dinner, split 3 ways, Alice paid</span>
 exp = split_equally(sw, <span class="code-str">"Dinner at La Maison"</span>, <span class="code-num">90.00</span>,
                     participant_ids=[<span class="code-num">10001</span>, <span class="code-num">10002</span>, <span class="code-num">10003</span>],
                     paid_by_id=<span class="code-num">10001</span>)
 <span class="code-fn">print</span>(<span class="code-str">f"Created expense #{exp.getId()}"</span>)`;
+
 const code_analytics = `<span class="code-kw">import</span> pandas <span class="code-kw">as</span> pd
 
 <span class="code-kw">def</span> <span class="code-fn">balance_report</span>(sw):
@@ -781,17 +916,18 @@ const code_analytics = `<span class="code-kw">import</span> pandas <span class="
     owes_you   = df[df.amount > <span class="code-num">0</span>].groupby(<span class="code-str">"name"</span>)[<span class="code-str">"amount"</span>].sum()
     you_owe    = df[df.amount < <span class="code-num">0</span>].groupby(<span class="code-str">"name"</span>)[<span class="code-str">"amount"</span>].sum()
 
-    <span class="code-fn">print</span>(<span class="code-str">"\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557"</span>)
-    <span class="code-fn">print</span>(<span class="code-str">"\u2551  MONEY OWED TO YOU        \u2551"</span>)
-    <span class="code-fn">print</span>(<span class="code-str">"\u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2563"</span>)
+    <span class="code-fn">print</span>(<span class="code-str">"╔═══════════════════════════╗"</span>)
+    <span class="code-fn">print</span>(<span class="code-str">"║  MONEY OWED TO YOU        ║"</span>)
+    <span class="code-fn">print</span>(<span class="code-str">"╠═══════════════════════════╣"</span>)
     <span class="code-kw">for</span> name, amount <span class="code-kw">in</span> owes_you.items():
-        <span class="code-fn">print</span>(<span class="code-str">f"  \u2714 </span>{name:<span class="code-num">20</span>s} +{amount:<span class="code-num">.2f</span>}<span class="code-str">"</span>)
+        <span class="code-fn">print</span>(<span class="code-str">f"  ✔ </span>{name:<span class="code-num">20</span>s} +{amount:<span class="code-num">.2f</span>}<span class="code-str">"</span>)
     <span class="code-fn">print</span>()
     <span class="code-fn">print</span>(<span class="code-str">"  YOU OWE"</span>)
     <span class="code-kw">for</span> name, amount <span class="code-kw">in</span> you_owe.items():
-        <span class="code-fn">print</span>(<span class="code-str">f"  \u2718 </span>{name:<span class="code-num">20</span>s} {amount:<span class="code-num">.2f</span>}<span class="code-str">"</span>)
+        <span class="code-fn">print</span>(<span class="code-str">f"  ✘ </span>{name:<span class="code-num">20</span>s} {amount:<span class="code-num">.2f</span>}<span class="code-str">"</span>)
 
 balance_report(sw)`;
+
 const code_monthly_report = `<span class="code-kw">import</span> pandas <span class="code-kw">as</span> pd
 
 <span class="code-kw">def</span> <span class="code-fn">monthly_spending_report</span>(sw, my_id, months=<span class="code-num">3</span>):
@@ -825,6 +961,7 @@ const code_monthly_report = `<span class="code-kw">import</span> pandas <span cl
     <span class="code-kw">return</span> pivot.sort_values(pivot.columns[-<span class="code-num">1</span>], ascending=<span class="code-kw">False</span>)
 
 <span class="code-fn">print</span>(monthly_spending_report(sw, my_id=sw.getCurrentUser().getId()))`;
+
 const code_rate_limit = `<span class="code-kw">import</span> time, functools
 
 <span class="code-kw">def</span> <span class="code-fn">rate_limited</span>(max_per_second):
@@ -847,8 +984,12 @@ const code_rate_limit = `<span class="code-kw">import</span> time, functools
 @rate_limited(<span class="code-num">0.8</span>)
 <span class="code-kw">def</span> <span class="code-fn">safe_get_expense</span>(sw, expense_id):
     <span class="code-kw">return</span> sw.getExpense(expense_id)`;
+
+// ── MAIN ARTICLE ──────────────────────────────────────────────────────────────
+
 function Article() {
   const [activeSection, setActiveSection] = useState(null);
+
   const sections = [
     ["01", "What is Splitwise?", "s1"],
     ["02", "The Python SDK Landscape", "s2"],
@@ -859,88 +1000,569 @@ function Article() {
     ["07", "Analytics & Reporting", "s7"],
     ["08", "Rate Limits & Best Practices", "s8"],
     ["09", "Real-World Use Cases", "s9"],
-    ["10", "API Reference Cheatsheet", "s10"]
+    ["10", "API Reference Cheatsheet", "s10"],
   ];
-  const scrollTo = (id) => {
-    var _a;
-    return (_a = document.getElementById(id)) == null ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
-  };
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("style", null, styles), /* @__PURE__ */ React.createElement("div", { className: "article-root" }, /* @__PURE__ */ React.createElement("div", { className: "masthead" }, "The Practitioner's Encyclopaedia \xB7 Python Data Engineering \xB7 Vol. XII"), /* @__PURE__ */ React.createElement("div", { className: "hero" }, /* @__PURE__ */ React.createElement("div", { className: "kicker" }, "Expense Automation"), /* @__PURE__ */ React.createElement("h1", { className: "headline" }, "Splitwise in Python:", /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("em", null, "The Complete Practitioner's Guide")), /* @__PURE__ */ React.createElement("p", { className: "deck" }, "From OAuth handshakes to debt-minimisation graphs \u2014 everything a data engineer, automation developer, or financial-analysis practitioner needs to wire Python directly into Splitwise's REST API using the ", /* @__PURE__ */ React.createElement("code", null, "splitwise"), " SDK."), /* @__PURE__ */ React.createElement("div", { className: "byline-row" }, /* @__PURE__ */ React.createElement("div", { className: "byline-badge" }, "PYTHON SDK"), /* @__PURE__ */ React.createElement("div", { className: "byline-meta" }, "Splitwise v3.0.0 \xB7 Python 3.7\u20133.11 \xB7 PyPI: ", /* @__PURE__ */ React.createElement("code", null, "splitwise"), /* @__PURE__ */ React.createElement("br", null), "Author: namaggarwal \xB7 MIT Licence \xB7 208 \u2605 on GitHub"), /* @__PURE__ */ React.createElement("div", { className: "tag-row" }, ["OAuth2", "REST API", "Pandas", "Flask", "Automation"].map((t) => /* @__PURE__ */ React.createElement("span", { key: t, className: "tag" }, t))))), /* @__PURE__ */ React.createElement("div", { className: "content-grid" }, /* @__PURE__ */ React.createElement("div", { className: "toc" }, /* @__PURE__ */ React.createElement("div", { className: "toc-title" }, "Table of Contents"), /* @__PURE__ */ React.createElement("ul", { className: "toc-list" }, sections.map(([num, title, id]) => /* @__PURE__ */ React.createElement("li", { key: id, className: "toc-item", onClick: () => scrollTo(id) }, /* @__PURE__ */ React.createElement("span", { className: "toc-num" }, num), /* @__PURE__ */ React.createElement("span", null, title))))), /* @__PURE__ */ React.createElement("div", { id: "s1" }, /* @__PURE__ */ React.createElement("div", { className: "section-rule" }, /* @__PURE__ */ React.createElement("span", { className: "section-num" }, "01")), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "What Is Splitwise?"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "Splitwise is a debt-tracking and expense-splitting platform launched in 2011, now serving tens of millions of users globally. Unlike a payment processor, it is a ", /* @__PURE__ */ React.createElement("strong", null, "ledger of obligations"), " \u2014 it records who paid what, computes who owes whom, and optimises the resulting debt graph to minimise the number of settlement transactions required."), /* @__PURE__ */ React.createElement("p", null, `At its core, Splitwise solves a surprisingly hard combinatorial problem: given N people with M expenses between them, find the minimum set of payments that resolves every debt. Naively, this is O(N\xB2) bilateral settlements; Splitwise's "Simplify Debts" feature reduces this to at most N-1 transfers by treating the problem as a flow network.`)), /* @__PURE__ */ React.createElement(DebtDiagram, null), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "The platform exposes a full ", /* @__PURE__ */ React.createElement("strong", null, "REST API"), " at ", /* @__PURE__ */ React.createElement("code", null, "https://secure.splitwise.com/api/v3.0/"), ", supporting OAuth 1.0a, OAuth 2.0, and personal API keys. Every resource \u2014 users, groups, expenses, comments, currencies, categories \u2014 is accessible programmatically. This makes Splitwise an attractive target for financial automation, household budget analysis, and shared-economy tooling.")), /* @__PURE__ */ React.createElement("div", { className: "callout callout-teal" }, /* @__PURE__ */ React.createElement("div", { className: "callout-label" }, "Key Concept"), "Expenses not assigned to a group are placed in a virtual group with ", /* @__PURE__ */ React.createElement("code", null, "id=0"), ". Always filter ", /* @__PURE__ */ React.createElement("code", null, "getExpenses()"), " results by ", /* @__PURE__ */ React.createElement("code", null, "getPayment() == False"), "to exclude settlement transactions from spending analyses.")), /* @__PURE__ */ React.createElement("div", { id: "s2" }, /* @__PURE__ */ React.createElement("div", { className: "section-rule" }, /* @__PURE__ */ React.createElement("span", { className: "section-num" }, "02")), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "The Python SDK Landscape"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "Several community SDKs exist across languages for the Splitwise API. For Python, the canonical choice is ", /* @__PURE__ */ React.createElement("code", null, "namaggarwal/splitwise"), ", a 208-star MIT-licensed package on PyPI that provides complete typed object wrappers around every API endpoint. It is the only Python SDK listed on the official Splitwise developer documentation.")), /* @__PURE__ */ React.createElement("table", { className: "compare-table" }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("th", null, "Library"), /* @__PURE__ */ React.createElement("th", null, "Language"), /* @__PURE__ */ React.createElement("th", null, "Auth"), /* @__PURE__ */ React.createElement("th", null, "Full CRUD"), /* @__PURE__ */ React.createElement("th", null, "Typed Objects"), /* @__PURE__ */ React.createElement("th", null, "Active"))), /* @__PURE__ */ React.createElement("tbody", null, [
-    ["namaggarwal/splitwise", "Python", "OAuth1/2 + Key", "\u2714", "\u2714", "\u2714"],
-    ["keriwarr/splitwise", "JavaScript", "OAuth1", "\u2714", "\u2718", "\u2714"],
-    ["matiasdelgado/ex_splitwise", "Elixir", "OAuth1", "partial", "\u2718", "?"],
-    ["sritejakv/splitwise-java", "Java", "OAuth1", "partial", "\u2714", "\u2714"],
-    ["pbar1/splitwise-rs", "Rust", "OAuth2", "read-only", "\u2714", "?"],
-    ["splitwisepy (deprecated)", "Python", "OAuth1 only", "\u2718", "\u2718", "\u2718"]
-  ].map(([lib, lang, auth, crud, typed, active]) => /* @__PURE__ */ React.createElement("tr", { key: lib }, /* @__PURE__ */ React.createElement("td", null, /* @__PURE__ */ React.createElement("code", null, lib)), /* @__PURE__ */ React.createElement("td", null, lang), /* @__PURE__ */ React.createElement("td", null, auth), /* @__PURE__ */ React.createElement("td", null, /* @__PURE__ */ React.createElement("span", { className: crud === "\u2714" ? "check" : "cross" }, crud)), /* @__PURE__ */ React.createElement("td", null, /* @__PURE__ */ React.createElement("span", { className: typed === "\u2714" ? "check" : "cross" }, typed)), /* @__PURE__ */ React.createElement("td", null, /* @__PURE__ */ React.createElement("span", { className: active === "\u2714" ? "check" : "cross" }, active)))))), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "The SDK supports Python 3.7 through 3.11 and runs on PyPy. It wraps every API resource as a Python class with explicit getter and setter methods \u2014 a deliberate design choice that provides IDE autocomplete at the cost of more verbose code than a simple dict-based client.")), /* @__PURE__ */ React.createElement(CodeBlock, { lang: "BASH", label: "Installation", code: code_install })), /* @__PURE__ */ React.createElement("div", { id: "s3" }, /* @__PURE__ */ React.createElement("div", { className: "section-rule" }, /* @__PURE__ */ React.createElement("span", { className: "section-num" }, "03")), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "Authentication Deep Dive"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "Splitwise supports three authentication mechanisms. Choosing the wrong one for your use case is the most common source of integration friction. Understanding the tradeoffs upfront saves hours of debugging.")), /* @__PURE__ */ React.createElement(AuthDiagram, null), /* @__PURE__ */ React.createElement("div", { className: "subsection-title" }, "Option A \u2014 API Key (Personal Scripts)"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "For personal automation \u2014 monthly spending reports, household budget dashboards, CLI tools \u2014 the API key is the fastest path. Register an application at ", /* @__PURE__ */ React.createElement("code", null, "https://secure.splitwise.com/oauth_clients"), ", then use the API key you receive directly. This method acts on your account only and is not suitable for multi-user applications.")), /* @__PURE__ */ React.createElement(CodeBlock, { lang: "PYTHON", label: "api_key_auth.py", code: code_auth_apikey }), /* @__PURE__ */ React.createElement("div", { className: "callout" }, /* @__PURE__ */ React.createElement("div", { className: "callout-label" }, "Security Note"), "Never commit API keys to version control. Store them in a ", /* @__PURE__ */ React.createElement("code", null, ".env"), " file loaded via ", /* @__PURE__ */ React.createElement("code", null, "python-dotenv"), ", or use environment variables in your CI/CD pipeline. The ", /* @__PURE__ */ React.createElement("code", null, ".env"), " file should be in ", /* @__PURE__ */ React.createElement("code", null, ".gitignore"), "."), /* @__PURE__ */ React.createElement("div", { className: "subsection-title" }, "Option B \u2014 OAuth 2.0 (Web Applications)"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "For multi-user applications, OAuth 2.0 is mandatory. The SDK handles the full authorization code flow. The critical security step is validating the ", /* @__PURE__ */ React.createElement("code", null, "state"), " parameter on callback to prevent CSRF attacks \u2014 the SDK returns it from ", /* @__PURE__ */ React.createElement("code", null, "getOAuth2AuthorizeURL()"), "and you must compare it to what comes back from Splitwise.")), /* @__PURE__ */ React.createElement(CodeBlock, { lang: "PYTHON", label: "flask_oauth.py", code: code_auth_oauth2 }), /* @__PURE__ */ React.createElement("div", { className: "pull-quote" }, /* @__PURE__ */ React.createElement("blockquote", null, '"Store the access token after the first OAuth exchange \u2014 Splitwise tokens do not expire, making them safe to persist in your database for long-running automations."'), /* @__PURE__ */ React.createElement("cite", null, "splitwise SDK documentation"))), /* @__PURE__ */ React.createElement("div", { id: "s4" }, /* @__PURE__ */ React.createElement("div", { className: "section-rule" }, /* @__PURE__ */ React.createElement("span", { className: "section-num" }, "04")), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "Core Object Model"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "Every API response is deserialised into a typed Python object. Understanding the object hierarchy is essential for writing efficient, non-redundant code. The central entry point is the", /* @__PURE__ */ React.createElement("code", null, "Splitwise"), " class; all objects it returns are instances of the following classes from the ", /* @__PURE__ */ React.createElement("code", null, "splitwise"), " package.")), /* @__PURE__ */ React.createElement(ObjectModelDiagram, null), /* @__PURE__ */ React.createElement("div", { className: "subsection-title" }, "The Expense Object \u2014 Full Method Reference"), /* @__PURE__ */ React.createElement("div", { className: "api-grid" }, [
-    ["getId()", "Unique expense ID (int)"],
-    ["getCost()", "Total cost as string \u2014 cast to float"],
-    ["getDescription()", "Human-readable name"],
-    ["getDate()", "ISO 8601 date string"],
-    ["getCurrencyCode()", "3-letter ISO code (e.g. EUR)"],
-    ["getGroupId()", "0 = personal, N = group expense"],
-    ["getCategory()", "Returns Category object or None"],
-    ["getUsers()", "List[ExpenseUser] with shares"],
-    ["getRepayments()", "List[Debt] \u2014 direct settlement plan"],
-    ["getPayment()", "True if this is a repayment, not expense"],
-    ["getDeletedAt()", "None if active; datetime if deleted"],
-    ["getCreatedBy()", "User who logged the expense"]
-  ].map(([method, desc]) => /* @__PURE__ */ React.createElement("div", { key: method, className: "api-card" }, /* @__PURE__ */ React.createElement("div", { className: "api-method" }, method), /* @__PURE__ */ React.createElement("div", { className: "api-desc" }, desc)))), /* @__PURE__ */ React.createElement("div", { className: "callout callout-dark" }, /* @__PURE__ */ React.createElement("div", { className: "callout-label" }, "Gotcha"), /* @__PURE__ */ React.createElement("code", { style: { background: "transparent", color: "#f0c040", fontSize: "0.9em" } }, "getCost()"), " returns a string, not a float. Always cast: ", /* @__PURE__ */ React.createElement("code", { style: { background: "transparent", color: "#98c379", fontSize: "0.9em" } }, "float(expense.getCost())"), ". Similarly, ", /* @__PURE__ */ React.createElement("code", { style: { background: "transparent", color: "#f0c040", fontSize: "0.9em" } }, "getOwedShare()"), " and ", /* @__PURE__ */ React.createElement("code", { style: { background: "transparent", color: "#f0c040", fontSize: "0.9em" } }, "getPaidShare()"), "on ExpenseUser objects are also strings.")), /* @__PURE__ */ React.createElement("div", { id: "s5" }, /* @__PURE__ */ React.createElement("div", { className: "section-rule" }, /* @__PURE__ */ React.createElement("span", { className: "section-num" }, "05")), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "Reading Data"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "The ", /* @__PURE__ */ React.createElement("code", null, "getExpenses()"), " method is the workhorse of any Splitwise integration. It supports rich server-side filtering, but has a hard limit of 100 results per call, requiring pagination for any account with significant history.")), /* @__PURE__ */ React.createElement("div", { className: "sidebar-note" }, /* @__PURE__ */ React.createElement("div", { className: "sidebar-note-title" }, "Filter Parameters"), /* @__PURE__ */ React.createElement("code", null, "dated_after"), " / ", /* @__PURE__ */ React.createElement("code", null, "dated_before"), " \u2014 ISO 8601 strings", /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("code", null, "updated_after"), " \u2014 for incremental sync", /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("code", null, "group_id"), " \u2014 filter by group", /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("code", null, "friend_id"), " \u2014 bilateral expenses", /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("code", null, "limit"), " \u2014 max 100 per page", /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("code", null, "offset"), " \u2014 pagination cursor"), /* @__PURE__ */ React.createElement(CodeBlock, { lang: "PYTHON", label: "read_expenses.py \u2014 pagination + DataFrame conversion", code: code_read_expenses }), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "The pattern above \u2014 paginating until an empty page is returned, then converting to a pandas DataFrame \u2014 is the recommended foundation for any analytical pipeline. Filter ", /* @__PURE__ */ React.createElement("code", null, "getDeletedAt()"), " immediately; deleted expenses are returned by default and will corrupt aggregations if not excluded."), /* @__PURE__ */ React.createElement("p", null, "For incremental pipelines, use ", /* @__PURE__ */ React.createElement("code", null, "updated_after"), " instead of", /* @__PURE__ */ React.createElement("code", null, "dated_after"), ". This captures edits and deletions to previously synced expenses, which ", /* @__PURE__ */ React.createElement("code", null, "dated_after"), " misses entirely."))), /* @__PURE__ */ React.createElement("div", { id: "s6" }, /* @__PURE__ */ React.createElement("div", { className: "section-rule" }, /* @__PURE__ */ React.createElement("span", { className: "section-num" }, "06")), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "Writing Data"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "Creating expenses programmatically requires careful attention to the", /* @__PURE__ */ React.createElement("code", null, "paid_share"), " and ", /* @__PURE__ */ React.createElement("code", null, "owed_share"), " fields on each", /* @__PURE__ */ React.createElement("code", null, "ExpenseUser"), ". These are the most common source of API errors for new integrators: the sum of all ", /* @__PURE__ */ React.createElement("code", null, "paid_share"), " values must equal the total expense cost, and the sum of all ", /* @__PURE__ */ React.createElement("code", null, "owed_share"), "values must also equal the total cost.")), /* @__PURE__ */ React.createElement(CodeBlock, { lang: "PYTHON", label: "create_expense.py \u2014 equal split, N participants", code: code_create_expense }), /* @__PURE__ */ React.createElement("div", { className: "callout" }, /* @__PURE__ */ React.createElement("div", { className: "callout-label" }, "Invariant"), /* @__PURE__ */ React.createElement("strong", null, "Always verify:"), " ", /* @__PURE__ */ React.createElement("code", null, "sum(paid_shares) == total_cost"), " and", /* @__PURE__ */ React.createElement("code", null, "sum(owed_shares) == total_cost"), ". Violating either will return a validation error from the API. Float precision errors are a common cause \u2014 use ", /* @__PURE__ */ React.createElement("code", null, "round(value, 2)"), " and adjust the last share to absorb rounding."), /* @__PURE__ */ React.createElement("div", { className: "subsection-title" }, "Updating & Deleting Expenses"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, /* @__PURE__ */ React.createElement("code", null, "updateExpense()"), " accepts a partial ", /* @__PURE__ */ React.createElement("code", null, "Expense"), " object with only the fields to change \u2014 you do not need to re-specify the full expense. The most ergonomic pattern is to first ", /* @__PURE__ */ React.createElement("code", null, "getExpense(id)"), ", mutate the fetched object, then pass it to ", /* @__PURE__ */ React.createElement("code", null, "updateExpense()"), ". Deletion via ", /* @__PURE__ */ React.createElement("code", null, "deleteExpense(id)"), " is a soft delete \u2014 the expense is retained in API responses with a non-null ", /* @__PURE__ */ React.createElement("code", null, "getDeletedAt()"), "."))), /* @__PURE__ */ React.createElement("div", { id: "s7" }, /* @__PURE__ */ React.createElement("div", { className: "section-rule" }, /* @__PURE__ */ React.createElement("span", { className: "section-num" }, "07")), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "Analytics & Reporting"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "This is where the Python SDK truly differentiates itself from Splitwise's native app. By combining the SDK with pandas, you can build financial dashboards, categorised spending reports, and group fairness analyses that the app simply does not offer.")), /* @__PURE__ */ React.createElement(CodeBlock, { lang: "PYTHON", label: "balance_report.py \u2014 net positions across all friends", code: code_analytics }), /* @__PURE__ */ React.createElement(CodeBlock, { lang: "PYTHON", label: "monthly_report.py \u2014 pivot table by category \xD7 month", code: code_monthly_report }), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "The monthly pivot table pattern is particularly useful for household financial reviews. The key insight is filtering ", /* @__PURE__ */ React.createElement("code", null, "getPayment() == True"), "to exclude settlement transfers, which are not actual expenditures. Without this filter, a \xA3200 Venmo repayment from a flatmate inflates your apparent spending by that amount."))), /* @__PURE__ */ React.createElement("div", { id: "s8" }, /* @__PURE__ */ React.createElement("div", { className: "section-rule" }, /* @__PURE__ */ React.createElement("span", { className: "section-num" }, "08")), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "Rate Limits & Best Practices"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "Splitwise's API does not publish formal rate limit documentation, but community experience places the practical ceiling at approximately 60 requests per minute. Scripts that iterate over large expense histories using per-expense ", /* @__PURE__ */ React.createElement("code", null, "getExpense(id)"), " calls will hit this limit quickly \u2014 always prefer bulk operations like", /* @__PURE__ */ React.createElement("code", null, "getExpenses()"), " with filters over individual fetches.")), /* @__PURE__ */ React.createElement(CodeBlock, { lang: "PYTHON", label: "rate_limiter.py \u2014 decorator-based throttling", code: code_rate_limit }), /* @__PURE__ */ React.createElement("table", { className: "compare-table" }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("th", null, "Anti-Pattern"), /* @__PURE__ */ React.createElement("th", null, "Better Approach"))), /* @__PURE__ */ React.createElement("tbody", null, [
-    ["Loop getExpense(id) for each ID", "Use getExpenses() with offset pagination"],
-    ["Fetch all expenses then filter client-side", "Use dated_after / group_id server-side filters"],
-    ["Re-authenticate every API call", "Reuse Splitwise instance; tokens don't expire"],
-    ["Ignore deleted expenses", "Filter getDeletedAt() is None immediately"],
-    ["Use setSplitEqually(True) and also set shares", "Use one mechanism \u2014 setSplitEqually OR manual shares"],
-    ["Cast cost to int", "Always float(expense.getCost()) \u2014 cents matter"]
-  ].map(([bad, good]) => /* @__PURE__ */ React.createElement("tr", { key: bad }, /* @__PURE__ */ React.createElement("td", null, /* @__PURE__ */ React.createElement("span", { className: "cross" }, "\u2718"), " ", bad), /* @__PURE__ */ React.createElement("td", null, /* @__PURE__ */ React.createElement("span", { className: "check" }, "\u2714"), " ", good)))))), /* @__PURE__ */ React.createElement("div", { id: "s9" }, /* @__PURE__ */ React.createElement("div", { className: "section-rule" }, /* @__PURE__ */ React.createElement("span", { className: "section-num" }, "09")), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "Real-World Use Cases"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "The following use cases represent the most common and highest-value applications practitioners build on the Splitwise Python SDK. Each maps a concrete problem to the specific SDK methods required.")), [
-    {
-      title: "Monthly Personal Finance Dashboard",
-      desc: "Aggregate your owed_share across all expenses in the past 30 days, pivot by category, and render a Matplotlib or Plotly chart. Combine with bank CSV exports to reconcile Splitwise obligations against actual spending.",
-      methods: ["getExpenses(dated_after=\u2026)", "ExpenseUser.getOwedShare()", "Expense.getCategory().getName()"]
-    },
-    {
-      title: "Automated Group Settlement Reminder",
-      desc: "Use getGroups() to list active groups, inspect originalDebts vs simplifiedDebts, and dispatch WhatsApp or Telegram messages summarising outstanding balances. Schedule with APScheduler or a cron job.",
-      methods: ["getGroups()", "Group.getSimplifiedDebts()", "Debt.getFromUser()", "Debt.getAmount()"]
-    },
-    {
-      title: "Receipt-to-Expense Pipeline",
-      desc: "OCR a receipt with Pytesseract or GPT-4 Vision, extract items and amounts, map participants to user IDs, and call createExpense() with per-user owed shares. Used in projects like SplitwiseGPT Vision.",
-      methods: ["createExpense()", "ExpenseUser.setOwedShare()", "Expense.setReceipt(path)"]
-    },
-    {
-      title: "Group Fairness Auditor",
-      desc: "Detect systematic imbalances \u2014 one flatmate always paying for groceries, another never logging utilities. Compare paid_share vs owed_share ratios over time across group members.",
-      methods: ["getExpenses(group_id=\u2026)", "ExpenseUser.getPaidShare()", "ExpenseUser.getNetBalance()"]
-    },
-    {
-      title: "Incremental Data Sync to Database",
-      desc: "Use updated_after for efficient incremental syncing to PostgreSQL or BigQuery. Capture edits and deletions. Build a personal financial data warehouse for long-term trend analysis.",
-      methods: ["getExpenses(updated_after=last_sync)", "getDeletedAt()", "getUpdatedAt()"]
-    }
-  ].map(({ title, desc, methods }) => /* @__PURE__ */ React.createElement("div", { key: title, style: { marginBottom: 24 } }, /* @__PURE__ */ React.createElement("div", { className: "subsection-title" }, title), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, desc)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 } }, methods.map((m) => /* @__PURE__ */ React.createElement("code", { key: m }, m)))))), /* @__PURE__ */ React.createElement("div", { id: "s10" }, /* @__PURE__ */ React.createElement("div", { className: "section-rule" }, /* @__PURE__ */ React.createElement("span", { className: "section-num" }, "10")), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "API Reference Cheatsheet"), /* @__PURE__ */ React.createElement("div", { className: "prose" }, /* @__PURE__ */ React.createElement("p", null, "A quick-reference index of every primary SDK method. All methods are called on a ", /* @__PURE__ */ React.createElement("code", null, "Splitwise"), " instance (", /* @__PURE__ */ React.createElement("code", null, "sw"), ") after authentication.")), /* @__PURE__ */ React.createElement("table", { className: "compare-table" }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("th", null, "Method"), /* @__PURE__ */ React.createElement("th", null, "Returns"), /* @__PURE__ */ React.createElement("th", null, "Notes"))), /* @__PURE__ */ React.createElement("tbody", null, [
-    ["sw.getCurrentUser()", "CurrentUser", "The authenticated user"],
-    ["sw.getUser(id)", "User", "Any user by ID"],
-    ["sw.updateUser(user)", "(CurrentUser, errors)", "Partial update"],
-    ["sw.getFriends()", "List[Friend]", "Includes balances per currency"],
-    ["sw.getGroups()", "List[Group]", "Members + debt summary"],
-    ["sw.getGroup(id)", "Group", "id=0 for non-group expenses"],
-    ["sw.createGroup(group)", "(Group, errors)", "Requires name + members"],
-    ["sw.deleteGroup(id)", "(bool, errors)", "Soft delete"],
-    ["sw.addUserToGroup(user, gid)", "(bool, User, errors)", "Add by id or email"],
-    ["sw.getExpenses(**kwargs)", "List[Expense]", "Max 100 per call; paginate"],
-    ["sw.getExpense(id)", "Expense", "Single expense by ID"],
-    ["sw.createExpense(expense)", "(Expense, errors)", "Requires cost + users"],
-    ["sw.updateExpense(expense)", "(Expense, errors)", "Partial \u2014 only changed fields"],
-    ["sw.deleteExpense(id)", "(bool, errors)", "Soft delete"],
-    ["sw.getCategories()", "List[Category]", "Parent + subcategories"],
-    ["sw.getCurrencies()", "List[Currency]", "All supported currencies"],
-    ["sw.getComments(id)", "List[Comment]", "Comments on an expense"],
-    ["sw.createComment(eid, txt)", "(Comment, errors)", "Add comment to expense"],
-    ["sw.getNotifications()", "List[Notification]", "Recent activity feed"]
-  ].map(([method, ret, notes]) => /* @__PURE__ */ React.createElement("tr", { key: method }, /* @__PURE__ */ React.createElement("td", null, /* @__PURE__ */ React.createElement("code", null, method)), /* @__PURE__ */ React.createElement("td", null, /* @__PURE__ */ React.createElement("code", null, ret)), /* @__PURE__ */ React.createElement("td", { style: { fontSize: 12 } }, notes))))), /* @__PURE__ */ React.createElement("div", { className: "callout callout-teal" }, /* @__PURE__ */ React.createElement("div", { className: "callout-label" }, "Further Reading"), "Official Splitwise REST API docs: ", /* @__PURE__ */ React.createElement("code", null, "https://dev.splitwise.com/"), /* @__PURE__ */ React.createElement("br", null), "SDK source + examples: ", /* @__PURE__ */ React.createElement("code", null, "https://github.com/namaggarwal/splitwise"), /* @__PURE__ */ React.createElement("br", null), "Flask example app: ", /* @__PURE__ */ React.createElement("code", null, "https://github.com/namaggarwal/flask-splitwise-example"), /* @__PURE__ */ React.createElement("br", null), "SDK readthedocs: ", /* @__PURE__ */ React.createElement("code", null, "https://splitwise.readthedocs.io/")))), /* @__PURE__ */ React.createElement("div", { className: "article-footer" }, /* @__PURE__ */ React.createElement("div", { className: "footer-inner" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "footer-title" }, "Source Integrity"), "All SDK method signatures verified against the ", /* @__PURE__ */ React.createElement("code", null, "namaggarwal/splitwise"), " v3.0.0 README and source code. API behaviour descriptions derived from official Splitwise REST API documentation at ", /* @__PURE__ */ React.createElement("code", null, "dev.splitwise.com"), ". Rate limits are community-observed estimates, not official figures."), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "footer-title" }, "Versions"), "splitwise SDK: ", /* @__PURE__ */ React.createElement("strong", { style: { color: "#ccc8c0" } }, "3.0.0"), " (June 2023)", /* @__PURE__ */ React.createElement("br", null), "Python: ", /* @__PURE__ */ React.createElement("strong", { style: { color: "#ccc8c0" } }, "3.7\u20133.11"), ", PyPy compatible", /* @__PURE__ */ React.createElement("br", null), "Splitwise API: ", /* @__PURE__ */ React.createElement("strong", { style: { color: "#ccc8c0" } }, "v3.0"), /* @__PURE__ */ React.createElement("br", null), "Article generated: ", /* @__PURE__ */ React.createElement("strong", { style: { color: "#ccc8c0" } }, "April 2026"))))));
+
+  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  return (
+    <>
+      <style>{styles}</style>
+      <div className="article-root">
+        {/* Masthead */}
+        <div className="masthead">
+          The Practitioner's Encyclopaedia · Python Data Engineering · Vol. XII
+        </div>
+
+        {/* Hero */}
+        <div className="hero">
+          <div className="kicker">Expense Automation</div>
+          <h1 className="headline">
+            Splitwise in Python:<br />
+            <em>The Complete Practitioner's Guide</em>
+          </h1>
+          <p className="deck">
+            From OAuth handshakes to debt-minimisation graphs — everything a data engineer, 
+            automation developer, or financial-analysis practitioner needs to wire Python 
+            directly into Splitwise's REST API using the <code>splitwise</code> SDK.
+          </p>
+          <div className="byline-row">
+            <div className="byline-badge">PYTHON SDK</div>
+            <div className="byline-meta">
+              Splitwise v3.0.0 · Python 3.7–3.11 · PyPI: <code>splitwise</code><br />
+              Author: namaggarwal · MIT Licence · 208 ★ on GitHub
+            </div>
+            <div className="tag-row">
+              {["OAuth2", "REST API", "Pandas", "Flask", "Automation"].map(t => (
+                <span key={t} className="tag">{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="content-grid">
+          {/* TOC */}
+          <div className="toc">
+            <div className="toc-title">Table of Contents</div>
+            <ul className="toc-list">
+              {sections.map(([num, title, id]) => (
+                <li key={id} className="toc-item" onClick={() => scrollTo(id)}>
+                  <span className="toc-num">{num}</span>
+                  <span>{title}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* ── SECTION 1 ── */}
+          <div id="s1">
+            <div className="section-rule">
+              <span className="section-num">01</span>
+            </div>
+            <h2 className="section-title">What Is Splitwise?</h2>
+            <div className="prose">
+              <p>
+                Splitwise is a debt-tracking and expense-splitting platform launched in 2011,
+                now serving tens of millions of users globally. Unlike a payment processor, 
+                it is a <strong>ledger of obligations</strong> — it records who paid what, 
+                computes who owes whom, and optimises the resulting debt graph to minimise 
+                the number of settlement transactions required.
+              </p>
+              <p>
+                At its core, Splitwise solves a surprisingly hard combinatorial problem: given 
+                N people with M expenses between them, find the minimum set of payments 
+                that resolves every debt. Naively, this is O(N²) bilateral settlements; 
+                Splitwise's "Simplify Debts" feature reduces this to at most N-1 transfers 
+                by treating the problem as a flow network.
+              </p>
+            </div>
+
+            <DebtDiagram />
+
+            <div className="prose">
+              <p>
+                The platform exposes a full <strong>REST API</strong> at <code>https://secure.splitwise.com/api/v3.0/</code>,
+                supporting OAuth 1.0a, OAuth 2.0, and personal API keys. Every resource — 
+                users, groups, expenses, comments, currencies, categories — is accessible 
+                programmatically. This makes Splitwise an attractive target for financial 
+                automation, household budget analysis, and shared-economy tooling.
+              </p>
+            </div>
+
+            <div className="callout callout-teal">
+              <div className="callout-label">Key Concept</div>
+              Expenses not assigned to a group are placed in a virtual group with <code>id=0</code>.
+              Always filter <code>getExpenses()</code> results by <code>getPayment() == False</code>
+              to exclude settlement transactions from spending analyses.
+            </div>
+          </div>
+
+          {/* ── SECTION 2 ── */}
+          <div id="s2">
+            <div className="section-rule">
+              <span className="section-num">02</span>
+            </div>
+            <h2 className="section-title">The Python SDK Landscape</h2>
+            <div className="prose">
+              <p>
+                Several community SDKs exist across languages for the Splitwise API. 
+                For Python, the canonical choice is <code>namaggarwal/splitwise</code>, 
+                a 208-star MIT-licensed package on PyPI that provides complete typed 
+                object wrappers around every API endpoint. It is the only Python SDK 
+                listed on the official Splitwise developer documentation.
+              </p>
+            </div>
+
+            <table className="compare-table">
+              <thead>
+                <tr>
+                  <th>Library</th>
+                  <th>Language</th>
+                  <th>Auth</th>
+                  <th>Full CRUD</th>
+                  <th>Typed Objects</th>
+                  <th>Active</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["namaggarwal/splitwise", "Python", "OAuth1/2 + Key", "✔", "✔", "✔"],
+                  ["keriwarr/splitwise", "JavaScript", "OAuth1", "✔", "✘", "✔"],
+                  ["matiasdelgado/ex_splitwise", "Elixir", "OAuth1", "partial", "✘", "?"],
+                  ["sritejakv/splitwise-java", "Java", "OAuth1", "partial", "✔", "✔"],
+                  ["pbar1/splitwise-rs", "Rust", "OAuth2", "read-only", "✔", "?"],
+                  ["splitwisepy (deprecated)", "Python", "OAuth1 only", "✘", "✘", "✘"],
+                ].map(([lib, lang, auth, crud, typed, active]) => (
+                  <tr key={lib}>
+                    <td><code>{lib}</code></td>
+                    <td>{lang}</td>
+                    <td>{auth}</td>
+                    <td><span className={crud === "✔" ? "check" : "cross"}>{crud}</span></td>
+                    <td><span className={typed === "✔" ? "check" : "cross"}>{typed}</span></td>
+                    <td><span className={active === "✔" ? "check" : "cross"}>{active}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="prose">
+              <p>
+                The SDK supports Python 3.7 through 3.11 and runs on PyPy. It wraps 
+                every API resource as a Python class with explicit getter and setter 
+                methods — a deliberate design choice that provides IDE autocomplete 
+                at the cost of more verbose code than a simple dict-based client.
+              </p>
+            </div>
+
+            <CodeBlock lang="BASH" label="Installation" code={code_install} />
+          </div>
+
+          {/* ── SECTION 3 ── */}
+          <div id="s3">
+            <div className="section-rule">
+              <span className="section-num">03</span>
+            </div>
+            <h2 className="section-title">Authentication Deep Dive</h2>
+            <div className="prose">
+              <p>
+                Splitwise supports three authentication mechanisms. Choosing the wrong 
+                one for your use case is the most common source of integration friction. 
+                Understanding the tradeoffs upfront saves hours of debugging.
+              </p>
+            </div>
+
+            <AuthDiagram />
+
+            <div className="subsection-title">Option A — API Key (Personal Scripts)</div>
+            <div className="prose">
+              <p>
+                For personal automation — monthly spending reports, household budget 
+                dashboards, CLI tools — the API key is the fastest path. Register an 
+                application at <code>https://secure.splitwise.com/oauth_clients</code>, 
+                then use the API key you receive directly. This method acts on your 
+                account only and is not suitable for multi-user applications.
+              </p>
+            </div>
+
+            <CodeBlock lang="PYTHON" label="api_key_auth.py" code={code_auth_apikey} />
+
+            <div className="callout">
+              <div className="callout-label">Security Note</div>
+              Never commit API keys to version control. Store them in a <code>.env</code> file 
+              loaded via <code>python-dotenv</code>, or use environment variables in your CI/CD 
+              pipeline. The <code>.env</code> file should be in <code>.gitignore</code>.
+            </div>
+
+            <div className="subsection-title">Option B — OAuth 2.0 (Web Applications)</div>
+            <div className="prose">
+              <p>
+                For multi-user applications, OAuth 2.0 is mandatory. The SDK handles 
+                the full authorization code flow. The critical security step is 
+                validating the <code>state</code> parameter on callback to prevent CSRF 
+                attacks — the SDK returns it from <code>getOAuth2AuthorizeURL()</code> 
+                and you must compare it to what comes back from Splitwise.
+              </p>
+            </div>
+
+            <CodeBlock lang="PYTHON" label="flask_oauth.py" code={code_auth_oauth2} />
+
+            <div className="pull-quote">
+              <blockquote>
+                "Store the access token after the first OAuth exchange — 
+                Splitwise tokens do not expire, making them safe to persist 
+                in your database for long-running automations."
+              </blockquote>
+              <cite>splitwise SDK documentation</cite>
+            </div>
+          </div>
+
+          {/* ── SECTION 4 ── */}
+          <div id="s4">
+            <div className="section-rule">
+              <span className="section-num">04</span>
+            </div>
+            <h2 className="section-title">Core Object Model</h2>
+            <div className="prose">
+              <p>
+                Every API response is deserialised into a typed Python object. 
+                Understanding the object hierarchy is essential for writing 
+                efficient, non-redundant code. The central entry point is the 
+                <code>Splitwise</code> class; all objects it returns are instances 
+                of the following classes from the <code>splitwise</code> package.
+              </p>
+            </div>
+
+            <ObjectModelDiagram />
+
+            <div className="subsection-title">The Expense Object — Full Method Reference</div>
+            <div className="api-grid">
+              {[
+                ["getId()", "Unique expense ID (int)"],
+                ["getCost()", "Total cost as string — cast to float"],
+                ["getDescription()", "Human-readable name"],
+                ["getDate()", "ISO 8601 date string"],
+                ["getCurrencyCode()", "3-letter ISO code (e.g. EUR)"],
+                ["getGroupId()", "0 = personal, N = group expense"],
+                ["getCategory()", "Returns Category object or None"],
+                ["getUsers()", "List[ExpenseUser] with shares"],
+                ["getRepayments()", "List[Debt] — direct settlement plan"],
+                ["getPayment()", "True if this is a repayment, not expense"],
+                ["getDeletedAt()", "None if active; datetime if deleted"],
+                ["getCreatedBy()", "User who logged the expense"],
+              ].map(([method, desc]) => (
+                <div key={method} className="api-card">
+                  <div className="api-method">{method}</div>
+                  <div className="api-desc">{desc}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="callout callout-dark">
+              <div className="callout-label">Gotcha</div>
+              <code style={{background:"transparent",color:"#f0c040",fontSize:"0.9em"}}>getCost()</code> returns a string, not a float.
+              Always cast: <code style={{background:"transparent",color:"#98c379",fontSize:"0.9em"}}>float(expense.getCost())</code>.
+              Similarly, <code style={{background:"transparent",color:"#f0c040",fontSize:"0.9em"}}>getOwedShare()</code> and <code style={{background:"transparent",color:"#f0c040",fontSize:"0.9em"}}>getPaidShare()</code>
+              on ExpenseUser objects are also strings.
+            </div>
+          </div>
+
+          {/* ── SECTION 5 ── */}
+          <div id="s5">
+            <div className="section-rule">
+              <span className="section-num">05</span>
+            </div>
+            <h2 className="section-title">Reading Data</h2>
+            <div className="prose">
+              <p>
+                The <code>getExpenses()</code> method is the workhorse of any Splitwise 
+                integration. It supports rich server-side filtering, but has a hard 
+                limit of 100 results per call, requiring pagination for any account 
+                with significant history.
+              </p>
+            </div>
+
+            <div className="sidebar-note">
+              <div className="sidebar-note-title">Filter Parameters</div>
+              <code>dated_after</code> / <code>dated_before</code> — ISO 8601 strings<br /><br />
+              <code>updated_after</code> — for incremental sync<br /><br />
+              <code>group_id</code> — filter by group<br /><br />
+              <code>friend_id</code> — bilateral expenses<br /><br />
+              <code>limit</code> — max 100 per page<br /><br />
+              <code>offset</code> — pagination cursor
+            </div>
+
+            <CodeBlock lang="PYTHON" label="read_expenses.py — pagination + DataFrame conversion" code={code_read_expenses} />
+
+            <div className="prose">
+              <p>
+                The pattern above — paginating until an empty page is returned, then 
+                converting to a pandas DataFrame — is the recommended foundation for 
+                any analytical pipeline. Filter <code>getDeletedAt()</code> immediately; 
+                deleted expenses are returned by default and will corrupt aggregations 
+                if not excluded.
+              </p>
+              <p>
+                For incremental pipelines, use <code>updated_after</code> instead of 
+                <code>dated_after</code>. This captures edits and deletions to 
+                previously synced expenses, which <code>dated_after</code> misses entirely.
+              </p>
+            </div>
+          </div>
+
+          {/* ── SECTION 6 ── */}
+          <div id="s6">
+            <div className="section-rule">
+              <span className="section-num">06</span>
+            </div>
+            <h2 className="section-title">Writing Data</h2>
+            <div className="prose">
+              <p>
+                Creating expenses programmatically requires careful attention to the 
+                <code>paid_share</code> and <code>owed_share</code> fields on each 
+                <code>ExpenseUser</code>. These are the most common source of API errors 
+                for new integrators: the sum of all <code>paid_share</code> values must 
+                equal the total expense cost, and the sum of all <code>owed_share</code> 
+                values must also equal the total cost.
+              </p>
+            </div>
+
+            <CodeBlock lang="PYTHON" label="create_expense.py — equal split, N participants" code={code_create_expense} />
+
+            <div className="callout">
+              <div className="callout-label">Invariant</div>
+              <strong>Always verify:</strong> <code>sum(paid_shares) == total_cost</code> and 
+              <code>sum(owed_shares) == total_cost</code>. Violating either will return 
+              a validation error from the API. Float precision errors are a common cause 
+              — use <code>round(value, 2)</code> and adjust the last share to absorb rounding.
+            </div>
+
+            <div className="subsection-title">Updating & Deleting Expenses</div>
+            <div className="prose">
+              <p>
+                <code>updateExpense()</code> accepts a partial <code>Expense</code> object 
+                with only the fields to change — you do not need to re-specify the full 
+                expense. The most ergonomic pattern is to first <code>getExpense(id)</code>, 
+                mutate the fetched object, then pass it to <code>updateExpense()</code>. 
+                Deletion via <code>deleteExpense(id)</code> is a soft delete — the expense 
+                is retained in API responses with a non-null <code>getDeletedAt()</code>.
+              </p>
+            </div>
+          </div>
+
+          {/* ── SECTION 7 ── */}
+          <div id="s7">
+            <div className="section-rule">
+              <span className="section-num">07</span>
+            </div>
+            <h2 className="section-title">Analytics & Reporting</h2>
+            <div className="prose">
+              <p>
+                This is where the Python SDK truly differentiates itself from Splitwise's 
+                native app. By combining the SDK with pandas, you can build financial 
+                dashboards, categorised spending reports, and group fairness analyses 
+                that the app simply does not offer.
+              </p>
+            </div>
+
+            <CodeBlock lang="PYTHON" label="balance_report.py — net positions across all friends" code={code_analytics} />
+            <CodeBlock lang="PYTHON" label="monthly_report.py — pivot table by category × month" code={code_monthly_report} />
+
+            <div className="prose">
+              <p>
+                The monthly pivot table pattern is particularly useful for household 
+                financial reviews. The key insight is filtering <code>getPayment() == True</code> 
+                to exclude settlement transfers, which are not actual expenditures. 
+                Without this filter, a £200 Venmo repayment from a flatmate inflates 
+                your apparent spending by that amount.
+              </p>
+            </div>
+          </div>
+
+          {/* ── SECTION 8 ── */}
+          <div id="s8">
+            <div className="section-rule">
+              <span className="section-num">08</span>
+            </div>
+            <h2 className="section-title">Rate Limits & Best Practices</h2>
+            <div className="prose">
+              <p>
+                Splitwise's API does not publish formal rate limit documentation, but 
+                community experience places the practical ceiling at approximately 
+                60 requests per minute. Scripts that iterate over large expense 
+                histories using per-expense <code>getExpense(id)</code> calls will 
+                hit this limit quickly — always prefer bulk operations like 
+                <code>getExpenses()</code> with filters over individual fetches.
+              </p>
+            </div>
+
+            <CodeBlock lang="PYTHON" label="rate_limiter.py — decorator-based throttling" code={code_rate_limit} />
+
+            <table className="compare-table">
+              <thead>
+                <tr>
+                  <th>Anti-Pattern</th>
+                  <th>Better Approach</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Loop getExpense(id) for each ID", "Use getExpenses() with offset pagination"],
+                  ["Fetch all expenses then filter client-side", "Use dated_after / group_id server-side filters"],
+                  ["Re-authenticate every API call", "Reuse Splitwise instance; tokens don't expire"],
+                  ["Ignore deleted expenses", "Filter getDeletedAt() is None immediately"],
+                  ["Use setSplitEqually(True) and also set shares", "Use one mechanism — setSplitEqually OR manual shares"],
+                  ["Cast cost to int", "Always float(expense.getCost()) — cents matter"],
+                ].map(([bad, good]) => (
+                  <tr key={bad}>
+                    <td><span className="cross">✘</span> {bad}</td>
+                    <td><span className="check">✔</span> {good}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* ── SECTION 9 ── */}
+          <div id="s9">
+            <div className="section-rule">
+              <span className="section-num">09</span>
+            </div>
+            <h2 className="section-title">Real-World Use Cases</h2>
+            <div className="prose">
+              <p>
+                The following use cases represent the most common and highest-value 
+                applications practitioners build on the Splitwise Python SDK. Each 
+                maps a concrete problem to the specific SDK methods required.
+              </p>
+            </div>
+
+            {[
+              {
+                title: "Monthly Personal Finance Dashboard",
+                desc: "Aggregate your owed_share across all expenses in the past 30 days, pivot by category, and render a Matplotlib or Plotly chart. Combine with bank CSV exports to reconcile Splitwise obligations against actual spending.",
+                methods: ["getExpenses(dated_after=…)", "ExpenseUser.getOwedShare()", "Expense.getCategory().getName()"],
+              },
+              {
+                title: "Automated Group Settlement Reminder",
+                desc: "Use getGroups() to list active groups, inspect originalDebts vs simplifiedDebts, and dispatch WhatsApp or Telegram messages summarising outstanding balances. Schedule with APScheduler or a cron job.",
+                methods: ["getGroups()", "Group.getSimplifiedDebts()", "Debt.getFromUser()", "Debt.getAmount()"],
+              },
+              {
+                title: "Receipt-to-Expense Pipeline",
+                desc: "OCR a receipt with Pytesseract or GPT-4 Vision, extract items and amounts, map participants to user IDs, and call createExpense() with per-user owed shares. Used in projects like SplitwiseGPT Vision.",
+                methods: ["createExpense()", "ExpenseUser.setOwedShare()", "Expense.setReceipt(path)"],
+              },
+              {
+                title: "Group Fairness Auditor",
+                desc: "Detect systematic imbalances — one flatmate always paying for groceries, another never logging utilities. Compare paid_share vs owed_share ratios over time across group members.",
+                methods: ["getExpenses(group_id=…)", "ExpenseUser.getPaidShare()", "ExpenseUser.getNetBalance()"],
+              },
+              {
+                title: "Incremental Data Sync to Database",
+                desc: "Use updated_after for efficient incremental syncing to PostgreSQL or BigQuery. Capture edits and deletions. Build a personal financial data warehouse for long-term trend analysis.",
+                methods: ["getExpenses(updated_after=last_sync)", "getDeletedAt()", "getUpdatedAt()"],
+              },
+            ].map(({ title, desc, methods }) => (
+              <div key={title} style={{ marginBottom: 24 }}>
+                <div className="subsection-title">{title}</div>
+                <div className="prose"><p>{desc}</p></div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+                  {methods.map(m => <code key={m}>{m}</code>)}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ── SECTION 10 ── */}
+          <div id="s10">
+            <div className="section-rule">
+              <span className="section-num">10</span>
+            </div>
+            <h2 className="section-title">API Reference Cheatsheet</h2>
+            <div className="prose">
+              <p>
+                A quick-reference index of every primary SDK method. All methods are 
+                called on a <code>Splitwise</code> instance (<code>sw</code>) after authentication.
+              </p>
+            </div>
+
+            <table className="compare-table">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Returns</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["sw.getCurrentUser()", "CurrentUser", "The authenticated user"],
+                  ["sw.getUser(id)", "User", "Any user by ID"],
+                  ["sw.updateUser(user)", "(CurrentUser, errors)", "Partial update"],
+                  ["sw.getFriends()", "List[Friend]", "Includes balances per currency"],
+                  ["sw.getGroups()", "List[Group]", "Members + debt summary"],
+                  ["sw.getGroup(id)", "Group", "id=0 for non-group expenses"],
+                  ["sw.createGroup(group)", "(Group, errors)", "Requires name + members"],
+                  ["sw.deleteGroup(id)", "(bool, errors)", "Soft delete"],
+                  ["sw.addUserToGroup(user, gid)", "(bool, User, errors)", "Add by id or email"],
+                  ["sw.getExpenses(**kwargs)", "List[Expense]", "Max 100 per call; paginate"],
+                  ["sw.getExpense(id)", "Expense", "Single expense by ID"],
+                  ["sw.createExpense(expense)", "(Expense, errors)", "Requires cost + users"],
+                  ["sw.updateExpense(expense)", "(Expense, errors)", "Partial — only changed fields"],
+                  ["sw.deleteExpense(id)", "(bool, errors)", "Soft delete"],
+                  ["sw.getCategories()", "List[Category]", "Parent + subcategories"],
+                  ["sw.getCurrencies()", "List[Currency]", "All supported currencies"],
+                  ["sw.getComments(id)", "List[Comment]", "Comments on an expense"],
+                  ["sw.createComment(eid, txt)", "(Comment, errors)", "Add comment to expense"],
+                  ["sw.getNotifications()", "List[Notification]", "Recent activity feed"],
+                ].map(([method, ret, notes]) => (
+                  <tr key={method}>
+                    <td><code>{method}</code></td>
+                    <td><code>{ret}</code></td>
+                    <td style={{ fontSize: 12 }}>{notes}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="callout callout-teal">
+              <div className="callout-label">Further Reading</div>
+              Official Splitwise REST API docs: <code>https://dev.splitwise.com/</code><br />
+              SDK source + examples: <code>https://github.com/namaggarwal/splitwise</code><br />
+              Flask example app: <code>https://github.com/namaggarwal/flask-splitwise-example</code><br />
+              SDK readthedocs: <code>https://splitwise.readthedocs.io/</code>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Footer */}
+        <div className="article-footer">
+          <div className="footer-inner">
+            <div>
+              <div className="footer-title">Source Integrity</div>
+              All SDK method signatures verified against the <code>namaggarwal/splitwise</code> v3.0.0 
+              README and source code. API behaviour descriptions derived from official 
+              Splitwise REST API documentation at <code>dev.splitwise.com</code>.
+              Rate limits are community-observed estimates, not official figures.
+            </div>
+            <div>
+              <div className="footer-title">Versions</div>
+              splitwise SDK: <strong style={{ color: "#ccc8c0" }}>3.0.0</strong> (June 2023)<br />
+              Python: <strong style={{ color: "#ccc8c0" }}>3.7–3.11</strong>, PyPy compatible<br />
+              Splitwise API: <strong style={{ color: "#ccc8c0" }}>v3.0</strong><br />
+              Article generated: <strong style={{ color: "#ccc8c0" }}>April 2026</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
+
+    try {
       ReactDOM.createRoot(document.getElementById('root')).render(
         React.createElement(Article)
       );
