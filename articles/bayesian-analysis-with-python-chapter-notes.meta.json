@@ -16,5 +16,6 @@
     "chapter-notes"
   ],
   "component": "BayesianAnalysisWithPythonChapterNotes",
-  "url": "articles/bayesian-analysis-with-python-chapter-notes.html"
+  "url": "articles/bayesian-analysis-with-python-chapter-notes.html",
+  "pdf_url": "articles/bayesian-analysis-with-python-chapter-notes.pdf"
 }

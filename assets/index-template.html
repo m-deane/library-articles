@@ -59,6 +59,7 @@
       </select>
       <input type="search" id="filter-search" placeholder="Search titles, subtitles, tags…" />
       <span class="filter-count" id="filter-count">{{ARTICLE_COUNT}} shown</span>
+      {{ZIP_BUTTON}}
     </div>
 
     <div class="index-grid" id="index-grid">
@@ -78,7 +79,13 @@
   <script>
     (function () {
       var grid = document.getElementById('index-grid');
-      var cards = Array.from(grid.querySelectorAll('.article-card'));
+      // Cards are now wrapped in .article-card-wrap so the <a class="article-card">
+      // and <a class="pdf-link"> don't nest. Fall back to .article-card for older
+      // builds / any previously-generated static HTML served from cache.
+      var cards = Array.from(grid.querySelectorAll('.article-card-wrap'));
+      if (cards.length === 0) {
+        cards = Array.from(grid.querySelectorAll('.article-card'));
+      }
       var catSel = document.getElementById('filter-category');
       var styleSel = document.getElementById('filter-style');
       var sortSel = document.getElementById('filter-sort');

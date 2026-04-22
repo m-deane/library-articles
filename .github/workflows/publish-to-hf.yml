@@ -22,11 +22,20 @@ jobs:
         with: { fetch-depth: 0 }
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - name: Install PyYAML
-        run: pip install PyYAML
+      - name: Install Python build deps
+        run: pip install -r requirements-build.txt
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-v1.44.0
+      - name: Install Playwright Chromium
+        run: playwright install --with-deps chromium
       - name: Install esbuild static binary
         run: bash tools/esbuild/install.sh linux-x64
-      - name: Build
+      - name: Build (HTML + PDFs + ZIP)
+        env:
+          BUILD_PDFS: "1"
         run: python3 build.py
       - name: Convert JSX to markdown mirror
         run: python3 jsx_to_markdown.py

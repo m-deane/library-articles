@@ -630,3 +630,157 @@ code, pre { font-family: var(--font-code); font-size: 0.9em; }
 .photo-credit a:hover {
   color: var(--accent-purple, #7c4dff);
 }
+
+/* ===================================================================
+   PDF link (header + index card) + whole-library ZIP button
+   =================================================================== */
+
+/* Header bar link (dark chrome) */
+.header-pdf-link {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  transition: background 120ms ease, color 120ms ease;
+  font-size: 0.82rem;
+}
+.header-pdf-link:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Card wrapper — sits outside the <a class="article-card"> so the PDF
+   anchor can live as a sibling (avoids nested <a> tags). */
+.article-card-wrap {
+  position: relative;
+  display: flex;
+}
+.article-card-wrap > .article-card {
+  flex: 1;
+}
+.article-card-wrap > .pdf-link {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  background: rgba(124, 77, 255, 0.08);
+  color: var(--accent-purple);
+  border: 1px solid rgba(124, 77, 255, 0.22);
+  text-decoration: none;
+  transition: background 120ms ease, transform 120ms ease, border-color 120ms ease;
+  z-index: 2;
+  line-height: 1;
+}
+.article-card-wrap > .pdf-link:hover {
+  background: rgba(124, 77, 255, 0.18);
+  border-color: rgba(124, 77, 255, 0.45);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+/* Top-of-index "Download all PDFs" button */
+.zip-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  box-shadow: 0 3px 10px -4px rgba(124, 77, 255, 0.45);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.zip-download-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px -4px rgba(124, 77, 255, 0.55);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ===================================================================
+   @media print — styles applied when Playwright renders articles to PDF
+   =================================================================== */
+@media print {
+  /* Hide site chrome — the PDF is the article, not a page screenshot */
+  .article-header-bar,
+  .article-footer,
+  .top-nav {
+    display: none !important;
+  }
+
+  /* Widen the article body to fill the printable area */
+  .article-container {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Typography nudge for print legibility */
+  html, body {
+    font-size: 17px;
+    line-height: 1.75;
+    background: #ffffff !important;
+    color: #111 !important;
+  }
+
+  /* Keep headings attached to their content */
+  #root h2, #root h3, #root h4,
+  h2, h3, h4 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  #root h1, h1 {
+    page-break-before: avoid;
+    break-before: avoid;
+  }
+
+  /* Figures / photographs shouldn't split across pages */
+  .photo, .photo figure, figure, .figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .photo img, figure img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 85vh;
+  }
+
+  /* Code blocks: preserve dark background (print_background=True is set) */
+  #root pre {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Blockquotes — keep together */
+  #root blockquote {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Hide interactive-only chrome */
+  .pdf-link, .header-pdf-link, .zip-download-btn {
+    display: none !important;
+  }
+
+  /* Avoid orphan/widow lines in paragraphs where possible */
+  #root p {
+    orphans: 3;
+    widows: 3;
+  }
+}

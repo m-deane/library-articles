@@ -18,7 +18,8 @@
       "energy"
     ],
     "component": "VirtualBarrels",
-    "url": "articles/virtual-barrels.html"
+    "url": "articles/virtual-barrels.html",
+    "pdf_url": "articles/virtual-barrels.pdf"
   },
   {
     "slug": "virtual-barrels-chapter-notes",
@@ -41,7 +42,8 @@
       "chapter-notes"
     ],
     "component": "VirtualBarrelsChapterNotes",
-    "url": "articles/virtual-barrels-chapter-notes.html"
+    "url": "articles/virtual-barrels-chapter-notes.html",
+    "pdf_url": "articles/virtual-barrels-chapter-notes.pdf"
   },
   {
     "slug": "python-for-algorithmic-trading-cookbook-chapter-notes",
@@ -61,7 +63,8 @@
       "chapter-notes"
     ],
     "component": "PythonForAlgorithmicTradingCookbookChapterNotes",
-    "url": "articles/python-for-algorithmic-trading-cookbook-chapter-notes.html"
+    "url": "articles/python-for-algorithmic-trading-cookbook-chapter-notes.html",
+    "pdf_url": "articles/python-for-algorithmic-trading-cookbook-chapter-notes.pdf"
   },
   {
     "slug": "forecasting-principles-and-practice-notes",
@@ -80,7 +83,8 @@
       "book-notes"
     ],
     "component": "ForecastingPrinciplesAndPracticeNotes",
-    "url": "articles/forecasting-principles-and-practice-notes.html"
+    "url": "articles/forecasting-principles-and-practice-notes.html",
+    "pdf_url": "articles/forecasting-principles-and-practice-notes.pdf"
   },
   {
     "slug": "crude-oil-handbook-chapter-notes",
@@ -98,7 +102,8 @@
       "chapter-notes"
     ],
     "component": "CrudeOilHandbookChapterNotes",
-    "url": "articles/crude-oil-handbook-chapter-notes.html"
+    "url": "articles/crude-oil-handbook-chapter-notes.html",
+    "pdf_url": "articles/crude-oil-handbook-chapter-notes.pdf"
   },
   {
     "slug": "bayesian-analysis-with-python-chapter-notes",
@@ -118,7 +123,8 @@
       "chapter-notes"
     ],
     "component": "BayesianAnalysisWithPythonChapterNotes",
-    "url": "articles/bayesian-analysis-with-python-chapter-notes.html"
+    "url": "articles/bayesian-analysis-with-python-chapter-notes.html",
+    "pdf_url": "articles/bayesian-analysis-with-python-chapter-notes.pdf"
   },
   {
     "slug": "applied-bayesian-statistics-notes",
@@ -135,7 +141,8 @@
       "paper-notes"
     ],
     "component": "AppliedBayesianStatisticsNotes",
-    "url": "articles/applied-bayesian-statistics-notes.html"
+    "url": "articles/applied-bayesian-statistics-notes.html",
+    "pdf_url": "articles/applied-bayesian-statistics-notes.pdf"
   },
   {
     "slug": "advances-in-financial-machine-learning-chapter-notes",
@@ -154,7 +161,8 @@
       "chapter-notes"
     ],
     "component": "AdvancesInFinancialMachineLearningChapterNotes",
-    "url": "articles/advances-in-financial-machine-learning-chapter-notes.html"
+    "url": "articles/advances-in-financial-machine-learning-chapter-notes.html",
+    "pdf_url": "articles/advances-in-financial-machine-learning-chapter-notes.pdf"
   },
   {
     "slug": "test-chart-article",
@@ -170,7 +178,8 @@
       "test"
     ],
     "component": "TestChartArticle",
-    "url": "articles/test-chart-article.html"
+    "url": "articles/test-chart-article.html",
+    "pdf_url": "articles/test-chart-article.pdf"
   },
   {
     "slug": "forty-classic-crude-oil-trades-chapter-notes",
@@ -189,7 +198,8 @@
       "chapter-notes"
     ],
     "component": "FortyClassicCrudeOilTradesChapterNotes",
-    "url": "articles/forty-classic-crude-oil-trades-chapter-notes.html"
+    "url": "articles/forty-classic-crude-oil-trades-chapter-notes.html",
+    "pdf_url": "articles/forty-classic-crude-oil-trades-chapter-notes.pdf"
   },
   {
     "slug": "ts-feature-engineering-guide",
@@ -201,7 +211,8 @@
     "style": "",
     "tags": [],
     "component": "Article",
-    "url": "articles/ts-feature-engineering-guide.html"
+    "url": "articles/ts-feature-engineering-guide.html",
+    "pdf_url": "articles/ts-feature-engineering-guide.pdf"
   },
   {
     "slug": "stochastic-dp-encyclopaedic-article",
@@ -213,7 +224,8 @@
     "style": "",
     "tags": [],
     "component": "SDPArticle",
-    "url": "articles/stochastic-dp-encyclopaedic-article.html"
+    "url": "articles/stochastic-dp-encyclopaedic-article.html",
+    "pdf_url": "articles/stochastic-dp-encyclopaedic-article.pdf"
   },
   {
     "slug": "splitwise-python-article",
@@ -225,7 +237,8 @@
     "style": "",
     "tags": [],
     "component": "Article",
-    "url": "articles/splitwise-python-article.html"
+    "url": "articles/splitwise-python-article.html",
+    "pdf_url": "articles/splitwise-python-article.pdf"
   },
   {
     "slug": "shapash-timeseries-technical-article",
@@ -237,7 +250,8 @@
     "style": "",
     "tags": [],
     "component": "ShapashTSArticle",
-    "url": "articles/shapash-timeseries-technical-article.html"
+    "url": "articles/shapash-timeseries-technical-article.html",
+    "pdf_url": "articles/shapash-timeseries-technical-article.pdf"
   },
   {
     "slug": "safe-ts-article",
@@ -249,7 +263,8 @@
     "style": "",
     "tags": [],
     "component": "App",
-    "url": "articles/safe-ts-article.html"
+    "url": "articles/safe-ts-article.html",
+    "pdf_url": "articles/safe-ts-article.pdf"
   },
   {
     "slug": "rag-2026-definitive-guide",
@@ -261,7 +276,8 @@
     "style": "",
     "tags": [],
     "component": "Article",
-    "url": "articles/rag-2026-definitive-guide.html"
+    "url": "articles/rag-2026-definitive-guide.html",
+    "pdf_url": "articles/rag-2026-definitive-guide.pdf"
   },
   {
     "slug": "probabilistic-forecasting-guide",
@@ -273,7 +289,8 @@
     "style": "",
     "tags": [],
     "component": "Article",
-    "url": "articles/probabilistic-forecasting-guide.html"
+    "url": "articles/probabilistic-forecasting-guide.html",
+    "pdf_url": "articles/probabilistic-forecasting-guide.pdf"
   },
   {
     "slug": "pfi-definitive-guide",
@@ -285,7 +302,8 @@
     "style": "",
     "tags": [],
     "component": "Article",
-    "url": "articles/pfi-definitive-guide.html"
+    "url": "articles/pfi-definitive-guide.html",
+    "pdf_url": "articles/pfi-definitive-guide.pdf"
   },
   {
     "slug": "feature-selection-ts-deep-dive",
@@ -297,7 +315,8 @@
     "style": "",
     "tags": [],
     "component": "App",
-    "url": "articles/feature-selection-ts-deep-dive.html"
+    "url": "articles/feature-selection-ts-deep-dive.html",
+    "pdf_url": "articles/feature-selection-ts-deep-dive.pdf"
   },
   {
     "slug": "ebm-definitive-guide",
@@ -309,7 +328,8 @@
     "style": "",
     "tags": [],
     "component": "Article",
-    "url": "articles/ebm-definitive-guide.html"
+    "url": "articles/ebm-definitive-guide.html",
+    "pdf_url": "articles/ebm-definitive-guide.pdf"
   },
   {
     "slug": "conformal-prediction-guide",
@@ -321,7 +341,8 @@
     "style": "",
     "tags": [],
     "component": "Article",
-    "url": "articles/conformal-prediction-guide.html"
+    "url": "articles/conformal-prediction-guide.html",
+    "pdf_url": "articles/conformal-prediction-guide.pdf"
   },
   {
     "slug": "catboost-guide",
@@ -333,6 +354,7 @@
     "style": "",
     "tags": [],
     "component": "Article",
-    "url": "articles/catboost-guide.html"
+    "url": "articles/catboost-guide.html",
+    "pdf_url": "articles/catboost-guide.pdf"
   }
 ]

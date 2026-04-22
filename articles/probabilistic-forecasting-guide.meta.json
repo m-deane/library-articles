@@ -8,5 +8,6 @@
   "style": "",
   "tags": [],
   "component": "Article",
-  "url": "articles/probabilistic-forecasting-guide.html"
+  "url": "articles/probabilistic-forecasting-guide.html",
+  "pdf_url": "articles/probabilistic-forecasting-guide.pdf"
 }

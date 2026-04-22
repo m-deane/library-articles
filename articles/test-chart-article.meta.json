@@ -12,5 +12,6 @@
     "test"
   ],
   "component": "TestChartArticle",
-  "url": "articles/test-chart-article.html"
+  "url": "articles/test-chart-article.html",
+  "pdf_url": "articles/test-chart-article.pdf"
 }

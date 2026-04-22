@@ -13,5 +13,6 @@
     "paper-notes"
   ],
   "component": "AppliedBayesianStatisticsNotes",
-  "url": "articles/applied-bayesian-statistics-notes.html"
+  "url": "articles/applied-bayesian-statistics-notes.html",
+  "pdf_url": "articles/applied-bayesian-statistics-notes.pdf"
 }

@@ -1,23 +1,35 @@
 #!/usr/bin/env python3
 """
 build.py — Convert articles/*.jsx into static HTML wrappers that render
-in-browser via Babel Standalone.
+in-browser (pre-transpiled JSX; see assets/template.html).
 
-stdlib only. Safe to run repeatedly; regenerates all *.html / *.meta.json /
-index.html / _manifest.json from the .jsx sources.
+stdlib only for the default path. Safe to run repeatedly; regenerates all
+*.html / *.meta.json / index.html / _manifest.json from the .jsx sources.
 
 Usage:
-    python3 build.py
+    python3 build.py                  # fast path — HTML + metadata only
+    python3 build.py --pdf            # also render per-article PDFs
+    BUILD_PDFS=1 python3 build.py     # same, env-var form (used by CI)
+
+PDF rendering requires Playwright + Chromium:
+    pip install -r requirements-build.txt && playwright install chromium
+
+When PDFs are built, the whole-library ZIP (library-articles-offline.zip)
+is also built at the repo root for plane-trip offline reading.
 """
 
 from __future__ import annotations
 
+import datetime as _dt
 import html
 import json
+import os
 import platform
 import re
 import subprocess
 import sys
+import time
+import zipfile
 from pathlib import Path
 
 
@@ -29,6 +41,7 @@ TEMPLATE_PATH = ASSETS_DIR / "template.html"
 INDEX_TEMPLATE_PATH = ASSETS_DIR / "index-template.html"
 INDEX_OUT = ROOT / "index.html"
 MANIFEST_OUT = ROOT / "_manifest.json"
+ZIP_OUT = ROOT / "library-articles-offline.zip"
 
 
 # -------------------------------------------------------------------
@@ -569,6 +582,7 @@ def render_template(
 def render_index(
     template: str,
     articles: list[dict],
+    zip_size_mb: int | None = None,
 ) -> str:
     cards: list[str] = []
     for a in articles:
@@ -607,22 +621,180 @@ def render_index(
         if badge:
             meta_bits.append(badge)
 
+        # The card itself is a link to the HTML article. We append a tiny
+        # inline PDF link as a sibling inside the card so it doesn't nest
+        # <a> tags (which is invalid HTML). A small JS stopPropagation is
+        # attached inline so clicking the PDF icon doesn't trigger the card's
+        # href navigation.
         card = (
-            f'<a class="article-card" href="articles/{slug_esc}.html" '
+            f'<div class="article-card-wrap" '
             f'data-category="{cat_esc}" data-style="{style_esc}" '
             f'data-date="{html.escape(date_str)}" '
             f'data-title="{title_esc}" '
             f'data-search="{search_esc}">'
+            f'<a class="article-card" href="articles/{slug_esc}.html">'
             f'<div class="card-meta">{"".join(meta_bits)}</div>'
             f'<h3>{title_esc}</h3>'
             f'<p class="card-subtitle">{subtitle_esc}</p>'
             f'<div class="card-tags">{tags_html}</div>'
             f'</a>'
+            f'<a class="pdf-link" href="articles/{slug_esc}.pdf" download '
+            f'title="Download PDF" aria-label="Download PDF">📑</a>'
+            f'</div>'
         )
         cards.append(card)
     html_out = template.replace("{{CARDS_HTML}}", "\n".join(cards))
     html_out = html_out.replace("{{ARTICLE_COUNT}}", str(len(articles)))
+    # ZIP button — show a non-functional placeholder state if the ZIP hasn't
+    # been built yet (user ran `python3 build.py` without --pdf/BUILD_PDFS=1).
+    if zip_size_mb is not None:
+        zip_button = (
+            f'<a class="zip-download-btn" href="library-articles-offline.zip" '
+            f'download title="Download all articles as PDFs">'
+            f'📦 Download all PDFs ({zip_size_mb} MB)</a>'
+        )
+    else:
+        zip_button = ""
+    html_out = html_out.replace("{{ZIP_BUTTON}}", zip_button)
+    html_out = html_out.replace(
+        "{{ZIP_SIZE_MB}}", str(zip_size_mb) if zip_size_mb is not None else "?"
+    )
     return html_out
+
+
+# -------------------------------------------------------------------
+# Playwright PDF rendering (opt-in — BUILD_PDFS=1 or --pdf)
+# -------------------------------------------------------------------
+
+def render_pdfs(html_paths: list[Path], out_dir: Path) -> list[tuple[str, str]]:
+    """Render each HTML article to a sibling PDF using headless Chromium.
+
+    Incremental: skips an article whose .pdf is already newer than the .html.
+    Returns a list of (slug, error_message) tuples for articles that failed
+    to render. Each failure is logged and skipped — the build does not crash.
+    """
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        print(
+            "[error] playwright not installed. Run:\n"
+            "    pip install -r requirements-build.txt && playwright install chromium",
+            file=sys.stderr,
+        )
+        return [("__all__", "playwright not installed")]
+
+    failures: list[tuple[str, str]] = []
+    rendered = 0
+    skipped = 0
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        for html_path in html_paths:
+            slug = html_path.stem
+            pdf_path = html_path.with_suffix(".pdf")
+            try:
+                if (
+                    pdf_path.exists()
+                    and pdf_path.stat().st_mtime >= html_path.stat().st_mtime
+                ):
+                    skipped += 1
+                    print(f"[pdf] {slug} up-to-date, skipping")
+                    continue
+
+                start = time.monotonic()
+                page.goto(f"file://{html_path.absolute()}")
+                # Give React/Recharts time to mount and render charts. The
+                # network-idle wait handles same-origin vendor-script loads;
+                # the 500 ms buffer covers React-render + Recharts animation
+                # settle. Fonts are local so they typically load < 50 ms, but
+                # we still gate on document.fonts.ready to be safe.
+                page.wait_for_load_state("networkidle")
+                page.evaluate("() => document.fonts.ready")
+                page.wait_for_timeout(500)
+
+                page.pdf(
+                    path=str(pdf_path),
+                    format="A4",
+                    print_background=True,
+                    margin={
+                        "top": "20mm",
+                        "bottom": "20mm",
+                        "left": "18mm",
+                        "right": "18mm",
+                    },
+                )
+                ms = int((time.monotonic() - start) * 1000)
+                print(f"[pdf] {slug} rendered in {ms} ms")
+                rendered += 1
+            except Exception as e:  # noqa: BLE001
+                err = str(e).splitlines()[0] if str(e) else type(e).__name__
+                print(f"[pdf] {slug} FAILED: {err}", file=sys.stderr)
+                failures.append((slug, err))
+        browser.close()
+
+    print(
+        f"[pdf] summary: {rendered} rendered, {skipped} up-to-date, "
+        f"{len(failures)} failed"
+    )
+    return failures
+
+
+# -------------------------------------------------------------------
+# Whole-library ZIP bundle (Phase 5)
+# -------------------------------------------------------------------
+
+def build_library_zip(articles_dir: Path, out_path: Path) -> None:
+    """Zip every articles/*.pdf into a single downloadable bundle.
+
+    The ZIP has this layout (for nice extraction in Finder / Files.app):
+
+        library-articles-offline/
+          README.md
+          articles/
+            virtual-barrels.pdf
+            ...
+
+    The readme inside the ZIP gives the recipient a one-line orientation
+    and a build date. Re-runs always rebuild from scratch.
+    """
+    pdfs = sorted(articles_dir.glob("*.pdf"))
+    if not pdfs:
+        print(
+            "[zip] no PDFs found — skipping ZIP build "
+            "(run with BUILD_PDFS=1 or --pdf first)"
+        )
+        return
+
+    today = _dt.date.today().isoformat()
+    readme = (
+        f"# Data Science Library — Articles (offline PDF bundle)\n"
+        f"\n"
+        f"Generated: {today}\n"
+        f"Count: {len(pdfs)} articles\n"
+        f"\n"
+        f"Every article from the Data Science Library as a PDF. Open any "
+        f"file in Preview, Acrobat, or any PDF reader — works fully offline.\n"
+        f"\n"
+        f"Live viewer: https://helwyr55-library-articles.static.hf.space/\n"
+    )
+
+    if out_path.exists():
+        out_path.unlink()
+
+    with zipfile.ZipFile(out_path, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+        zf.writestr("library-articles-offline/README.md", readme)
+        for pdf in pdfs:
+            zf.write(pdf, arcname=f"library-articles-offline/articles/{pdf.name}")
+
+    size_mb = out_path.stat().st_size / (1024 * 1024)
+    print(f"[zip] wrote {out_path.name} — {size_mb:.1f} MB, {len(pdfs)} PDFs")
+
+
+def _zip_size_mb(zip_path: Path) -> int | None:
+    if not zip_path.exists():
+        return None
+    return max(1, round(zip_path.stat().st_size / (1024 * 1024)))
 
 
 # -------------------------------------------------------------------
@@ -705,6 +877,7 @@ def main() -> int:
                 "tags": list(meta.get("tags", [])) if isinstance(meta.get("tags"), list) else [],
                 "component": component_name,
                 "url": f"articles/{slug}.html",
+                "pdf_url": f"articles/{slug}.pdf",
             }
             (ARTICLES_DIR / f"{slug}.meta.json").write_text(
                 json.dumps(meta_out, indent=2), encoding="utf-8"
@@ -720,7 +893,29 @@ def main() -> int:
     manifest.sort(key=lambda m: (m.get("date") or "", m.get("title") or ""), reverse=True)
     MANIFEST_OUT.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
-    INDEX_OUT.write_text(render_index(index_template, manifest), encoding="utf-8")
+    # -------- PDFs + ZIP (opt-in) --------
+    want_pdfs = "--pdf" in sys.argv or os.environ.get("BUILD_PDFS") == "1"
+    pdf_failures: list[tuple[str, str]] = []
+    if want_pdfs:
+        html_paths = [ARTICLES_DIR / f"{m['slug']}.html" for m in manifest]
+        html_paths = [p for p in html_paths if p.exists()]
+        print(f"\n[pdf] rendering {len(html_paths)} article(s) with Playwright…")
+        pdf_failures = render_pdfs(html_paths, ARTICLES_DIR)
+        # Build the offline ZIP from every *.pdf that actually exists.
+        print("\n[zip] building whole-library ZIP…")
+        build_library_zip(ARTICLES_DIR, ZIP_OUT)
+    else:
+        print(
+            "\n[pdf] skipped (run `BUILD_PDFS=1 python3 build.py` or "
+            "`python3 build.py --pdf` to render PDFs + ZIP bundle)"
+        )
+
+    # Index is rendered last so it can reference the ZIP size once built.
+    zip_size_mb = _zip_size_mb(ZIP_OUT)
+    INDEX_OUT.write_text(
+        render_index(index_template, manifest, zip_size_mb=zip_size_mb),
+        encoding="utf-8",
+    )
 
     print(
         f"\nBuilt {len(manifest)} article(s). "
@@ -731,6 +926,11 @@ def main() -> int:
         for slug, err in failures:
             print(f"  - {slug}: {err}")
         return 1
+    if pdf_failures and pdf_failures != [("__all__", "playwright not installed")]:
+        print("\nPDF RENDER FAILURES:")
+        for slug, err in pdf_failures:
+            print(f"  - {slug}: {err}")
+        # Don't fail the whole build on PDF render errors — HTML build succeeded.
     return 0
 
 

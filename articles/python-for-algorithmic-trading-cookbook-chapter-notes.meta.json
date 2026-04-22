@@ -16,5 +16,6 @@
     "chapter-notes"
   ],
   "component": "PythonForAlgorithmicTradingCookbookChapterNotes",
-  "url": "articles/python-for-algorithmic-trading-cookbook-chapter-notes.html"
+  "url": "articles/python-for-algorithmic-trading-cookbook-chapter-notes.html",
+  "pdf_url": "articles/python-for-algorithmic-trading-cookbook-chapter-notes.pdf"
 }

@@ -8,5 +8,6 @@
   "style": "",
   "tags": [],
   "component": "Article",
-  "url": "articles/conformal-prediction-guide.html"
+  "url": "articles/conformal-prediction-guide.html",
+  "pdf_url": "articles/conformal-prediction-guide.pdf"
 }

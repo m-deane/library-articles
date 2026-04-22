@@ -8,5 +8,6 @@
   "style": "",
   "tags": [],
   "component": "Article",
-  "url": "articles/catboost-guide.html"
+  "url": "articles/catboost-guide.html",
+  "pdf_url": "articles/catboost-guide.pdf"
 }

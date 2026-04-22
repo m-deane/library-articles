@@ -8,5 +8,6 @@
   "style": "",
   "tags": [],
   "component": "Article",
-  "url": "articles/ts-feature-engineering-guide.html"
+  "url": "articles/ts-feature-engineering-guide.html",
+  "pdf_url": "articles/ts-feature-engineering-guide.pdf"
 }
