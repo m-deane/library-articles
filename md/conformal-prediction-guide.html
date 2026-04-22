@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conformal Prediction Guide — Plain Reader</title>
+  <meta name="description" content="Distribution-free, finite-sample coverage guarantees. No Gaussianity. No Bayesian priors. Works with any model. This is the uncertainty quantification framework that is replacing bootstrap intervals and Bayesian credi..." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Conformal Prediction Guide</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-19</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read">20 min</span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/conformal-prediction-guide.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/conformal-prediction-guide.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <h2 id="1-the-uncertainty-problem-in-ml">1. The Uncertainty Problem in ML</h2>
+<p>Your ML model predicts a number. The decision-maker asks: "How confident are you?" The model has no answer. Softmax probabilities are poorly calibrated — a classifier that says "87% confidence" is often wrong 30% of the time. Regression models give point predictions with no error bars. Bootstrap intervals are approximate and tend to undercover. Bayesian methods require specifying priors that are often wrong. The fundamental question — "what is the range of plausible values for this prediction?" — remains unanswered by standard ML.</p>
+<p>Conformal prediction solves this. It wraps around any model and produces prediction intervals (for regression) or prediction sets (for classification) with a mathematical guarantee: <strong>the true value is contained with probability at least 1−α</strong>. This guarantee holds for any distribution, any model, with finite samples. The only assumption is exchangeability — a condition weaker than i.i.d. that simply says the ordering of data points doesn't carry information. This article covers everything: the theory, the algorithms, the MAPIE library, and four production use cases.</p>
+<p><em>[Figure: Guarantee Diag — see interactive JSX version]</em></p>
+<p><em>The conformal prediction guarantee. P(Y ∈ C(X)) ≥ 1−α for any distribution, any model, finite samples. Only requires exchangeability.</em></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 0: 00_setup.py</span>
+<span class="c1"># pip install mapie scikit-learn pandas numpy matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mapie.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">MapieRegressor</span><span class="p">,</span> <span class="n">MapieQuantileRegressor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mapie.classification</span><span class="w"> </span><span class="kn">import</span> <span class="n">MapieClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mapie.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">regression_coverage_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">GradientBoostingRegressor</span><span class="p">,</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Heteroscedastic regression data</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">3000</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.3</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">noise</span>  <span class="c1"># noise grows with X</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span><span class="si">}</span><span class="s2">, Test: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Noise is heteroscedastic: σ grows from </span><span class="si">{</span><span class="mf">0.3</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="mf">0.3</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="mi">10</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>💡 Notebook Map</strong></p>
+<p><strong>Cells 0–9</strong>: <code>Cell 0</code> Setup (§1) · <code>Cell 1</code> Split Conformal (§3) · <code>Cell 2</code> CQR (§4) · <code>Cell 3</code> CV+ (§5) · <code>Cell 4</code> Calibration Check (§7) · <code>Cell 5</code> Classification Sets (§8) · <code>Cell 6</code> Visualise (§9) · <code>Cell 7</code> Compare Methods (§10) · <code>Cell 8</code> Time Series (§11) · <code>Cell 9</code> Production (§12)</p>
+</blockquote>
+<h2 id="2-exchangeability-the-only-assumption">2. Exchangeability: The Only Assumption</h2>
+<p>Conformal prediction requires one assumption: <strong>exchangeability</strong>. A sequence of random variables Z₁, Z₂, ..., Zₙ is exchangeable if their joint distribution is invariant under any permutation. This is weaker than i.i.d.: i.i.d. data is always exchangeable, but exchangeable data need not be independent (e.g., sampling without replacement from a finite population is exchangeable but not independent).</p>
+<p>When does exchangeability fail? <strong>Time series</strong> — observations are ordered, autocorrelated, and potentially non-stationary. Direct application of conformal prediction to time series gives invalid coverage. <strong>Distribution shift</strong> — if the test distribution differs from the calibration distribution, the guarantee weakens. <strong>Feedback loops</strong> — if the model's predictions influence the data-generating process (e.g., a recommendation system), exchangeability breaks.</p>
+<p>For time series, adaptations exist: EnbPI (Xu &amp; Xie 2021) uses ensemble diversity, ACI (Gibbs &amp; Candès 2021) adjusts online. For distribution shift, robust conformal prediction (Cauchois et al. 2021) and Mondrian conformal provide partial solutions. The key insight: conformal prediction's coverage guarantee degrades gracefully — even when exchangeability is approximately violated, coverage is approximately correct.</p>
+<h2 id="3-split-conformal-prediction">3. Split Conformal Prediction</h2>
+<p>The simplest and most practical variant. (1) Split data into training and calibration sets. (2) Train the model on the training set. (3) Compute nonconformity scores on the calibration set — typically the absolute residual <code>sᵢ = |yᵢ − ŷᵢ|</code>. (4) Compute the (1−α)(1+1/n)-quantile of the calibration scores as the interval half-width q. (5) For a new prediction: the interval is <code>[ŷ − q, ŷ + q]</code>. The guarantee: P(Y ∈ [ŷ−q, ŷ+q]) ≥ 1−α.</p>
+<p><em>[Figure: Split CPDiag — see interactive JSX version]</em></p>
+<p><em>Split conformal in 5 steps. The resulting interval has constant width — it doesn't adapt to local uncertainty. This is the main limitation, addressed by CQR.</em></p>
+<p>The constant-width limitation is significant for heteroscedastic data. If noise is low in one region and high in another, split conformal produces intervals that are too wide in the low-noise region (over-covering, wasteful) and potentially too narrow in the high-noise region (under-covering locally, though marginally correct). CQR solves this.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 1: 01_split_conformal.py</span>
+<span class="c1"># Split conformal with MAPIE</span>
+<span class="n">base_model</span> <span class="o">=</span> <span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">mapie_split</span> <span class="o">=</span> <span class="n">MapieRegressor</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">base_model</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;naive&quot;</span><span class="p">,</span>  <span class="c1"># split conformal</span>
+    <span class="n">cv</span><span class="o">=</span><span class="s2">&quot;split&quot;</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">mapie_split</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span><span class="p">,</span> <span class="n">y_pis</span> <span class="o">=</span> <span class="n">mapie_split</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># 90% PI</span>
+
+<span class="n">coverage</span> <span class="o">=</span> <span class="n">regression_coverage_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y_pis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_pis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_pis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Split Conformal 90% PI:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Coverage: </span><span class="si">{</span><span class="n">coverage</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> (guaranteed ≥ 90%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Avg width: </span><span class="si">{</span><span class="n">width</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> (CONSTANT — same everywhere)&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="4-conformalized-quantile-regression-cqr">4. Conformalized Quantile Regression (CQR)</h2>
+<p>CQR (Romano, Patterson, Candès, NeurIPS 2019) is the production standard. It trains quantile regression models for lower and upper bounds, then applies conformal calibration to guarantee coverage. The nonconformity score is: <code>E(x,y) = max(q̂_α/2(x) − y, y − q̂_{1−α/2}(x))</code>. This score measures how much the true value exceeds the predicted bounds — it's zero when y is inside the predicted interval and positive when it's outside.</p>
+<p><em>[Figure: CQRDiag — see interactive JSX version]</em></p>
+<p><em>CQR = quantile regression (adaptive) + conformal calibration (guaranteed). The result: intervals that are narrower where the model is confident and wider where it's uncertain, with guaranteed coverage.</em></p>
+<p>The conformalization step adjusts the quantile predictions by a constant q (the quantile of calibration scores): <code>[q̂_α/2(x) − q, q̂_{1−α/2}(x) + q]</code>. This additive correction ensures the overall coverage is at least 1−α. If the quantile regression model is already well-calibrated, q will be small and the intervals change minimally. If the model miscalibrates, q corrects it. Either way, the guarantee holds.</p>
+<p>CQR inherits quantile regression's adaptiveness: intervals are wider in noisy regions and narrower in clean regions. And it inherits conformal prediction's guarantee: coverage is at least 1−α marginally. This combination is why CQR is the default method in MAPIE and the recommended approach for production prediction intervals.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 2: 02_cqr.py</span>
+<span class="c1"># CQR with MAPIE — adaptive + guaranteed</span>
+<span class="n">mapie_cqr</span> <span class="o">=</span> <span class="n">MapieQuantileRegressor</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">mapie_cqr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">y_pred_cqr</span><span class="p">,</span> <span class="n">y_pis_cqr</span> <span class="o">=</span> <span class="n">mapie_cqr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">cov_cqr</span> <span class="o">=</span> <span class="n">regression_coverage_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pis_cqr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y_pis_cqr</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">w_cqr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_pis_cqr</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_pis_cqr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CQR 90% PI:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Coverage: </span><span class="si">{</span><span class="n">cov_cqr</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> (guaranteed ≥ 90%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Avg width: </span><span class="si">{</span><span class="n">w_cqr</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> (ADAPTIVE)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Comparison: split conformal width = </span><span class="si">{</span><span class="n">width</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> (constant)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;            CQR width = </span><span class="si">{</span><span class="n">w_cqr</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> (adapts to local noise)&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="5-cv-and-jackknife-no-data-waste">5. CV+ and Jackknife+: No Data Waste</h2>
+<p>Split conformal wastes the calibration set — data that can't be used for training. For small datasets, this matters. <strong>Jackknife+</strong> (Barber et al., Annals of Statistics 2021) uses leave-one-out residuals: each training point gets a model trained without it. Coverage guarantee: P(Y ∈ C(X)) ≥ 1−2α/(n+1). <strong>CV+</strong> is the K-fold version: K models trained on K-1 folds each, residuals computed on held-out folds. CV+ with 5-10 folds is the practical default.</p>
+<p><em>[Figure: CVPlus Diag — see interactive JSX version]</em></p>
+<p><em>Three conformal variants trading off data efficiency against computation. CV+ (middle) is the production sweet spot.</em></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 3: 03_cvplus.py</span>
+<span class="c1"># CV+ with MAPIE — uses all data</span>
+<span class="n">mapie_cv</span> <span class="o">=</span> <span class="n">MapieRegressor</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;plus&quot;</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">mapie_cv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred_cv</span><span class="p">,</span> <span class="n">y_pis_cv</span> <span class="o">=</span> <span class="n">mapie_cv</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">cov_cv</span> <span class="o">=</span> <span class="n">regression_coverage_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pis_cv</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y_pis_cv</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">w_cv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_pis_cv</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_pis_cv</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CV+ (5-fold) 90% PI:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Coverage: </span><span class="si">{</span><span class="n">cov_cv</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Width: </span><span class="si">{</span><span class="n">w_cv</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Uses ALL training data — no waste&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="6-nonconformity-scores">6. Nonconformity Scores</h2>
+<p><em>[Figure: Score Diag — see interactive JSX version]</em></p>
+<p><em>The score function determines interval shape. Absolute residual → constant width. CQR score → adaptive width. Classification score → prediction set size.</em></p>
+<p>The nonconformity score is the core abstraction. For regression, the absolute residual <code>|y − ŷ|</code> is the simplest score — it produces constant-width intervals. The CQR score <code>max(q̂_lo − y, y − q̂_hi)</code> produces adaptive intervals. Normalised residuals <code>|y − ŷ| / σ̂(x)</code> (where σ̂ is an estimated uncertainty) also produce adaptive intervals. For classification, <code>1 − f(x)_y</code> (one minus the softmax probability of the true class) produces prediction sets — smaller sets for confident predictions, larger sets for uncertain ones.</p>
+<p>The choice of score determines the quality of the intervals. Better scores produce tighter intervals with the same coverage guarantee. This is the main lever for improving conformal prediction performance: invest in better base models and better score functions, not in changing the conformal wrapper.</p>
+<h2 id="7-calibration-verification">7. Calibration Verification</h2>
+<p>Even though conformal prediction guarantees marginal coverage, you should verify empirically. The check is simple: compute the empirical coverage at multiple α levels and compare to the nominal coverage. A well-calibrated system shows empirical coverage ≥ nominal at every level. Additionally, check coverage per subgroup (gender, region, age bracket) to detect potential conditional coverage failures.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 4: 04_calibration.py</span>
+<span class="c1"># Calibration check across coverage levels</span>
+<span class="n">alphas</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nominal   Emp.Coverage   Width    Status&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alphas</span><span class="p">:</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">pis</span> <span class="o">=</span> <span class="n">mapie_cqr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">mapie_cqr</span><span class="p">,</span> <span class="s1">&#39;predict&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">regression_coverage_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">pis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">nominal</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="s2">&quot;✓&quot;</span> <span class="k">if</span> <span class="n">cov</span> <span class="o">&gt;=</span> <span class="n">nominal</span> <span class="o">-</span> <span class="mf">0.02</span> <span class="k">else</span> <span class="s2">&quot;⚠️ under-cover&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">nominal</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">       </span><span class="si">{</span><span class="n">cov</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">          </span><span class="si">{</span><span class="n">w</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">     </span><span class="si">{</span><span class="n">ok</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="8-prediction-sets-for-classification">8. Prediction Sets for Classification</h2>
+<p>For classification, conformal prediction produces <strong>prediction sets</strong> — sets of classes that contain the true class with guaranteed probability. The set size communicates confidence: a singleton set means the model is sure, a large set means it's uncertain. This is more actionable than a softmax probability — "the disease is either A or B" is a clear clinical instruction; "the probability of A is 0.55" is ambiguous.</p>
+<p><em>[Figure: Pred Set Diag — see interactive JSX version]</em></p>
+<p><em>Prediction set sizes communicate model confidence. Singletons = confident. Pairs = ambiguous. Large sets = uncertain. The true class is in the set with probability ≥ 1−α.</em></p>
+<p>MAPIE implements three strategies: <strong>LAC</strong> (Least Ambiguous Classifier) — fixed threshold on softmax. <strong>APS</strong> (Adaptive Prediction Sets, Romano et al. 2020) — cumulative softmax threshold. <strong>RAPS</strong> (Regularized APS, Angelopoulos et al. 2021) — penalises large sets. RAPS is recommended for most applications because it produces the smallest sets while maintaining coverage.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 5: 05_classification.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_iris</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X_cls</span><span class="p">,</span> <span class="n">y_cls</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+<span class="n">X_tr_c</span><span class="p">,</span> <span class="n">X_te_c</span><span class="p">,</span> <span class="n">y_tr_c</span><span class="p">,</span> <span class="n">y_te_c</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_cls</span><span class="p">,</span> <span class="n">y_cls</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_tr_c</span><span class="p">,</span> <span class="n">y_tr_c</span><span class="p">)</span>
+
+<span class="n">mapie_cls</span> <span class="o">=</span> <span class="n">MapieClassifier</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">rf</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="s2">&quot;prefit&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;aps&quot;</span><span class="p">)</span>
+<span class="n">mapie_cls</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_tr_c</span><span class="p">,</span> <span class="n">y_tr_c</span><span class="p">)</span>
+<span class="n">y_pred_c</span><span class="p">,</span> <span class="n">y_sets</span> <span class="o">=</span> <span class="n">mapie_cls</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_te_c</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">set_sizes</span> <span class="o">=</span> <span class="n">y_sets</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prediction sets (90% coverage):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Singletons: </span><span class="si">{</span><span class="p">(</span><span class="n">set_sizes</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Pairs: </span><span class="si">{</span><span class="p">(</span><span class="n">set_sizes</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Full (3): </span><span class="si">{</span><span class="p">(</span><span class="n">set_sizes</span><span class="o">==</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Mean size: </span><span class="si">{</span><span class="n">set_sizes</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> / 3 classes&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="9-visualisation">9. Visualisation</h2>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 6: 06_visualise.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="p">;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;Agg&quot;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">sort_idx</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="n">y_test</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+<span class="n">pred_s</span> <span class="o">=</span> <span class="n">y_pred_cqr</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+<span class="n">lo_s</span> <span class="o">=</span> <span class="n">y_pis_cqr</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">hi_s</span> <span class="o">=</span> <span class="n">y_pis_cqr</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">pred_s</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#0F766E&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Prediction&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">lo_s</span><span class="p">,</span> <span class="n">hi_s</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#0F766E&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;90% CQR PI&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;CQR: Intervals widen with increasing noise (heteroscedastic)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;conformal_intervals.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saved: conformal_intervals.png&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="10-method-comparison">10. Method Comparison</h2>
+<p><em>[Figure: Vs Diag — see interactive JSX version]</em></p>
+<p><em>Six UQ methods compared. Conformal prediction (top 3 rows) provides guaranteed coverage. Others provide approximate or conditional coverage.</em></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 7: 07_compare.py</span>
+<span class="c1"># Compare all methods on the same data</span>
+<span class="n">methods</span> <span class="o">=</span> <span class="p">{{}}</span>
+
+<span class="c1"># Split conformal</span>
+<span class="n">methods</span><span class="p">[</span><span class="s2">&quot;Split&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cov&quot;</span><span class="p">:</span> <span class="n">coverage</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">width</span><span class="p">}</span>
+
+<span class="c1"># CQR</span>
+<span class="n">methods</span><span class="p">[</span><span class="s2">&quot;CQR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cov&quot;</span><span class="p">:</span> <span class="n">cov_cqr</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">w_cqr</span><span class="p">}</span>
+
+<span class="c1"># CV+</span>
+<span class="n">methods</span><span class="p">[</span><span class="s2">&quot;CV+&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cov&quot;</span><span class="p">:</span> <span class="n">cov_cv</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">w_cv</span><span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Method     Coverage   Width    Adaptive?&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">48</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">methods</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">adaptive</span> <span class="o">=</span> <span class="s2">&quot;Yes&quot;</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;CQR&quot;</span> <span class="k">else</span> <span class="s2">&quot;No&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">vals</span><span class="p">[</span><span class="s1">&#39;cov&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">      </span><span class="si">{</span><span class="n">vals</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">     </span><span class="si">{</span><span class="n">adaptive</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">All methods guarantee ≥ 90</span><span class="si">% c</span><span class="s2">overage.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CQR has the tightest intervals because it adapts to noise.&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="11-conformal-prediction-for-time-series">11. Conformal Prediction for Time Series</h2>
+<p>Time series violates exchangeability — observations are ordered and autocorrelated. Two solutions: <strong>EnbPI</strong> (Xu &amp; Xie 2021) uses ensemble diversity to produce approximately valid intervals without exchangeability. <strong>ACI</strong> (Adaptive Conformal Inference, Gibbs &amp; Candès 2021) adjusts the α threshold online, increasing it when the model under-covers and decreasing when it over-covers. <strong>EnCQR</strong> (Ensemble CQR, Feldman et al. 2023) combines CQR adaptiveness with ensemble exchangeability removal.</p>
+<p>MAPIE's <code>MapieTimeSeriesRegressor</code> implements EnbPI and ACI. For production time series, the recommended approach: engineer lag/rolling features (as tabular), train a gradient boosting model, and wrap with MAPIE using <code>method="enbpi"</code> for ensemble-based intervals.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 8: 08_timeseries.py</span>
+<span class="c1"># Time series conformal (conceptual)</span>
+<span class="c1"># from mapie.time_series_regression import MapieTimeSeriesRegressor</span>
+<span class="c1"># mapie_ts = MapieTimeSeriesRegressor(</span>
+<span class="c1">#     estimator=model, method=&quot;enbpi&quot;,</span>
+<span class="c1">#     agg_function=&quot;median&quot;,</span>
+<span class="c1"># )</span>
+<span class="c1"># mapie_ts.fit(X_train_ts, y_train_ts)</span>
+<span class="c1"># y_pred_ts, y_pis_ts = mapie_ts.predict(X_test_ts, alpha=0.1)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time series conformal methods:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  EnbPI: ensemble-based, no exchangeability needed&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  ACI: adaptive online, handles distribution shift&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  EnCQR: ensemble CQR, adaptive + ensemble&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Use MapieTimeSeriesRegressor for production TS intervals&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="12-production-deployment">12. Production Deployment</h2>
+<p>MAPIE wraps any sklearn-compatible estimator. The production workflow: (1) train your model normally, (2) wrap with MapieRegressor or MapieQuantileRegressor, (3) call .fit(), (4) call .predict(X, alpha=0.1) to get predictions and intervals. The intervals are returned as a 3D array: (n_samples, 2, n_alpha_levels) — lower and upper bounds for each coverage level.</p>
+<p>For serving: the fitted MAPIE object can be pickled and loaded in a Flask/FastAPI endpoint. Each prediction returns both the point forecast and the interval bounds. The overhead compared to the base model is minimal — conformal prediction adds a constant (for split conformal) or a lookup (for CQR) to each prediction.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 9: 09_production.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+
+<span class="c1"># Save fitted MAPIE model</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;mapie_cqr_model.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">mapie_cqr</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># Load and predict with intervals</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;mapie_cqr_model.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">loaded</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># Single prediction with 90% interval</span>
+<span class="n">new_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">5.0</span><span class="p">]])</span>
+<span class="n">pred</span><span class="p">,</span> <span class="n">pis</span> <span class="o">=</span> <span class="n">loaded</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_X</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prediction: </span><span class="si">{</span><span class="n">pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;90% PI: [</span><span class="si">{</span><span class="n">pis</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">pis</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Width: </span><span class="si">{</span><span class="n">pis</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">pis</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Serving: pickle load → predict(X, alpha) → return pred + bounds&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>✅ End of notebook</strong></p>
+<p>Cells 0–9: setup → split conformal → CQR → CV+ → calibration → classification sets → visualise → method comparison → time series → production. Copy green-bordered cells in order.</p>
+</blockquote>
+<h2 id="13-use-case-medical-diagnosis">13. Use Case: Medical Diagnosis</h2>
+<p>Prediction sets for disease classification: "the model says the condition is in the set {"{"}Condition A, Condition B{"}"} with 95% coverage." The clinician investigates both. A singleton set provides high confidence. A set of five conditions signals diagnostic uncertainty — order more tests. This is more actionable than "P(Condition A) = 0.55."'</p>
+<p>For patient risk scoring (regression), CQR intervals on clinical scores (NEWS2, SOFA) set alert thresholds: "alert if the upper bound of predicted SOFA exceeds 8." The coverage guarantee means the alarm has a known, calibrated false negative rate.</p>
+<h2 id="14-use-case-supply-chain-safety-stock">14. Use Case: Supply Chain Safety Stock</h2>
+<p>Safety stock = upper prediction bound − point forecast. A 95% CQR interval with upper bound 238 and point forecast 215 means safety stock = 23 units. The coverage guarantee maps directly to service level: 95% coverage → 95% probability of meeting demand without stockout. CQR's adaptiveness means high-uncertainty products get more safety stock and low-uncertainty products get less — reducing total inventory cost while maintaining the service level target.</p>
+<h2 id="15-use-case-manufacturing-quality-control">15. Use Case: Manufacturing Quality Control</h2>
+<p>CQR intervals on dimensional measurements set inspection triggers. If the upper bound of a predicted dimension exceeds the specification tolerance, the part is flagged for inspection — even though the point prediction is within spec. The coverage guarantee means the false clear rate (parts that pass QC but are actually out of spec) is bounded at α. This connects conformal prediction to Six Sigma: the coverage level corresponds to the sigma level's confidence.</p>
+<h2 id="16-limitations">16. Limitations</h2>
+<p><strong>1. Marginal, not conditional coverage.</strong> The guarantee is averaged over the distribution. Subgroups may have worse coverage. <em>Workaround:</em> Mondrian conformal, group-conditional. <strong>2. Exchangeability for time series.</strong> <em>Workaround:</em> EnbPI, ACI. <strong>3. Data waste (split).</strong> <em>Workaround:</em> CV+, jackknife+. <strong>4. Constant width (basic conformal).</strong> <em>Workaround:</em> CQR for adaptive intervals. <strong>5. No causal interpretation.</strong> Intervals quantify statistical uncertainty, not causal. <strong>6. Sensitivity to base model.</strong> Better base models produce tighter intervals. Conformal prediction can't save a bad model — it just puts honest error bars on bad predictions.</p>
+<h2 id="17-the-people">17. The People</h2>
+<p><strong>Vladimir Vovk, Alex Gammerman, Glenn Shafer</strong>: the founders. "Algorithmic Learning in a Random World" (2005) laid the theoretical foundation. <strong>Yaniv Romano, Evan Patterson, Emmanuel Candès</strong> (Stanford): CQR (NeurIPS 2019), the paper that made conformal prediction practical. <strong>Rina Foygel Barber</strong> et al.: jackknife+ and CV+ (Annals of Statistics 2021). <strong>Anastasios Angelopoulos &amp; Stephen Bates</strong>: the definitive tutorial (2023), RAPS, Learn-Then-Test framework. <strong>Isaac Gibbs &amp; Emmanuel Candès</strong>: ACI (2021) for non-exchangeable data. <strong>Chen Xu &amp; Yao Xie</strong>: EnbPI (2021) for time series. <strong>Thibault Cordier et al.</strong> (Quantmetry): MAPIE library (COPA 2023, scikit-learn-contrib).</p>
+<h2 id="18-decision-framework">18. Decision Framework</h2>
+<p>✓ Use conformal prediction when:</p>
+<p>You need prediction intervals or sets with formal coverage guarantees.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Your model is any sklearn-compatible estimator (model-agnostic).</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You want calibrated uncertainty without Bayesian priors or distributional assumptions.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Downstream decisions depend on uncertainty (safety stock, clinical alerts, risk).</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Regulatory requirements demand quantified uncertainty (medical devices, EU AI Act).</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You want adaptive intervals that reflect local uncertainty → use CQR.</p>
+<p>✗ Consider alternatives when:</p>
+<p>You need the full predictive distribution → NGBoost, Bayesian, DeepAR.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You need conditional coverage per subgroup → Mondrian or group-conditional.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Your data has strong distribution shift → online conformal (ACI) or careful windowing.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You need causal uncertainty → causal inference methods, not prediction intervals.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Point predictions are sufficient and uncertainty isn't decision-relevant.</p>
+<p>Every prediction is incomplete without an uncertainty estimate. Conformal prediction makes this estimate rigorous: guaranteed coverage, distribution-free, model-agnostic, finite-sample. CQR makes it adaptive. MAPIE makes it practical. In 2026, shipping a prediction without a prediction interval is like publishing a scientific measurement without an error bar. Conformal prediction is how ML grows up.</p>
+<p><em>[Figure: MAPIEDiag — see interactive JSX version]</em></p>
+<p><em>MAPIE: four modules for regression, classification, time series, and multi-label prediction with conformal guarantees.</em></p>
+<p>Sources:</p>
+<p>MAPIE docs (mapie.readthedocs.io), scikit-learn-contrib.</p>
+<p>Academic:</p>
+<p>Vovk, Gammerman, Shafer 2005; Romano, Patterson, Candès NeurIPS 2019 (CQR); Barber, Candès, Ramdas, Tibshirani 2021 (JK+/CV+); Angelopoulos &amp; Bates 2023 (Tutorial, RAPS); Gibbs &amp; Candès 2021 (ACI); Xu &amp; Xie 2021 (EnbPI); Feldman et al. IEEE TNNLS 2023 (EnCQR); Cordier et al. COPA 2023 (MAPIE).</p>
+<p>Software:</p>
+<p>MAPIE, scikit-learn, crepes, nonconformist.</p>
+<p>MAPIE 1.3+ · CQR · Conformal Prediction</p>
+<p>Length determined by information, not word count</p>
+<p>/div&gt;</p>
+<p>/div&gt;);}</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>conformal-prediction-guide</code> &middot; category: <code>general</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+</body>
+</html>

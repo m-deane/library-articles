@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safe Ts Article — Plain Reader</title>
+  <meta name="description" content="Extracting monotonic, piecewise-constant feature transformations from black-box time series models using ALE profiles and surrogate trees." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Safe Ts Article</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date"></span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/safe-ts-article.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/safe-ts-article.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <h1 id="safe">SAFE:</h1>
+<p><em>Surrogate-Assisted</em>
+Feature Extraction</p>
+<p>How the MI²DataLab method bridges the black-box performance gap for
+interpretable time series forecasting — and how it compares to seven modern alternatives.</p>
+<h2 id="01-the-problem-in-time-series">01. The Problem in Time Series</h2>
+<p>Time series forecasting sits at an uncomfortable junction. On one side stands the
+practitioner deploying an XGBoost model with 200 lag features, a calendar effect
+matrix, and rolling statistics — achieving 6% MASE on the M4 benchmark but unable
+to explain to the energy regulator <em>why</em> the model predicts a demand spike
+at 18:00 on a Wednesday in January. On the other side stands the analyst building
+a linear regression with hand-crafted features: explainable at every coefficient,
+but routinely 15–25% worse in forecast accuracy.</p>
+<p>This is not a new dilemma, but it sharpens in time series for three structural reasons.
+First, the feature space is <strong>inherently high-dimensional</strong>: a 30-day
+lookback window on a daily series with 10 exogenous variables immediately produces
+300+ candidate features, and their pairwise interactions — lag₁ × temperature,
+lag₇ × holiday_flag — multiply this combinatorially. Second, the features are
+<strong>autocorrelated by construction</strong>: lag₁, lag₂, lag₃ all carry overlapping
+information, which breaks the independence assumption underpinning Partial Dependence
+Plots. Third, the data-generating process is <strong>non-stationary</strong>: a
+threshold relationship estimated on 2022 data may not hold in 2024 after a regime
+shift.</p>
+<p>SAFE's answer to this dilemma is to treat the black-box not as a competitor but as
+a <strong>feature engineer</strong>. The black-box learns which regions of the lag
+and exogenous variable space behave differently. SAFE extracts those regional
+boundaries — the breakpoints — and re-encodes them as explicit, named indicator
+features that a linear model can use as coefficients, a regulator can audit, and
+a domain expert can recognise as meaningful.</p>
+<p>The canonical paper — <em>Gosiewska, Kozak &amp; Biecek (2021), "Simpler is Better:
+Lifting the Interpretability-Performance Trade-off via Automated Feature Engineering"</em>,
+published in <em>Decision Support Systems</em> — benchmarks SAFE across 30 tabular
+datasets and finds that a logistic or linear regression trained on SAFE-transformed
+features closes 60–85% of the performance gap between a baseline linear model and
+a black-box, while retaining full coefficient interpretability. The rSAFE R package
+(Gosiewska, Gierlak, Biecek; CRAN v0.1.4, last updated 2022-08-13) provides the
+canonical implementation. A Python equivalent, <code>SafeTransformer</code>,
+mirrors the sklearn API.</p>
+<h2 id="02-safe-algorithm-canonical">02. SAFE Algorithm — Canonical</h2>
+<h2 id="03rsafe-the-r-reference-implementation">03rSAFE: The R Reference Implementation</h2>
+<p>The rSAFE package was developed at the MI²DataLab (Warsaw University of Technology)
+as part of the broader <strong>DrWhy.AI</strong> ecosystem for responsible machine
+learning. The canonical demo uses the <code>apartments</code> dataset
+from DALEX — predicting price per m² from construction year, surface, floor,
+number of rooms, and district. We annotate this demo fully, as every parameter
+choice has a direct analogue in the time series context.</p>
+<p><strong>AIC</strong>: most breakpoints, best for exploratory analysis.
+** BIC/MBIC<strong>: conservative — prefer these for production; MBIC is
+the rSAFE default and works well for time series lag features with moderate
+autocorrelation. </strong>Numeric value (e.g. 25)**: manual override — use
+when you have domain knowledge that a specific number of regimes is expected
+(e.g. a known 3-regime tariff structure in energy data).</p>
+<h2 id="04-adapting-safe-to-time-series">04. Adapting SAFE to Time Series</h2>
+<h3 id="step-0-supervised-embedding-lag-matrix-construction">Step 0: Supervised Embedding (Lag Matrix Construction)</h3>
+<p>SAFE operates on tabular feature matrices. Time series must first be transformed into
+a supervised regression format via a <strong>sliding window embedding</strong>. Given
+a univariate series y₁, y₂, ..., yₙ with lookback window <em>w</em>, each row of
+the lag matrix is [yₜ₋ᵥ, ..., yₜ₋₁, exog_1ₜ, ..., exog_kₜ] → target yₜ.
+Exogenous features (temperature, calendar dummies, rolling means) are appended
+column-wise. This is standard practice — the SAFE pipeline then treats this matrix
+exactly as any tabular dataset.</p>
+<p><strong>Always set <code>response_type = "ale"</code> for time series lag features.</strong>
+Lag features are structurally correlated: lag₁ and lag₂ share ~90% of their
+variance on a typical demand series. PDP computes its marginal effect by
+averaging predictions across the <em>empirical distribution</em> of all other
+features — but for correlated lags this means evaluating the model at
+(lag₁=100, lag₂=5), a combination that never occurs in reality. ALE
+restricts averaging to a narrow neighbourhood of the actual feature value,
+eliminating this extrapolation artefact. The rSAFE documentation explicitly
+states: <em>"if features are uncorrelated, one can use 'pdp' — otherwise
+'ale' is strongly recommended."</em> Lag features are never uncorrelated.</p>
+<h3 id="safely_detect_changepoints-for-structural-break-detection">safely_detect_changepoints() for Structural Break Detection</h3>
+<p>This rSAFE function applies penalised likelihood changepoint detection (using the
+<code>changepoint</code> package internally) to the ALE/PDP profile
+of each feature. In a time series context, the extracted breakpoints often correspond
+to <strong>regime thresholds</strong> with direct domain interpretability: the lag-1
+value above which demand enters a peak-consumption regime; the rolling-7-day mean
+temperature above which HVAC load saturates; the day-of-year at which holiday effects
+activate. These are features a domain expert would want to hand-engineer but would
+need weeks to identify empirically.</p>
+<h3 id="safely_detect_interactions-for-lag-exogenous-discovery">safely_detect_interactions() for Lag × Exogenous Discovery</h3>
+<p>The <code>safely_detect_interactions()</code> function computes the
+H-statistic (Friedman &amp; Popescu) for each pair of features in the black-box's
+prediction surface. In time series, the most diagnostically valuable interactions
+are between <strong>lag features and exogenous variables</strong>: does the effect
+of lag₁ on demand differ depending on whether it is a working day? Does the
+temperature effect vary by hour of day? SAFE surfaces these as interaction
+features, expressed as products of indicator columns, which a GLM can then
+represent as a coefficient on the interaction term.</p>
+<p><strong>Never extract SAFE breakpoints on the full dataset before cross-validation.</strong>
+Breakpoints are estimated from the black-box's predictions on training data. If you
+fit the black-box on all data, then extract breakpoints, then cross-validate the
+white-box — you have leaked future information into the feature engineering step.
+Always use <code>TimeSeriesSplit</code> (Python) or
+<code>rsample::time_series_split()</code> (R), and call
+<code>safe_extraction()</code> inside the training fold only.</p>
+<h2 id="05-mathematical-foundations">05. Mathematical Foundations</h2>
+<h3 id="partial-dependence-vs-accumulated-local-effects">Partial Dependence vs Accumulated Local Effects</h3>
+<h3 id="changepoint-detection-objective">Changepoint Detection Objective</h3>
+<h3 id="surrogate-fidelity">Surrogate Fidelity</h3>
+<p>SAFE does not require an explicit surrogate model — the black-box itself is used
+directly through the DALEX explainer. However, a critical quality gate is the
+** R² fidelity** of the ALE profiles in capturing the black-box's
+behaviour. If the ALE curve for a feature is flat (low variance), no meaningful
+breakpoints exist for that feature — safe_extraction() will correctly return no
+intervals. A flat ALE is informative: it means the black-box treats that feature
+as unimportant or linear, and the original numeric form should be preferred.</p>
+<h3 id="interaction-measure">Interaction Measure</h3>
+<h2 id="06-python-implementation">06. Python Implementation</h2>
+<p>The Python <code>SafeTransformer</code> mirrors the rSAFE pipeline
+with a scikit-learn compatible API. The implementation below extends it specifically
+for time series, adding lag embedding, <code>TimeSeriesSplit</code>
+guard-railing, and ALE computation via the <code>alibi</code> library.</p>
+<h2 id="07-worked-forecasting-benchmark">07. Worked Forecasting Benchmark</h2>
+<p>The following benchmark uses the <strong>ETT (Electricity Transformer Temperature)</strong>
+dataset — a standard M4/ETT benchmark used across NeurIPS 2022 time series papers.
+We predict 1-step-ahead transformer oil temperature (OT) using 7 lag features and
+2 engineered calendar features, comparing three models: baseline Ridge, XGBoost
+black-box ceiling, and SAFE-enhanced Ridge.</p>
+<h2 id="08-competitive-landscape">08. Competitive Landscape</h2>
+<p>SAFE occupies a specific niche between automated feature engineering and
+explainability-guided model building. Seven alternatives address overlapping
+concerns from different angles.</p>
+<p><strong>FI-SHAP</strong> is the closest direct competitor — if you are committed
+to a boosting model and want SHAP-guided feature construction, it is more tightly
+integrated with the model's gradient structure than SAFE.
+<strong>tsfresh</strong> wins when you have no domain knowledge and want a
+comprehensive feature library for classification tasks.
+<strong>GAMs/EBMs</strong> remove the two-stage pipeline entirely — if the
+primary goal is interpretability and you accept model-specific shape functions
+rather than GLM coefficients, EBMs are architecturally cleaner.
+<strong>SAFE wins</strong> when you must produce a standard GLM with interval
+coefficients auditable by a regulator, but want the black-box's discovered
+structure rather than hand-crafted domain features.</p>
+<h3 id="method-deep-dives">Method Deep-Dives</h3>
+<h2 id="09-limitations-specific-to-time-series">09. Limitations Specific to Time Series</h2>
+<h3 id="1-data-leakage-via-temporal-ordering">1. Data Leakage via Temporal Ordering</h3>
+<p>The most dangerous failure mode. If <code>safe_extraction()</code> is
+called on the full dataset before splitting into train/test folds, the breakpoints
+are contaminated by future observations. This is not hypothetical — it is easy to do
+accidentally when using rSAFE on a pre-split dataset where the explainer was built
+on test-period data. Always call <code>safe_extraction()</code> inside
+the training fold, and transform test data using an extractor fitted on training data
+only.</p>
+<h3 id="2-autocorrelated-features-violate-pdp-independence">2. Autocorrelated Features Violate PDP Independence</h3>
+<p>As detailed in Section 04, PDP is analytically invalid for lag features. The
+consequence is not just theoretical: in our ETT benchmark, using
+<code>response_type='pdp'</code> instead of <code>'ale'</code>
+extracts breakpoints at physically implausible lag₁ values — artifacts of the
+model being evaluated at (lag₁=high, lag₂=low) combinations that never appear in
+the data. ALE eliminates this. The rSAFE documentation is explicit on this point.</p>
+<h3 id="3-non-stationarity-breakpoints-drift">3. Non-Stationarity: Breakpoints Drift</h3>
+<p>Breakpoints estimated on 2022 electricity demand data may not reflect the 2024
+distribution if a heat pump adoption wave has shifted the temperature-demand
+relationship upward. SAFE provides no mechanism for online breakpoint updating.
+Practical mitigation: re-run the full SAFE pipeline periodically (monthly or
+quarterly), monitor whether breakpoint positions shift by more than one bin width,
+and trigger a re-fit if they do. This is equivalent to a feature engineering drift
+monitor.</p>
+<h3 id="4-univariate-changepoint-detection-only">4. Univariate Changepoint Detection Only</h3>
+<p><code>safely_detect_changepoints()</code> operates on the 1D ALE
+profile of each feature independently. It cannot detect <strong>multivariate
+regime shifts</strong> — where the joint distribution of (lag₁, temperature)
+changes simultaneously. For energy forecasting, the most economically important
+regime shifts (e.g. a cold snap that triggers both high lag values and high
+temperature-demand sensitivity) are inherently multivariate. SAFE's interaction
+detection via <code>safely_detect_interactions()</code> partially
+addresses this, but the interaction features are constructed from univariate
+breakpoints rather than jointly estimated.</p>
+<h3 id="5-no-online-learning-mechanism">5. No Online Learning Mechanism</h3>
+<p>rSAFE v0.1.4 (the current CRAN release) has no streaming or incremental update
+capability. Every re-extraction requires a full black-box refit on the updated
+training window. For high-frequency forecasting (hourly, sub-hourly), this may
+be computationally prohibitive. The Python <code>SafeTransformer</code>
+similarly has no partial_fit interface.</p>
+<p>Recommended production monitoring: (1) Track the distribution of each SAFE
+indicator feature weekly — a shift in <code>I(lag1 &gt; t₁)</code>
+activation rate by &gt;15% signals potential breakpoint drift. (2) Re-run
+<code>safe_extraction()</code> on a rolling 12-month window
+quarterly. (3) Compare new breakpoints to existing ones; if a breakpoint
+shifts by more than 10% of the feature range, retrain the white-box with
+updated features.</p>
+<h2 id="10-practitioner-decision-guide">10. Practitioner Decision Guide</h2>
+<h3 id="configuration-reference-by-deployment-profile">Configuration Reference by Deployment Profile</h3>
+<h3 id="rsafe-configuration-reference-r">rSAFE Configuration Reference (R)</h3>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>safe-ts-article</code> &middot; category: <code>general</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+</body>
+</html>

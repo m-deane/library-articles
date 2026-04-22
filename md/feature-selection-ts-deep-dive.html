@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feature Selection Ts Deep Dive — Plain Reader</title>
+  <meta name="description" content="Mechanics, intuition, diagnostics, and honest limits of 47 methods — with worked examples, inline plots, and how to tell genuine importance from statistical noise." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Feature Selection Ts Deep Dive</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date"></span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/feature-selection-ts-deep-dive.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/feature-selection-ts-deep-dive.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <h1 id="the-practitioners-deep-dive">The Practitioner's Deep Dive:</h1>
+<p>Time Series Feature Selection <em>in Practice</em></p>
+<p>Mechanics, intuition, diagnostics, and honest limits of all 47 methods — with worked examples, inline plots, interpretation guides, and how to tell genuine importance from statistical noise.</p>
+<h3 id="the-epistemology-of-feature-importance-in-time-series">The Epistemology of Feature Importance in Time Series</h3>
+<p>There is no ground truth for feature importance in time series. This sentence should be printed above every data scientist's monitor before they run their first feature selector. In cross-sectional data you can generate synthetic data from a known causal structure and verify your selector recovers it. In time series, the causal structure is never fully known, the data-generating process is non-stationary, and measuring importance with a model creates a circular dependency between what you selected and what you measured.</p>
+<p>What we call "feature importance" is always a <em>model-conditioned, sample-specific, assumption-laden estimate</em> of something we hope approximates true predictive relevance. SHAP values tell you how a particular model uses a feature on a particular test set. Granger p-values tell you whether X's past linearly predicts Y's future conditional on Y's own past, under stationarity assumptions almost never satisfied. PACF spikes tell you which lags of the target's own history carry marginal linear autocorrelation. These methods measure different things — treating any one as "the importance" is the foundational mistake.</p>
+<p>The practitioner's job is to <strong>triangulate</strong> a working hypothesis about which features are worth including using multiple lines of imperfect evidence, and to understand specifically how each line of evidence can mislead. This article is a manual for that triangulation, covering all 47 methods in the v2.1 reference with mechanics, diagnostics, and worked examples.</p>
+<blockquote>
+<p><strong>🎯 Operational Definition of Genuine Importance</strong></p>
+<p>A feature is genuinely important if and only if: (1) including it improves held-out walk-forward CV performance, (2) its measured importance is stable across CV folds and across methods from different families, (3) a plausible mechanistic story explains why it should be predictive, and (4) its importance survives a permutation null test. Meeting all four is rare — which is why most deployed feature sets contain features present by habit or statistical accident.</p>
+</blockquote>
+<p><strong>Temporal leakage</strong> is the most destructive. Any selector exposed to future information — however indirectly — discovers patterns existing only in the training window. The insidious form is soft leakage: a feature technically observed before prediction time but whose value correlates with future events through a mechanism not available at inference time.</p>
+<p><strong>Spurious correlation</strong> is the second failure mode. In non-stationary time series, any two trending or seasonal variables appear correlated because they share a common driver — time itself. Selectors not accounting for shared autocorrelation rank noise features highly. AR-adjusted partial correlation, PCMCI+, and FCI explicitly address this; most methods in Sections 2 and 3 do not.</p>
+<p><strong>Instability under perturbation</strong> is the third. An importance estimate that changes radically when you remove one other feature, use a different random seed, or shift the training window by a month is not measuring something real about the feature's value. Stability selection and block-bootstrap methods exist precisely to diagnose and eliminate this.</p>
+<h3 id="a-universal-diagnostic-framework">A Universal Diagnostic Framework</h3>
+<p>Regardless of which method you use, run these six steps before trusting any feature set. They catch the three failure modes above.</p>
+<p><strong>01. Shuffle Null Baseline</strong> — Replace each candidate feature with random noise and re-run the selector. Any feature scoring comparably to random noise is spurious. This establishes a baseline importance level below which nothing should be trusted.</p>
+<p><strong>02. Walk-Forward Stability Audit</strong> — Run the full selection pipeline on each CV fold independently. Compute Jaccard similarity between each pair of fold-selected sets. Below 0.5 Jaccard, the selected set is unstable — use stability selection (§6.8) before trusting any single selector run.</p>
+<p><strong>03. Cross-Method Triangulation</strong> — Run at least one method from two different families (e.g., one filter + one embedded). Features appearing important in both are candidates. Features in only one should be treated as suspects requiring domain-knowledge audit.</p>
+<p><strong>04. AR-Residual Check</strong> — For any suspicious feature, compute AR-adjusted correlation (§2.9). If raw correlation is high but AR-adjusted correlation is near zero, the feature's importance is driven by shared autocorrelation — not genuine signal.</p>
+<p><strong>05. Domain Plausibility Check</strong> — Every selected feature needs an articulable causal story. If you cannot explain in one sentence why this feature affects the target, flag it for domain expert review. Statistical importance without plausibility is a red flag at small-to-medium sample sizes.</p>
+<p><strong>06. Out-of-Time Validation</strong> — Hold out the most recent 15–20% of data as a never-touched test set. Measure performance with full selected features vs. top-3 most stable features vs. random noise features. The full vs. minimal gap should be small; either vs. random should be large.</p>
+<h3 id="statistical-filters-how-they-work-where-they-fail">Statistical Filters — How They Work, Where They Fail</h3>
+<p>Filter methods score features independently of any model using statistical measures. Fast and interpretable, but they cannot detect feature interactions or redundancy (except mRMR). For time series, autocorrelation in both features and target inflates apparent association, making naive filters systematically overconfident.</p>
+<p>The simplest possible filter: remove features whose variance falls below threshold ε. For time series, compute variance on the <strong>first-differenced series</strong> rather than the raw series. A slowly drifting macro indicator has high raw variance (ranging 50–200 over 5 years) but near-zero variance in its day-to-day changes — which is what a forecasting model actually uses. Computing on <code>X.diff()</code> reveals this. Without differencing, slowly drifting features appear high-variance but contribute nothing to short-horizon forecasts.</p>
+<p>Always run variance threshold as the very first preprocessing step before any other selector — it is essentially free and removes obviously useless features that would slow down every subsequent step. Features with zero variance are constants; features with near-zero variance change so rarely their signal-to-noise ratio is negligible.</p>
+<p>Fit on <code>X_train.diff().dropna()</code>, apply mask to original X_val/X_test (un-differenced). Run inside each walk-forward fold independently.</p>
+<p>A diff-variance near zero means the feature barely moves period-to-period. If a feature does not change, it cannot explain changes in the target. Exceptions: slowly evolving structural exogenous features (year-over-year growth rates) may have low diff-variance but capture genuine medium-horizon trends — consider a lower threshold for such features or skip variance threshold for structural inputs entirely.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Diagnostic</strong></p>
+<p>Feature retained by variance threshold but scoring zero on MI or permutation importance? Check: is the high variance driven by a handful of extreme outliers against an otherwise flat background? Plot the feature. If yes, apply winsorisation at 1st/99th percentile before re-running the threshold. High variance from outliers is not informative variance.</p>
+</blockquote>
+<p>Chi-squared tests independence between a feature and a <strong>discrete target</strong> by comparing observed joint frequencies against expected frequencies under independence: chi2 = Σ(O_ij - E_ij)²/E_ij. This requires a categorical target — making it applicable only to time series <em>classification</em> problems (regime prediction, anomaly detection, threshold-crossing events).</p>
+<p>For continuous regression targets — the standard forecasting case — chi-squared is <strong>inapplicable</strong>. Applying it by binning the continuous target introduces arbitrary discretisation that makes results dependent on bin choice, not the true relationship. This is the most common chi-squared misuse in time series ML.</p>
+<blockquote>
+<p><strong>⚠️ The Most Common Misuse</strong></p>
+<p>Applying chi-squared to continuous forecasting targets by binning is a pervasive mistake. The statistic you get is a function of your binning strategy, not the underlying relationship. Two practitioners using different bin edges get different feature rankings from the same data. For continuous targets, use F-test (linear) or mutual information (nonlinear).</p>
+<p><strong>🔍 Spurious vs. Genuine — Shuffle Test</strong></p>
+<p>Run chi-squared on a shuffled version of your target variable (breaking temporal structure). If you get a similar set of significant features after shuffling, your results are driven by marginal feature distributions, not by the feature-target relationship. Features that lose significance after shuffling carry real signal.</p>
+</blockquote>
+<p>The F-test (sklearn's <code>f_regression</code>) computes Pearson r between each feature and the target, converting to F = r²(n-2)/(1-r²). Measures linear association only — misses quadratic, threshold, and interaction effects common in time series. Non-stationarity is the critical failure mode: two non-stationary series appear correlated simply because they share a common trend, producing large F-statistics for features that are actually uncorrelated after trend removal.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — The Differencing Check</strong></p>
+<p>A raw exogenous feature scoring very high on F-test should always be re-tested after differencing both feature and target. If the F-score drops to near zero after differencing, the original high score was entirely due to shared trend — classic spurious regression. The <code>differenced</code> column in the output flags this. A feature is only trustworthy if its differenced F-score is also material (r² &gt; 0.05).</p>
+</blockquote>
+<p><strong>Pearson r</strong> measures linear co-movement. Breaks spectacularly under non-stationarity and heavy tails — both common in financial and retail TS. Never use Pearson on raw non-stationary series.</p>
+<p><strong>Spearman ρ</strong> computes Pearson on ranks — sensitive to any monotonic relationship, robust to outliers, distribution-shape agnostic. The correct default for TS feature selection after stationarity correction.</p>
+<p><strong>Kendall τ</strong> counts concordant minus discordant pairs. More robust than Spearman at very small N (below 50) but O(n²) — impractical for large datasets. Use only for monthly/quarterly forecasting with short series.</p>
+<p>The rolling window adaptation is critical: compute correlation in a sliding window (e.g., 180 obs, step 30) and track both mean and CV. High mean + low CV = stable predictor. High mean + high CV = regime-switching predictor — useful but dangerous to treat as universally reliable.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Regime-Switch Warning</strong></p>
+<p>Regime-switching features (high mean |ρ|, high CV) are the most dangerous: they look important in historical average but their direction or magnitude is unreliable. Before including them, check whether the regime switches correlate with identifiable structural events. If yes, include with a regime indicator interaction. If no, treat as noise.</p>
+</blockquote>
+<p>Mutual information MI(X;Y) measures the full statistical dependence between X and Y — linear, nonlinear, monotone, or otherwise — using their joint distribution. Estimated via k-nearest neighbours (Kraskov estimator) for continuous variables. The lagged adaptation is essential: compute MI(X_lagged, Y_t) for each lag depth and take the maximum, capturing delayed causal relationships that contemporaneous MI would miss entirely.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Isolated Lag Spikes</strong></p>
+<p>High MI at lag 7 but near-zero at lags 6 and 8 is likely a sampling artefact. Genuine causal effects produce MI peaks that decay smoothly across adjacent lags. Check <code>n_high_lags</code>: features with n_high_lags &gt; 3 are far more trustworthy than single-lag spikes. Also run MI on a block-permuted version of the feature — genuine features show much higher MI than their permuted counterparts.</p>
+</blockquote>
+<p>Plain MI selection fails silently on correlated lag features: lag_1, lag_2, lag_3 all have high MI with tomorrow's sales but are nearly redundant with each other. mRMR (Peng et al., 2005) fixes this by maximising J(X_k) = MI(X_k; Y) - (1/|S|)·Σ MI(X_k; X_i) at each greedy step, penalising new features that are redundant with already-selected ones. The time-series adaptation uses lagged MI for relevance but contemporaneous MI for redundancy.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Early Selections vs. Fold Consistency</strong></p>
+<p>mRMR's first 3–5 selections are most trustworthy; later ones are increasingly sensitive to early choice noise. Stability test: run mRMR on each CV fold independently and compare selection order. If lag_1 is consistently the first or second selection across folds, it's genuine. If the ordering changes dramatically fold-to-fold, the redundancy penalty is being driven by noise — fall back to plain MI ranking.</p>
+</blockquote>
+<p>Distance correlation (Székely &amp; Rizzo, 2007) detects <em>any</em> form of statistical dependence — linear, nonlinear, non-monotone, periodic — by working with pairwise distance matrices. For samples of X and Y, compute distance matrices A and B, double-centre them (subtract row means, column means, add grand mean back), and take dCov²(X,Y) = (1/n²)·Σ A_kl·B_kl. The key property: dCor = 0 if and only if X and Y are statistically independent — no functional form assumption. This is strictly stronger than Pearson, Spearman, and Kendall, all of which can be zero for independent variables with complex dependence structures.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Compare with AR-adjusted Spearman</strong></p>
+<p>dCor high but AR-adjusted Spearman (§2.9) low? The dependency is driven by shared temporal structure, not genuine cross-series signal. Features where both dCor and AR-adjusted Spearman are high are the most credible. The permutation p-value is essential: if the observed dCor is not substantially above the null distribution, the feature carries no genuine signal regardless of the absolute score.</p>
+</blockquote>
+<p>HSIC (Gretton et al., 2005) measures dependence by embedding both variables into Reproducing Kernel Hilbert Spaces and computing the Hilbert-Schmidt norm of the cross-covariance operator. With RBF kernels, HSIC detects the same types of dependencies as dCor but the kernel choice gives additional expressiveness: periodic kernels are ideal for weekly/annual TS patterns, Matern kernels for smooth trends. HSIC = 0 iff X and Y are independent under mild conditions.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Outlier Sensitivity Check</strong></p>
+<p>HSIC is highly sensitive to outliers with RBF kernels. Compute HSIC before and after winsorising the feature at the 1st/99th percentile. If the score drops substantially after winsorisation, the apparent importance is driven by outlier structure, not the bulk distribution. For financial TS with fat tails, always apply the outlier check before trusting HSIC scores.</p>
+</blockquote>
+<p>The single most practically important diagnostic tool in TS feature selection — yet rarely mentioned in ML textbooks. The idea: before measuring correlation between feature X and target Y, remove the component of each that is predictable from their own past history. Correlating the residuals measures genuine cross-series dependence, not trivial shared autocorrelation structure. Procedure: (1) fit AR(p) on X_train, extract residuals ε_X; (2) fit AR(p) on y_train, extract residuals ε_Y; (3) compute Spearman(ε_X, ε_Y).</p>
+<blockquote>
+<p><strong>⚠️ The Most Dangerous Pattern</strong></p>
+<p>raw_rho = 0.6, ar_adj_rho = 0.05 — this feature looks highly important in every standard correlation analysis but is pure spurious inflation. Without AR adjustment, it would be included in every production model. The spurious_gap = 0.55 unmasks it instantly.</p>
+</blockquote>
+<p>PACF(k) = Corr(Y_t, Y_{t-k} | Y_{t-1},...,Y_{t-k+1}) — the correlation at lag k after removing effects of shorter lags. Significant spikes (outside ±1.96/√n bands) identify exactly which autoregressive lags carry marginal information beyond shorter lags — these are the lags to include as ML features. ACF identifies MA structure and seasonal periods. Both are native time series tools that require no model fitting and are correct by construction for lag selection.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Isolated vs. Cluster Spikes</strong></p>
+<p>A genuine AR structure produces smooth PACF decay or clean cutoff. If you see significant spikes at lags 3, 11, 23 with nothing in between, run Ljung-Box on residuals after removing only lags 1 and 7 — if residuals are white noise, the spikes at 3, 11, 23 were multiple-testing artefacts. Seasonal spikes (7, 14, 21 for daily data) are expected and genuine.</p>
+</blockquote>
+<p>Granger causality tests whether X's past improves forecasts of Y beyond Y's own past, via VAR and F-test on H₀: all lag coefficients of X are zero. Despite the name, this is predictive precedence, not structural causality. A common cause Z driving both X and Y with different delays makes X appear to Granger-cause Y even with no direct link — the fundamental false positive problem that PCMCI+ addresses.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Bidirectional Check</strong></p>
+<p>If X Granger-causes Y AND Y Granger-causes X, this is a strong signal that both are driven by a common unmeasured cause Z. Including X still gives predictive value (Z → X with lag structure), but attributing importance to X directly is wrong. Look for common cause Z and include it directly.</p>
+</blockquote>
+<p>Rolling correlation stability computes Spearman correlation across overlapping time windows, tracking both mean and variance. CV = std / |mean| of rolling correlations is the key diagnostic: CV &lt; 0.5 = stable predictor; 0.5–1.0 = regime-dependent; CV &gt; 1.0 = relationship changes direction — unreliable. This is the single most actionable diagnostic for detecting concept drift in production: computing rolling correlation stability monthly and alerting when CV spikes above 1.0 provides early warning that retraining is needed before performance degrades.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Recent vs. Historical Pattern</strong></p>
+<p>Watch for features with very recent high correlation but historically near-zero correlation — this is a post-hoc spurious pattern. The rolling correlation plot should show consistently high correlation throughout the entire training period, not just the recent past. A feature that became important only after a structural break may be specific to that regime and unreliable going forward.</p>
+</blockquote>
+<h3 id="model-in-the-loop-interactions-redundancy-global-search">Model-in-the-Loop — Interactions, Redundancy &amp; Global Search</h3>
+<p>Wrapper methods evaluate feature subsets by actually training a model and measuring held-out performance — capturing interactions and redundancy that filters miss. Computationally expensive. Every evaluation must use walk-forward CV, never random K-fold.</p>
+<p><strong>Forward selection</strong> starts empty, greedily adding the feature producing the largest walk-forward CV improvement each step. <strong>Backward elimination</strong> starts with all features, greedily removing the least useful. <strong>Bidirectional</strong> alternates — after each forward addition, it attempts backward removal of any feature that is no longer earning its place given recent additions. This handles the "feature becomes redundant" case forward selection misses: lag_7 may become redundant once a day-of-week cyclical encoding is added.</p>
+<p>All three are O(p²) model evaluations. Practical only after a filter pass reduces dimensionality to ~100 features. The greedy nature means they can reach reasonable solutions quickly but may miss globally optimal subsets when two features are individually weak but jointly powerful.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Score History Audit</strong></p>
+<p>The marginal improvement from each step should be monotonically decreasing. If a late-added feature (step 10+) shows improvement comparable to an early addition (step 2), suspect CV overfitting. Validate by checking marginal improvement in a completely held-out temporal window excluded from the entire selection process.</p>
+</blockquote>
+<p>RFE trains a model, ranks features by importance (coefficient magnitude for linear models, impurity decrease for trees), removes the weakest, and repeats. RFECV adds cross-validation to select the optimal feature count automatically — removing the need to specify a target count. The recursive elimination allows features to reveal importance only after competing correlated features are removed.</p>
+<p>The critical implementation detail: the <code>cv</code> parameter must be <code>TimeSeriesSplit(n_splits=5, gap=1)</code>. The default K-fold leaks future data into the importance ranking at every elimination step, producing chronologically invalid rankings that differ substantially from true out-of-time performance.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — MDI vs. Permutation Elimination Order</strong></p>
+<p>Run RFECV with both default MDI and permutation-based ranking. Features eliminated early by MDI but late by permutation benefit from cardinality bias in MDI — their importance is inflated by high-cardinality splits, not genuine signal. Features eliminated early by both methods are unambiguously unimportant.</p>
+</blockquote>
+<p>Sklearn's <code>SequentialFeatureSelector</code> evaluates every remaining feature by actually training and cross-validating the model with that feature included or excluded — more expensive than RFECV but more honest, since selection is entirely based on held-out performance with no intermediate importance metric. The <code>direction='backward'</code> mode starts from the full model where all interactions are captured and prunes selectively — preferred when you start from a pre-filtered set of 30–60 features.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Forward vs. Backward Agreement</strong></p>
+<p>The intersection of forward and backward selected sets is the most trustworthy — these features are important both in isolation (forward) and necessary given all other features (backward). Features only in the forward set are independently useful but not required given everything else. Features only in the backward set contribute through interactions with other features.</p>
+</blockquote>
+<p>Permutation importance measures each feature's contribution by shuffling its values and measuring the performance drop. Model-agnostic: applies to any trained model. The critical time-series adaptation is <strong>block permutation</strong>: shuffle contiguous blocks rather than individual values. Standard global shuffling destroys autocorrelation within the feature, producing an "out-of-distribution" input that makes the model perform worse than for any realistic feature value — artificially inflating importance. Block size should match the dominant autocorrelation horizon (7 days for daily data, 24 hours for hourly, 12 months for monthly).</p>
+<blockquote>
+<p><strong>⚠️ Negative Importance — Immediate Action Required</strong></p>
+<p>A feature with negative mean_imp means permuting it <em>improves</em> model performance — the model learned a spurious correlation in training that actively hurts on validation. This is not a "slightly unimportant" feature; it is an actively harmful one. Remove it immediately and investigate what spurious pattern it captured.</p>
+</blockquote>
+<p>Genetic algorithms represent feature subsets as binary chromosomes, maintain a population of candidate subsets, and evolve them via selection (keep fittest), crossover (combine parent chromosomes), and mutation (randomly flip feature bits). Fitness = walk-forward CV score. The key advantage over greedy methods: GAs can discover subsets where features are individually weak but jointly powerful — a region of feature space greedy methods never reach because no single forward addition would lead there.</p>
+<p>Tournament selection (keep best from random k-candidate tournament) is preferred over roulette wheel for time series: more robust to fitness landscape irregularity caused by stochastic CV scores. Elitism (keep best individual unchanged across generations) prevents regression and accelerates convergence.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Population Frequency as Stability Signal</strong></p>
+<p>Track how often each feature appears in the top-50% of individuals across all generations. Features with frequency &gt; 0.7 are robustly important — the GA consistently gravitates toward subsets containing them. Features with frequency &lt; 0.3 in the final best individual may be noise-fitted late additions. Validate the best individual against a baseline using only features with frequency &gt; 0.5 — the delta reveals how much of the GA's apparent optimisation was actually CV overfitting.</p>
+</blockquote>
+<h3 id="regularisation-trees-attribution-during-training">Regularisation, Trees &amp; Attribution During Training</h3>
+<p>Embedded methods perform selection as part of model training — more efficient than wrappers, more sensitive to interactions than filters. Hyperparameter tuning must always use walk-forward CV.</p>
+<p>LASSO adds an L1 penalty creating a constraint region consisting of hypercube corners — points where many coefficients are exactly zero. A feature is zeroed when its inner product with the residual (its relevance given current fit) falls below the penalty threshold λ. As λ increases, more features are zeroed. The regularisation path — solutions as λ decreases from ∞ to 0 — reveals which features enter first, providing an implicit importance ranking: earlier entry = more important.</p>
+<p>Critical limitation for time series: collinearity among lag features causes LASSO to arbitrarily select one from each correlated group. With lag_1, lag_2, lag_3 all correlated at ρ ≈ 0.9, LASSO might select lag_2 in one fold and lag_1 in another. This is not signal — it's collinearity degeneracy. Use ElasticNet (§4.3) for correlated lags.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Entry Order vs. Fold Stability</strong></p>
+<p>A feature entering the regularisation path very early (first 10 alphas) but having low fold stability (selected in only 2/5 folds) is in the collinearity trap: LASSO considers it important in the full data, but a different correlated feature wins in some folds. For any feature with early entry but fold_stability &lt; 0.6, switch to ElasticNet. The L2 component will stabilise selection among the correlated group.</p>
+</blockquote>
+<p>Ridge adds L2 penalty shrinking all coefficients proportionally toward zero but never to exactly zero. Not a selector per se — it is a <em>ranking</em> method when used post-hoc: fit Ridge with walk-forward CV to select α, sort features by absolute standardised coefficient magnitude, threshold at top-k or |coef| &gt; 5% of max. Ridge is stable under collinearity: two lag features with ρ = 0.9 receive similar Ridge coefficients, reflecting their shared signal, rather than one getting a large coefficient and the other zero.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Ridge vs. ElasticNet Agreement</strong></p>
+<p>Large Ridge coefficient but not selected by ElasticNet: the feature is likely in a correlated group where Ridge distributes importance across members but ElasticNet selects one representative. If the feature has no correlated neighbours but Ridge gives it large coefficient and ElasticNet zeros it, the signal is real but insufficient to dominate the LASSO penalty — try a lower λ or use Ridge ranking directly.</p>
+</blockquote>
+<p>ElasticNet combines L1 sparsity with L2 collinearity stabilisation. The L1 term zeros irrelevant features; the L2 term distributes coefficients across correlated groups rather than arbitrarily picking one. The group effect: when multiple correlated lag features are informative, ElasticNet gives them all non-zero (but equal) coefficients rather than zeroing all-but-one. This produces physically interpretable selection: "the last 3 days of X are predictive" rather than "only day-before-yesterday of X is predictive." The mixing parameter α controls the blend: α=1 is pure LASSO, α=0 is pure Ridge. Values of 0.5–0.9 are optimal for most TS problems.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Group Structure Test</strong></p>
+<p>After ElasticNet selection, examine whether selected features form coherent groups. lag_1, lag_2, lag_3 all selected: physically plausible 3-day memory effect. lag_1, lag_7, lag_23 selected but no adjacent lags: each needs specific mechanistic justification. Isolated lags without adjacent support or physical justification should be treated as potential false positives. Increase λ slightly — genuine signals persist across a range of λ; noise-fitted features disappear with minimal regularisation increase.</p>
+</blockquote>
+<p>Group LASSO (Yuan &amp; Lin, 2006) applies the sparsity penalty at the group level: Σ_g √|g| · ||β_g||₂. This creates group-level sparsity — either the entire group β_g = 0, or all members are non-zero. The √|g| normalisation prevents larger groups from having an unfair advantage. For time series, the natural grouping is by variable: all lags of X form group X. Group LASSO answers "which variables matter?" rather than "which specific lags matter?" — a higher-level, more interpretable form of selection.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Follow Up with SHAP within Selected Groups</strong></p>
+<p>After Group LASSO selects a variable's group, run SHAP or permutation importance within the group. If only 1–2 lags within a 12-lag group are important, consider Sparse Group LASSO (§4.5) instead. Group LASSO tells you the variable matters; it doesn't tell you which specific lags to use.</p>
+</blockquote>
+<p>Sparse Group LASSO (Simon et al., 2013) adds individual-level L1 sparsity on top of group-level sparsity: penalty = λ₁||β||₁ + λ₂·Σ_g √|g|·||β_g||₂. Two-stage sparse solution: groups selected or zeroed entirely (λ₂), and within selected groups, individual features further sparsified (λ₁). This precisely captures the desired TS behaviour: "do the lags of X contribute?" (group-level) and "which specific lags of X are important?" (within-group).</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Dual Stability Check</strong></p>
+<p>Run stability selection (§6.8) on Sparse Group LASSO: check both (1) group-level selection frequency and (2) individual feature frequency within groups. A feature is genuinely important only if its group is selected in &gt;70% of bootstrap subsamples AND the individual feature is selected within that group in &gt;60% of subsamples.</p>
+</blockquote>
+<p>SLOPE (Bogdan et al., 2015) replaces LASSO's uniform L1 penalty with a sorted, decreasing penalty: min_β (1/2n)||y-Xβ||² + Σ_i λ_i·|β|<em>(i) where |β|</em>(i) are sorted absolute coefficients and λ_1 ≥ ... ≥ λ_p is chosen according to Benjamini-Hochberg critical values: λ_j = Φ⁻¹(1 - jq/2p). When the λ sequence is set this way, SLOPE controls the False Discovery Rate at level q — E[V/R] ≤ q where V is the number of spuriously selected features and R is the total selected. This is a fundamentally stronger guarantee than LASSO provides, which has no FDR control whatsoever.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — FDR as Conservative Approximation</strong></p>
+<p>SLOPE's FDR guarantee is exact under Gaussian, exchangeable data. In TS both fail. Treat q as a conservative approximation: SLOPE with q=0.1 in practice delivers better FDR than LASSO with the same number of features — the bound just isn't tight. Validate empirically on synthetic data with known support and compare actual false positive rate to q before trusting the formal guarantee in your domain.</p>
+</blockquote>
+<p>MDI measures total weighted impurity reduction accumulated by splits on a feature across all trees. Free — computed during tree training at no additional cost. Two well-documented biases: (1) <strong>Cardinality bias</strong>: high-cardinality features produce more possible split points, creating more chances to reduce impurity by chance. Continuous lag features appear more important than binary calendar indicators simply due to cardinality, even when the calendar indicator is the dominant predictor. (2) <strong>Masking bias</strong>: for correlated lag features, the first lag selected at an early split captures most available impurity, leaving all subsequent lags with little remaining to offer — making all-but-one of a correlated group appear unimportant.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — MDI vs. Permutation Rank Delta</strong></p>
+<p>Compute MDI rank and permutation importance rank for each feature. rank_delta &gt; 10 (MDI ranks feature much higher) = inflated by cardinality bias or masking. rank_delta &lt; -10 (MDI ranks feature much lower) = undervalued because it is binary or contributes at deeper tree levels. Always use permutation importance as the final arbiter when MDI and permutation disagree substantially.</p>
+</blockquote>
+<p>Gradient boosting exposes three importance types: split (frequency of use), gain (average loss reduction per split), and cover (samples affected). <strong>Gain</strong> is most reliable for selection: normalising by split count means a feature used rarely but for large improvements ranks higher than one used frequently for negligible improvements. In time series, gain importance tends to be more stable than split count because per-split gain varies more systematically with actual predictive contribution.</p>
+<p>Because boosting fits trees sequentially to residuals, early rounds capture dominant signals and late rounds capture residuals. Features important early in boosting are typically most important overall; features important only in late rounds may be fitting noise. Use early stopping and compare feature rankings between early-stopped and fully-trained models.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Gain vs. Split Count Agreement</strong></p>
+<p>High split count but low gain = feature is being used frequently for negligible improvements, often in late boosting rounds — a sign of noise fitting. High gain but moderate split count = model uses this feature selectively for large improvements — the hallmark of a genuine, highly predictive feature. This ratio is more reliable than either measure alone.</p>
+</blockquote>
+<p>Standard permutation importance has a bias documented by Strobl et al. (2008): when feature X₁ is permuted while correlated X₂ remains intact, the model partially compensates using X₂ — making X₁ appear less important than it truly is and inflating X₂'s apparent importance. For lag features (always highly correlated in TS), this can make the most predictive lag appear unimportant simply because it can be proxied by an adjacent lag.</p>
+<p>Conditional permutation fixes this by permuting each feature <em>within strata</em> defined by its correlated neighbours: group observations by similar values of correlated features (via k-means), then permute within each group. This preserves the joint distribution between the permuted feature and its neighbours while breaking its relationship with the target — isolating the genuine marginal contribution.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Standard vs. Conditional Agreement</strong></p>
+<p>Run both side by side. Lag_1 has high standard importance but low conditional importance? Lag_1's importance is partly borrowed from lag_2 which is doing the heavy lifting. A feature with higher conditional than standard importance was being undervalued because correlated features were compensating for it when it was permuted globally. The conditional version always gives the more honest answer.</p>
+</blockquote>
+<p>SHAP decomposes each prediction into feature contributions satisfying three axioms: efficiency (contributions sum to prediction deviation from baseline), symmetry (identical features receive equal attribution), linearity (linear model SHAP = scaled coefficients). TreeSHAP computes exact Shapley values in polynomial time O(TLD²) exploiting tree structure. For TS, SHAP values computed per-sample and aggregated by time period reveal regime changes in feature importance — the single most powerful diagnostic for detecting concept drift in deployed models.</p>
+<blockquote>
+<p><strong>⚠️ Direction Change = Red Flag</strong></p>
+<p>A feature whose mean SHAP switches sign across time periods (positive in Period 1, negative in Period 3) means the model uses it to push predictions upward in some regimes and downward in others. This is exactly the pattern expected from a feature with spurious correlation through a reversing common driver. Features with direction_change should be investigated before trusting in production.</p>
+</blockquote>
+<h3 id="attention-gates-gradient-attribution-for-neural-ts-models">Attention, Gates &amp; Gradient Attribution for Neural TS Models</h3>
+<p>Deep learning feature importance methods are model-specific — they measure how <em>this particular trained neural network</em> uses features, not how the world works. Validation against simpler methods from other families is essential for every deep learning importance estimate.</p>
+<p>The TFT's Variable Selection Network concatenates all input features, passes them through a Gated Residual Network that produces a softmax-normalised weight vector over inputs, and uses this to weight individual feature representations. Features with consistently near-zero weights across the validation set contribute nothing and can be removed. Unlike post-hoc attribution, VSN weights are a forward-pass output — zero overhead at inference time, enabling continuous production monitoring of which features the model is using for each prediction.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — VSN vs. SHAP Agreement</strong></p>
+<p>Features with high VSN weights and high SHAP importance are doubly validated. Features with high VSN weights but near-zero SHAP: using complex latent representations SHAP cannot capture linearly — investigate with Integrated Gradients. Features with near-zero VSN weights but high SHAP: anomalous — attention mechanism hasn't converged properly.</p>
+</blockquote>
+<p>STG (Yamada et al., 2020) learns per-feature Bernoulli gates z_j = max(0, min(1, (μ_j + ε)/2 + 0.5)) where ε ~ N(0, 0.5²) — differentiable via reparameterisation trick. L0-like sparsity regularisation Σ_j sigmoid(μ_j) pushes gate probabilities toward zero. At convergence, gates with P(z_j = 1) &lt; 0.5 are treated as "off". Gate probabilities provide a natural continuous importance ranking: P(z_j = 1) closer to 1 = more important.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Multi-Seed Gate Stability</strong></p>
+<p>Train with 5 different random seeds. Genuine features show P(z_j = 1) consistently close to 1.0 across seeds. Noise features show high variance across seeds (0.8 in one seed, 0.2 in another). Trust only features with gate probability &gt; 0.8 in all 5 seeds.</p>
+</blockquote>
+<p>TabNet (Arik &amp; Pfister, 2021) processes features through B decision steps, each selecting a soft subset via sparsemax-normalised attention mask. Per-instance importance: η_j(i) = Σ_b M[b][i,j] — sum of attention weights on feature j across all steps for sample i. Different observations rely on different features — particularly valuable for multi-entity TS (multiple stores/products) where different entities rely on genuinely different drivers.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Entity-Specific Importance Clustering</strong></p>
+<p>For multi-entity TS, cluster instances by attention pattern vectors (cosine similarity). If a feature appears important in one cluster but not others, check whether clusters correspond to meaningful entity segments. If clusters are arbitrary, heterogeneous importance likely reflects overfitting to entity-specific noise.</p>
+</blockquote>
+<p>IG (Sundararajan et al., 2017) integrates the model gradient along a path from baseline x' to actual input x: IG_j(x) = (x_j - x'_j) × ∫₀¹ (∂F(x'+α(x-x'))/∂x_j) dα. The completeness axiom: Σ_j IG_j(x) = F(x) - F(x') — attributions sum exactly to the output difference from baseline. The go-to attribution method for RNNs, LSTMs, and Transformer forecasters where TreeSHAP is inapplicable. Baseline choice encodes an explicit counterfactual: zero baseline = "how much does each feature move prediction from zero?"; mean baseline = "how much beyond average behaviour?"</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Baseline Sensitivity Check</strong></p>
+<p>Compute IG with three baselines (zero, mean, random). Features ranking consistently high across all three are genuinely important — their importance doesn't depend on arbitrary baseline choice. Features important under one baseline but not others are baseline-dependent artefacts.</p>
+</blockquote>
+<p>For Transformer forecasters, raw single-layer attention weights are unreliable for attribution: deeper layer attention is conditional on earlier layers' processing. Attention rollout (Abnar &amp; Zuidema, 2020) computes combined attention through all layers: R_0 = I, R_l = R_{l-1} × (0.5·A_l + 0.5·I), where the identity accounts for residual connections. The final R_L matrix represents how much each input position contributes to each output position through the full network depth — a more faithful attribution than any single layer's attention.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Rollout vs. IG Agreement</strong></p>
+<p>Rollout is fast but less principled; IG satisfies formal axioms but is slow. Features ranking highly under both methods are most trustworthy. Features with high rollout but low IG importance are likely inflated by the rollout approximation's residual handling. Use IG as the gold standard for final decisions; rollout for continuous production monitoring where IG's cost is prohibitive.</p>
+</blockquote>
+<h3 id="beyond-correlation-directed-graphs-stability-fdr-guarantees">Beyond Correlation — Directed Graphs, Stability &amp; FDR Guarantees</h3>
+<p>Causal and hybrid methods move beyond measuring association to asking questions about directed influence, invariance under intervention, and statistical guarantees about spurious selections. More assumption-laden than filter or embedded methods, but their outputs are qualitatively different: a causal graph edge is much stronger evidence for feature inclusion than a correlation coefficient.</p>
+<p>PCMCI (Runge et al., 2019) extends the PC algorithm with momentary conditional independence (MCI) tests that condition on the parents of both X and Y simultaneously, dramatically reducing the false positive rate from shared autocorrelation — the Achilles heel of Granger causality. PCMCI+ extends to contemporaneous (lag-0) causal links. The output is a directed time-lagged causal graph whose edges represent genuine causal relationships, not just predictive associations.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Graph Edge Validation</strong></p>
+<p>For each PCMCI+ edge, check: (1) Is the causal lag mechanistically plausible? (2) Does the edge persist with the CMIknn nonlinear test or only with ParCorr? (3) Is the edge robust to different α thresholds (0.05 and 0.01)? Edges surviving all three checks are the most credible. Edges present only under ParCorr (linear test) suggest a spurious linear dependency not genuine nonlinear causation.</p>
+</blockquote>
+<p>FCI (Spirtes et al., 1995) relaxes PCMCI's assumption of no latent confounders, producing a Partial Ancestral Graph (PAG) whose edges distinguish: X → Y (X directly causes Y), X o→ Y (X is an ancestor of Y OR a latent confounder drives both), and X o-o Y (direction uncertain or confounder). For feature selection, "--&gt;" edges give the strongest evidence for inclusion; "o→" and "o-o" edges indicate the feature is predictive but not necessarily the direct cause.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Bidirectional FCI Edges</strong></p>
+<p>X o→ Y where Y o→ X (both have "o" endpoints): strong signal of a latent confounder Z driving both. Including X still gives predictive value (Z → X structure), but the relationship may not be stable across regimes if Z changes character over time. Try to identify Z and include it directly rather than relying on a proxy.</p>
+</blockquote>
+<p>Transfer entropy TE(X→Y) = H(Y_t|Y_past) - H(Y_t|Y_past, X_past) measures the reduction in uncertainty of Y's future given both Y's past and X's past — equivalent to conditional mutual information and strictly more general than Granger causality. For Gaussian variables, TE equals the Granger test log-likelihood ratio. Directional (TE(X→Y) ≠ TE(Y→X)). Nonparametric — no linearity assumption. Use IDTxl or pyInform for estimation.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — TE vs. Granger Agreement</strong></p>
+<p>When TE and Granger agree on which features are significant, the result is more trustworthy — the linear VAR test and the nonparametric information-theoretic test converge. When TE is significant but Granger is not, there is genuine nonlinear predictive causality the VAR model cannot capture. When Granger is significant but TE is not, the apparent Granger significance is driven by linear autocorrelation structure that TE correctly conditions away.</p>
+</blockquote>
+<p>DCM (Friston et al., 2003) fits a Bayesian state-space model where latent states evolve according to a user-specified causal structure, and observed series are linked to states through an observation model. The posterior over causal connection strengths provides feature importance with full uncertainty quantification. Key: DCM requires competing causal hypotheses upfront — compare "Model A: X causes Y directly" against "Model B: X affects Y via Z" using Bayes factors. This is hypothesis-driven feature selection, not exploratory screening.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Bayes Factor Model Comparison</strong></p>
+<p>DCM's unique strength: compare Model A (X → Y directly) against Model B (X → Z → Y mediated). If the evidence strongly favours B, including X but not Z captures the pattern but misses the mechanism. For interventional forecasting (predicting effects of changing X), only Model B gives correct predictions. Bayes factor &gt; 10 in favour of a model is considered strong evidence in the Bayesian model comparison literature.</p>
+</blockquote>
+<p>Conformal feature selection computes p-values by comparing each feature's true effect (performance drop when set to zero) against a null distribution built from block-permuted versions of that feature. The empirical rank of the true delta among n_permutations permuted deltas yields a finite-sample valid p-value. Applying Benjamini-Hochberg correction gives FDR control at level q — provably valid in finite samples under exchangeability. This is the strongest statistical guarantee available in TS feature selection, not relying on Gaussian noise or asymptotic approximations.</p>
+<blockquote>
+<p><strong>✓ The Statistical Guarantee</strong></p>
+<p>Under block exchangeability, the conformal p-value is valid in finite samples — not just asymptotically. BH correction then controls FDR at level q. This is the strongest guarantee: with q=0.1, at most 10% of selected features are expected to be spurious. Validate empirically on synthetic data with known support before deploying to a new domain.</p>
+</blockquote>
+<p>IRM (Arjovsky et al., 2019) selects features whose predictive relationship with the target is invariant across different environments — different time windows, market regimes, or seasonal conditions. The IRM objective finds a predictor that simultaneously minimises risk in all environments AND is simultaneously optimal in all environments (the invariance constraint). Features selected by IRM are more likely to remain predictive under distribution shift — critical for live forecasting models where deployment distribution differs from training.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — Environment Design Matters</strong></p>
+<p>The quality of IRM's invariance test depends entirely on how environments are defined. If all environments share the same spurious correlations (e.g., all from the same economic regime), IRM won't remove them. Good environment choices: different years, different market regimes (expansion/recession), different seasons. Validate that your selected features actually show similar predictive strength across the environments you defined — if they don't, IRM has overfitted to the specific environment definition.</p>
+</blockquote>
+<p>ICA (Hyvärinen &amp; Oja, 2000) decomposes a multivariate feature matrix into statistically independent latent components — distinct underlying drivers. Unlike PCA which finds uncorrelated components, ICA finds components that are genuinely independent (a much stronger condition). For TS feature selection, ICA applied to the exogenous feature matrix reveals latent themes (market sentiment, weather regime, supply cycle) that often predict the target better than any raw feature. ICA is a <em>feature discovery</em> tool: it produces new features (components) that must then be ranked using methods from Sections 2–4.</p>
+<blockquote>
+<p><strong>⚠️ ICA Components Are Not Causal</strong></p>
+<p>ICA separates statistically independent signals — not causally distinct ones. A component highly correlated with the target is a good predictor but not necessarily a cause. For causal interpretation, combine ICA with PCMCI+ or FCI on the extracted components rather than interpreting the mixing matrix directly.</p>
+</blockquote>
+<p>Stability selection (Meinshausen &amp; Bühlmann, 2010) runs a feature selector on many block-bootstrap subsamples of the training data and accepts only features selected in a high fraction (≥80%) of rounds. Single-pass selection is unreliable — bootstrap variance in tree importances, noisy MI estimates, and regime-dependent correlations all cause instability. Boruta extends stability selection by creating shadow features (randomly shuffled copies of each original feature) and requiring each real feature to outperform the best shadow feature's importance to be accepted. For time series, block bootstrap subsampling preserves temporal autocorrelation structure within each subsample.</p>
+<blockquote>
+<p><strong>🔍 Spurious vs. Genuine — The 80% Threshold</strong></p>
+<p>Features selected in 60–80% of rounds are in a grey zone: likely genuine but not stable enough to trust unconditionally. These "borderline" features warrant additional investigation: run AR-adjusted correlation (§2.9) and SHAP temporal analysis (§4.10) on them. If all three methods agree the feature is relevant, promote it to the final set. If any method raises a red flag, exclude it.</p>
+</blockquote>
+<h3 id="production-pipelines-multi-objective-selection-case-study">Production Pipelines, Multi-Objective Selection &amp; Case Study</h3>
+<p>Every feature selection method must be fit exclusively on training-fold data. This universal wrapper accepts any sklearn-compatible selector, runs it independently on each walk-forward fold, and aggregates selections by frequency. Features selected in ≥ stability_freq fraction of folds are retained. This transforms any single-pass selector into a stability-aware walk-forward selector.</p>
+<p>Feature importance changes with forecast horizon H: high-frequency lag features dominate short horizons (H=1,2,3); trend and calendar features dominate long horizons (H=7,14,30). Three strategies, in order of computational cost and accuracy:</p>
+<p>Real feature selection is rarely single-objective. You want good predictive performance, but also interpretability (fewer features), low inference latency (cheaper features — avoid expensive rolling statistics or external API calls), and minimal data acquisition cost. NSGA-II explores the Pareto front — the set of feature subsets where no objective can be improved without degrading another — giving stakeholders a choice of trade-off points rather than a single opinionated selection.</p>
+<blockquote>
+<p><strong>💡 Choosing a Pareto Point</strong></p>
+<p>With the Pareto front in hand: engineering picks the point matching their latency budget, product picks the one matching interpretability requirements, data science confirms the performance floor. This is structurally better than arguing about a single "optimal" feature set that inevitably compromises some stakeholder's constraint.</p>
+</blockquote>
+<p>The recommended production architecture runs three stages in sequence: a fast MI filter to reduce dimensionality, an ElasticNet refinement for sparse linear selection, and a final LightGBM model. All three stages run inside walk-forward CV with stability aggregation. The final feature set must pass the six-step diagnostic framework (Section II) before deployment.</p>
+<h3 id="decision-framework-for-trusting-a-feature-set">Decision Framework for Trusting a Feature Set</h3>
+<p>A feature set is trustworthy for production deployment when and only when it satisfies all nine of the following criteria. No individual criterion is sufficient alone — it is the conjunction that matters.</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>feature-selection-ts-deep-dive</code> &middot; category: <code>general</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+</body>
+</html>

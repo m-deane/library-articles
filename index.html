@@ -7,6 +7,11 @@
   <meta name="description" content="Rich JSX React articles — companion to the Data Science Library at huggingface.co/spaces/helwyr55/library" />
   <link rel="stylesheet" href="assets/fonts/fonts.css" />
   <link rel="stylesheet" href="assets/styles.css" />
+  <!-- Offline full-text search (Phase 6) — loaded eagerly so the first keystroke
+       after 2+ chars doesn't pay a round-trip for the engine itself, only the
+       index. ~30 KB minified. Falls back silently to the data-attribute filter
+       if the global `lunr` isn't defined. -->
+  <script src="assets/vendor/lunr.min.js"></script>
 </head>
 <body>
   <!-- Top navigation bar mirrors the main library sidebar -->
@@ -19,6 +24,7 @@
         <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">🎓 Courses</a>
         <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">🗺️ Learning Paths</a>
         <a href="./" class="active">📝 Articles</a>
+        <a href="md/index.html">📄 Plain reader</a>
         <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">🔬 Projects</a>
       </div>
       <span class="stats-chip" id="nav-stats">22 articles</span>
@@ -57,9 +63,20 @@
         <option value="title-asc">Title A–Z</option>
         <option value="title-desc">Title Z–A</option>
       </select>
-      <input type="search" id="filter-search" placeholder="Search titles, subtitles, tags…" />
+      <input type="search" id="filter-search" placeholder="Search across all article content…" autocomplete="off" />
       <span class="filter-count" id="filter-count">22 shown</span>
       <a class="zip-download-btn" href="library-articles-offline.zip" download title="Download all articles as PDFs">📦 Download all PDFs (16 MB)</a>
+    </div>
+
+    <!-- Content-search results panel (Phase 6). Populated by lunr over
+         `search-index.json` when the user types ≥2 chars. Hidden by default;
+         shown only while a search query is active. -->
+    <div class="search-results" id="search-results" hidden>
+      <div class="search-results-header">
+        <span id="search-results-count">0 matches</span>
+        <button type="button" class="search-results-clear" id="search-results-clear">Clear</button>
+      </div>
+      <ol class="search-results-list" id="search-results-list"></ol>
     </div>
 
     <div class="index-grid" id="index-grid">
@@ -100,9 +117,6 @@
   <script>
     (function () {
       var grid = document.getElementById('index-grid');
-      // Cards are now wrapped in .article-card-wrap so the <a class="article-card">
-      // and <a class="pdf-link"> don't nest. Fall back to .article-card for older
-      // builds / any previously-generated static HTML served from cache.
       var cards = Array.from(grid.querySelectorAll('.article-card-wrap'));
       if (cards.length === 0) {
         cards = Array.from(grid.querySelectorAll('.article-card'));
@@ -112,7 +126,12 @@
       var sortSel = document.getElementById('filter-sort');
       var searchInp = document.getElementById('filter-search');
       var countEl = document.getElementById('filter-count');
+      var resultsEl = document.getElementById('search-results');
+      var resultsListEl = document.getElementById('search-results-list');
+      var resultsCountEl = document.getElementById('search-results-count');
+      var resultsClearEl = document.getElementById('search-results-clear');
 
+      // -------- Category / style dropdowns -----------------------------------
       var cats = new Set();
       var styles = new Set();
       cards.forEach(function (c) {
@@ -146,7 +165,8 @@
         sorted.forEach(function (c) { grid.appendChild(c); });
       }
 
-      function apply() {
+      // -------- Fast data-attribute filter (fallback + always-on base) -------
+      function applyCardFilter() {
         var cat = catSel.value;
         var sty = styleSel.value;
         var q = (searchInp.value || '').trim().toLowerCase();
@@ -164,10 +184,196 @@
         sortCards();
       }
 
+      // -------- Lunr content search (Phase 6) --------------------------------
+      // Lazy-fetched on first keystroke (>=2 chars). Cached in-memory after.
+      var lunrIndex = null;
+      var lunrStore = null;
+      var lunrDocs = null;    // always populated (lunr payload or naive)
+      var lunrFormat = null;
+      var lunrFetchStarted = false;
+      var lunrLoadError = null;
+
+      function loadSearchAssets() {
+        if (lunrFetchStarted) return;
+        lunrFetchStarted = true;
+        Promise.all([
+          fetch('search-index.json').then(function (r) { if (!r.ok) throw new Error('index http ' + r.status); return r.json(); }),
+          fetch('search-store.json').then(function (r) { if (!r.ok) throw new Error('store http ' + r.status); return r.json(); })
+        ]).then(function (arr) {
+          var idxData = arr[0];
+          lunrStore = arr[1];
+          lunrFormat = idxData.format || 'unknown';
+          lunrDocs = idxData.docs || [];
+          if (lunrFormat === 'lunr' && typeof lunr !== 'undefined' && idxData.index) {
+            try {
+              lunrIndex = lunr.Index.load(idxData.index);
+            } catch (e) {
+              console.warn('lunr.Index.load failed — falling back to naive search', e);
+              lunrIndex = null;
+              lunrFormat = 'naive';
+            }
+          } else if (lunrFormat === 'lunr') {
+            lunrFormat = 'naive';  // no global lunr — degrade gracefully
+          }
+          runContentSearch();
+        }).catch(function (err) {
+          lunrLoadError = err;
+          console.warn('search assets failed to load — staying with card filter', err);
+        });
+      }
+
+      function escapeHtml(s) {
+        return String(s || '')
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      }
+
+      function snippetFor(body, query) {
+        if (!body) return '';
+        var qLower = query.toLowerCase();
+        var bLower = body.toLowerCase();
+        var firstTerm = qLower.split(/\s+/)[0];
+        var idx = bLower.indexOf(firstTerm);
+        if (idx < 0) {
+          // Try each word individually.
+          var words = qLower.split(/\s+/);
+          for (var i = 0; i < words.length; i++) {
+            idx = bLower.indexOf(words[i]);
+            if (idx >= 0) { firstTerm = words[i]; break; }
+          }
+        }
+        if (idx < 0) return escapeHtml(body.slice(0, 200)) + (body.length > 200 ? '…' : '');
+        var start = Math.max(0, idx - 80);
+        var end = Math.min(body.length, idx + firstTerm.length + 120);
+        var prefix = start > 0 ? '…' : '';
+        var suffix = end < body.length ? '…' : '';
+        var chunk = body.slice(start, end);
+        var chunkLower = chunk.toLowerCase();
+        var markIdx = chunkLower.indexOf(firstTerm);
+        if (markIdx < 0) return escapeHtml(prefix + chunk + suffix);
+        var before = escapeHtml(chunk.slice(0, markIdx));
+        var term = escapeHtml(chunk.slice(markIdx, markIdx + firstTerm.length));
+        var after = escapeHtml(chunk.slice(markIdx + firstTerm.length));
+        return escapeHtml(prefix) + before + '<mark>' + term + '</mark>' + after + escapeHtml(suffix);
+      }
+
+      function renderResults(hits, query) {
+        resultsListEl.innerHTML = '';
+        if (!hits.length) {
+          resultsCountEl.textContent = 'No content matches for "' + query + '"';
+          resultsEl.hidden = false;
+          return;
+        }
+        resultsCountEl.textContent = hits.length + ' content match' + (hits.length === 1 ? '' : 'es') + ' for "' + query + '"';
+        hits.slice(0, 10).forEach(function (h) {
+          var slug = h.slug;
+          var meta = (lunrStore && lunrStore[slug]) || {};
+          var title = meta.title || h.title || slug;
+          var subtitle = meta.subtitle || h.subtitle || '';
+          var category = meta.category || '';
+          var li = document.createElement('li');
+          li.className = 'search-result';
+          var body = (h.doc && h.doc.body) || '';
+          var snip = snippetFor(body || subtitle, query);
+          li.innerHTML =
+            '<div class="search-result-row">' +
+              '<div class="search-result-main">' +
+                '<span class="search-result-cat">' + escapeHtml(category) + '</span>' +
+                '<h4><a href="' + escapeHtml(meta.url || ('articles/' + slug + '.html')) + '">' + escapeHtml(title) + '</a></h4>' +
+                (subtitle ? '<p class="search-result-sub">' + escapeHtml(subtitle) + '</p>' : '') +
+                '<p class="search-result-snippet">' + snip + '</p>' +
+              '</div>' +
+              '<div class="search-result-links">' +
+                '<a href="' + escapeHtml(meta.url || ('articles/' + slug + '.html')) + '" title="Full JSX reader">🎨 Full</a>' +
+                '<a href="' + escapeHtml(meta.md_url || ('md/' + slug + '.html')) + '" title="Plain reader">📄 Plain</a>' +
+                '<a href="' + escapeHtml(meta.pdf_url || ('articles/' + slug + '.pdf')) + '" title="Download PDF" download>📑 PDF</a>' +
+              '</div>' +
+            '</div>';
+          resultsListEl.appendChild(li);
+        });
+        resultsEl.hidden = false;
+      }
+
+      function naiveSearch(query) {
+        if (!lunrDocs || !lunrDocs.length) return [];
+        var q = query.toLowerCase();
+        var scored = [];
+        lunrDocs.forEach(function (d) {
+          var t = (d.title || '').toLowerCase();
+          var s = (d.subtitle || '').toLowerCase();
+          var b = (d.body || '').toLowerCase();
+          var score = 0;
+          if (t.indexOf(q) !== -1) score += 10;
+          if (s.indexOf(q) !== -1) score += 5;
+          if (b.indexOf(q) !== -1) score += 1 + Math.min(5, b.split(q).length - 1);
+          if (score > 0) scored.push({ slug: d.slug, title: d.title, subtitle: d.subtitle, doc: d, score: score });
+        });
+        scored.sort(function (a, b) { return b.score - a.score; });
+        return scored;
+      }
+
+      function runContentSearch() {
+        var query = (searchInp.value || '').trim();
+        if (query.length < 2) {
+          resultsEl.hidden = true;
+          resultsListEl.innerHTML = '';
+          return;
+        }
+        // Prefer lunr when available; else fall back to naive substring scoring.
+        var hits = [];
+        if (lunrIndex) {
+          try {
+            // Use wildcard match so partial words ("bayes" -> "bayesian") still hit.
+            var terms = query.split(/\s+/).filter(Boolean).map(function (t) {
+              return t.replace(/[~^*+\-:]/g, '') + '*';
+            });
+            hits = lunrIndex.search(terms.join(' '));
+          } catch (e) {
+            console.warn('lunr.search failed, falling back to naive', e);
+            hits = [];
+          }
+          // Hydrate results from the docs array.
+          if (hits.length && lunrDocs) {
+            var docsBySlug = {};
+            lunrDocs.forEach(function (d) { docsBySlug[d.slug] = d; });
+            hits = hits.map(function (h) {
+              return { slug: h.ref, doc: docsBySlug[h.ref] || {}, title: (docsBySlug[h.ref] || {}).title, subtitle: (docsBySlug[h.ref] || {}).subtitle };
+            });
+          }
+        }
+        if (!hits.length) {
+          hits = naiveSearch(query);
+        }
+        renderResults(hits, query);
+      }
+
+      function apply() {
+        applyCardFilter();
+        var q = (searchInp.value || '').trim();
+        if (q.length >= 2) {
+          if (lunrDocs || lunrIndex) {
+            runContentSearch();
+          } else if (!lunrFetchStarted && !lunrLoadError) {
+            loadSearchAssets();    // triggers runContentSearch on resolve
+          } else if (lunrLoadError) {
+            // Fetch already failed — leave the card filter in charge.
+            resultsEl.hidden = true;
+          }
+        } else {
+          resultsEl.hidden = true;
+          resultsListEl.innerHTML = '';
+        }
+      }
+
       catSel.addEventListener('change', apply);
       styleSel.addEventListener('change', apply);
       sortSel.addEventListener('change', apply);
       searchInp.addEventListener('input', apply);
+      resultsClearEl.addEventListener('click', function () {
+        searchInp.value = '';
+        apply();
+        searchInp.focus();
+      });
 
       sortCards();
     })();

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Splitwise Python Article — Plain Reader</title>
+  <meta name="description" content="From OAuth handshakes to debt-minimisation graphs — everything a data engineer needs to wire Python into Splitwise&#x27;s REST API." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Splitwise Python Article</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date"></span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/splitwise-python-article.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/splitwise-python-article.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <p><strong>01. What is Splitwise?</strong> — s1</p>
+<p><strong>02. The Python SDK Landscape</strong> — s2</p>
+<p><strong>03. Authentication Deep Dive</strong> — s3</p>
+<p><strong>04. Core Object Model</strong> — s4</p>
+<p><strong>05. Reading Data</strong> — s5</p>
+<p><strong>06. Writing Data</strong> — s6</p>
+<p><strong>07. Analytics &amp; Reporting</strong> — s7</p>
+<p><strong>08. Rate Limits &amp; Best Practices</strong> — s8</p>
+<p><strong>09. Real-World Use Cases</strong> — s9</p>
+<p><strong>10. API Reference Cheatsheet</strong> — s10</p>
+<h1 id="splitwise-in-python">Splitwise in Python:</h1>
+<p><em>The Complete Practitioner's Guide</em></p>
+<p>From OAuth handshakes to debt-minimisation graphs — everything a data engineer,
+automation developer, or financial-analysis practitioner needs to wire Python
+directly into Splitwise's REST API using the <code>splitwise</code> SDK.</p>
+<h2 id="what-is-splitwise">What Is Splitwise?</h2>
+<p>Splitwise is a debt-tracking and expense-splitting platform launched in 2011,
+now serving tens of millions of users globally. Unlike a payment processor,
+it is a <strong>ledger of obligations</strong> — it records who paid what,
+computes who owes whom, and optimises the resulting debt graph to minimise
+the number of settlement transactions required.</p>
+<p>At its core, Splitwise solves a surprisingly hard combinatorial problem: given
+N people with M expenses between them, find the minimum set of payments
+that resolves every debt. Naively, this is O(N²) bilateral settlements;
+Splitwise's "Simplify Debts" feature reduces this to at most N-1 transfers
+by treating the problem as a flow network.</p>
+<p>The platform exposes a full <strong>REST API</strong> at <code>https://secure.splitwise.com/api/v3.0/</code>,
+supporting OAuth 1.0a, OAuth 2.0, and personal API keys. Every resource —
+users, groups, expenses, comments, currencies, categories — is accessible
+programmatically. This makes Splitwise an attractive target for financial
+automation, household budget analysis, and shared-economy tooling.</p>
+<blockquote>
+<p><strong>💡 Key Concept</strong></p>
+<p>Expenses not assigned to a group are placed in a virtual group with <code>id=0</code>.
+Always filter <code>getExpenses()</code> results by <code>getPayment() == False</code>
+to exclude settlement transactions from spending analyses.</p>
+</blockquote>
+<h2 id="the-python-sdk-landscape">The Python SDK Landscape</h2>
+<p>Several community SDKs exist across languages for the Splitwise API.
+For Python, the canonical choice is <code>namaggarwal/splitwise</code>,
+a 208-star MIT-licensed package on PyPI that provides complete typed
+object wrappers around every API endpoint. It is the only Python SDK
+listed on the official Splitwise developer documentation.</p>
+<p>The SDK supports Python 3.7 through 3.11 and runs on PyPy. It wraps
+every API resource as a Python class with explicit getter and setter
+methods — a deliberate design choice that provides IDE autocomplete
+at the cost of more verbose code than a simple dict-based client.</p>
+<h2 id="authentication-deep-dive">Authentication Deep Dive</h2>
+<p>Splitwise supports three authentication mechanisms. Choosing the wrong
+one for your use case is the most common source of integration friction.
+Understanding the tradeoffs upfront saves hours of debugging.</p>
+<p>For personal automation — monthly spending reports, household budget
+dashboards, CLI tools — the API key is the fastest path. Register an
+application at <code>https://secure.splitwise.com/oauth_clients</code>,
+then use the API key you receive directly. This method acts on your
+account only and is not suitable for multi-user applications.</p>
+<blockquote>
+<p><strong>💡 Security Note</strong></p>
+<p>Never commit API keys to version control. Store them in a <code>.env</code> file
+loaded via <code>python-dotenv</code>, or use environment variables in your CI/CD
+pipeline. The <code>.env</code> file should be in <code>.gitignore</code>.</p>
+</blockquote>
+<p>For multi-user applications, OAuth 2.0 is mandatory. The SDK handles
+the full authorization code flow. The critical security step is
+validating the <code>state</code> parameter on callback to prevent CSRF
+attacks — the SDK returns it from <code>getOAuth2AuthorizeURL()</code>
+and you must compare it to what comes back from Splitwise.</p>
+<blockquote>
+<p>"Store the access token after the first OAuth exchange —
+Splitwise tokens do not expire, making them safe to persist
+in your database for long-running automations."</p>
+</blockquote>
+<p><em>splitwise SDK documentation</em></p>
+<h2 id="core-object-model">Core Object Model</h2>
+<p>Every API response is deserialised into a typed Python object.
+Understanding the object hierarchy is essential for writing
+efficient, non-redundant code. The central entry point is the
+<code>Splitwise</code> class; all objects it returns are instances
+of the following classes from the <code>splitwise</code> package.</p>
+<blockquote>
+<p><strong>💡 Gotcha</strong></p>
+<p><code>getCost()</code> returns a string, not a float.
+Always cast: <code>float(expense.getCost())</code>.
+Similarly, <code>getOwedShare()</code> and <code>getPaidShare()</code>
+on ExpenseUser objects are also strings.</p>
+</blockquote>
+<h2 id="reading-data">Reading Data</h2>
+<p>The <code>getExpenses()</code> method is the workhorse of any Splitwise
+integration. It supports rich server-side filtering, but has a hard
+limit of 100 results per call, requiring pagination for any account
+with significant history.</p>
+<blockquote>
+<p><strong>💡 Filter Parameters</strong></p>
+<p><code>dated_after</code> / <code>dated_before</code> — ISO 8601 strings</p>
+<p><code>updated_after</code> — for incremental sync</p>
+<p><code>group_id</code> — filter by group</p>
+<p><code>friend_id</code> — bilateral expenses</p>
+<p><code>limit</code> — max 100 per page</p>
+<p><code>offset</code> — pagination cursor</p>
+</blockquote>
+<p>The pattern above — paginating until an empty page is returned, then
+converting to a pandas DataFrame — is the recommended foundation for
+any analytical pipeline. Filter <code>getDeletedAt()</code> immediately;
+deleted expenses are returned by default and will corrupt aggregations
+if not excluded.</p>
+<p>For incremental pipelines, use <code>updated_after</code> instead of
+<code>dated_after</code>. This captures edits and deletions to
+previously synced expenses, which <code>dated_after</code> misses entirely.</p>
+<h2 id="writing-data">Writing Data</h2>
+<p>Creating expenses programmatically requires careful attention to the
+<code>paid_share</code> and <code>owed_share</code> fields on each
+<code>ExpenseUser</code>. These are the most common source of API errors
+for new integrators: the sum of all <code>paid_share</code> values must
+equal the total expense cost, and the sum of all <code>owed_share</code>
+values must also equal the total cost.</p>
+<blockquote>
+<p><strong>💡 Invariant</strong></p>
+<p><strong>Always verify:</strong> <code>sum(paid_shares) == total_cost</code> and
+<code>sum(owed_shares) == total_cost</code>. Violating either will return
+a validation error from the API. Float precision errors are a common cause
+— use <code>round(value, 2)</code> and adjust the last share to absorb rounding.</p>
+</blockquote>
+<p><code>updateExpense()</code> accepts a partial <code>Expense</code> object
+with only the fields to change — you do not need to re-specify the full
+expense. The most ergonomic pattern is to first <code>getExpense(id)</code>,
+mutate the fetched object, then pass it to <code>updateExpense()</code>.
+Deletion via <code>deleteExpense(id)</code> is a soft delete — the expense
+is retained in API responses with a non-null <code>getDeletedAt()</code>.</p>
+<h2 id="analytics-reporting">Analytics &amp; Reporting</h2>
+<p>This is where the Python SDK truly differentiates itself from Splitwise's
+native app. By combining the SDK with pandas, you can build financial
+dashboards, categorised spending reports, and group fairness analyses
+that the app simply does not offer.</p>
+<p>The monthly pivot table pattern is particularly useful for household
+financial reviews. The key insight is filtering <code>getPayment() == True</code>
+to exclude settlement transfers, which are not actual expenditures.
+Without this filter, a £200 Venmo repayment from a flatmate inflates
+your apparent spending by that amount.</p>
+<h2 id="rate-limits-best-practices">Rate Limits &amp; Best Practices</h2>
+<p>Splitwise's API does not publish formal rate limit documentation, but
+community experience places the practical ceiling at approximately
+60 requests per minute. Scripts that iterate over large expense
+histories using per-expense <code>getExpense(id)</code> calls will
+hit this limit quickly — always prefer bulk operations like
+<code>getExpenses()</code> with filters over individual fetches.</p>
+<h2 id="real-world-use-cases">Real-World Use Cases</h2>
+<p>The following use cases represent the most common and highest-value
+applications practitioners build on the Splitwise Python SDK. Each
+maps a concrete problem to the specific SDK methods required.</p>
+<h2 id="api-reference-cheatsheet">API Reference Cheatsheet</h2>
+<p>A quick-reference index of every primary SDK method. All methods are
+called on a <code>Splitwise</code> instance (<code>sw</code>) after authentication.</p>
+<blockquote>
+<p><strong>💡 Further Reading</strong></p>
+<p>Official Splitwise REST API docs: <code>https://dev.splitwise.com/</code></p>
+<p>SDK source + examples: <code>https://github.com/namaggarwal/splitwise</code></p>
+<p>Flask example app: <code>https://github.com/namaggarwal/flask-splitwise-example</code></p>
+<p>SDK readthedocs: <code>https://splitwise.readthedocs.io/</code></p>
+</blockquote>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>splitwise-python-article</code> &middot; category: <code>general</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+</body>
+</html>

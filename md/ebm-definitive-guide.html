@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ebm Definitive Guide — Plain Reader</title>
+  <meta name="description" content="As accurate as gradient boosting, as interpretable as linear regression. Microsoft Research&#x27;s EBM makes the case that you don&#x27;t need SHAP if the model explains itself." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Ebm Definitive Guide</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-19</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read">22 min</span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/ebm-definitive-guide.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/ebm-definitive-guide.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <h2 id="1-the-interpretability-question">1. The Interpretability Question</h2>
+<p>You've trained an XGBoost model for credit scoring. AUC 0.923 on your holdout set. Then compliance asks: "For every denied application, provide the specific features and their exact contributions that led to the denial." You reach for SHAP — compute Shapley values, build a Shapash dashboard, generate an audit report. It works, but it's two systems: the model that decides, and the explanation that rationalises the decision post-hoc. The explanation is approximate, local, and computed after the fact.</p>
+<p>There is another path. Instead of building a black-box model and explaining it, you build a model that is <em>interpretable by design</em> — one whose internal structure is directly human-readable, where each feature's effect is a curve you can plot, inspect, and edit. And this model matches the black box's accuracy. This is the <strong>Explainable Boosting Machine (EBM)</strong>, developed at Microsoft Research by Rich Caruana and collaborators. It is a tree-based, cyclic gradient boosting Generalised Additive Model with automatic interaction detection.</p>
+<p>This article covers everything at encyclopaedic depth: the mathematical lineage from GAMs through GA²M to EBM; the round-robin training algorithm; shape functions and their visualisation; the accuracy debate with evidence; the InterpretML library in full; four production use cases; the competitive landscape of glass-box models; model editing; and an honest decision framework. Every concept section contains a runnable notebook cell — Cells 0–9 form a complete end-to-end example.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 0: 00_setup.py</span>
+<span class="c1"># pip install interpret scikit-learn pandas numpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">interpret.glassbox</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExplainableBoostingClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">interpret</span><span class="w"> </span><span class="kn">import</span> <span class="n">show</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_auc_score</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data&quot;</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span><span class="s2">&quot;WorkClass&quot;</span><span class="p">,</span><span class="s2">&quot;fnlwgt&quot;</span><span class="p">,</span><span class="s2">&quot;Education&quot;</span><span class="p">,</span><span class="s2">&quot;EducationNum&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;MaritalStatus&quot;</span><span class="p">,</span><span class="s2">&quot;Occupation&quot;</span><span class="p">,</span><span class="s2">&quot;Relationship&quot;</span><span class="p">,</span><span class="s2">&quot;Race&quot;</span><span class="p">,</span><span class="s2">&quot;Gender&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CapitalGain&quot;</span><span class="p">,</span><span class="s2">&quot;CapitalLoss&quot;</span><span class="p">,</span><span class="s2">&quot;HoursPerWeek&quot;</span><span class="p">,</span><span class="s2">&quot;NativeCountry&quot;</span><span class="p">,</span><span class="s2">&quot;Income&quot;</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="s2">&quot; ?&quot;</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Income&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Income&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&gt;50K&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train: </span><span class="se">{{</span><span class="s2">len(X_train)</span><span class="se">}}</span><span class="s2">, Test: </span><span class="se">{{</span><span class="s2">len(X_test)</span><span class="se">}}</span><span class="s2">, Features: </span><span class="se">{{</span><span class="s2">X.shape[1]</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>💡 Notebook Map</strong></p>
+<p><strong>Cells 0–9</strong>: <code>Cell 0</code> Setup (§1) · <code>Cell 1</code> Train (§4) · <code>Cell 2</code> Global Explain (§5) · <code>Cell 3</code> Local Explain (§5) · <code>Cell 4</code> Interactions (§6) · <code>Cell 5</code> Tuning (§8) · <code>Cell 6</code> Monotonic (§9) · <code>Cell 7</code> Editing (§10) · <code>Cell 8</code> vs XGBoost (§12) · <code>Cell 9</code> Deploy (§16)</p>
+</blockquote>
+<h2 id="2-generalised-additive-models-the-mathematical-foundation">2. Generalised Additive Models: The Mathematical Foundation</h2>
+<p>An EBM is a Generalised Additive Model (GAM). GAMs were introduced by Hastie and Tibshirani (1986) as an extension of linear models: <code>g(E[y]) = β₀ + f₁(x₁) + f₂(x₂) + ... + fₙ(xₙ)</code>, where g is a link function (identity for regression, logit for classification) and each fᵢ is a univariate "shape function" learned from data. The additive structure is the source of interpretability: each feature contributes independently, so you can visualise fᵢ(xᵢ) as a curve — x-axis is feature value, y-axis is contribution to prediction — and inspect it directly. No post-hoc approximation needed.</p>
+<p><em>[Figure: GAMDiag — see interactive JSX version]</em></p>
+<p><em>The lineage: GAMs provide the additive framework. GA²M (Lou et al., KDD 2013) adds pairwise interactions via the FAST algorithm. EBMs add modern ML training — bagging, cyclic gradient boosting, optional differential privacy.</em></p>
+<p>The limitation of pure GAMs is accuracy. Because each feature acts independently, GAMs cannot capture interactions — where feature A's effect depends on feature B's value. Lou, Caruana, Gehrke, and Hooker addressed this in their KDD 2013 paper with GA²M: <code>g(E[y]) = β₀ + Σfᵢ(xᵢ) + Σfᵢⱼ(xᵢ,xⱼ)</code>. The pairwise terms fᵢⱼ are 2D heatmaps — still visualisable and interpretable, but capturing the most important non-linear interactions. Their FAST algorithm efficiently ranks all n(n-1)/2 possible pairs to find the top-k worth including.</p>
+<p>The result was surprising: GA²M models "substantially close the accuracy gap between unintelligible full-complexity models such as random forests and GAMs" (Lou et al., KDD 2013). On some datasets, GA²M outperformed the best random forest. This was the empirical foundation for the EBM: add modern training techniques to the GA²M framework and match black-box accuracy while retaining full interpretability.</p>
+<h2 id="3-the-ebm-training-algorithm-round-robin-cyclic-boosting">3. The EBM Training Algorithm: Round-Robin Cyclic Boosting</h2>
+<p>The key innovation in EBM's training is <strong>cyclic, one-feature-at-a-time gradient boosting</strong>. Unlike XGBoost, which builds each tree using all features simultaneously (creating complex multi-feature splits), EBM trains a small tree on just one feature at a time, rotating through all features in round-robin fashion across thousands of iterations. In iteration 1, it fits a small tree to x₁'s residuals, then x₂'s, then x₃'s, ..., then xₙ's. In iteration 2, it repeats. This continues for 5,000 rounds with a very low learning rate (0.01).</p>
+<p><em>[Figure: Train Diag — see interactive JSX version]</em></p>
+<p><em>Each iteration trains one small tree per feature on current residuals. Low learning rate (0.01) ensures order doesn't matter. Shape functions accumulate across thousands of iterations.</em></p>
+<p>The low learning rate is critical: each tree's contribution is scaled by 0.01, so the model takes tiny steps. The order in which features are processed within a cycle has negligible effect. Each feature's shape function fᵢ is the sum of all small trees trained on that feature across all iterations — effectively a lookup table: for each binned value of xᵢ, there's a contribution to the prediction. This IS the shape function — it's the actual model, not an approximation.</p>
+<p>After main effects are learned, EBM applies the FAST algorithm to detect top-k pairwise interactions (default: 10), trained the same way on feature pairs. Bagging (outer_bags=16) wraps the entire process, training multiple EBMs on bootstrap samples and averaging them for stability and confidence intervals on shape functions.</p>
+<h2 id="4-interpretml-the-library">4. InterpretML: The Library</h2>
+<p>InterpretML is MIT-licensed, created by Samuel Jenkins, Harsha Nori, Paul Koch, and Rich Caruana. It provides <code>ExplainableBoostingClassifier</code> and <code>ExplainableBoostingRegressor</code> with a scikit-learn-compatible API. EBMs handle mixed feature types natively — continuous features are automatically binned (256 bins), categoricals are handled directly without one-hot encoding, ordinals preserve ordering. You pass raw DataFrames with string columns and the model handles everything.</p>
+<p>The library includes an interactive visualisation system (<code>show()</code>) that renders global shape function plots, local waterfall explanations, and interaction heatmaps in Jupyter. For programmatic access, <code>ebm.term_names_</code>, <code>ebm.term_scores_</code>, and <code>ebm.term_features_</code> expose the full model internals — every shape function, every interaction, every contribution value.</p>
+<p>InterpretML also includes post-hoc explanation tools (SHAP, LIME, PDP) under the same API, making it a unified framework for comparing glass-box and black-box explainability. But the EBM is the library's unique contribution — no other framework offers a model this accurate that explains itself by construction.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 1: 01_train_ebm.py</span>
+<span class="n">ebm</span> <span class="o">=</span> <span class="n">ExplainableBoostingClassifier</span><span class="p">(</span>
+    <span class="n">max_rounds</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">max_leaves</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">interactions</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">outer_bags</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">max_bins</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ebm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">ebm</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EBM AUC: </span><span class="se">{{</span><span class="s2">auc:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Typical: ~0.927 on Adult Income (XGBoost: ~0.930)</span>
+</code></pre></div>
+
+<h2 id="5-shape-functions-the-core-interpretability-mechanism">5. Shape Functions: The Core Interpretability Mechanism</h2>
+<p>Each shape function fᵢ(xᵢ) is a learned mapping from feature values to prediction contributions. For continuous features, it's a step function over bins. For categoricals, it's a bar chart. These are the <em>actual model internals</em>, not post-hoc approximations. When you view a shape plot, you see exactly how the model uses that feature — globally, for every prediction, with zero approximation error.</p>
+<p><em>[Figure: Shape Diag — see interactive JSX version]</em></p>
+<p><em>Two global shape functions from an EBM. Left: f(Age) is non-linear — peaks around 50. Right: f(Income) is monotonically increasing and saturating. These are exact learned effects, not SHAP approximations.</em></p>
+<p>This is fundamentally different from SHAP. A SHAP waterfall shows attribution for a <em>single prediction</em> — local and approximate (for non-tree models). An EBM shape function shows the <em>global</em> effect across all predictions — exact and complete. You see at a glance: "Income above $80k always increases the prediction, saturating above $150k." For local explanations, EBM reads the contribution from each shape function at the instance's feature values and sums — exact, instantaneous, no Shapley sampling.</p>
+<p>The interactive dashboard (<code>show(ebm.explain_global())</code>) renders all shape functions with confidence intervals. Domain experts can inspect each curve: does f(Age) make clinical sense? Does f(Credit Score) match regulatory expectations? This direct inspection is impossible with black-box models — you can only inspect SHAP approximations, which carry sampling noise and may disagree across methods.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 2: 02_global_explain.py</span>
+<span class="n">global_exp</span> <span class="o">=</span> <span class="n">ebm</span><span class="o">.</span><span class="n">explain_global</span><span class="p">()</span>
+<span class="c1"># show(global_exp)  # interactive dashboard in Jupyter</span>
+
+<span class="c1"># Programmatic access to shape functions</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ebm</span><span class="o">.</span><span class="n">term_names_</span><span class="p">))):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">ebm</span><span class="o">.</span><span class="n">term_names_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">ebm</span><span class="o">.</span><span class="n">term_scores_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{</span><span class="s2">name:25s</span><span class="se">}}</span><span class="s2"> min: </span><span class="se">{{</span><span class="s2">scores.min():.3f</span><span class="se">}}</span><span class="s2">, max: </span><span class="se">{{</span><span class="s2">scores.max():.3f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Intercept: </span><span class="se">{{</span><span class="s2">ebm.intercept_[0]:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Main effects: </span><span class="se">{{</span><span class="s2">sum(1 for t in ebm.term_features_ if len(t)==1)</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Interactions:  </span><span class="se">{{</span><span class="s2">sum(1 for t in ebm.term_features_ if len(t)==2)</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 3: 03_local_explain.py</span>
+<span class="n">local_exp</span> <span class="o">=</span> <span class="n">ebm</span><span class="o">.</span><span class="n">explain_local</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">y_test</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+<span class="c1"># show(local_exp)  # interactive waterfall in Jupyter</span>
+
+<span class="c1"># Programmatic: contributions for one instance</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">ebm</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">]])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P(&gt;50K): </span><span class="se">{{</span><span class="s2">prediction:.3f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">local_data</span> <span class="o">=</span> <span class="n">local_exp</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">names</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">local_data</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">],</span> <span class="n">local_data</span><span class="p">[</span><span class="s2">&quot;scores&quot;</span><span class="p">]</span>
+<span class="n">ranked</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Top features:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">ranked</span><span class="p">[:</span><span class="mi">8</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">{{</span><span class="s2">names[idx]:30s</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">scores[idx]:+.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="6-pairwise-interactions-and-the-fast-algorithm">6. Pairwise Interactions and the FAST Algorithm</h2>
+<p>Pure additive models miss interactions — where feature A's effect depends on feature B. The classic example: education's effect on income depends on occupation. A PhD in engineering has a different income effect than a PhD in poetry. EBM captures this via pairwise interaction terms fᵢⱼ(xᵢ,xⱼ), visualised as 2D heatmaps.</p>
+<p>The FAST algorithm (Lou et al., KDD 2013) makes this tractable. With n features, there are n(n-1)/2 possible pairs. FAST ranks all pairs by residual improvement using greedy forward selection, adds the top-k (default: 10). Because only a few interactions are included, the model stays interpretable. Empirically, the top 10 capture most interaction signal; going beyond 20 rarely helps.</p>
+<p>Each interaction heatmap is directly inspectable: colour represents the joint contribution of two feature values. A compliance officer can verify that the Education × Occupation interaction makes business sense — no post-hoc tool needed, no approximation, no sampling artefacts.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 4: 04_interactions.py</span>
+<span class="n">interaction_terms</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ebm</span><span class="o">.</span><span class="n">term_features_</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">==</span><span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detected </span><span class="se">{{</span><span class="s2">len(interaction_terms)</span><span class="se">}}</span><span class="s2"> pairwise interactions:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">features</span> <span class="ow">in</span> <span class="n">interaction_terms</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">ebm</span><span class="o">.</span><span class="n">term_names_</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ebm</span><span class="o">.</span><span class="n">term_scores_</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">{{</span><span class="s2">name:40s</span><span class="se">}}</span><span class="s2"> |contrib|: </span><span class="se">{{</span><span class="s2">importance:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="7-the-accuracy-interpretability-debate">7. The Accuracy-Interpretability Debate</h2>
+<p>Cynthia Rudin's "Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead" (Nature Machine Intelligence, 2019) argued that the accuracy-interpretability tradeoff is often a myth. For structured tabular data, interpretable models achieve comparable accuracy — and the small gap, if it exists, is not worth the risk of deploying an unexplainable system in healthcare, criminal justice, or finance.</p>
+<p><em>[Figure: Vs Box — see interactive JSX version]</em></p>
+<p><em>Two paths to explainable ML. Path A (EBM): interpretable by design, explanations built in, editable. Path B (XGB + SHAP): two systems to build, explain approximately. For regulated domains, Path A is strictly preferable when accuracy matches.</em></p>
+<p>The empirical evidence: Lou et al. (KDD 2012, 2013) showed GA²M matching random forest accuracy. Caruana et al. (KDD 2015) applied GA²Ms to real healthcare — ICU mortality, pneumonia risk, readmission — achieving state-of-the-art accuracy while revealing bugs black boxes hid. The famous case: a neural network learned asthma <em>decreased</em> pneumonia mortality risk — because asthmatics were admitted to ICU and received better care (a confound). The GA²M's shape function showed this as a negative contribution, allowing clinicians to catch and correct it. Chang et al. (NeurIPS 2021) benchmarked EBMs within 1-2% AUC of gradient boosted trees on most datasets.</p>
+<p>Where EBMs genuinely lose: very high-dimensional feature spaces (500+ features), tasks dominated by higher-order interactions (3-way+), very large datasets where cyclic training is slower than XGBoost's parallel approach, and tasks where additive + pairwise structure cannot capture the signal. These cases exist but are a minority of production tabular problems.</p>
+<h2 id="8-hyperparameter-tuning">8. Hyperparameter Tuning</h2>
+<p><em>[Figure: Param Diag — see interactive JSX version]</em></p>
+<p><em>Key EBM hyperparameters: training control, tree structure, interaction detection, and domain constraints.</em></p>
+<p><strong>max_rounds</strong> (5000): boosting iterations per cycle — higher = finer shapes. <strong>learning_rate</strong> (0.01): step size — lower = smoother. <strong>max_leaves</strong> (3): tree depth per step — 3 leaves = one split, smooth shapes. <strong>interactions</strong> (10): auto-detected pairs. <strong>outer_bags</strong> (16): bagging for stability. <strong>max_bins</strong> (256): binning resolution. For best results, the InterpretML team recommends: 100 outer bags, 5000 rounds, LR 0.01.</p>
+<p>The most impactful hyperparameter for accuracy is <strong>interactions</strong>: increasing from 10 to 50 can noticeably improve accuracy on datasets with many interacting features, at the cost of more heatmaps to inspect. <strong>max_leaves</strong> affects smoothness: 3 produces smooth curves; increasing to 8 or 16 allows sharper discontinuities that may overfit.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 5: 05_tuning.py</span>
+<span class="n">ebm_tuned</span> <span class="o">=</span> <span class="n">ExplainableBoostingClassifier</span><span class="p">(</span>
+    <span class="n">max_rounds</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">max_leaves</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">interactions</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">outer_bags</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">max_bins</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+    <span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ebm_tuned</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">auc_t</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">ebm_tuned</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tuned EBM AUC: </span><span class="se">{{</span><span class="s2">auc_t:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="9-monotonic-constraints">9. Monotonic Constraints</h2>
+<p>In many domains, relationships are known: higher credit score must decrease default risk; higher dosage must increase drug effect; more experience must increase salary. EBMs support <strong>monotonic constraints</strong> — the shape function for a constrained feature is guaranteed monotonically increasing or decreasing. A compliance officer can verify the constraint holds globally.</p>
+<p>This is more powerful than SHAP-based verification. With SHAP, you can check that the <em>average</em> contribution of credit score is negative — but individual instances may violate monotonicity. With EBM monotonic constraints, the guarantee is structural — no instance can violate it, because the shape function itself is monotonic.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 6: 06_monotonic.py</span>
+<span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">edu_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;EducationNum&quot;</span><span class="p">)</span>
+<span class="n">hours_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;HoursPerWeek&quot;</span><span class="p">)</span>
+<span class="n">constraints</span><span class="p">[</span><span class="n">edu_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1"># increasing</span>
+<span class="n">constraints</span><span class="p">[</span><span class="n">hours_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># increasing</span>
+
+<span class="n">ebm_c</span> <span class="o">=</span> <span class="n">ExplainableBoostingClassifier</span><span class="p">(</span>
+    <span class="n">monotone_constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">ebm_c</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">auc_c</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">ebm_c</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Constrained AUC: </span><span class="se">{{</span><span class="s2">auc_c:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EducationNum shape guaranteed monotonically increasing&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="10-model-editing-fixing-what-the-model-got-wrong">10. Model Editing: Fixing What the Model Got Wrong</h2>
+<p>EBMs are the only ML model that supports <strong>post-training editing of learned relationships</strong>. Because each feature's effect is a lookup table, a domain expert can directly modify the values — changing the contribution of a specific feature level, flattening a region of a shape function, or removing a learned confound entirely. This is not retraining — it's direct surgery on the model's internals.</p>
+<p><em>[Figure: Edit Diag — see interactive JSX version]</em></p>
+<p><em>The pneumonia-asthma confound: the model learned asthma decreases risk (left) because asthmatics received ICU care. A clinician edits the shape function to correct this (right). No other ML model supports this.</em></p>
+<p>The canonical example is from Caruana et al. (KDD 2015): the pneumonia risk model learned that asthma was a <em>protective</em> factor — patients with asthma who got pneumonia had lower mortality. Why? Because hospital protocols sent asthmatic pneumonia patients straight to ICU, where they received better care. A black-box model hides this confound. An EBM reveals it as a visible negative contribution in the asthma shape function. A clinician sees it, recognises the confound, and edits the shape function to set asthma's contribution to positive or zero — making the model safe for deployment.</p>
+<p>This editing capability extends to fairness. If a shape function shows a learned bias (e.g., a demographic feature contributing to a lending decision), you can zero it out without retraining. The model's accuracy on the remaining features is preserved because the additive structure means removing one term doesn't affect the others.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 7: 07_editing.py</span>
+<span class="c1"># Model editing: modify a shape function post-training</span>
+<span class="c1"># Example: flatten CapitalGain&#39;s contribution above $10k</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="n">ebm_edited</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">ebm</span><span class="p">)</span>
+
+<span class="c1"># Find CapitalGain term</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ebm_edited</span><span class="o">.</span><span class="n">term_names_</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;CapitalGain&quot;</span><span class="p">:</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">ebm_edited</span><span class="o">.</span><span class="n">term_scores_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># Get bin edges</span>
+        <span class="n">bins</span> <span class="o">=</span> <span class="n">ebm_edited</span><span class="o">.</span><span class="n">bins_</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Flatten: set all contributions above a threshold to constant</span>
+        <span class="n">threshold_bin</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">scores</span><span class="p">[</span><span class="n">threshold_bin</span><span class="p">:]</span> <span class="o">=</span> <span class="n">scores</span><span class="p">[</span><span class="n">threshold_bin</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edited </span><span class="se">{{</span><span class="s2">name</span><span class="se">}}</span><span class="s2">: flattened top half of shape function&quot;</span><span class="p">)</span>
+        <span class="k">break</span>
+
+<span class="c1"># The edited model is still valid — just re-evaluate</span>
+<span class="n">auc_e</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">ebm_edited</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edited EBM AUC: </span><span class="se">{{</span><span class="s2">auc_e:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="11-use-case-healthcare-risk-prediction">11. Use Case: Healthcare Risk Prediction</h2>
+<p><strong>Safety-critical, FDA-adjacent.</strong> A hospital builds a pneumonia mortality risk model with 38 features — demographics, vital signs, lab results, comorbidities. The model must be inspectable by clinicians before deployment. An EBM achieves AUC 0.91 on the holdout set — matching the XGBoost baseline. The shape function for temperature reveals a U-shaped curve: both hypothermia and high fever increase risk. The shape function for blood pressure shows a threshold effect at 90 mmHg systolic. Both match clinical knowledge.</p>
+<p><strong>The confound discovery:</strong> The asthma shape function shows a negative contribution — asthma appears to decrease risk. A pulmonologist recognises the ICU admission confound (Caruana et al., KDD 2015): asthmatics with pneumonia are flagged for ICU, receiving better care, which reduces mortality in the training data. The clinician edits the shape function to set asthma's contribution to slightly positive. The model is now safe for deployment. With a black-box model, this confound would have been invisible.</p>
+<p><strong>Regulatory trail:</strong> The shape function plots are included in the model validation documentation. Each feature's learned effect is reviewed by a clinical committee. The documentation satisfies FDA software-as-medical-device guidelines and EU AI Act high-risk transparency requirements. No post-hoc explanation tool needed.</p>
+<h2 id="12-use-case-credit-scoring">12. Use Case: Credit Scoring</h2>
+<p><strong>Regulation-driven.</strong> Under the Equal Credit Opportunity Act (ECOA), lenders must provide specific adverse action reasons for every denied application: "Your application was declined because: (1) insufficient income, (2) short credit history, (3) high debt-to-income ratio." SHAP values can generate these reasons approximately, but EBM shape functions generate them exactly — each feature's contribution is read directly from the lookup table.</p>
+<p>An EBM trained on 22 credit features achieves AUC 0.89 — within 0.5% of XGBoost (0.893). The shape function for credit_score is monotonically decreasing (enforced via constraint). The shape function for debt_to_income shows a sharp threshold at 0.43 where risk increases dramatically. The shape function for years_of_history is approximately logarithmic — marginal benefit decreases after 7 years. All three match domain knowledge and can be directly cited in adverse action notices.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 8: 08_vs_xgboost.py</span>
+<span class="c1"># Compare EBM vs XGBoost on the same data</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">xgboost</span><span class="w"> </span><span class="kn">import</span> <span class="n">XGBClassifier</span>
+    <span class="c1"># XGBoost requires encoded categoricals</span>
+    <span class="n">X_train_enc</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">X_test_enc</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">X_train_enc</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">X_train_enc</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_train_enc</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span>
+        <span class="n">X_test_enc</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_test_enc</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span>
+
+    <span class="n">xgb</span> <span class="o">=</span> <span class="n">XGBClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                         <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">eval_metric</span><span class="o">=</span><span class="s2">&quot;logloss&quot;</span><span class="p">)</span>
+    <span class="n">xgb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_enc</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">auc_xgb</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">xgb</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_enc</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;XGBoost AUC: </span><span class="se">{{</span><span class="s2">auc_xgb:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EBM AUC:     </span><span class="se">{{</span><span class="s2">auc:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Difference:  </span><span class="se">{{</span><span class="s2">abs(auc_xgb - auc):.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;XGBoost not installed — install with: pip install xgboost&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p><strong>The deployment advantage:</strong> With XGBoost, the compliance team needs SHAP + a dashboard + a report generator + ongoing explanation validation. With EBM, the model IS the explanation. One system to build, validate, deploy, and audit. For a lending institution processing thousands of applications daily, this operational simplicity is a significant cost reduction.</p>
+<h2 id="13-use-case-insurance-underwriting">13. Use Case: Insurance Underwriting</h2>
+<p><strong>MAIF's domain.</strong> An insurer models claim frequency with policyholder demographics, vehicle attributes, driving history, and geographic risk factors. Currently using XGBoost + Shapash for post-hoc explanations. Could an EBM replace the entire stack? The EBM achieves comparable accuracy (MAE within 2% of XGBoost) and its shape functions map directly to actuarial intuition: f(driver_age) shows the well-known U-curve (young and elderly drivers have higher risk), f(vehicle_age) shows increasing risk with age, and f(annual_mileage) shows a monotonically increasing risk.</p>
+<p>Under GDPR Article 22 and the EU AI Act, automated pricing decisions must be explainable to the policyholder. EBM shape functions provide this: "Your premium increased because: Vehicle Age: 12 years (+€45), Annual Mileage: 25,000 km (+€32), Urban Postcode: Yes (+€28)." These are exact model contributions, not SHAP approximations. The compliance team reviews global shape functions at each model refresh — verifying no protected attributes have proxy effects.</p>
+<p><strong>When EBM replaces Shapash + XGBoost:</strong> when the accuracy gap is negligible and regulatory explainability is the primary concern. <strong>When it doesn't:</strong> when the portfolio has complex multi-way interaction patterns (weather × geography × vehicle type × time of year) that the pairwise constraint cannot capture — in which case XGBoost + Shapash remains the better architecture.</p>
+<h2 id="14-use-case-predictive-maintenance">14. Use Case: Predictive Maintenance</h2>
+<p><strong>Physics-validatable.</strong> A manufacturing plant models equipment failure probability using sensor data: temperature, vibration, pressure, operating hours, maintenance history. The domain expert (a mechanical engineer) needs to verify that the model's learned relationships match physical reality. An EBM's shape function for temperature shows: flat below 70°C, gradual increase 70–85°C, sharp increase above 85°C. The engineer confirms: this matches the thermal degradation curve for the bearing material. If f(temperature) had shown a random or non-physical pattern, the engineer would reject the model immediately.</p>
+<p>With XGBoost, the engineer would see a SHAP beeswarm plot showing that high temperature generally increases failure risk — but not the <em>specific functional form</em> of the relationship. The EBM shape function shows the exact learned curve, which can be compared point-by-point against the material science data sheet. This is interpretability that goes beyond "which features matter" to "what specific relationship did the model learn — and is it physically correct?"'</p>
+<p><strong>The editing use case:</strong> The vibration sensor has a known calibration drift above 15 kHz. The engineer edits f(vibration) to flatten the contribution above 15 kHz — removing the artefact without retraining. The model's accuracy on the remaining features is preserved because the additive structure means changes to one term don't cascade.</p>
+<h2 id="15-competitive-landscape">15. Competitive Landscape</h2>
+<p><em>[Figure: Land Diag — see interactive JSX version]</em></p>
+<p><em>Glass-box model landscape. EBM (green, centre) leads on accuracy among interpretable models. GAMI-Net, NAM, NODE-GAM are neural GAM variants. XGBoost (red, right) is the black-box accuracy ceiling. CALMs (arXiv 2602.16503, Feb 2026) are the newest competitor.</em></p>
+<p><strong>EBM vs. linear/logistic regression:</strong> EBMs are strictly better when non-linear relationships exist (they almost always do). Regression wins only when extreme simplicity is required (coefficient-based interpretation, massive datasets, sub-millisecond training). <strong>EBM vs. XGBoost + SHAP:</strong> comparable accuracy on most tabular datasets, but EBM provides exact global + local explanations by construction. XGBoost may be 1-3% more accurate on interaction-heavy tasks. <strong>EBM vs. GAMI-Net</strong> (neural GAM, Zebin Yang et al.): GAMI-Net uses neural networks for shape functions instead of trees; theoretically more flexible but harder to train and less stable. <strong>EBM vs. NAM</strong> (Neural Additive Models, Google Brain, Agarwal et al. 2021): similar concept with neural networks; less mature, higher computational cost. <strong>EBM vs. NODE-GAM:</strong> differentiable oblivious trees; research-stage. <strong>EBM vs. RuleFit:</strong> rule-based, less accurate, but human-readable rules. <strong>EBM vs. CALMs</strong> (arXiv 2602.16503, Feb 2026): Conditionally Additive Local Models use region-specific shape functions — multiple univariate effects per feature, each active in different input regions. CALMs claim to balance GAM interpretability with GA²M accuracy.</p>
+<blockquote>
+<p><strong>💡 When EBM wins vs. alternatives</strong></p>
+<p><strong>EBM wins:</strong> tabular data, under 500 features, need exact global explanations, regulatory compliance, model editing, mixed feature types. <strong>XGBoost wins:</strong> interaction-heavy tasks, 500+ features, training speed priority. <strong>Linear regression wins:</strong> extreme simplicity needed, massive datasets, coefficient interpretation.</p>
+</blockquote>
+<h2 id="16-production-deployment">16. Production Deployment</h2>
+<p>EBMs are one of the fastest models at prediction time. Because prediction involves simple lookups (bin the feature value, read the contribution from the lookup table) and a single sum, EBMs execute in microseconds per instance — often faster than tree ensembles that must traverse hundreds of decision trees. The model's memory footprint is also small: just the lookup tables and intercept.</p>
+<p>For deployment, EBMs are serialised via pickle or joblib, loaded in a Flask/FastAPI endpoint, and serve predictions with per-instance explanations at no additional cost. Every prediction comes with a free, exact decomposition into feature contributions. No SHAP computation, no TreeSHAP overhead, no explanation latency. The shape function lookup that produces the prediction IS the explanation.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 9: 09_deploy.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="c1"># Save</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ebm_model.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">ebm</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model saved: ebm_model.pkl&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load and predict with explanation</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ebm_model.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">ebm_loaded</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">ebm_loaded</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">instance</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">local</span> <span class="o">=</span> <span class="n">ebm_loaded</span><span class="o">.</span><span class="n">explain_local</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">local</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prediction: </span><span class="se">{{</span><span class="s2">pred:.3f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Explanation (top 5 features):&quot;</span><span class="p">)</span>
+<span class="n">ranked</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;scores&quot;</span><span class="p">])),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;scores&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ranked</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">{{</span><span class="s2">data[&#39;names&#39;][i]:25s</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">data[&#39;scores&#39;][i]:+.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Zero additional latency — the explanation IS the prediction</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>✅ End of notebook</strong></p>
+<p>Cells 0–9 complete: setup → train → global explain → local explain → interactions → tuning → monotonic constraints → model editing → XGBoost comparison → deployment. Copy green-bordered cells in order for a working end-to-end example.</p>
+</blockquote>
+<h2 id="17-advanced-topics">17. Advanced Topics</h2>
+<p><strong>Differential privacy:</strong> EBMs are the only glass-box model with built-in DP-SGD support (Nori et al., 2021). By adding calibrated noise to the gradient updates during training, EBMs can provide formal privacy guarantees — critical for healthcare and financial applications where training data contains sensitive information. <strong>EBM merging:</strong> because shape functions are lookup tables, multiple EBMs trained on different data partitions can be averaged — producing a merged model without sharing raw data. This enables federated-like learning for privacy-sensitive deployments. <strong>Calibration:</strong> EBMs produce well-calibrated probabilities out of the box due to the additive structure — the predicted probabilities closely match actual event frequencies. <strong>TalkToEBM</strong> (Bordt et al., XAI4Sci AAAI-24): a natural language interface that converts EBM shape functions to text and asks LLMs to describe, summarise, and audit models.</p>
+<h2 id="18-the-people-behind-ebms">18. The People Behind EBMs</h2>
+<p><strong>Rich Caruana</strong> (Microsoft Research): Senior Principal Researcher, 30+ years on intelligible models. Created EBMs. His "friends don't let friends deploy black-box models" talk at KDD is the manifesto of the interpretable ML movement. <strong>Yin Lou</strong> (Georgia Tech → Airbnb → LinkedIn): first author of GA²M and FAST (KDD 2012, 2013) — the algorithms EBMs build upon. <strong>Cynthia Rudin</strong> (Duke): "Stop Explaining Black Box Models" (Nature MI 2019) — the theoretical and ethical argument for interpretable models. AAAI 2019 Squirrel AI Award for advancing AI for the benefit of humanity. <strong>Harsha Nori, Samuel Jenkins, Paul Koch</strong> (Microsoft): InterpretML library architects and maintainers. <strong>Chun-Hao Chang, Sarah Tan, Ben Lengerich, Anna Goldenberg</strong>: "How Interpretable and Trustworthy are GAMs?" (NeurIPS 2021) — the definitive benchmark. InterpretML is part of Microsoft's Responsible AI Toolbox alongside Fairlearn, Error Analysis, and DiCE.</p>
+<h2 id="19-decision-framework">19. Decision Framework</h2>
+<p>✓ Use EBMs when:</p>
+<p>Tabular data with under 500 features.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Regulatory compliance requires exact feature-level explanations (ECOA, GDPR, EU AI Act).</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Domain experts need to inspect and validate learned relationships.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Model editing is required (fix confounds, remove bias, inject domain knowledge).</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Mixed feature types (continuous + categorical + ordinal) without preprocessing.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Calibrated probabilities are needed out of the box.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Deployment needs per-prediction explanations at zero additional latency.</p>
+<p>✗ Consider alternatives when:</p>
+<p>500+ features (EBM training scales linearly with features but cyclic approach is slow) → XGBoost.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Higher-order interactions (3-way+) dominate the signal → XGBoost or neural networks.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Very large datasets where training time matters → XGBoost is faster to train.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Non-tabular data (images, text, sequences) → deep learning.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Extreme simplicity needed (coefficient interpretation) → logistic regression.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Unstructured prediction tasks where interpretability is not required.</p>
+<p>EBMs represent a genuine paradigm shift: instead of building an accurate model and explaining it afterward, you build a model that is accurate <em>and</em> self-explaining from the start. In a regulatory environment where the EU AI Act requires that "where an interpretable model achieves comparable accuracy, it should be preferred," EBMs are not just a technical option — they are the compliance-first architecture. The question for every new tabular ML project in 2026 should not be "which black box?" but "does an EBM match the black box?" If it does, deploy the glass box.</p>
+<p>Sources:</p>
+<p>InterpretML GitHub (interpretml/interpret, 6.5k stars), interpret.ml docs.</p>
+<p>Academic:</p>
+<p>Hastie &amp; Tibshirani 1986 (GAMs); Lou, Caruana, Gehrke KDD 2012 (Intelligible Models); Lou, Caruana, Gehrke, Hooker KDD 2013 (GA²M + FAST); Caruana, Lou, Gehrke, Koch, Sturm, Elhadad KDD 2015 (Healthcare); Nori, Jenkins, Koch, Caruana arXiv 1909.09223 2019 (InterpretML); Rudin, Nature MI 2019; Chang, Tan, Lengerich, Goldenberg, Caruana NeurIPS 2021 (GAM trustworthiness); CALMs arXiv 2602.16503 Feb 2026; Bordt et al. XAI4Sci AAAI-24 (TalkToEBM); arXiv 2507.03183 Jul 2025 (Transparent ML for meteorology).</p>
+<p>Regulatory:</p>
+<p>EU AI Act 2024, GDPR Art.22, ECOA.</p>
+<p>InterpretML 0.6+ · MIT License · github.com/interpretml/interpret</p>
+<p>Length determined by information, not word count</p>
+<p>/div&gt;</p>
+<p>/div&gt;);}</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>ebm-definitive-guide</code> &middot; category: <code>general</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+</body>
+</html>

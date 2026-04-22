@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pfi Definitive Guide — Plain Reader</title>
+  <meta name="description" content="The simplest, most widely used, and most misunderstood tool in the ML interpretability toolkit. When it works, when it misleads, and what to use instead." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Pfi Definitive Guide</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-19</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read">18 min</span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/pfi-definitive-guide.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/pfi-definitive-guide.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <h2 id="1-the-question-pfi-answers">1. The Question PFI Answers</h2>
+<p>Your Random Forest achieves 94% accuracy on the test set using 30 features. The product manager asks: "Which features actually matter?" You need a single, definitive ranking — from most important to least — that works for any model, requires no retraining, and is simple enough to explain to a non-technical stakeholder. This is what Permutation Feature Importance (PFI) provides: for each feature, randomly shuffle its values across the dataset, re-evaluate the model, and measure the performance drop. The larger the drop, the more important the feature.</p>
+<p>PFI was introduced by Leo Breiman in his seminal 2001 Random Forests paper as an integral part of the RF algorithm. It has since been generalised to work with <em>any</em> model — it's model-agnostic. scikit-learn's <code>permutation_importance</code> (added in v0.22) made it accessible to every Python practitioner. It is now one of the most widely used interpretability tools in production ML. It is also one of the most misunderstood: PFI gives actively misleading results when features are correlated, and most practitioners don't check for this.</p>
+<p>This article covers everything: the algorithm and its mathematical formulation; the critical multicollinearity trap; train-set vs. test-set PFI; the choice of metric; the scikit-learn implementation; visualisation best practices; four production use cases; the competitive landscape of feature importance methods; and a decision framework. Every concept section contains a runnable notebook cell.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 0: 00_setup.py</span>
+<span class="c1"># pip install scikit-learn pandas numpy matplotlib seaborn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span><span class="p">,</span> <span class="n">GradientBoostingClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.inspection</span><span class="w"> </span><span class="kn">import</span> <span class="n">permutation_importance</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">roc_auc_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load Breast Cancer Wisconsin — classic PFI benchmark</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RF accuracy: </span><span class="se">{{</span><span class="s2">acc:.3f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Features: </span><span class="se">{{</span><span class="s2">X.shape[1]</span><span class="se">}}</span><span class="s2">, Samples: </span><span class="se">{{</span><span class="s2">len(X)</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>💡 Notebook Map</strong></p>
+<p><strong>Cells 0–9</strong>: <code>Cell 0</code> Setup (§1) · <code>Cell 1</code> Basic PFI (§2) · <code>Cell 2</code> Train vs Test PFI (§3) · <code>Cell 3</code> Multicollinearity Demo (§5) · <code>Cell 4</code> Grouped PFI (§6) · <code>Cell 5</code> Box Plot Visualisation (§8) · <code>Cell 6</code> Feature Selection Workflow (§9) · <code>Cell 7</code> Leakage Detection (§10) · <code>Cell 8</code> PFI vs SHAP (§13) · <code>Cell 9</code> Multi-Model Comparison (§11)</p>
+</blockquote>
+<h2 id="2-the-core-algorithm">2. The Core Algorithm</h2>
+<p>The algorithm is elegant in its simplicity. Given a trained model f, a dataset X with features x₁...xₙ, true labels y, and a scoring function L (e.g., accuracy), the permutation importance of feature j is: <code>PFI(j) = L(y, f(X̃ⱼ)) − L(y, f(X))</code>, where X̃ⱼ is the dataset with feature j randomly permuted (shuffled) across rows. The permutation breaks the relationship between feature j and the target while preserving the feature's marginal distribution — no synthetic values are created, just rearranged real values.</p>
+<p><em>[Figure: Algo Diag — see interactive JSX version]</em></p>
+<p><em>The five-step PFI algorithm. Compute baseline score, shuffle one feature, re-evaluate, measure the drop, repeat for all features and multiple random seeds. Larger drop = more important. No retraining required.</em></p>
+<p>Why this works: if feature j carries information the model uses, shuffling it destroys that information and performance drops. If feature j is irrelevant, shuffling it has no effect. The magnitude of the drop is proportional to how much the model relies on that feature. Because we never retrain the model — only re-evaluate it on perturbed data — PFI is computationally cheap compared to methods that require retraining (like drop-column importance).</p>
+<p>In practice, PFI is computed multiple times per feature (n_repeats, typically 10–30) with different random shuffles, producing a distribution of importance scores. The mean gives the point estimate; the standard deviation gives the uncertainty. This distribution is critical for interpretation: a feature with mean PFI of 0.02 and std of 0.01 is genuinely important, while a feature with mean 0.02 and std of 0.03 is noise.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 1: 01_basic_pfi.py</span>
+<span class="c1"># Basic PFI on test set — the recommended approach</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">permutation_importance</span><span class="p">(</span>
+    <span class="n">rf</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span>
+    <span class="n">n_repeats</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>           <span class="c1"># 30 repeats for stable estimates</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span>     <span class="c1"># use same metric as model evaluation</span>
+    <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>              <span class="c1"># parallelise across CPU cores</span>
+<span class="p">)</span>
+
+<span class="c1"># Display top 10 features by importance</span>
+<span class="n">importances</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({{</span>
+    <span class="s2">&quot;feature&quot;</span><span class="p">:</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+    <span class="s2">&quot;importance_mean&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">,</span>
+    <span class="s2">&quot;importance_std&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">importances_std</span><span class="p">,</span>
+<span class="p">}})</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;importance_mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top 10 features by PFI (test set):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">importances</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">{{</span><span class="s2">row[&#39;feature&#39;]:30s</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">row[&#39;importance_mean&#39;]:.4f</span><span class="se">}}</span><span class="s2"> ± </span><span class="se">{{</span><span class="s2">row[&#39;importance_std&#39;]:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="3-train-set-vs-test-set-pfi">3. Train-Set vs. Test-Set PFI</h2>
+<p>PFI can be computed on the training set or the test set. They answer different questions. <strong>Train-set PFI</strong> measures "which features did the model learn to use?" — including features it may have overfit to. An overfit model may assign high train-set importance to noise features it memorised. <strong>Test-set PFI</strong> measures "which features actually help the model generalise?" — features the model can exploit on unseen data. An overfit noise feature will show low test-set importance because its memorised pattern doesn't transfer.</p>
+<p><em>[Figure: Train Vs Test — see interactive JSX version]</em></p>
+<p><em>Train-set PFI detects what the model learned (including overfitting artefacts). Test-set PFI detects what genuinely helps generalisation. Test-set PFI is recommended for all production use cases.</em></p>
+<p>The scikit-learn documentation is explicit: "Permutation importances can be computed either on the training set or on a held-out testing or validation set. Using a held-out set makes it possible to highlight which features contribute the most to the generalization power of the inspected model." For model debugging (understanding what the model learned, even if wrong), train-set PFI is useful. For everything else — feature selection, reporting, audit — use test-set PFI.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 2: 02_train_vs_test.py</span>
+<span class="c1"># Compare train-set vs test-set PFI</span>
+<span class="n">result_train</span> <span class="o">=</span> <span class="n">permutation_importance</span><span class="p">(</span><span class="n">rf</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">result_test</span> <span class="o">=</span> <span class="n">permutation_importance</span><span class="p">(</span><span class="n">rf</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature               Train PFI    Test PFI&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">55</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">result_test</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">)[</span><span class="o">-</span><span class="mi">8</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">train_imp</span> <span class="o">=</span> <span class="n">result_train</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">test_imp</span> <span class="o">=</span> <span class="n">result_test</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="s2">&quot; ⚠️&quot;</span> <span class="k">if</span> <span class="n">train_imp</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">test_imp</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">{{</span><span class="s2">name:25s</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">train_imp:.4f</span><span class="se">}}</span><span class="s2">       </span><span class="se">{{</span><span class="s2">test_imp:.4f</span><span class="se">}}</span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">⚠️ = possible overfitting (train PFI &gt;&gt; test PFI)&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="4-the-choice-of-metric">4. The Choice of Metric</h2>
+<p>PFI measures performance drop — but performance measured how? The metric matters. Accuracy-based PFI emphasises features that affect the majority class. AUC-based PFI emphasises features that affect ranking and discrimination. Log-loss-based PFI emphasises features that affect calibration. For imbalanced datasets, accuracy-based PFI can be particularly misleading — a feature that helps distinguish the rare class may show near-zero importance if accuracy is dominated by the majority class.</p>
+<p><em>[Figure: Metric Diag — see interactive JSX version]</em></p>
+<p><em>Different metrics emphasise different aspects of model performance. The rule: use the same metric you used to evaluate the model. If you optimised for AUC, compute PFI with AUC.</em></p>
+<p>The rule of thumb is simple: <strong>use the same metric you used to evaluate the model.</strong> If you optimised for AUC during hyperparameter tuning and report AUC in your model card, compute PFI with <code>scoring="roc_auc"</code>. If you optimised for RMSE, use <code>scoring="neg_mean_squared_error"</code>. Mismatched metrics produce mismatched importance rankings — a feature that's critical for AUC may look unimportant when measured by accuracy. For a thorough analysis, compute PFI for multiple metrics and flag features where rankings disagree.</p>
+<h2 id="5-the-multicollinearity-trap">5. The Multicollinearity Trap</h2>
+<p>This is the critical limitation most practitioners get wrong. When features are correlated, permuting one feature creates data points that never occur in practice. Permuting "height" while keeping "weight" fixed creates six-foot people weighing 50 kg — the model's degraded performance reflects the unrealistic input, not the feature's true importance. More insidiously: if features A and B are highly correlated (r=0.95), permuting A barely hurts performance because B carries nearly identical information. PFI assigns low importance to <em>both</em>, even though the pair is critical.</p>
+<p><em>[Figure: Collin Diag — see interactive JSX version]</em></p>
+<p><em>The multicollinearity problem. With independent features, PFI works correctly. With correlated features (r=0.95), both show low importance because each has a backup. Five solutions exist, from grouped PFI to VIF pre-screening.</em></p>
+<p>The Breast Cancer Wisconsin dataset is the canonical example: 30 features with many correlated groups (mean radius, mean perimeter, mean area are nearly perfectly correlated). A Random Forest achieves 97% accuracy, but PFI shows that <em>no</em> individual feature is important — because every feature has correlated backups. This is not a bug in PFI; it's a correct statement that no <em>individual</em> feature is uniquely necessary. But it's misleading for the practitioner who wants to know which features matter.</p>
+<p><strong>Detection:</strong> Before computing PFI, always compute a correlation matrix and Variance Inflation Factors (VIF). If any pairwise correlation exceeds 0.8 or any VIF exceeds 5, PFI will underestimate importance for correlated features. <strong>Solutions:</strong> (1) Grouped PFI — shuffle all correlated features together. (2) Conditional PFI (Strobl et al., BMC Bioinformatics 2008) — permute within strata defined by the correlated features. (3) Drop-column importance — retrain without the feature (exact but expensive). (4) Hierarchical clustering on the Spearman correlation matrix, select one representative per cluster. (5) PIMP framework (Altmann et al., Bioinformatics 2010) for p-values that account for correlation-induced noise.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 3: 03_multicollinearity.py</span>
+<span class="c1"># Demonstrate the multicollinearity problem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">spearmanr</span>
+
+<span class="c1"># Compute correlation matrix</span>
+<span class="n">corr_matrix</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">corr_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+<span class="c1"># Find highly correlated pairs</span>
+<span class="n">high_corr</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">corr_df</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">corr_df</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">corr_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">:</span>
+            <span class="n">high_corr</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">corr_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">corr_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                             <span class="n">corr_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pairs with |r| &gt; 0.8: </span><span class="se">{{</span><span class="s2">len(high_corr)</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">high_corr</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]))[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">{{</span><span class="s2">f1:25s</span><span class="se">}}</span><span class="s2"> × </span><span class="se">{{</span><span class="s2">f2:25s</span><span class="se">}}</span><span class="s2"> r=</span><span class="se">{{</span><span class="s2">r:.3f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Compare: PFI underestimates correlated features</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">PFI for &#39;mean radius&#39; (correlated with mean perimeter, mean area):&quot;</span><span class="p">)</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;mean radius&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  importance: </span><span class="se">{{</span><span class="s2">result_test.importances_mean[idx]:.4f</span><span class="se">}}</span><span class="s2"> ± </span><span class="se">{{</span><span class="s2">result_test.importances_std[idx]:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="6-grouped-permutation-importance">6. Grouped Permutation Importance</h2>
+<p>The most practical solution to multicollinearity: instead of shuffling one feature at a time, shuffle all features in a correlated group simultaneously. This breaks the group's collective relationship with the target, producing an accurate measure of the group's importance. scikit-learn doesn't provide grouped PFI natively, but it's straightforward to implement by modifying the permutation step.</p>
+<p>The groups should be defined by domain knowledge or by hierarchical clustering on the Spearman correlation matrix (as in the scikit-learn multicollinearity example). Cutting the dendrogram at a correlation threshold of 0.7–0.8 produces groups that balance within-group homogeneity and between-group distinctness. The importance of each group tells you: "How much does this cluster of related features collectively contribute to the model's performance?"'</p>
+<p>Christoph Molnar (author of "Interpretable Machine Learning") advocates for this approach: "Computing the PFI by group allows you to keep the marginal interpretation" — meaning grouped PFI still measures the same quantity (performance drop) but at the group level rather than the feature level.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 4: 04_grouped_pfi.py</span>
+<span class="c1"># Grouped PFI: shuffle correlated features together</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linkage</span><span class="p">,</span> <span class="n">fcluster</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">squareform</span>
+
+<span class="c1"># Cluster features by Spearman correlation</span>
+<span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spearmanr</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span><span class="o">.</span><span class="n">correlation</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">dist</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">corr</span>
+<span class="n">dist</span> <span class="o">=</span> <span class="p">(</span><span class="n">dist</span> <span class="o">+</span> <span class="n">dist</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">linkage</span><span class="p">(</span><span class="n">squareform</span><span class="p">(</span><span class="n">dist</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;ward&quot;</span><span class="p">)</span>
+<span class="n">clusters</span> <span class="o">=</span> <span class="n">fcluster</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;distance&quot;</span><span class="p">)</span>
+
+<span class="c1"># Build groups</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="p">{{}}</span>
+<span class="k">for</span> <span class="n">feat</span><span class="p">,</span> <span class="n">cl</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">clusters</span><span class="p">):</span>
+    <span class="n">groups</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{</span><span class="s2">len(groups)</span><span class="se">}}</span><span class="s2"> feature groups (threshold=0.7):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">cl</span><span class="p">,</span> <span class="n">feats</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">groups</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Group </span><span class="se">{{</span><span class="s2">cl</span><span class="se">}}</span><span class="s2">: </span><span class="se">{{</span><span class="s2">&#39;, &#39;.join(feats[:3])</span><span class="se">}}</span><span class="s2">&quot;</span> <span class="o">+</span>
+          <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;... (+</span><span class="se">{{</span><span class="s2">len(feats)-3</span><span class="se">}}</span><span class="s2">)&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+
+<span class="c1"># Compute grouped PFI</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">grouped_pfi</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_eval</span><span class="p">,</span> <span class="n">y_eval</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">baseline</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_eval</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_eval</span><span class="p">))</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{{}}</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">cols</span> <span class="ow">in</span> <span class="n">groups</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">drops</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_repeats</span><span class="p">):</span>
+            <span class="n">X_perm</span> <span class="o">=</span> <span class="n">X_eval</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">perm_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_eval</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+                <span class="n">X_perm</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_eval</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">perm_idx</span><span class="p">]</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_eval</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_perm</span><span class="p">))</span>
+            <span class="n">drops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">baseline</span> <span class="o">-</span> <span class="n">score</span><span class="p">)</span>
+        <span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">drops</span><span class="p">),</span> <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">drops</span><span class="p">)}</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+<span class="n">group_dict</span> <span class="o">=</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;Group </span><span class="se">{{</span><span class="s2">k</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">groups</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">gpfi</span> <span class="o">=</span> <span class="n">grouped_pfi</span><span class="p">(</span><span class="n">rf</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">group_dict</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Grouped PFI:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">gpfi</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;mean&quot;</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">{{</span><span class="s2">name:15s</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">vals[&#39;mean&#39;]:.4f</span><span class="se">}}</span><span class="s2"> ± </span><span class="se">{{</span><span class="s2">vals[&#39;std&#39;]:.4f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="7-conditional-permutation-importance">7. Conditional Permutation Importance</h2>
+<p>Strobl et al. (BMC Bioinformatics, 2008) proposed a more theoretically rigorous solution: <strong>conditional permutation importance (CPI)</strong>. Instead of permuting feature j unconditionally (across all rows), CPI permutes within strata defined by the values of correlated features. This preserves the conditional distribution of j given the other features, avoiding the creation of unrealistic data points.</p>
+<p>Fisher, Rudin, and Dominici (JMLR, 2019) formalised this as "Model Class Reliance" (MCR), extending PFI from a single model to an entire class of well-performing models. MCR asks: "Across all models that fit the data well, what is the range of importance for feature j?" This gives both a lower and upper bound on importance, accounting for model uncertainty. The conditional version of MCR addresses multicollinearity by using conditional permutations.</p>
+<p>In practice, conditional PFI is harder to compute than marginal PFI — it requires estimating conditional distributions, which can be done via binning, KNN imputation, knockoffs (Watson and Wright, 2021), or model-based sampling. The arXiv 2501.17520 (January 2026) paper "Conditional Feature Importance Revisited" provides the latest theoretical analysis, proving a double-robustness property under the conditional null hypothesis. For most production workflows, grouped PFI or the scikit-learn clustering approach is simpler and sufficient.</p>
+<h2 id="8-visualisation-box-plots-not-bar-charts">8. Visualisation: Box Plots, Not Bar Charts</h2>
+<p>The most common PFI visualisation mistake: showing bar charts of mean importance. This hides the variance across repeats, making noisy features look important and stable features look the same as noisy ones. <strong>Always use box plots</strong> (or violin plots) that show the full distribution of importance scores across n_repeats. A feature with high mean but wide boxes is unreliable. A feature with the box entirely above zero is genuinely important.</p>
+<p><strong>Negative importance</strong> is not a bug — it means the model performs <em>better</em> when the feature is shuffled. This is a red flag: the feature is adding noise, the model is overfitting to it, or there's data leakage. Features with consistently negative PFI on the test set should be investigated immediately and potentially removed.</p>
+<p><em>[Figure: Neg Imp Diag — see interactive JSX version]</em></p>
+<p><em>Negative PFI = the model improves when the feature is shuffled. This signals overfitting, noise, or leakage. Investigate and consider removal.</em></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 5: 05_visualise.py</span>
+<span class="c1"># Box plot visualisation — the correct way to show PFI</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;Agg&quot;</span><span class="p">)</span>  <span class="c1"># non-interactive backend</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Get top 15 features by mean importance</span>
+<span class="n">top_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">result_test</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">)[</span><span class="o">-</span><span class="mi">15</span><span class="p">:]</span>
+<span class="n">top_importances</span> <span class="o">=</span> <span class="n">result_test</span><span class="o">.</span><span class="n">importances</span><span class="p">[</span><span class="n">top_idx</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># shape: (n_repeats, 15)</span>
+<span class="n">top_names</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">top_idx</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">top_importances</span><span class="p">,</span> <span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">top_names</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Decrease in accuracy&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Permutation Feature Importance (Test Set, 30 repeats)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;pfi_boxplot.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saved: pfi_boxplot.png&quot;</span><span class="p">)</span>
+<span class="c1"># Key: features whose box crosses zero are NOT significantly important</span>
+</code></pre></div>
+
+<h2 id="9-use-case-feature-selection-workflow">9. Use Case: Feature Selection Workflow</h2>
+<p>PFI drives an iterative feature selection workflow: train → compute PFI → remove features with importance near zero (within one standard deviation of zero) → retrain → repeat until accuracy drops. This is simpler than Boruta or RFECV for many practical purposes, and it works with any model.</p>
+<p><em>[Figure: Workflow Diag — see interactive JSX version]</em></p>
+<p><em>The PFI-driven feature selection loop. Remove features with PFI ≈ 0, retrain, re-evaluate. Stop when accuracy starts degrading.</em></p>
+<p>The workflow catches features that are redundant, noisy, or irrelevant — reducing model complexity, improving inference speed, and often improving generalisation (by removing overfitting targets). The key: remove features in batches (all features with PFI less than a threshold), not one at a time. Removing one feature at a time is slow and can miss the effect of removing correlated groups.</p>
+<p>A production example: a fraud detection model with 85 features. PFI reveals that 40 features have importance indistinguishable from zero on the test set. Removing them and retraining produces a 45-feature model with identical AUC (0.981) but 2x faster inference and simpler maintenance. The PFI analysis is included in the model documentation as evidence that the reduced feature set is sufficient.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 6: 06_feature_selection.py</span>
+<span class="c1"># Iterative feature selection using PFI</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.001</span>  <span class="c1"># remove features with mean PFI below this</span>
+
+<span class="n">important_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">result_test</span><span class="o">.</span><span class="n">importances_mean</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">]</span>
+<span class="n">removed_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">result_test</span><span class="o">.</span><span class="n">importances_mean</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Features above threshold (</span><span class="si">{</span><span class="n">threshold</span><span class="si">}</span><span class="s2">): </span><span class="se">{{</span><span class="s2">len(important_features)</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Features removed: </span><span class="se">{{</span><span class="s2">len(removed_features)</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Retrain on selected features</span>
+<span class="n">rf_slim</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">rf_slim</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">important_features</span><span class="p">],</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">acc_slim</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">rf_slim</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">important_features</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Original accuracy (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2"> features): </span><span class="se">{{</span><span class="s2">acc:.3f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced accuracy  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">important_features</span><span class="p">)</span><span class="si">}</span><span class="s2"> features): </span><span class="se">{{</span><span class="s2">acc_slim:.3f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy change: </span><span class="se">{{</span><span class="s2">acc_slim - acc:+.3f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="10-use-case-data-leakage-detection">10. Use Case: Data Leakage Detection</h2>
+<p>PFI is one of the fastest ways to detect data leakage. If a feature that <em>shouldn't</em> be predictive shows extremely high importance, something is wrong. Common leakage patterns: a row ID that correlates with the target sorting order; a timestamp that encodes future information; a feature derived from the target; or a proxy variable that was computed using information not available at prediction time.</p>
+<p>Example: a model predicting hospital readmission shows that "discharge_summary_length" is the most important feature. Investigation reveals that longer discharge summaries are written for sicker patients who are more likely to be readmitted — but the summary is written <em>after</em> the discharge decision that the model is supposed to inform. This is temporal leakage, and PFI caught it by showing implausibly high importance for a feature that shouldn't dominate.</p>
+<p>The diagnostic pattern: compute PFI on the test set. Any feature with importance dramatically higher than domain experts expect is a leakage candidate. Any feature with importance that seems "too good to be true" probably is. Investigate by checking: was this feature available at the time the prediction would be made in production?</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 7: 07_leakage_detection.py</span>
+<span class="c1"># Simulate leakage: add a feature that&#39;s a proxy for the target</span>
+<span class="n">X_train_leak</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">X_test_leak</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Add a &quot;row_id&quot; that correlates with target due to sorting</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">X_train_leak</span><span class="p">[</span><span class="s2">&quot;leaky_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_train</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)),</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)))</span>
+<span class="n">X_test_leak</span><span class="p">[</span><span class="s2">&quot;leaky_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)),</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)))</span>
+
+<span class="n">rf_leak</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">rf_leak</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_leak</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">result_leak</span> <span class="o">=</span> <span class="n">permutation_importance</span><span class="p">(</span><span class="n">rf_leak</span><span class="p">,</span> <span class="n">X_test_leak</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span>
+                                      <span class="n">n_repeats</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># The leaky feature should dominate</span>
+<span class="n">top_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">result_leak</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top 5 features (with leakage):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top_idx</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">X_train_leak</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">imp</span> <span class="o">=</span> <span class="n">result_leak</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="s2">&quot; ⚠️ LEAKAGE&quot;</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;leaky_id&quot;</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">{{</span><span class="s2">name:25s</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">imp:.4f</span><span class="se">}}</span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="11-use-case-multi-model-comparison">11. Use Case: Multi-Model Comparison</h2>
+<p>PFI can reveal whether different models rely on the same features — a powerful diagnostic. If a Random Forest and a Gradient Boosting model achieve similar accuracy but rank features completely differently, one of them may be exploiting spurious patterns. If they agree on the top features, that's evidence the signal is genuine.</p>
+<p>This is particularly useful for model selection in regulated industries. A compliance review might ask: "Do both candidate models use the same features in the same way?" PFI provides a quick, model-agnostic answer. Disagreement in feature rankings warrants deeper investigation with SHAP or partial dependence plots.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 9: 09_multi_model.py</span>
+<span class="c1"># Compare PFI across two models</span>
+<span class="n">gb</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">acc_gb</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">gb</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+
+<span class="n">result_gb</span> <span class="o">=</span> <span class="n">permutation_importance</span><span class="p">(</span><span class="n">gb</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Compare top features</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RF acc: </span><span class="se">{{</span><span class="s2">acc:.3f</span><span class="se">}}</span><span class="s2">, GB acc: </span><span class="se">{{</span><span class="s2">acc_gb:.3f</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Feature               RF PFI    GB PFI    Agreement?&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">result_test</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">)[</span><span class="o">-</span><span class="mi">8</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">rf_imp</span> <span class="o">=</span> <span class="n">result_test</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">gb_imp</span> <span class="o">=</span> <span class="n">result_gb</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">agree</span> <span class="o">=</span> <span class="s2">&quot;✓&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="n">rf_imp</span> <span class="o">&gt;</span> <span class="mf">0.005</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">gb_imp</span> <span class="o">&gt;</span> <span class="mf">0.005</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;✗&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">{{</span><span class="s2">name:22s</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">rf_imp:.4f</span><span class="se">}}</span><span class="s2">     </span><span class="se">{{</span><span class="s2">gb_imp:.4f</span><span class="se">}}</span><span class="s2">     </span><span class="se">{{</span><span class="s2">agree</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="12-use-case-regulatory-explainability">12. Use Case: Regulatory Explainability</h2>
+<p>Under the EU AI Act's transparency requirements for high-risk systems, deployers must document which features their model relies on. PFI provides a global, model-agnostic importance ranking suitable for this purpose. However, PFI alone is insufficient for full compliance: it tells you <em>which</em> features matter globally, but not <em>how</em> they affect individual predictions. For individual decision explanations (required under GDPR Article 22), you need local methods like SHAP or LIME in addition to PFI.</p>
+<p>The recommended compliance stack: PFI for global feature ranking (included in model documentation and model cards), SHAP for local per-instance explanations (attached to individual decisions), and partial dependence plots for understanding the functional form of feature effects. PFI's role is the "executive summary" — the answer to "what does this model use?" before drilling into "how does it use it?"'</p>
+<h2 id="13-pfi-vs-other-feature-importance-methods">13. PFI vs. Other Feature Importance Methods</h2>
+<p><em>[Figure: Vs Methods — see interactive JSX version]</em></p>
+<p><em>Six feature importance methods compared. PFI and Drop-Column measure performance impact. SHAP measures attribution. MDI measures split utility. They answer different questions and should not be treated as interchangeable.</em></p>
+<p><strong>PFI vs. SHAP feature importance:</strong> PFI measures "how much does performance drop when this feature is shuffled?" SHAP measures "how much does this feature contribute to each prediction on average?" They answer different questions. PFI reflects the model's reliance on a feature in terms of predictive accuracy; SHAP reflects the feature's attribution in terms of prediction magnitude. They often agree on the top features but can disagree on rankings, especially when features are correlated. Use PFI for global performance-based ranking; use SHAP when you need per-instance attribution.</p>
+<p><strong>PFI vs. impurity-based importance (MDI/Gini):</strong> MDI measures how much each feature contributes to reducing impurity (Gini or entropy) across all tree splits. It's fast (computed during training, no extra evaluation needed) but biased toward high-cardinality features — a random ID column with 10,000 unique values will show high MDI simply because it creates many possible splits. PFI does not have this bias because it measures actual performance impact, not split potential. For tree-based models, always prefer PFI over MDI for reporting.</p>
+<p><strong>PFI vs. drop-column importance:</strong> Drop-column retrains the model without each feature and measures the accuracy change. This is the "gold standard" — it measures exactly what happens when the feature is permanently removed. But it requires N retraining runs (one per feature), which is expensive for large models or many features. PFI approximates drop-column without retraining. The approximation is usually good but can diverge for models that can redistribute importance across features during retraining.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 8: 08_pfi_vs_shap.py</span>
+<span class="c1"># Compare PFI vs MDI (Gini importance)</span>
+<span class="n">mdi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+<span class="c1"># Rank comparison</span>
+<span class="n">pfi_ranks</span> <span class="o">=</span> <span class="n">result_test</span><span class="o">.</span><span class="n">importances_mean</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+<span class="n">mdi_ranks</span> <span class="o">=</span> <span class="n">mdi</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature               PFI Rank  MDI Rank  Difference&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">result_test</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">)[</span><span class="o">-</span><span class="mi">10</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">pr</span> <span class="o">=</span> <span class="n">pfi_ranks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">mr</span> <span class="o">=</span> <span class="n">mdi_ranks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">pr</span> <span class="o">-</span> <span class="n">mr</span><span class="p">)</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="s2">&quot; ⚠️&quot;</span> <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">{{</span><span class="s2">name:22s</span><span class="se">}}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">pr:5d</span><span class="se">}}</span><span class="s2">     </span><span class="se">{{</span><span class="s2">mr:5d</span><span class="se">}}</span><span class="s2">     </span><span class="se">{{</span><span class="s2">diff:5d</span><span class="se">}}</span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">⚠️ = large rank disagreement (investigate for multicollinearity)&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="14-limitations-and-workarounds">14. Limitations and Workarounds</h2>
+<p><strong>1. Multicollinearity.</strong> Correlated features split importance, both showing as unimportant when the pair is critical. <em>Workaround:</em> grouped PFI, conditional PFI, or drop-column importance. Always check correlations before computing PFI.</p>
+<p><strong>2. Computational cost.</strong> PFI is O(n_features × n_repeats × prediction_time). For models with 1,000 features and 30 repeats, that's 30,000 prediction passes. For large neural networks or large datasets, this can take hours. <em>Workaround:</em> subsample the evaluation set to 5,000–10,000 rows. PFI on a representative subsample closely approximates PFI on the full set.</p>
+<p><strong>3. Interaction blindness.</strong> PFI measures marginal importance — the effect of shuffling one feature while holding others fixed. It cannot detect that two features are only important <em>together</em> (synergistic interactions). If features A and B are individually useless but jointly predictive, PFI assigns zero importance to both. <em>Workaround:</em> SHAP interaction values, or paired permutation importance (shuffle A and B together and compare to shuffling each alone).</p>
+<p><strong>4. Metric sensitivity.</strong> Different metrics give different rankings. A feature critical for AUC may look unimportant for accuracy. <em>Workaround:</em> use the same metric you used for model evaluation. For thoroughness, compute PFI with multiple metrics and flag disagreements.</p>
+<p><strong>5. Instability on small datasets.</strong> With fewer than ~500 test samples, PFI estimates are noisy. Individual repeats can give wildly different importance scores. <em>Workaround:</em> increase n_repeats (50–100), use confidence intervals (mean ± 2*std), or apply the PIMP framework (Altmann et al., 2010) for formal p-values on importance scores.</p>
+<h2 id="15-the-people-and-history">15. The People and History</h2>
+<p><strong>Leo Breiman</strong> (UC Berkeley, 1928–2005): introduced permutation importance as part of Random Forests (Machine Learning, 2001). The RF paper is one of the most cited in all of ML, and PFI was embedded in it from the start — not as a post-hoc add-on but as an integral diagnostic tool. <strong>Carolin Strobl</strong> (LMU Munich, now University of Zurich): identified the multicollinearity bias in PFI and proposed conditional permutation importance (BMC Bioinformatics, 2008). Her work is the foundation for all subsequent corrections. <strong>André Altmann</strong> et al. (University College London): the PIMP framework (Bioinformatics, 2010) for corrected p-values on permutation importance. <strong>Aaron Fisher, Cynthia Rudin, Francesca Dominici</strong>: Model Class Reliance (JMLR, 2019), generalising PFI from a single model to an entire class of models. <strong>Christoph Molnar</strong> (LMU Munich): "Interpretable Machine Learning" book, the definitive pedagogical treatment of PFI. His conditional subgroup approach (Data Mining and Knowledge Discovery, 2023) offers a practical compromise between marginal and conditional PFI.</p>
+<h2 id="16-where-pfi-is-heading">16. Where PFI Is Heading</h2>
+<p>Three directions: (1) <strong>Conditional PFI matures</strong> — the arXiv 2501.17520 (January 2026) paper establishes double-robustness theory for conditional feature importance, enabling proper statistical inference. Practical implementations using knockoffs and CPI are becoming available in R and Python. (2) <strong>PFI integrates with LLMs</strong> — as LLMs are applied to tabular data (via tool-use or structured prompting), PFI becomes relevant for understanding which features the LLM-based system relies on — extending model-agnostic importance to non-traditional models. (3) <strong>Automated PFI pipelines</strong> — tools like MLJAR, PyCaret, and AutoGluon now include PFI in their automated reports, making it a default component of model documentation rather than an optional analysis.</p>
+<h2 id="17-decision-framework">17. Decision Framework</h2>
+<p>✓ Use PFI when:</p>
+<p>You need a global feature importance ranking for any model (model-agnostic).</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You want to identify features that can be safely removed (importance ≈ 0).</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You need a quick leakage diagnostic (implausibly important features).</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You're comparing what features different models rely on.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You need to document which features your model uses (regulatory, model cards).</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Your features are reasonably independent (check correlations first!).</p>
+<p>✗ Use something else when:</p>
+<p>Features are highly correlated (r &gt; 0.8) → use grouped PFI or drop-column.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You need per-instance explanations → use SHAP or LIME (PFI is global only).</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You need to understand HOW a feature affects predictions → use PDP or SHAP dependence.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You need interaction detection → use SHAP interaction values or H-statistic.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>Dataset is very small (under 500 rows) → PFI estimates will be unstable.</p>
+<p><em>[Figure: br — see interactive JSX version]</em></p>
+<p>You need formal statistical significance → use PIMP or conditional PFI with p-values.</p>
+<p>PFI answers one question — "what happens to performance when this feature is shuffled?" — and answers it simply, cheaply, and model-agnostically. That's its strength and its limitation. It is a first-pass diagnostic, not a complete explanation. Use it to understand which features matter. Then use SHAP, PDP, or domain expertise to understand <em>how</em> they matter. The practitioner who treats PFI as one tool in an interpretability toolkit — not the only tool — will get the most value from it.</p>
+<blockquote>
+<p><strong>✅ End of notebook</strong></p>
+<p>Cells 0–9 complete: setup → basic PFI → train vs test → multicollinearity → grouped PFI → box plots → feature selection → leakage detection → PFI vs MDI → multi-model comparison. Copy green-bordered cells in order for a working end-to-end example.</p>
+</blockquote>
+<p>Sources:</p>
+<p>scikit-learn 1.8.0 docs (permutation_importance, multicollinear features example).</p>
+<p>Academic:</p>
+<p>Breiman, Machine Learning 45(1) 2001 (Random Forests); Strobl, Boulesteix, Kneib, Augustin, Zeileis, BMC Bioinformatics 2008 (Conditional Variable Importance); Altmann, Toloşi, Sander, Lengauer, Bioinformatics 2010 (PIMP); Fisher, Rudin, Dominici, JMLR 2019 (Model Class Reliance); Molnar, König, Bischl, Casalicchio, DMKD 2023 (Conditional Subgroup Approach); arXiv 2501.17520 Jan 2026 (CFI Revisited: Double Robustness).</p>
+<p>Books:</p>
+<p>Molnar, "Interpretable Machine Learning" Ch.8 (christophm.github.io/interpretable-ml-book).</p>
+<p>Software:</p>
+<p>scikit-learn inspection module, eli5, PIMP.</p>
+<p>scikit-learn 1.0+ · Python 3.9+ · Model-Agnostic</p>
+<p>Length determined by information, not word count</p>
+<p>/div&gt;</p>
+<p>/div&gt;);}</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>pfi-definitive-guide</code> &middot; category: <code>general</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shapash Timeseries Technical Article — Plain Reader</title>
+  <meta name="description" content="How to use MAIF&#x27;s explainability library to make lag features, rolling statistics, and calendar effects interpretable to business stakeholders — from feature engineering to production deployment." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Shapash Timeseries Technical Article</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-19</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read">15 min</span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/shapash-timeseries-technical-article.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/shapash-timeseries-technical-article.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <p>You've built a time series forecasting model. It uses LightGBM with 47 engineered features — lagged values, rolling means, day-of-week dummies, holiday indicators, temperature data. The MAPE is 4.2%, well within business requirements. The model is ready for production. And then your VP of Operations asks: <em>"Why does the model think next Tuesday's demand will spike 18% above the rolling average?"</em></p>
+<p>This is the explainability gap. The model knows. You don't — or more precisely, you can't communicate what the model knows in language that a non-technical stakeholder can act on. Raw SHAP values tell you that <code>lag_1</code> contributed +0.32 and <code>rolling_7d_mean</code> contributed -0.18, but what your VP needs to hear is: "Yesterday's value was unusually high, and the 7-day trend has been climbing, which together push Tuesday's forecast up. The biggest single driver is the previous day's reading."</em></p>
+<p>Shapash, the open-source Python library developed by MAIF (a French mutual insurer), bridges this gap. It wraps SHAP and LIME computations in a presentation layer that performs inverse encoding (translating <code>feature_17</code> back into "Neighbourhood: Northridge"), generates interactive dashboards, and produces standalone HTML audit reports. For time series forecasting, the key insight is that <strong>Shapash doesn't need to know your data is temporal</strong> — it explains the tabular features that your forecasting pipeline produces. The temporal intelligence lives in your feature engineering; Shapash explains the result.</p>
+<p>Before diving into the implementation, three concepts underpin everything Shapash does.</p>
+<p>A Shapley value answers: <strong>how much did feature <em>i</em> contribute to this specific prediction, relative to the average prediction?</strong> It comes from cooperative game theory (Lloyd Shapley, 1953; Nobel Prize 2012). The idea: consider every possible subset of features ("coalition"). For each, measure how much the prediction changes when you add feature <em>i</em>. The Shapley value is the weighted average of these marginal contributions across all coalitions. It is the <em>only</em> attribution method that simultaneously satisfies local accuracy (contributions sum to the prediction minus the base value), missingness (missing features contribute zero), and consistency (if a feature's marginal contribution increases in a new model, its attribution doesn't decrease).</p>
+<p>Computing exact Shapley values is exponential in the number of features (2^n^ coalitions). TreeSHAP, by Scott Lundberg (2018), exploits the tree structure of gradient-boosted models to compute <em>exact</em> Shapley values in polynomial time — O(TLD²) where T is the number of trees, L the maximum leaves, and D the maximum depth. This is why Shapash works best with XGBoost, LightGBM, CatBoost, and scikit-learn tree ensembles: the SHAP backend can compute exact values fast enough for interactive exploration.</p>
+<p>Most ML pipelines encode categorical features before training. An ordinal encoder maps "Monday" → 0, "Tuesday" → 1, etc. A one-hot encoder creates <code>dow_Monday</code>, <code>dow_Tuesday</code>, ... When SHAP computes contributions, it operates on these encoded features. Shapash reverses the encoding at display time, showing "Day of Week: Monday contributed +$5k" instead of "feature_23 = 0 contributed +0.023." For time series, this means your lag features, rolling statistics, and calendar dummies all appear with human-readable labels in the dashboard and report.</p>
+<p>The critical step is feature engineering — converting the raw time series into a tabular dataset where each row represents a forecast origin and each column represents a feature that Shapash can explain.</p>
+<blockquote>
+<p><strong>💡 Why this works for Shapash</strong></p>
+<p>Shapash doesn't need temporal awareness — it explains tabular features. The temporal structure is encoded <em>in</em> the features (lags carry history, rolling stats carry trend, calendar features carry seasonality). When Shapash says "lag_1 contributed +$18k," it means the model relied heavily on yesterday's value for this forecast. When it says "month = January contributed -$8k," it means the model learned a seasonal pattern. The <strong>feature engineering is your domain knowledge; Shapash makes it visible</strong>.</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># feature_engineering.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_ts_features</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">target_col</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">14</span><span class="p">],</span>
+                       <span class="n">rolling_windows</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">28</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert time series to tabular features for ML.&quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Lag features</span>
+    <span class="k">for</span> <span class="n">lag</span> <span class="ow">in</span> <span class="n">lags</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;lag_</span><span class="si">{</span><span class="n">lag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_col</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">lag</span><span class="p">)</span>
+
+    <span class="c1"># Rolling statistics</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">rolling_windows</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;rolling_</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">d_mean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_col</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;rolling_</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">d_std&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_col</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+    <span class="c1"># Calendar features</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span>       <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;day_of_week&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">dayofweek</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;is_weekend&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;day_of_week&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;day_of_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">dayofyear</span>
+
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># train_model.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LGBMRegressor</span>
+
+<span class="c1"># Prepare data</span>
+<span class="n">feature_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">feature_cols</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># temporal split!</span>
+<span class="p">)</span>
+
+<span class="c1"># Train</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LGBMRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+                       <span class="n">max_depth</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>⚠️ Temporal split matters</strong></p>
+<p>Always use <code>shuffle=False</code> for time series. Shuffled splits leak future information into training, inflating accuracy and producing misleading SHAP explanations — the model "explains" patterns it shouldn't have seen.</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># explain_with_shapash.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapash</span><span class="w"> </span><span class="kn">import</span> <span class="n">SmartExplainer</span>
+
+<span class="c1"># Create a features dictionary for readable labels</span>
+<span class="n">features_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;lag_1&quot;</span><span class="p">:</span> <span class="s2">&quot;Yesterday&#39;s Value&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lag_7&quot;</span><span class="p">:</span> <span class="s2">&quot;Same Day Last Week&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lag_14&quot;</span><span class="p">:</span> <span class="s2">&quot;Two Weeks Ago&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rolling_7d_mean&quot;</span><span class="p">:</span> <span class="s2">&quot;7-Day Rolling Average&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rolling_7d_std&quot;</span><span class="p">:</span> <span class="s2">&quot;7-Day Volatility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rolling_28d_mean&quot;</span><span class="p">:</span> <span class="s2">&quot;28-Day Rolling Average&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;Month of Year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;day_of_week&quot;</span><span class="p">:</span> <span class="s2">&quot;Day of Week&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_weekend&quot;</span><span class="p">:</span> <span class="s2">&quot;Weekend Flag&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;day_of_year&quot;</span><span class="p">:</span> <span class="s2">&quot;Day of Year&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Initialize SmartExplainer</span>
+<span class="n">xpl</span> <span class="o">=</span> <span class="n">SmartExplainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">features_dict</span><span class="o">=</span><span class="n">features_dict</span><span class="p">,</span>  <span class="c1"># human-readable labels</span>
+<span class="p">)</span>
+
+<span class="c1"># Compile — this computes SHAP values via TreeSHAP</span>
+<span class="n">xpl</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_target</span><span class="o">=</span><span class="n">y_test</span><span class="p">)</span>
+
+<span class="c1"># Launch interactive dashboard</span>
+<span class="n">xpl</span><span class="o">.</span><span class="n">run_app</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Demand Forecast Explainer&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The <code>run_app()</code> call launches a Dash-based web application on localhost. The dashboard provides four linked views: <strong>global feature importance</strong> (which features matter most across all forecasts), <strong>feature contribution plots</strong> (how a single feature's values relate to its SHAP contributions), <strong>local explanations</strong> (why a specific forecast came out the way it did), and a <strong>filterable data table</strong> that lets you select subsets by feature values, prediction ranges, or error magnitudes. Crucially, every label in the dashboard uses the <code>features_dict</code> you provided — so your VP sees "Yesterday's Value" and "7-Day Rolling Average," not "lag_1" and "rolling_7d_mean."</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># generate_report.py</span>
+<span class="n">xpl</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;demand_forecast_report.html&quot;</span><span class="p">,</span>
+    <span class="n">project_info_file</span><span class="o">=</span><span class="s2">&quot;project_info.yml&quot;</span><span class="p">,</span>
+    <span class="n">x_train</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span>
+    <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
+    <span class="n">y_test</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span>
+    <span class="n">title_story</span><span class="o">=</span><span class="s2">&quot;Weekly Demand Forecast — Model Report&quot;</span><span class="p">,</span>
+    <span class="n">title_description</span><span class="o">=</span><span class="s2">&quot;Explainability report for the LightGBM &quot;</span>
+        <span class="s2">&quot;demand forecasting model, Q1 2025.&quot;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;MAE&quot;</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;sklearn.metrics.mean_absolute_error&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;MAPE&quot;</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;sklearn.metrics.mean_absolute_percentage_error&quot;</span><span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>This generates a standalone HTML file — no server required — containing project metadata, dataset descriptions, feature distributions, model performance metrics, global and local explainability visualisations, and correlation analyses. It is designed to be emailed to compliance, shared with auditors, or archived as regulatory documentation.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># deploy_predictor.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapash</span><span class="w"> </span><span class="kn">import</span> <span class="n">SmartPredictor</span>
+
+<span class="c1"># Create a lighter object for production</span>
+<span class="n">predictor</span> <span class="o">=</span> <span class="n">xpl</span><span class="o">.</span><span class="n">to_smartpredictor</span><span class="p">()</span>
+
+<span class="c1"># For each new prediction, get explanation summary</span>
+<span class="n">new_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="o">...</span><span class="p">})</span>  <span class="c1"># new feature row</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">predictor</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">new_data</span><span class="p">)</span>
+<span class="n">detailed</span> <span class="o">=</span> <span class="n">predictor</span><span class="o">.</span><span class="n">detail_contributions</span><span class="p">()</span>
+
+<span class="c1"># Output: prediction + top contributing features in plain language</span>
+<span class="c1"># e.g., &quot;Forecast: $225k. Main drivers: Yesterday&#39;s Value (+$22k),</span>
+<span class="c1">#        7-Day Rolling Average (+$8k), Weekend Flag (-$5k)&quot;</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>✅ SmartPredictor vs. SmartExplainer</strong></p>
+<p><strong>SmartExplainer</strong> is for exploration — it holds the full test set, all SHAP values, and the web app. <strong>SmartPredictor</strong> is for production — it's lighter, runs per-instance, includes consistency checks, and outputs summarised explanations in configurable natural language. Use SmartExplainer during development; deploy SmartPredictor.</p>
+</blockquote>
+<p>Consider a utility company forecasting hourly electricity demand. The model uses 28 features: 7 lag features (hours -1 through -24 plus -168 for same-hour-last-week), 4 rolling statistics (6h, 12h, 24h, 168h means), 6 calendar features (hour, day of week, month, holiday, daylight hours, working day flag), and 11 weather features (temperature, humidity, wind speed, cloud cover — current and 3 lagged values). The model is LightGBM with 800 trees.</p>
+<p>Shapash reveals patterns that raw accuracy metrics hide. <strong>Globally</strong>, the dashboard shows that <code>lag_1</code> (previous hour's demand) and <code>temperature</code> dominate — expected for energy. But the contribution plot for <code>hour_of_day</code> reveals that the model has learned a non-monotonic relationship: demand peaks at hours 8–9 and 18–20 (morning and evening peaks), with a trough at 14:00. This pattern matches known load curves but was never explicitly engineered — the model discovered it from the data.</p>
+<p><strong>Locally</strong>, when the model forecasts an unusual spike on a Tuesday evening, the SmartExplainer shows: "Temperature: -2°C (+3.4 MW above average), Previous Hour: 42 MW (+2.1 MW), Hour of Day: 19:00 (+1.8 MW)." The operations team doesn't need to understand gradient boosting — they can see that the cold snap is driving the spike, confirm that it makes physical sense, and decide whether to activate additional generation capacity.</p>
+<p>The <strong>audit report</strong>, generated at model deployment, documents the training data period (2021–2024), the feature set, the model's MAE (1.2 MW) and MAPE (2.8%), and the full global explainability analysis. When the energy regulator asks how automated dispatch decisions are made, the utility hands over the HTML file.</p>
+<p>A retail chain forecasts weekly sales per store. Features include: 4 lag features (weeks -1, -2, -4, -52), rolling 4-week and 12-week means, promotion flags, store-level categorical features (region, format, size tier), and macroeconomic indicators (CPI, consumer confidence). The model is XGBoost.</p>
+<p>Shapash's <strong>feature grouping</strong> capability (available since v2.3) is valuable here: you can group the four lag features under "Recent Sales History" and the two macroeconomic features under "Economic Conditions," collapsing the dashboard to a level of abstraction that a regional manager can parse. The <strong>filter functionality</strong> in the web app lets the merchandising team select only stores in the "Urban Large" format and see how feature importance shifts — perhaps promotions matter more in urban locations, while weather matters more in suburban ones.</p>
+<p>The SmartPredictor, deployed in the weekly batch pipeline, appends a one-line explanation to each store's forecast: "Store 247 forecast: $182k (+12% vs. baseline). Top drivers: Last Week's Sales (+$14k), Active Promotion (+$8k), Week 52 Seasonality (-$3k)." The store manager reads this alongside the number and knows whether the spike is promotion-driven (temporary) or trend-driven (sustained) — a distinction that changes the replenishment decision.</p>
+<p>Shapash has real constraints that practitioners must understand.</p>
+<p><strong>No native deep learning support.</strong> If your forecasting model is an LSTM, Transformer, or N-BEATS architecture, Shapash's TreeSHAP backend won't work. You can provide pre-computed SHAP values (via DeepSHAP or KernelSHAP), but the web app and report are optimised for tabular feature-level explanations, not sequence-level attributions. For deep TS models, consider TsSHAP, TimeSHAP, or C-SHAP as complementary tools.</p>
+<p><strong>Feature independence assumption.</strong> Shapley values assume features are independent — but in time series, lag features are highly correlated by construction (<code>lag_1</code> and <code>lag_2</code> are adjacent values of the same series). This can redistribute attribution between correlated features in unstable ways. Use Shapash's <strong>Stability metric</strong> to detect this: if the same prediction gets very different explanations on slightly perturbed data, your features are too correlated for reliable local attribution.</p>
+<p><strong>Memory and scale.</strong> SmartExplainer loads all SHAP values into memory. For datasets with millions of rows, use the <code>sample</code> parameter or compute SHAP on a representative subset. The web app defaults to 1,000 rows for responsiveness.</p>
+<p><strong>Multi-step forecasting.</strong> If your model produces multi-horizon forecasts (predicting t+1 through t+7 simultaneously), you need to explain each horizon separately. Shapash treats each target as a single regression output.</p>
+<p>Shapash doesn't make your time series model explainable. Your feature engineering does that. Shapash makes the explanation <em>visible</em> — to the people who need to trust it, act on it, audit it, and regulate it. In a world where the EU AI Act requires that high-risk AI systems be "sufficiently transparent for deployers to interpret the system's output," that visibility is not optional. It is the product.</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>shapash-timeseries-technical-article</code> &middot; category: <code>general</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+</body>
+</html>
