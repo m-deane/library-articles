@@ -13,7 +13,3 @@
 
 playwright==1.51.0
 PyYAML
-# Phase 6 — offline search index (lunr.js Python port)
-lunr==0.8.0
-# Phase 7 — markdown reader (stdlib-adjacent md → HTML)
-markdown==3.6
