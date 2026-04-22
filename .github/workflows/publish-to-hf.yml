@@ -28,7 +28,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-chromium-${{ runner.os }}-v1.44.0
+          key: playwright-chromium-${{ runner.os }}-v1.51.0
       - name: Install Playwright Chromium
         run: playwright install --with-deps chromium
       - name: Install esbuild static binary

@@ -11,5 +11,5 @@
 # CI install: see .github/workflows/publish-to-hf.yml (installs the same
 # requirements, then `playwright install --with-deps chromium`).
 
-playwright==1.44.0
+playwright==1.51.0
 PyYAML
