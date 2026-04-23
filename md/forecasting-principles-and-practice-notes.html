@@ -48,56 +48,6 @@
 <p>Hyndman and Athanasopoulos's <em>Forecasting: Principles and Practice</em> (2nd ed., 2018) is the definitive applied textbook for time series forecasting, grounded in the R <code>fpp2</code> ecosystem (<code>forecast</code> v8.3 + <code>ggplot2</code>). The book opens with a philosophical foundation — predictability depends on understanding of contributing factors, data availability, and whether forecasts themselves influence outcomes — and progresses methodically through visualization, benchmark methods, transformations, residual diagnostics, regression, decomposition, exponential smoothing (ETS), ARIMA, dynamic regression, hierarchical reconciliation, and advanced methods including TBATS, VAR, and neural network autoregression.</p>
 <p>The probabilistic framing is central: every forecast is a summary of a probability distribution over a future random variable, and prediction intervals (typically 80% and 95%) communicate uncertainty. The notation <code>y_{T+h|T}</code> for h-step-ahead forecasts made at time T recurs throughout. The book builds two dominant model families — <strong>ETS</strong> (18 innovations state space models classified by Error × Trend × Seasonal components, selected via AICc through <code>ets()</code>) and <strong>ARIMA</strong> (built from the backshift operator B, stationarity enforced via differencing, fit through the Hyndman-Khandakar algorithm in <code>auto.arima()</code>). Though linear ETS models are special cases of ARIMA, the two classes overlap only partially and AICc cannot compare across them; out-of-sample evaluation via <code>tsCV()</code> is required.</p>
 <p>Later chapters move beyond univariate modelling: dynamic regression marries regression predictors with ARIMA errors (estimated by minimising ARIMA errors, not regression errors); hierarchical reconciliation uses the summing matrix <code>S</code> and the MinT estimator to produce coherent forecasts across aggregation levels; and advanced methods handle complex seasonality (mstl, dynamic harmonic regression, TBATS), multivariate dynamics (VAR), and nonlinearity (NNAR). The closing chapter addresses the messy pragmatics — weekly/daily seasonality, count data via Croston, constrained forecasts through scaled logit, missing-value imputation, and crucially <strong>forecast combination</strong>, where simple averaging of diverse methods consistently beats the best individual model. The book's deepest lesson is that no single method dominates; disciplined diagnostics, information-criterion-based selection, and ensemble combination are the backbone of reliable applied forecasting.</p>
-<p>const Ch1Vis1 = () =&gt; (
-<svg viewBox="0 0 860 460" style={{width:'100%',height:'auto',background:C.bg,borderRadius:8}}>
-<defs>
-<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-<path d="M0,0 L10,5 L0,10 z" fill= />
-</marker>
-</defs>
-<text x="430" y="28" textAnchor="middle" fill= fontSize="15" fontFamily=>Forecasting Method Family Tree</text>
-<text x="430" y="46" textAnchor="middle" fill= fontSize="11" fontFamily=>Hyndman and Athanasopoulos (2018)</text></p>
-<p><rect x="340" y="70" width="180" height="40" fill="none" stroke= strokeWidth="1.5" />
-<text x="430" y="95" textAnchor="middle" fill= fontSize="12" fontFamily=>Time series y_t</text></p>
-<p><line x1="430" y1="110" x2="200" y2="150" stroke= strokeWidth="1" markerEnd="url(#arr)" />
-<line x1="430" y1="110" x2="430" y2="150" stroke= strokeWidth="1" markerEnd="url(#arr)" />
-<line x1="430" y1="110" x2="660" y2="150" stroke= strokeWidth="1" markerEnd="url(#arr)" /></p>
-<p><rect x="80" y="155" width="240" height="34" fill= stroke= />
-<text x="200" y="177" textAnchor="middle" fill= fontSize="12" fontFamily=>Benchmarks (Ch 3)</text>
-<rect x="310" y="200" width="240" height="34" fill= stroke= />
-<text x="430" y="222" textAnchor="middle" fill= fontSize="12" fontFamily=>ETS family (Ch 7)</text>
-<rect x="540" y="155" width="240" height="34" fill= stroke= />
-<text x="660" y="177" textAnchor="middle" fill= fontSize="12" fontFamily=>ARIMA family (Ch 8)</text></p>
-<p><text x="200" y="210" textAnchor="middle" fill= fontSize="10" fontFamily=>meanf · naive · snaive · rwf(drift)</text></p>
-<p><rect x="60" y="260" width="150" height="30" fill="none" stroke= />
-<text x="135" y="280" textAnchor="middle" fill= fontSize="11" fontFamily=>ETS(A,N,N) = SES</text>
-<rect x="220" y="260" width="150" height="30" fill="none" stroke= />
-<text x="295" y="280" textAnchor="middle" fill= fontSize="11" fontFamily=>ETS(A,A,N) Holt</text>
-<rect x="380" y="260" width="150" height="30" fill="none" stroke= />
-<text x="455" y="280" textAnchor="middle" fill= fontSize="11" fontFamily=>ETS(A,Ad,N) damped</text>
-<rect x="540" y="260" width="150" height="30" fill="none" stroke= />
-<text x="615" y="280" textAnchor="middle" fill= fontSize="11" fontFamily=>ETS(<em>,</em>,M) HW mult</text>
-<rect x="700" y="260" width="140" height="30" fill="none" stroke= />
-<text x="770" y="280" textAnchor="middle" fill= fontSize="11" fontFamily=>18 total models</text></p>
-<p><line x1="430" y1="234" x2="430" y2="320" stroke= strokeDasharray="3,3" />
-<line x1="660" y1="189" x2="660" y2="320" stroke= strokeDasharray="3,3" /></p>
-<p><rect x="40" y="330" width="200" height="34" fill= stroke= />
-<text x="140" y="352" textAnchor="middle" fill= fontSize="12" fontFamily=>Dyn regression (Ch 9)</text>
-<rect x="260" y="330" width="200" height="34" fill= stroke= />
-<text x="360" y="352" textAnchor="middle" fill= fontSize="12" fontFamily=>Hierarchical (Ch 10)</text>
-<rect x="480" y="330" width="200" height="34" fill= stroke= />
-<text x="580" y="352" textAnchor="middle" fill= fontSize="12" fontFamily=>Advanced (Ch 11)</text>
-<rect x="700" y="330" width="140" height="34" fill= stroke= />
-<text x="770" y="352" textAnchor="middle" fill= fontSize="12" fontFamily=>Practical (Ch 12)</text></p>
-<p><text x="140" y="384" textAnchor="middle" fill= fontSize="10" fontFamily=>ARIMA errors + xreg</text>
-<text x="360" y="384" textAnchor="middle" fill= fontSize="10" fontFamily=>S matrix · MinT</text>
-<text x="580" y="384" textAnchor="middle" fill= fontSize="10" fontFamily=>TBATS · VAR · NNAR</text>
-<text x="770" y="384" textAnchor="middle" fill= fontSize="10" fontFamily=>Croston · combine</text></p>
-<p><line x1="430" y1="400" x2="430" y2="420" stroke= strokeWidth="1" markerEnd="url(#arr)" />
-<rect x="310" y="420" width="240" height="30" fill="none" stroke= strokeWidth="1.5" />
-<text x="430" y="440" textAnchor="middle" fill= fontSize="12" fontFamily=>Combination (Ch 12): simple average wins</text>
-</svg>
-);</p>
 <p><em>[Figure: Ch1Vis1 — see interactive JSX version]</em></p>
 <p><em>Figure: Method family tree from </em>Forecasting: Principles and Practice<em>. The two central pillars are the ETS state space family (18 models across Error × Trend × Seasonal) and the ARIMA family, bridged by dynamic regression and unified by forecast combination.</em></p>
 <h3 id="chapter-1-getting-started">Chapter 1: Getting Started</h3>
