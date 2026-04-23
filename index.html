@@ -7,15 +7,6 @@
   <meta name="description" content="Rich JSX React articles — companion to the Data Science Library at huggingface.co/spaces/helwyr55/library" />
   <link rel="stylesheet" href="assets/fonts/fonts.css" />
   <link rel="stylesheet" href="assets/styles.css" />
-
-  <!-- PWA (Wave 4) -->
-  <link rel="manifest" href="/manifest.webmanifest">
-  <meta name="theme-color" content="#7c4dff">
-  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="DS Articles">
-
   <!-- Offline full-text search (Phase 6) — loaded eagerly so the first keystroke
        after 2+ chars doesn't pay a round-trip for the engine itself, only the
        index. ~30 KB minified. Falls back silently to the data-attribute filter
@@ -386,17 +377,6 @@
 
       sortCards();
     })();
-  </script>
-
-  <!-- PWA service worker registration (Wave 4) -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/sw.js').catch(function (err) {
-          console.warn('SW register failed:', err);
-        });
-      });
-    }
   </script>
 </body>
 </html>

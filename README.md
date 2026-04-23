@@ -78,14 +78,6 @@ Pushes to `main` trigger `.github/workflows/publish-to-hf.yml` which runs `build
 2. Save to `articles/{kebab-slug}.jsx`
 3. Commit + push — the Phase 2 watcher or GitHub Actions pipeline handles the rest
 
-## Offline reading (PWA)
-
-The static site is an installable Progressive Web App. Visit the live URL in a browser that supports installing PWAs (iOS Safari 16.4+, desktop Chrome / Edge / Safari 17+) and use "Add to Home Screen" / "Install app". The full article library (JSX reader, plain reader, search index, fonts, vendor scripts) is eagerly pre-cached on install (~12–15 MB). PDFs are not cached by the service worker — they are distributed via the whole-library ZIP at `/library-articles-offline.zip`.
-
-Escape hatch: if the service worker ever misbehaves, visit [`/sw-reset.html`](https://helwyr55-library-articles.static.hf.space/sw-reset.html). That page unregisters every service worker for the origin and clears every cache it owned; reload afterwards and a fresh SW will install.
-
-Authoring sources live at `assets/pwa/sw.js`, `assets/pwa/manifest.webmanifest`, and `assets/pwa/sw-reset.html`. `build.py` substitutes `{{BUILD_VERSION}}` (short git SHA) and `{{PRECACHE_URLS}}` into the SW and copies the three files to the Space root on every build. Root placement is mandatory — Hugging Face static Spaces do not permit the `Service-Worker-Allowed` header, so a sub-path service worker cannot claim the root scope needed to cache `/articles/*.html`.
-
 ## Related repos
 
 - `library/` — Streamlit reader (sibling in `____p-library/` workspace)

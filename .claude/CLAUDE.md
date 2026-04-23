@@ -24,28 +24,3 @@ The static site loads zero cross-origin assets at runtime. Every browser fetch i
 - After editing any article, run `python3 build.py` and verify no `unpkg.com` / `fonts.googleapis.com` / `fonts.gstatic.com` appear in `articles/*.html` or `index.html`.
 
 Design rationale is in `docs/offline-reading-research.md` and the step-by-step plan in `docs/offline-reading-implementation-checklist.md`.
-
-## PWA layer (Wave 4 — April 2026)
-
-The site is an installable Progressive Web App with eager HTML pre-caching. Add-to-Home-Screen on iOS Safari 16.4+ (and Install app on desktop Chrome / Edge / Safari 17+) gives a standalone app with the full article library available offline.
-
-- **Authoring source**: `assets/pwa/` — edit `sw.js`, `manifest.webmanifest`, `sw-reset.html` there. `build.py` copies them to the Space root (`/sw.js`, `/manifest.webmanifest`, `/sw-reset.html`) on every build. Root placement is MANDATORY because Hugging Face `custom_headers` config does not permit `Service-Worker-Allowed`; a sub-path SW cannot claim root scope.
-- **Cache name**: `library-articles-shell-v{BUILD_VERSION}`. `BUILD_VERSION` is a short git SHA (or `int(time.time())` fallback if git fails), stamped into `sw.js` at build time. The SW deletes any cache whose name doesn't match the current BUILD_VERSION on `activate` — prevents quota creep across deploys.
-- **Diff-on-install**: when a new BUILD_VERSION activates, the SW copies entries that already exist in an older cache into the new cache instead of re-fetching them, then fetches only the missing/changed URLs. Avoids re-downloading ~15 MB per release.
-- **Precache scope** (what's included in the install — see `_collect_precache_urls` in `build.py`):
-  - `/`, `/index.html`, `/_manifest.json`
-  - `/manifest.webmanifest`, `/assets/icons/*.png`
-  - `/assets/styles.css`, `/assets/md-styles.css`, `/assets/fonts/fonts.css`, every `.woff2` under `/assets/fonts/`
-  - `/assets/vendor/{react,react-dom,prop-types,recharts,lunr}.*.js`
-  - every `/articles/*.html`
-  - every `/md/*.html` + `/md/index.html`
-  - `/search-index.json`, `/search-store.json`
-- **PDFs are EXCLUDED from the SW cache.** They live at `/articles/*.pdf` (LFS-tracked) and the whole-library ZIP at `/library-articles-offline.zip`. Caching them would bloat the install past iOS's ~50 MB cap; they travel via direct download instead.
-- **Fetch strategies**:
-  - Cache-first for `/assets/vendor/*` and `/assets/fonts/*` (immutable, versioned).
-  - Stale-while-revalidate for `/articles/*.html`, `/md/*.html`, `/`, `/index.html`, `/_manifest.json`, `/assets/styles.css`, `/assets/md-styles.css`, `/search-index.json`, `/search-store.json`.
-  - Network-only (no caching) for `/articles/*.pdf` and `/library-articles-offline.zip`.
-  - Network-first-with-cache-fallback for anything else same-origin.
-  - Bypass for cross-origin (nothing cross-origin is loaded at runtime).
-- **Escape hatch**: visit `/sw-reset.html` to unregister every SW and delete every cache. The only recovery path if a bad deploy poisons the cache.
-- **No Android polish** (Q1 decision): no maskable icon variant, no `beforeinstallprompt` UI.

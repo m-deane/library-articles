@@ -50,13 +50,6 @@ MD_OUT_DIR = ROOT / "md"
 SEARCH_INDEX_OUT = ROOT / "search-index.json"
 SEARCH_STORE_OUT = ROOT / "search-store.json"
 
-# Wave 4 — PWA layer (service worker + manifest + escape hatch)
-PWA_SRC_DIR = ASSETS_DIR / "pwa"
-ICONS_DIR = ASSETS_DIR / "icons"
-SW_OUT = ROOT / "sw.js"
-WEBMANIFEST_OUT = ROOT / "manifest.webmanifest"
-SW_RESET_OUT = ROOT / "sw-reset.html"
-
 
 # -------------------------------------------------------------------
 # esbuild — JSX pre-transpile (replaces runtime Babel Standalone)
@@ -1068,12 +1061,6 @@ def _build_md_index(manifest: list[dict]) -> None:
 <link rel="stylesheet" href="../assets/fonts/fonts.css" />
 <link rel="stylesheet" href="../assets/styles.css" />
 <link rel="stylesheet" href="../assets/md-styles.css" />
-<link rel="manifest" href="/manifest.webmanifest" />
-<meta name="theme-color" content="#7c4dff" />
-<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="apple-mobile-web-app-title" content="DS Articles" />
 </head>
 <body class="md-body">
 <header class="article-header-bar">
@@ -1102,15 +1089,6 @@ def _build_md_index(manifest: list[dict]) -> None:
     <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">← Return to Data Science Library</a>
   </div>
 </footer>
-<script>
-  if ('serviceWorker' in navigator) {{
-    window.addEventListener('load', function () {{
-      navigator.serviceWorker.register('/sw.js').catch(function (err) {{
-        console.warn('SW register failed:', err);
-      }});
-    }});
-  }}
-</script>
 </body>
 </html>
 """
@@ -1253,186 +1231,6 @@ def _zip_size_mb(zip_path: Path) -> int | None:
 
 
 # -------------------------------------------------------------------
-# Wave 4 — PWA layer (service worker + manifest + escape hatch)
-# -------------------------------------------------------------------
-
-def _build_version() -> str:
-    """Return a short build identifier used to namespace the SW cache.
-
-    Prefers a short git SHA so deploys produce stable, diffable cache names.
-    Falls back to epoch-seconds if the repo is not a git checkout or the
-    `git` binary is unavailable.
-    """
-    try:
-        proc = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
-            capture_output=True,
-            text=True,
-            cwd=str(ROOT),
-            check=True,
-        )
-        sha = proc.stdout.strip()
-        if sha:
-            return sha
-    except Exception:  # noqa: BLE001
-        pass
-    return str(int(time.time()))
-
-
-def _collect_precache_urls() -> list[str]:
-    """Enumerate every same-origin URL the service worker should pre-cache.
-
-    Explicitly EXCLUDES articles/*.pdf and library-articles-offline.zip —
-    these are intentionally distributed via direct download / the separate
-    ZIP and are not part of the PWA install budget (decision Q4).
-
-    Paths are emitted as absolute (starting with '/') so the SW can treat
-    them as URLs relative to the scope root.
-    """
-    urls: list[str] = []
-
-    # Shell / index / manifest.
-    urls.append("/")
-    urls.append("/index.html")
-    urls.append("/_manifest.json")
-
-    # Shared stylesheets.
-    urls.append("/assets/styles.css")
-    urls.append("/assets/md-styles.css")
-    urls.append("/assets/fonts/fonts.css")
-
-    # Vendored JS runtime.
-    vendor_files = [
-        "react.production.min.js",
-        "react-dom.production.min.js",
-        "prop-types.min.js",
-        "recharts.js",
-        "lunr.min.js",
-    ]
-    for name in vendor_files:
-        if (ASSETS_DIR / "vendor" / name).exists():
-            urls.append(f"/assets/vendor/{name}")
-
-    # Vendored fonts (woff2 files).
-    fonts_dir = ASSETS_DIR / "fonts"
-    if fonts_dir.exists():
-        for woff in sorted(fonts_dir.glob("*.woff2")):
-            urls.append(f"/assets/fonts/{woff.name}")
-
-    # Icons — the manifest points at icon-192 / icon-512, the SW should pre-
-    # cache all three so the home-screen icon works offline on iOS too.
-    if ICONS_DIR.exists():
-        for png in sorted(ICONS_DIR.glob("*.png")):
-            urls.append(f"/assets/icons/{png.name}")
-
-    # The webmanifest itself.
-    urls.append("/manifest.webmanifest")
-
-    # Article HTML — walk the manifest so we cache only what we just built.
-    if MANIFEST_OUT.exists():
-        try:
-            manifest = json.loads(MANIFEST_OUT.read_text(encoding="utf-8"))
-            for entry in manifest:
-                slug = entry.get("slug")
-                if not slug:
-                    continue
-                html_path = ARTICLES_DIR / f"{slug}.html"
-                if html_path.exists():
-                    urls.append(f"/articles/{slug}.html")
-        except Exception as e:  # noqa: BLE001
-            print(f"[pwa] warn: couldn't parse manifest ({e}) — falling back to glob")
-
-    # Fall back to a glob if the manifest read failed (or to include md-only
-    # articles that aren't in the JSX manifest).
-    for html_path in sorted(ARTICLES_DIR.glob("*.html")):
-        u = f"/articles/{html_path.name}"
-        if u not in urls:
-            urls.append(u)
-
-    # Plain-HTML markdown reader pages (including the md-reader index).
-    if MD_OUT_DIR.exists():
-        if (MD_OUT_DIR / "index.html").exists():
-            urls.append("/md/index.html")
-        for md_html in sorted(MD_OUT_DIR.glob("*.html")):
-            if md_html.name == "index.html":
-                continue
-            urls.append(f"/md/{md_html.name}")
-
-    # Search payloads.
-    if SEARCH_INDEX_OUT.exists():
-        urls.append("/search-index.json")
-    if SEARCH_STORE_OUT.exists():
-        urls.append("/search-store.json")
-
-    # De-dupe while preserving order — the SW's addAll will already dedupe,
-    # but a clean list is nicer to read in DevTools.
-    seen: set[str] = set()
-    dedup: list[str] = []
-    for u in urls:
-        if u in seen:
-            continue
-        seen.add(u)
-        # Hard rule: never precache PDFs or the ZIP.
-        if u.startswith("/articles/") and u.endswith(".pdf"):
-            continue
-        if u == "/library-articles-offline.zip":
-            continue
-        dedup.append(u)
-    return dedup
-
-
-def build_pwa_files() -> tuple[str, int]:
-    """Copy sw.js / manifest.webmanifest / sw-reset.html to the Space root.
-
-    The SW's `{{BUILD_VERSION}}` and `{{PRECACHE_URLS}}` placeholders get
-    substituted here — everything else is copied verbatim. Called from main()
-    AFTER all other build passes so the precache list reflects final state.
-
-    Returns (build_version, precache_count) for logging.
-    """
-    if not PWA_SRC_DIR.exists():
-        print(f"[pwa] missing source dir: {PWA_SRC_DIR}")
-        return ("", 0)
-
-    sw_src = PWA_SRC_DIR / "sw.js"
-    manifest_src = PWA_SRC_DIR / "manifest.webmanifest"
-    reset_src = PWA_SRC_DIR / "sw-reset.html"
-
-    if not sw_src.exists() or not manifest_src.exists() or not reset_src.exists():
-        print(
-            "[pwa] one or more source files missing; expected "
-            "sw.js / manifest.webmanifest / sw-reset.html under assets/pwa/"
-        )
-        return ("", 0)
-
-    build_version = _build_version()
-    precache_urls = _collect_precache_urls()
-
-    sw_content = sw_src.read_text(encoding="utf-8")
-    sw_content = sw_content.replace("{{BUILD_VERSION}}", build_version)
-    sw_content = sw_content.replace(
-        "{{PRECACHE_URLS}}",
-        json.dumps(precache_urls, separators=(",", ":")),
-    )
-    SW_OUT.write_text(sw_content, encoding="utf-8")
-
-    WEBMANIFEST_OUT.write_text(
-        manifest_src.read_text(encoding="utf-8"),
-        encoding="utf-8",
-    )
-    SW_RESET_OUT.write_text(
-        reset_src.read_text(encoding="utf-8"),
-        encoding="utf-8",
-    )
-
-    print(
-        f"[pwa] wrote sw.js (v{build_version}, {len(precache_urls)} precache URLs), "
-        f"manifest.webmanifest, sw-reset.html"
-    )
-    return (build_version, len(precache_urls))
-
-
-# -------------------------------------------------------------------
 # Main build loop
 # -------------------------------------------------------------------
 
@@ -1567,16 +1365,6 @@ def main() -> int:
         render_index(index_template, manifest, zip_size_mb=zip_size_mb),
         encoding="utf-8",
     )
-
-    # -------- Wave 4 — PWA layer (always on) --------
-    # Runs AFTER everything else so the precache list reflects the final
-    # state of the build output (articles/*.html, md/*.html, search JSON,
-    # index.html, vendor files, fonts, icons).
-    print("\n[pwa] building service worker + manifest + reset page…")
-    try:
-        build_pwa_files()
-    except Exception as e:  # noqa: BLE001
-        print(f"[pwa] build failed: {e}", file=sys.stderr)
 
     print(
         f"\nBuilt {len(manifest)} article(s). "

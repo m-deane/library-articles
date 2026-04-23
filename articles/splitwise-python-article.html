@@ -12,14 +12,6 @@
   <!-- Shared styles -->
   <link rel="stylesheet" href="../assets/styles.css" />
 
-  <!-- PWA (Wave 4) -->
-  <link rel="manifest" href="/manifest.webmanifest">
-  <meta name="theme-color" content="#7c4dff">
-  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="DS Articles">
-
   <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
   <script src="../assets/vendor/react.production.min.js"></script>
   <script src="../assets/vendor/react-dom.production.min.js"></script>
@@ -961,17 +953,6 @@ function Article() {
         box.textContent = '[render error] ' + (err && err.message ? err.message : err);
       }
       console.error(err);
-    }
-  </script>
-
-  <!-- PWA service worker registration (Wave 4) -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/sw.js').catch(function (err) {
-          console.warn('SW register failed:', err);
-        });
-      });
     }
   </script>
 </body>
