@@ -92,32 +92,8 @@ const Cap = ({ children }) => (
 
 
 
-export default function ForecastingPrinciplesAndPracticeNotes() {
-  return (
-    <div style={{ background: C.bg, minHeight: "100vh" }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{background:${C.bg}}`}</style>
-
-      <div style={{ background: C.accent, padding: "12px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
-        <span style={{ fontFamily: F.m, fontSize: 11, color: "#FEF3C7", letterSpacing: "0.1em", textTransform: "uppercase" }}>Chapter Notes · Reference</span>
-        <span style={{ fontFamily: F.m, fontSize: 11, color: "#FEF3C7" }}>Forecasting · Time-Series · Textbook · Hyndman</span>
-      </div>
-
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 24px 0" }}>
-        <div style={{ fontFamily: F.m, fontSize: 12, color: C.accent, fontWeight: 600, letterSpacing: "0.08em", marginBottom: 12 }}>TIME-SERIES · FULL CHAPTER NOTES</div>
-        <h1 style={{ fontFamily: F.h, fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 700, color: C.text, lineHeight: 1.15, marginBottom: 20 }}>Forecasting: Principles and Practice — Book Notes</h1>
-        <p style={{ fontFamily: F.b, fontSize: 18, color: C.muted, lineHeight: 1.6, maxWidth: 720, marginBottom: 12 }}>Full book notes synthesising every chapter of Hyndman & Athanasopoulos' Forecasting: Principles and Practice.</p>
-        <div style={{ fontFamily: F.b, fontSize: 13, color: C.light, marginBottom: 24 }}>Source: chapter summaries mirrored from <code>library/chapter_summaries/</code></div>
-      </div>
-
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 24px 80px" }}>
-
-<Sec n="1" title="Forecasting: Principles and Practice — Full Book Notes">
-<P>{`Hyndman and Athanasopoulos's <em>Forecasting: Principles and Practice</em> (2nd ed., 2018) is the definitive applied textbook for time series forecasting, grounded in the R <code>fpp2</code> ecosystem (<code>forecast</code> v8.3 + <code>ggplot2</code>). The book opens with a philosophical foundation — predictability depends on understanding of contributing factors, data availability, and whether forecasts themselves influence outcomes — and progresses methodically through visualization, benchmark methods, transformations, residual diagnostics, regression, decomposition, exponential smoothing (ETS), ARIMA, dynamic regression, hierarchical reconciliation, and advanced methods including TBATS, VAR, and neural network autoregression.`}</P>
-<P>{`The probabilistic framing is central: every forecast is a summary of a probability distribution over a future random variable, and prediction intervals (typically 80% and 95%) communicate uncertainty. The notation <code>y_{T+h|T}</code> for h-step-ahead forecasts made at time T recurs throughout. The book builds two dominant model families — <strong>ETS</strong> (18 innovations state space models classified by Error × Trend × Seasonal components, selected via AICc through <code>ets()</code>) and <strong>ARIMA</strong> (built from the backshift operator B, stationarity enforced via differencing, fit through the Hyndman-Khandakar algorithm in <code>auto.arima()</code>). Though linear ETS models are special cases of ARIMA, the two classes overlap only partially and AICc cannot compare across them; out-of-sample evaluation via <code>tsCV()</code> is required.`}</P>
-<P>{`Later chapters move beyond univariate modelling: dynamic regression marries regression predictors with ARIMA errors (estimated by minimising ARIMA errors, not regression errors); hierarchical reconciliation uses the summing matrix <code>S</code> and the MinT estimator to produce coherent forecasts across aggregation levels; and advanced methods handle complex seasonality (mstl, dynamic harmonic regression, TBATS), multivariate dynamics (VAR), and nonlinearity (NNAR). The closing chapter addresses the messy pragmatics — weekly/daily seasonality, count data via Croston, constrained forecasts through scaled logit, missing-value imputation, and crucially <strong>forecast combination</strong>, where simple averaging of diverse methods consistently beats the best individual model. The book's deepest lesson is that no single method dominates; disciplined diagnostics, information-criterion-based selection, and ensemble combination are the backbone of reliable applied forecasting.`}</P>
-
-{`const Ch1Vis1 = () => (
-  <svg viewBox="0 0 860 460" style={{width:'100%',height:'auto',background:C.bg,borderRadius:8}}>
+const Ch1Vis1 = () => (
+  <svg viewBox="0 0 860 460" style={{ width: '100%', height: 'auto', background: C.bg, borderRadius: 8 }}>
     <defs>
       <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
         <path d="M0,0 L10,5 L0,10 z" fill={C.text} />
@@ -174,7 +150,31 @@ export default function ForecastingPrinciplesAndPracticeNotes() {
     <rect x="310" y="420" width="240" height="30" fill="none" stroke={C.text} strokeWidth="1.5" />
     <text x="430" y="440" textAnchor="middle" fill={C.text} fontSize="12" fontFamily={F.b}>Combination (Ch 12): simple average wins</text>
   </svg>
-);`}
+);
+
+export default function ForecastingPrinciplesAndPracticeNotes() {
+  return (
+    <div style={{ background: C.bg, minHeight: "100vh" }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{background:${C.bg}}`}</style>
+
+      <div style={{ background: C.accent, padding: "12px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+        <span style={{ fontFamily: F.m, fontSize: 11, color: "#FEF3C7", letterSpacing: "0.1em", textTransform: "uppercase" }}>Chapter Notes · Reference</span>
+        <span style={{ fontFamily: F.m, fontSize: 11, color: "#FEF3C7" }}>Forecasting · Time-Series · Textbook · Hyndman</span>
+      </div>
+
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 24px 0" }}>
+        <div style={{ fontFamily: F.m, fontSize: 12, color: C.accent, fontWeight: 600, letterSpacing: "0.08em", marginBottom: 12 }}>TIME-SERIES · FULL CHAPTER NOTES</div>
+        <h1 style={{ fontFamily: F.h, fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 700, color: C.text, lineHeight: 1.15, marginBottom: 20 }}>Forecasting: Principles and Practice — Book Notes</h1>
+        <p style={{ fontFamily: F.b, fontSize: 18, color: C.muted, lineHeight: 1.6, maxWidth: 720, marginBottom: 12 }}>Full book notes synthesising every chapter of Hyndman & Athanasopoulos' Forecasting: Principles and Practice.</p>
+        <div style={{ fontFamily: F.b, fontSize: 13, color: C.light, marginBottom: 24 }}>Source: chapter summaries mirrored from <code>library/chapter_summaries/</code></div>
+      </div>
+
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 24px 80px" }}>
+
+<Sec n="1" title="Forecasting: Principles and Practice — Full Book Notes">
+<P>{`Hyndman and Athanasopoulos's <em>Forecasting: Principles and Practice</em> (2nd ed., 2018) is the definitive applied textbook for time series forecasting, grounded in the R <code>fpp2</code> ecosystem (<code>forecast</code> v8.3 + <code>ggplot2</code>). The book opens with a philosophical foundation — predictability depends on understanding of contributing factors, data availability, and whether forecasts themselves influence outcomes — and progresses methodically through visualization, benchmark methods, transformations, residual diagnostics, regression, decomposition, exponential smoothing (ETS), ARIMA, dynamic regression, hierarchical reconciliation, and advanced methods including TBATS, VAR, and neural network autoregression.`}</P>
+<P>{`The probabilistic framing is central: every forecast is a summary of a probability distribution over a future random variable, and prediction intervals (typically 80% and 95%) communicate uncertainty. The notation <code>y_{T+h|T}</code> for h-step-ahead forecasts made at time T recurs throughout. The book builds two dominant model families — <strong>ETS</strong> (18 innovations state space models classified by Error × Trend × Seasonal components, selected via AICc through <code>ets()</code>) and <strong>ARIMA</strong> (built from the backshift operator B, stationarity enforced via differencing, fit through the Hyndman-Khandakar algorithm in <code>auto.arima()</code>). Though linear ETS models are special cases of ARIMA, the two classes overlap only partially and AICc cannot compare across them; out-of-sample evaluation via <code>tsCV()</code> is required.`}</P>
+<P>{`Later chapters move beyond univariate modelling: dynamic regression marries regression predictors with ARIMA errors (estimated by minimising ARIMA errors, not regression errors); hierarchical reconciliation uses the summing matrix <code>S</code> and the MinT estimator to produce coherent forecasts across aggregation levels; and advanced methods handle complex seasonality (mstl, dynamic harmonic regression, TBATS), multivariate dynamics (VAR), and nonlinearity (NNAR). The closing chapter addresses the messy pragmatics — weekly/daily seasonality, count data via Croston, constrained forecasts through scaled logit, missing-value imputation, and crucially <strong>forecast combination</strong>, where simple averaging of diverse methods consistently beats the best individual model. The book's deepest lesson is that no single method dominates; disciplined diagnostics, information-criterion-based selection, and ensemble combination are the backbone of reliable applied forecasting.`}</P>
 
 <Ch1Vis1/>
 <Cap>Figure: Method family tree from <em>Forecasting: Principles and Practice</em>. The two central pillars are the ETS state space family (18 models across Error × Trend × Seasonal) and the ARIMA family, bridged by dynamic regression and unified by forecast combination.</Cap>
