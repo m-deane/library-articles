@@ -67,6 +67,7 @@ SLUGS = [
     "python-for-algorithmic-trading-cookbook-chapter-notes",
     "applied-bayesian-statistics-notes",
     "forecasting-principles-and-practice-notes",
+    "london-housing-market-2026",
 ]
 
 
