@@ -12,6 +12,14 @@
   <!-- Shared site chrome + plain-reader typography -->
   <link rel="stylesheet" href="../assets/styles.css" />
   <link rel="stylesheet" href="../assets/md-styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
 </head>
 <body class="md-body">
   <!-- Compact header bar — same pattern as the JSX reader -->
@@ -1730,5 +1738,16 @@
       <a href="../index.html">Back to index &rarr;</a>
     </div>
   </footer>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>
