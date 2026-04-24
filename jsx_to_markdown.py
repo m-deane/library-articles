@@ -96,6 +96,16 @@ SLUGS = [
     "xlendi-wreck",
     "obsidian-and-claude-code",
     "obsidian-complete-guide-with-claude-code",
+    # ── 9-article batch (2026-04-25) ────────────────────────────────────
+    "basking-sharks",
+    "qatari-lng",
+    "east-iceland-hiking-photography",
+    "turkmenistan-travel",
+    "storytelling-in-photography",
+    "geography-trivia",
+    "drone-hyperlapse-mavic-3-pro",
+    "cape-verde-travel-guide",
+    "scilly-isles-travel-guide",
 ]
 
 

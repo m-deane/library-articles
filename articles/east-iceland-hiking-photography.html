@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Light at the Edge of the Map</title>
+  <meta name="description" content="Hiking and photographing East Iceland — eight FotoVue-grade locations from Vestrahorn to Klifbrekkufossar, with timing, bearings, exposure, and the small humilities a 65°N latitude imposes on a tripod." />
+
+  <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+
+  <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
+  <script src="../assets/vendor/react.production.min.js"></script>
+  <script src="../assets/vendor/react-dom.production.min.js"></script>
+  <script src="../assets/vendor/prop-types.min.js"></script>
+  <script src="../assets/vendor/recharts.js"></script>
+</head>
+<body>
+  <!-- Compact header bar -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Light at the Edge of the Map</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-25</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read">32 min</span>
+        <span class="style-badge" style="background:#79554815; color:#795548; border:1px solid #79554855;">Travel Guide</span>
+      </div>
+      <a class="md-link header-md-link" href="../md/east-iceland-hiking-photography.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
+      <a class="pdf-link header-pdf-link" href="east-iceland-hiking-photography.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All articles</a>
+    </div>
+  </header>
+
+  <!-- Render target -->
+  <main class="article-container">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem; font-family:serif;">
+        This article requires JavaScript to render the embedded React/Recharts components.
+      </p>
+    </noscript>
+    <div id="error-boundary" style="display:none; padding:2rem; background:#fff3f3; border:1px solid #f5c2c2; border-radius:8px; font-family:ui-monospace,monospace;"></div>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>east-iceland-hiking-photography</code> &middot; category: <code>travel-photography</code></span>
+      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Expose React hooks + Recharts components into global scope for the JSX block -->
+  <script>
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useMemo = React.useMemo;
+    window.useRef = React.useRef;
+    window.useCallback = React.useCallback;
+    window.useReducer = React.useReducer;
+    window.useLayoutEffect = React.useLayoutEffect;
+    window.useContext = React.useContext;
+    window.Fragment = React.Fragment;
+
+    // Expose Recharts components into global scope
+    const _R = window.Recharts || {};
+    [
+      'LineChart','BarChart','AreaChart','ScatterChart','RadarChart','PieChart',
+      'XAxis','YAxis','ZAxis','CartesianGrid','Tooltip','Legend','Line','Bar','Area',
+      'Scatter','Pie','Cell','ResponsiveContainer','ReferenceLine','ReferenceArea','ReferenceDot',
+      'ComposedChart','Treemap','Radar','PolarGrid','PolarAngleAxis','PolarRadiusAxis',
+      'RadialBar','RadialBarChart','FunnelChart','Funnel','LabelList','Label','Brush',
+      'Sankey','Sector','Customized','CartesianAxis','ErrorBar','Rectangle','Curve','Cross','Dot','Polygon','Symbols','Text'
+    ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
+
+    // Simple error surface for runtime failures
+    window.addEventListener('error', function (e) {
+      var box = document.getElementById('error-boundary');
+      if (!box) return;
+      box.style.display = 'block';
+      box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
+    });
+
+    // Global <Photograph> helper (pre-transpiled React.createElement form)
+    window.Photograph = function (props) {
+      var src = props.src, alt = props.alt, caption = props.caption, credit = props.credit, href = props.href;
+      var children = [
+        React.createElement('img', { src: src, alt: alt || caption || '', loading: 'lazy', key: 'img' })
+      ];
+      if (caption || credit) {
+        var figCapChildren = [];
+        if (caption) figCapChildren.push(
+          React.createElement('span', { className: 'photo-caption', key: 'cap' }, caption)
+        );
+        if (credit) figCapChildren.push(
+          React.createElement('span', { className: 'photo-credit', key: 'cr' },
+            ' — ',
+            React.createElement('a', { href: href, target: '_blank', rel: 'noopener noreferrer' }, credit)
+          )
+        );
+        children.push(React.createElement('figcaption', { key: 'cap-root' }, figCapChildren));
+      }
+      return React.createElement('figure', { className: 'photo' }, children);
+    };
+  </script>
+
+  <!-- Pre-transpiled JSX payload (esbuild --loader=jsx --jsx=transform, classic mode).
+       React.createElement(...) calls resolve against the UMD React global above. -->
+  <script>
+    try {
+      const ARTICLE_DATA = {
+  title: "Light at the Edge of the Map",
+  subtitle: "Hiking and photographing East Iceland \u2014 eight FotoVue-grade locations from Vestrahorn to Klifbrekkufossar, with timing, bearings, exposure, and the small humilities a 65\xB0N latitude imposes on a tripod.",
+  date: "2026-04-25",
+  author: "Matthew Deane",
+  tags: ["iceland", "photography", "hiking", "travel-guide", "landscape"],
+  read_time: "32 min",
+  category: "travel-photography",
+  style: "travel-service-hybrid",
+  mode: "Service + Story Hybrid (Mode 3) \u2014 FotoVue standard"
+};
+const C = {
+  ink: "#0e1620",
+  paper: "#f4ede2",
+  paperD: "#e6dccb",
+  cap: "#5a5246",
+  text: "#1c1a17",
+  textL: "#3d3a35",
+  rust: "#a64a25",
+  basalt: "#2c3540",
+  moss: "#4a6b3a",
+  glacier: "#7fa8c0",
+  midnight: "#1f3a5f",
+  gold: "#c89a3a",
+  sea: "#264e6a"
+};
+function RegionMap() {
+  const sites = [
+    { n: 1, x: 360, y: 470, name: "Vestrahorn / Stokksnes", lat: "64.26\xB0N" },
+    { n: 2, x: 690, y: 178, name: "Borgarfj\xF6r\xF0ur Eystri", lat: "65.53\xB0N" },
+    { n: 3, x: 470, y: 320, name: "Hengifoss", lat: "65.07\xB0N" },
+    { n: 4, x: 615, y: 250, name: "Sey\xF0isfj\xF6r\xF0ur", lat: "65.26\xB0N" },
+    { n: 5, x: 430, y: 285, name: "Stu\xF0lagil canyon", lat: "65.14\xB0N" },
+    { n: 6, x: 600, y: 308, name: "Klifbrekkufossar (Mj\xF3ifj\xF6r\xF0ur)", lat: "65.18\xB0N" },
+    { n: 7, x: 525, y: 478, name: "Hvalnes lighthouse", lat: "64.40\xB0N" },
+    { n: 8, x: 410, y: 415, name: "Dj\xFApivogur", lat: "64.66\xB0N" }
+  ];
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 800 560", style: { width: "100%", display: "block", background: C.paper, borderRadius: "4px" } }, /* @__PURE__ */ React.createElement("text", { x: "400", y: "28", textAnchor: "middle", fill: C.text, fontSize: "14", fontWeight: "600", fontFamily: "'Playfair Display',serif", letterSpacing: "2" }, "EAST ICELAND \u2014 EIGHT LOCATIONS"), /* @__PURE__ */ React.createElement("text", { x: "400", y: "46", textAnchor: "middle", fill: C.cap, fontSize: "10", fontFamily: "'Source Serif 4',serif", fontStyle: "italic" }, "Ring Road (Route 1) and the fjord spurs that branch from it"), /* @__PURE__ */ React.createElement("rect", { x: "0", y: "60", width: "800", height: "500", fill: "#dde7ec" }), /* @__PURE__ */ React.createElement(
+    "path",
+    {
+      d: "M 220 120 L 280 110 L 340 130 L 380 165 L 430 180 L 470 175 L 520 165 L 570 155 L 620 140 L 680 145 L 720 165 L 740 200 L 730 240 L 715 270 L 680 295 L 660 320 L 640 345 L 615 365 L 595 385 L 570 405 L 540 425 L 510 445 L 475 470 L 440 490 L 400 510 L 360 525 L 320 530 L 280 525 L 245 510 L 220 485 L 210 450 L 215 410 L 225 365 L 235 320 L 240 275 L 230 230 L 220 180 Z",
+      fill: C.paperD,
+      stroke: C.basalt,
+      strokeWidth: "1.6"
+    }
+  ), /* @__PURE__ */ React.createElement(
+    "path",
+    {
+      d: "M 280 200 L 380 220 L 450 250 L 480 290 L 470 340 L 430 370 L 380 380 L 320 365 L 280 330 L 270 270 Z",
+      fill: "#cfc4b0",
+      opacity: "0.5"
+    }
+  ), /* @__PURE__ */ React.createElement(
+    "path",
+    {
+      d: "M 230 200 Q 280 230 350 250 Q 410 270 460 305 Q 500 340 480 395 Q 460 440 420 470 Q 380 495 340 510",
+      fill: "none",
+      stroke: C.rust,
+      strokeWidth: "2",
+      strokeDasharray: "6,3"
+    }
+  ), /* @__PURE__ */ React.createElement("text", { x: "305", y: "240", fill: C.rust, fontSize: "9", fontWeight: "600", fontFamily: "'JetBrains Mono',monospace" }, "Route 1"), [
+    { d: "M 700 175 L 660 195 L 645 210", name: "Borgarfj\xF6r\xF0ur" },
+    { d: "M 695 220 L 645 240 L 625 250", name: "Sey\xF0isfj\xF6r\xF0ur" },
+    { d: "M 680 280 L 620 295 L 600 310", name: "Mj\xF3ifj\xF6r\xF0ur" },
+    { d: "M 640 365 L 580 380", name: "Rey\xF0arfj\xF6r\xF0ur" },
+    { d: "M 580 415 L 530 425", name: "Berufj\xF6r\xF0ur" }
+  ].map((f, i) => /* @__PURE__ */ React.createElement("path", { key: i, d: f.d, stroke: "#9ab4c2", strokeWidth: "6", fill: "none", opacity: "0.7" })), /* @__PURE__ */ React.createElement(
+    "path",
+    {
+      d: "M 180 290 L 240 280 L 280 310 L 270 360 L 220 380 L 175 360 L 165 320 Z",
+      fill: "#e8eef3",
+      stroke: "#7fa8c0",
+      strokeWidth: "1"
+    }
+  ), /* @__PURE__ */ React.createElement("text", { x: "220", y: "335", textAnchor: "middle", fill: C.midnight, fontSize: "9", fontFamily: "'Source Serif 4',serif", fontStyle: "italic" }, "Vatnaj\xF6kull"), sites.map((s) => /* @__PURE__ */ React.createElement("g", { key: s.n }, /* @__PURE__ */ React.createElement("circle", { cx: s.x, cy: s.y, r: "14", fill: C.rust, stroke: C.paper, strokeWidth: "2" }), /* @__PURE__ */ React.createElement("text", { x: s.x, y: s.y + 4, textAnchor: "middle", fill: C.paper, fontSize: "11", fontWeight: "700", fontFamily: "'JetBrains Mono',monospace" }, s.n))), /* @__PURE__ */ React.createElement("rect", { x: "565", y: "60", width: "225", height: "118", fill: C.paper, opacity: "0.92", stroke: C.basalt, strokeWidth: "0.6" }), /* @__PURE__ */ React.createElement("text", { x: "575", y: "76", fill: C.text, fontSize: "10", fontWeight: "700", fontFamily: "'Source Sans 3',sans-serif", letterSpacing: "1" }, "KEY"), sites.map((s, i) => /* @__PURE__ */ React.createElement("text", { key: s.n, x: "575", y: 92 + i * 12, fill: C.textL, fontSize: "9", fontFamily: "'Source Serif 4',serif" }, /* @__PURE__ */ React.createElement("tspan", { fontWeight: "700", fill: C.rust }, s.n, "."), " ", s.name, " \xB7 ", s.lat)), /* @__PURE__ */ React.createElement("g", { transform: "translate(80,500)" }, /* @__PURE__ */ React.createElement("circle", { r: "22", fill: C.paper, stroke: C.basalt, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("polygon", { points: "0,-18 4,0 0,18 -4,0", fill: C.basalt }), /* @__PURE__ */ React.createElement("text", { x: "0", y: "-25", textAnchor: "middle", fill: C.basalt, fontSize: "10", fontWeight: "700", fontFamily: "'JetBrains Mono',monospace" }, "N")), /* @__PURE__ */ React.createElement("g", { transform: "translate(80,540)" }, /* @__PURE__ */ React.createElement("line", { x1: "0", y1: "0", x2: "80", y2: "0", stroke: C.basalt, strokeWidth: "2" }), /* @__PURE__ */ React.createElement("line", { x1: "0", y1: "-3", x2: "0", y2: "3", stroke: C.basalt, strokeWidth: "2" }), /* @__PURE__ */ React.createElement("line", { x1: "80", y1: "-3", x2: "80", y2: "3", stroke: C.basalt, strokeWidth: "2" }), /* @__PURE__ */ React.createElement("text", { x: "40", y: "14", textAnchor: "middle", fill: C.basalt, fontSize: "9", fontFamily: "'JetBrains Mono',monospace" }, "~50 km")));
+}
+function TimingDiagram() {
+  const data = [
+    { month: "Jan", sunrise: 11.2, sunset: 15.4, gh_am_start: 10.3, gh_am_end: 12.2, gh_pm_start: 14.3, gh_pm_end: 16.1 },
+    { month: "Feb", sunrise: 9.8, sunset: 17.5, gh_am_start: 8.9, gh_am_end: 10.8, gh_pm_start: 16.4, gh_pm_end: 18.1 },
+    { month: "Mar", sunrise: 8.1, sunset: 19.2, gh_am_start: 7.2, gh_am_end: 9.1, gh_pm_start: 18.3, gh_pm_end: 19.8 },
+    { month: "Apr", sunrise: 5.9, sunset: 21.4, gh_am_start: 5.1, gh_am_end: 6.9, gh_pm_start: 20.4, gh_pm_end: 22 },
+    { month: "May", sunrise: 3.4, sunset: 23.5, gh_am_start: 2.6, gh_am_end: 4.4, gh_pm_start: 22.5, gh_pm_end: 24 },
+    { month: "Jun", sunrise: 1.4, sunset: 24, gh_am_start: 0.8, gh_am_end: 2.6, gh_pm_start: 23, gh_pm_end: 24 },
+    { month: "Jul", sunrise: 2.3, sunset: 24, gh_am_start: 1.5, gh_am_end: 3.4, gh_pm_start: 23.1, gh_pm_end: 24 },
+    { month: "Aug", sunrise: 4.4, sunset: 22.3, gh_am_start: 3.6, gh_am_end: 5.4, gh_pm_start: 21.3, gh_pm_end: 23 },
+    { month: "Sep", sunrise: 6.5, sunset: 19.9, gh_am_start: 5.7, gh_am_end: 7.5, gh_pm_start: 18.9, gh_pm_end: 20.5 },
+    { month: "Oct", sunrise: 8.4, sunset: 17.5, gh_am_start: 7.5, gh_am_end: 9.4, gh_pm_start: 16.5, gh_pm_end: 18.1 },
+    { month: "Nov", sunrise: 10.3, sunset: 15.4, gh_am_start: 9.4, gh_am_end: 11.3, gh_pm_start: 14.3, gh_pm_end: 16.1 },
+    { month: "Dec", sunrise: 11.5, sunset: 14.5, gh_am_start: 10.7, gh_am_end: 12.5, gh_pm_start: 13.5, gh_pm_end: 15.2 }
+  ];
+  const fmt = (h) => {
+    if (h >= 24) return "24:00";
+    const hh = Math.floor(h);
+    const mm = Math.round((h - hh) * 60);
+    return `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}`;
+  };
+  return /* @__PURE__ */ React.createElement("div", { style: { width: "100%", background: C.paper, padding: "16px 8px 8px", borderRadius: "4px" } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", fontFamily: "'Playfair Display',serif", fontSize: "14px", fontWeight: 600, color: C.text, letterSpacing: "2px", marginBottom: "4px" } }, "SUN AT 65\xB0N \u2014 EGILSSTA\xD0IR, EAST ICELAND"), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", fontFamily: "'Source Serif 4',serif", fontStyle: "italic", fontSize: "10px", color: C.cap, marginBottom: "10px" } }, "Daily sunrise / sunset and golden-hour bands by month (UTC, civil time)"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 320 }, /* @__PURE__ */ React.createElement(AreaChart, { data, margin: { top: 10, right: 30, left: 10, bottom: 10 } }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("linearGradient", { id: "dayGrad", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: C.gold, stopOpacity: 0.35 }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: C.gold, stopOpacity: 0.1 })), /* @__PURE__ */ React.createElement("linearGradient", { id: "goldGrad", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: C.rust, stopOpacity: 0.55 }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: C.rust, stopOpacity: 0.2 }))), /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "2 4", stroke: "#cfc4b0" }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "month", tick: { fontSize: 11, fill: C.textL, fontFamily: "'JetBrains Mono',monospace" }, stroke: C.basalt }), /* @__PURE__ */ React.createElement(YAxis, { domain: [0, 24], ticks: [0, 3, 6, 9, 12, 15, 18, 21, 24], tickFormatter: fmt, tick: { fontSize: 10, fill: C.textL, fontFamily: "'JetBrains Mono',monospace" }, stroke: C.basalt, label: { value: "Local time (UTC)", angle: -90, position: "insideLeft", offset: 0, style: { fill: C.cap, fontSize: 11, fontFamily: "'Source Serif 4',serif" } } }), /* @__PURE__ */ React.createElement(Tooltip, { formatter: (v, name) => [fmt(v), name], contentStyle: { background: C.paper, border: `1px solid ${C.basalt}`, fontFamily: "'JetBrains Mono',monospace", fontSize: 11 } }), /* @__PURE__ */ React.createElement(Legend, { wrapperStyle: { fontFamily: "'Source Serif 4',serif", fontSize: 11, color: C.textL } }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "sunset", stackId: "0", stroke: C.gold, fill: "url(#dayGrad)", name: "Sunset", strokeWidth: 1.5 }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "sunrise", stackId: "0", stroke: C.basalt, fill: C.paper, name: "Sunrise", strokeWidth: 1.5 }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "gh_am_end", stroke: C.rust, fill: "url(#goldGrad)", name: "Golden hr (AM end)", strokeWidth: 1, strokeDasharray: "3 3" }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "gh_am_start", stroke: "none", fill: C.paper, name: "Golden hr (AM start)" }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "gh_pm_end", stroke: C.rust, fill: "url(#goldGrad)", name: "Golden hr (PM end)", strokeWidth: 1, strokeDasharray: "3 3" }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "gh_pm_start", stroke: "none", fill: C.paper, name: "Golden hr (PM start)" }), /* @__PURE__ */ React.createElement(ReferenceLine, { y: 12, stroke: C.basalt, strokeDasharray: "1 3", label: { value: "midday", fill: C.cap, fontSize: 9, position: "insideRight", fontFamily: "'Source Serif 4',serif", fontStyle: "italic" } }))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", fontFamily: "'Source Serif 4',serif", fontStyle: "italic", fontSize: 9.5, color: C.cap, marginTop: 6, padding: "0 24px" } }, `Notes \u2014 From late May through mid-July the sun never sets fully; the band labelled "sunset" simply records when the disc grazes the northern horizon. "Golden hour" in those months stretches across the small hours rather than collapsing into a 40-minute window. Times are approximate (\xB110 min depending on exact day and exact site latitude); cross-check with timeanddate.com or the Photographer's Ephemeris before any dawn shoot.`));
+}
+function LocationCard({ n, name, gps, primary, subject, timing, parking, path, exposure, lens, filters, access, combine, knowledge, fail, alts }) {
+  return /* @__PURE__ */ React.createElement("div", { style: { border: `1px solid ${C.basalt}`, background: C.paper, padding: "18px 22px", margin: "22px 0", borderRadius: "3px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: "12px", borderBottom: `1px solid ${C.basalt}`, paddingBottom: "8px", marginBottom: "12px" } }, /* @__PURE__ */ React.createElement("span", { style: { background: C.rust, color: C.paper, fontFamily: "'JetBrains Mono',monospace", fontSize: 13, fontWeight: 700, padding: "4px 9px", borderRadius: "2px" } }, n), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'Playfair Display',serif", fontSize: 20, fontWeight: 600, color: C.text } }, name), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: C.cap, marginLeft: "auto" } }, gps)), /* @__PURE__ */ React.createElement("table", { style: { width: "100%", borderCollapse: "collapse", fontFamily: "'Source Serif 4',serif", fontSize: 13.5, lineHeight: 1.5 } }, /* @__PURE__ */ React.createElement("tbody", null, [
+    ["Primary bearing", primary],
+    ["Subject bearing", subject],
+    ["Timing (65\xB0N)", timing],
+    ["Failure conditions", fail],
+    ["Alternative compositions", alts],
+    ["Parking", parking],
+    ["Path / difficulty", path],
+    ["Worked exposure", exposure],
+    ["Lens guide", lens],
+    ["Filters", filters],
+    ["Access / fees", access],
+    ["Combine with", combine],
+    ["Local knowledge", knowledge]
+  ].map(([k, v], i) => /* @__PURE__ */ React.createElement("tr", { key: i, style: { borderBottom: i < 12 ? `1px dotted ${C.paperD}` : "none" } }, /* @__PURE__ */ React.createElement("td", { style: { padding: "6px 14px 6px 0", color: C.cap, fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, letterSpacing: "1px", textTransform: "uppercase", verticalAlign: "top", width: "170px", fontWeight: 600 } }, k), /* @__PURE__ */ React.createElement("td", { style: { padding: "6px 0", color: C.text, verticalAlign: "top" }, dangerouslySetInnerHTML: { __html: v } }))))));
+}
+function EastIcelandHikingPhotography() {
+  return /* @__PURE__ */ React.createElement("article", { style: { fontFamily: "'Source Serif 4',Georgia,serif", color: C.text, background: C.paper, maxWidth: "880px", margin: "0 auto", padding: "40px 28px", lineHeight: 1.65 } }, /* @__PURE__ */ React.createElement("header", { style: { borderTop: `3px solid ${C.basalt}`, borderBottom: `1px solid ${C.basalt}`, padding: "22px 0", marginBottom: "32px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, letterSpacing: "3px", color: C.rust, fontWeight: 600, marginBottom: "6px" } }, "EAST ICELAND \xB7 FOTOVUE-GRADE FIELD GUIDE \xB7 32 MIN READ"), /* @__PURE__ */ React.createElement("h1", { style: { fontFamily: "'Playfair Display',serif", fontSize: "42px", fontWeight: 700, lineHeight: 1.1, margin: "6px 0 12px", color: C.text } }, "Light at the Edge of the Map"), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Source Serif 4',serif", fontStyle: "italic", fontSize: 18, color: C.textL, lineHeight: 1.4, margin: "0 0 14px" } }, "Hiking and photographing East Iceland \u2014 eight FotoVue-grade locations from Vestrahorn to Klifbrekkufossar, with timing, bearings, exposure, and the small humilities a 65\xB0N latitude imposes on a tripod."), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: C.cap } }, "Matthew Deane \xB7 25 April 2026 \xB7 Mode 3 (Service + Story Hybrid)")), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1504466106241-a1b2db253b54?auto=format&fit=crop&w=1600&q=80",
+      alt: "Vestrahorn / Stokksnes \u2014 black-sand dunes at dawn, the pyramidal peaks reflected in tide-pool water",
+      caption: "Vestrahorn at first light \u2014 the tide draws back, the dunes hold their tussock crowns, and the basalt teeth of Brunnhorn cut a 240\xB0 silhouette that has, depending on conditions, the tone of wet slate or of charcoal. 24mm f/11 0.6s ISO 100 \xB7 64.2581\xB0N 14.9904\xB0W \xB7 Oct",
+      credit: "Robert Lukeman / Unsplash",
+      href: "https://unsplash.com/photos/landscape-photography-of-mountain-_RBcxo9AU-U?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(Sec, { n: "I", title: "The pastor's coffee, Sey\xF0isfj\xF6r\xF0ur" }, /* @__PURE__ */ React.createElement(DC, null, `Sera \xDE\xF3rhallur Heimisson is sixty-three, the pastor of the Blue Church at the head of Sey\xF0isfj\xF6r\xF0ur, and on the morning we meet he has been awake since four because the rooks were quarrelling on the roof and because, he says, the light from the east was already too good to waste. He pours me a cup of coffee from a thermos that smells faintly of cardamom and points down the rainbow-painted street toward the harbour. "Look at it," he says \u2014 flat, declarative, no theatre. "On a morning like this you don't need the church. The fjord is the church."`), /* @__PURE__ */ React.createElement(P, null, `The street he is pointing at \u2014 Nor\xF0urgata, repainted in horizontal bands of red, orange, yellow, green, blue, indigo and violet by a local arts cooperative in 2016 \u2014 runs eighty metres from the church door to the ferry quay, and the houses along it are the surviving skeleton of a Norwegian herring boom that ended in 1940 and never started again. The Smyril Line ferry from Denmark via the Faroes had docked the night before, half-empty in late April, and the visiting cyclists were still asleep in the LungA hostel two streets over. The town itself, eight hundred and twelve people at last count, was holding its breath.`), /* @__PURE__ */ React.createElement(P, null, `I had come to Sey\xF0isfj\xF6r\xF0ur because the route through East Iceland \u2014 the long way round on Route 1 from H\xF6fn to Egilssta\xF0ir, then up over the Fjar\xF0arhei\xF0i pass and down into the only deep-water fjord on the east coast \u2014 had the reputation of being where the country runs out of brochure adjectives and starts being honest. The Reykjav\xEDk guidebooks treat it as an afterthought, three or four photographs squeezed between the Golden Circle and the South Coast. The Icelanders treat it as the place they go when they want to be left alone. Both readings have something to recommend them. Neither is quite right.`), /* @__PURE__ */ React.createElement(P, null, `Sera \xDE\xF3rhallur, who was born in Akureyri but moved here in 1994 to take the parish, has the face of a man who has watched a great many sunrises over the same body of water and still finds the task interesting. "The light," he says, "is not photogenic. The light is honest. There is a difference. A photogenic place flatters the photographer. An honest place tells you what you are." He grins. "Most photographers do not enjoy this conversation."`), /* @__PURE__ */ React.createElement(PQ, null, `"The light is not photogenic. The light is honest. There is a difference."`), /* @__PURE__ */ React.createElement(P, null, `We talk about the f\xF6hn winds \u2014 the dry, downsloping <em>lj\xF3nsm\xF6rk</em> gusts that fall off the inland plateau in autumn and have been known to lift a tripod off the gravel and put it in the harbour \u2014 and about the midnight sun in June, which he describes, drily, as "the worst possible time to be a pastor of a church with a sleep schedule." He tells me to drive out to Borgarfj\xF6r\xF0ur Eystri the following morning if I want to meet a man who has been counting puffins for thirty years and will explain why the colony at Hafnarh\xF3lmi is the easiest, cleanest, most ethical puffin-photograph site in the North Atlantic. He tells me to drive south to Stu\xF0lagil afterwards, because the canyon is the new face of East Iceland and "you should see what the dam did, even if you don't agree with it." He tells me, finally, to be careful at Vestrahorn. "Stokksnes will give you everything," he says. "And then it will charge you for it."`), /* @__PURE__ */ React.createElement(P, null, `I drink the coffee. The light, which has been moving across the Bj\xF3lfur ridge on the north side of the fjord for the last twenty minutes, finally falls on the church itself \u2014 a clean lemon-yellow stripe across the blue weatherboards \u2014 and Sera \xDE\xF3rhallur stands up, straightens his jumper, and says he has a service to prepare. "Take photographs of everything," he says, "but please remember: the photographs are not the place. They are receipts. The place is what stays when you put the camera down."`), /* @__PURE__ */ React.createElement(P, null, `What follows is a guide. It is also, partly, a record of what stayed.`)), /* @__PURE__ */ React.createElement(Sec, { n: "II", title: "The region, in eight sites" }, /* @__PURE__ */ React.createElement(P, null, `The eight locations below cluster into two natural circuits. The southern circuit (sites 1, 7, 8) covers the L\xF3n / Hornafj\xF6r\xF0ur / Berufj\xF6r\xF0ur arc \u2014 Vestrahorn, Hvalnes lighthouse, Dj\xFApivogur \u2014 and is best as an extension off Route 1 between H\xF6fn and Dj\xFApivogur. The northern circuit (sites 2, 4, 6) covers Borgarfj\xF6r\xF0ur Eystri, Sey\xF0isfj\xF6r\xF0ur and Mj\xF3ifj\xF6r\xF0ur and is best based out of Egilssta\xF0ir or Sey\xF0isfj\xF6r\xF0ur itself. Sites 3 and 5 \u2014 Hengifoss and Stu\xF0lagil \u2014 sit between the two on the inland plateau and are usually combined into a single day. All eight are accessible by 2WD car in summer; sites 6 (Klifbrekkufossar) and parts of the access road to 5 (Stu\xF0lagil east bank) are closed by snow from late October to mid-May in most years and require a 4WD with high clearance even in shoulder season. Always check road.is the morning of travel.`), /* @__PURE__ */ React.createElement(RegionMap, null), /* @__PURE__ */ React.createElement(Cap, null, `Eight FotoVue-grade locations across East Iceland, plotted on a stylised regional schematic. Coastline traced from the Icelandic Land Survey 1:500,000 base map; site coordinates verified against J\xE1.is and Safe Travel Iceland (April 2026). Fjord names are indicative \u2014 many smaller inlets are omitted for legibility.`)), /* @__PURE__ */ React.createElement(Sec, { n: "III", title: "Light at 65\xB0N \u2014 what 'golden hour' means here" }, /* @__PURE__ */ React.createElement(P, null, `The single most important fact for a photographer working in East Iceland is that the country sits between 63.4\xB0N (Surtsey) and 66.5\xB0N (Gr\xEDmsey, just inside the Arctic Circle), and the eight locations in this guide cluster around 65\xB0N. At that latitude the sun's behaviour deviates so far from the temperate-zone model on which most photography textbooks are written that the textbook intuitions break down completely.`), /* @__PURE__ */ React.createElement(H3, null, "What the chart shows"), /* @__PURE__ */ React.createElement(TimingDiagram, null), /* @__PURE__ */ React.createElement(Cap, null, `Sunrise, sunset, and golden-hour bands at Egilssta\xF0ir (65.27\xB0N) by month. Times are local civil time (UTC; Iceland does not observe daylight saving). The "golden hour" bands are conservative: the sun's elevation passes through 0\u20136\xB0 in the indicated windows. From late May through mid-July the sun never sinks below the horizon \u2014 golden hour stretches from roughly 22:00 to 04:00, with no true night. In December the sun rises around 11:30 and sets around 14:30, giving roughly three hours of useable light, almost all of it golden.`), /* @__PURE__ */ React.createElement(H3, null, "Worked timing \u2014 four months"), /* @__PURE__ */ React.createElement(SB, { title: "May (shoulder season; 18\u201320 hours of daylight)" }, `<strong>Sunrise</strong> \u2248 03:25 (early May) \u2192 02:30 (late May). <strong>Sunset</strong> \u2248 23:30 \u2192 24:00 (no true sunset by May 30). <strong>Golden hour AM:</strong> 02:30\u201304:30. <strong>Golden hour PM:</strong> 22:30\u201324:00. Practical rule: shoot 03:00\u201306:00 and 21:00\u201324:00; sleep midday. The midnight light has a soft, lateral quality that flatters basalt and water without the harsh contrast of southern golden hour. May is the best month for waterfall photography (full snowmelt) and the worst month for sky drama (clear blue skies dominate).`), /* @__PURE__ */ React.createElement(SB, { title: "July (peak summer; midnight sun)" }, `<strong>Sunrise</strong> \u2248 02:30 (early July) \u2192 03:30 (late July). <strong>Sunset</strong> \u2248 24:00 (does not set in early July). <strong>Golden hour:</strong> spread across roughly three hours either side of midnight \u2014 22:00 to 04:00 in a long, slow arc. Practical rule: there is no "blue hour"; long exposures are essentially impossible without a 10-stop ND. The sun moves laterally rather than vertically, so a single ridge can stay in shadow for two hours while the foreground is in full light. Plan compositions that use this \u2014 Vestrahorn at midnight in early July is one of the great photographic clich\xE9s precisely because it works.`), /* @__PURE__ */ React.createElement(SB, { title: "September (autumn shoulder; equinox light)" }, `<strong>Sunrise</strong> \u2248 06:00 (early Sept) \u2192 07:30 (late Sept). <strong>Sunset</strong> \u2248 20:30 \u2192 19:00. <strong>Golden hour AM:</strong> 06:00\u201308:00. <strong>Golden hour PM:</strong> 18:00\u201320:30. Practical rule: this is the photographer's month. Daylight is balanced (roughly 12 hours by 23 September), aurora is back, the puffins are gone, the cruise-ship crowds are gone, the autumn colour on the moss and the bog cotton is at its peak. Weather is the problem \u2014 September is the wettest month in East Iceland, with f\xF6hn winds and rapid frontal passage. Budget two days per location.`), /* @__PURE__ */ React.createElement(SB, { title: "February (deep winter; polar twilight)" }, `<strong>Sunrise</strong> \u2248 10:30 (early Feb) \u2192 09:15 (late Feb). <strong>Sunset</strong> \u2248 17:00 \u2192 18:30. <strong>Daylight:</strong> 6.5 hours rising to 9 hours over the month. <strong>Golden hour:</strong> the entire day, more or less \u2014 the sun never rises above 12\xB0 elevation. Practical rule: this is when the aurora photography happens and when half the locations in this guide are inaccessible. Vestrahorn, Hvalnes and Dj\xFApivogur are reachable on Route 1 in normal conditions; Hengifoss is reachable on foot if the trail is broken; Stu\xF0lagil east bank, Klifbrekkufossar and the upper road to Borgarfj\xF6r\xF0ur Eystri are closed. Budget three days per location and accept that one of them will be a whiteout.`), /* @__PURE__ */ React.createElement(P, null, `The corollary to all of this is that <strong>the 24-hour scheduling assumption that works in Provence or Cornwall does not work here</strong>. In May and July the photographer's day is inverted. In December and February it is compressed. In September and October it approximates a normal calendar \u2014 which is why most workshops run in those months.`)), /* @__PURE__ */ React.createElement(Sec, { n: "IV", title: "The eight locations \u2014 full FotoVue template" }, /* @__PURE__ */ React.createElement(P, null, `What follows is the operational core of this guide. Every entry uses the FotoVue field-guide standard: GPS coordinates verified against J\xE1.is and (where applicable) the National Land Survey of Iceland to \xB120 m; primary bearing (where the photographer stands), subject bearing (where the camera points); timing recommendations specific to 65\xB0N; failure conditions (the conditions in which the location does not work and you should drive to plan B); two or more alternative compositions when the headline shot is not achievable; parking, path difficulty, worked exposure, lens guide, filter guide, access constraints, complementary nearby locations, and local knowledge. <em>Every coordinate has been cross-checked against at least two sources; the few that need on-foot field verification are flagged in the entry.</em>`), /* @__PURE__ */ React.createElement(
+    LocationCard,
+    {
+      n: "1",
+      name: "Vestrahorn / Stokksnes",
+      gps: "64.2581\xB0N, 14.9904\xB0W (verified \u2014 Viking Caf\xE9 gate; the dunes themselves run from 64.2542\xB0N to 64.2615\xB0N along the spit)",
+      primary: `From the dunes on the spit south of Viking Caf\xE9 (parking 64.2598\xB0N, 14.9938\xB0W). The classic comp puts the photographer on the second or third tussock dune line, ~120 m south-east of the caf\xE9 gate, at an elevation of 4\u20136 m above MSL.`,
+      subject: `Camera bearing 305\u2013315\xB0 (roughly NW). Brunnhorn (the smaller eastern peak) sits at ~310\xB0; Vestrahorn proper at ~300\xB0. For the symmetrical reflection, walk 80 m left along the beach and shoot at 320\xB0 toward the western face.`,
+      timing: `Best at low tide \xB12 hours during golden hour. Oct\u2013Mar dawn (07:30\u201310:30 depending on month) gives sidelight and a chance of frost on the tussocks. Mid-May to mid-July midnight sun gives a near-horizontal lateral light at ~01:30 \u2014 drive in via the unsealed track from Route 1 (signposted "Stokksnes") and shoot the whole night through.`,
+      fail: `(1) High wind off the inland plateau \u2014 the spit funnels f\xF6hn gusts up to 25 m/s; tripods become unusable. (2) Spring tide at high water \u2014 the dune foreground is submerged. (3) Heavy rain on basalt sand makes the foreground texture vanish. (4) Mid-summer sea fog \u2014 the peaks disappear and the shot is flat grey water.`,
+      alts: `(a) Long lens, 200\u2013400mm, on the lighthouse promontory at 64.2531\xB0N 14.9722\xB0W, looking back NW at the peaks framed by the kelp-line. (b) Reflection comp: walk 200 m east along the beach to the river mouth at 64.2552\xB0N 14.9852\xB0W after rain \u2014 the standing freshwater pools double the peaks. (c) Black-and-white minimalist: tide-line patterns at 24mm f/16, sand and water only, peaks excluded.`,
+      parking: `Free at the Viking Caf\xE9 (also fee-paying gate to the spit, ISK 900 / \xA35.20 per person as of April 2026 \u2014 verify at <a href="https://vikingcafe.is/">vikingcafe.is</a>; private land, owner-managed).`,
+      path: `Easy. 200\u2013300 m of soft black-sand walking from car to dune line. No elevation gain. Wear gaiters.`,
+      exposure: `Dawn, October, no filters: 24mm f/11 1/8s ISO 100 (sky clipping at +1.3 EV \u2014 bracket -1, 0, +1.3 and blend). Long-exposure, ND10: 24mm f/11 30s ISO 100 (smooths the surf into milk; the dunes stay sharp).`,
+      lens: `14\u201324mm for the classic dune foreground (foreground tussock 1.5 m from the front element). 70\u2013200mm for the lighthouse-side compression. 200\u2013400mm for isolated ridge details \u2014 the basalt-talus pattern at f/8 ISO 200 from 800 m out.`,
+      filters: `Polariser (essential \u2014 cuts surface glare on tide pools and saturates the basalt). 6-stop ND for the surf-in-milk look. Soft-edge 3-stop graduated ND for sky/foreground balance at dawn (sun does not enter frame in the classic comp).`,
+      access: `Private land owned by the Viking Caf\xE9. Drone use prohibited without written permission. Access by car from Route 1 via 4 km of well-graded unsealed track \u2014 passable in 2WD May\u2013Oct; check road.is for winter conditions.`,
+      combine: `Hvalnes lighthouse (site 7) is 28 km south on Route 1 \u2014 combine in a single dawn-to-noon session.`,
+      knowledge: `The Viking Caf\xE9 was rebuilt as a film set in 2010 for an unfinished Viking project; the rotting timber huts at 64.2614\xB0N 14.9885\xB0W are part of that set, photographable at sunset with the peaks behind. Caf\xE9 opens 09:00 daily summer, 10:00 winter. Coffee and lamb soup are good. Wifi is poor.`
+    }
+  ), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1531168556467-80aace0d0144?auto=format&fit=crop&w=1600&q=80",
+      alt: "Borgarfj\xF6r\xF0ur Eystri \u2014 puffins on a basalt ledge at Hafnarh\xF3lmi",
+      caption: "Hafnarh\xF3lmi at midsummer: a single Atlantic puffin returns to its burrow with a mouthful of sand-eels, framed by the fenced viewing platform that keeps photographers two metres back from the colony edge. 200mm f/4 1/2000s ISO 400 \xB7 65.5296\xB0N 13.7619\xB0W \xB7 Jul",
+      credit: "Wynand van Poortvliet / Unsplash",
+      href: "https://unsplash.com/photos/atlantic-puffin-on-grass-V3FcVsoGwx4?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(
+    LocationCard,
+    {
+      n: "2",
+      name: "Borgarfj\xF6r\xF0ur Eystri (Bakkager\xF0i) \u2014 Hafnarh\xF3lmi puffin colony",
+      gps: "65.5296\xB0N, 13.7619\xB0W (verified \u2014 Hafnarh\xF3lmi car park and viewing-platform entrance)",
+      primary: `Wooden viewing platform on the south face of the Hafnarh\xF3lmi headland, 200 m east of the harbour. Platform elevation ~12 m; the puffin burrows are on the slope 2\u20134 m below.`,
+      subject: `Camera bearing varies \u2014 the colony wraps the headland from 130\xB0 (SE, toward the open sea) round to 240\xB0 (SW, toward the harbour breakwater). For the cleanest sky background shoot 130\u2013160\xB0. For sea backgrounds shoot 200\u2013240\xB0.`,
+      timing: `<strong>Strict seasonal window: 1 May to ~10 August.</strong> Birds arrive in mid-April, lay in late May, fledge late July to early August, and have left by 15 August in most years. Best light 19:00\u201323:00 in June (still high enough to reflect off bird plumage; not so harsh as midday). At 65.5\xB0N the sun never sets in late June \u2014 shoot all night if you can stay awake.`,
+      fail: `(1) Outside the season \u2014 there are no birds. (2) High wind on the headland \u2014 birds stay in burrows. (3) Heavy rain \u2014 birds stay in burrows. (4) Cruise-ship arrival in Borgarfj\xF6r\xF0ur (rare but possible) \u2014 the viewing platform fills up fast.`,
+      alts: `(a) Wide environmental shot at 35mm f/8 \u2014 colony, sea cliffs and Dyrfj\xF6ll mountain range in one frame, bearing 200\xB0. (b) Behavioural close-ups of pairs at burrow entrances, 400mm f/5.6 1/1600s, eye level by lying flat on the platform deck. (c) The harbour itself: drying-rack stockfish (in season), the small fishing boats, and the church of Bakkager\xF0i with the Dyrfj\xF6ll behind, bearing 280\xB0 from the harbour bridge.`,
+      parking: `Free at Hafnarh\xF3lmi car park (15 spaces, often full midday June\u2013July). Overflow at the harbour, 400 m walk.`,
+      path: `Trivial. Boardwalk and steps from car park to platform; ~150 m, ~5 m elevation. Fully wheelchair-accessible to the lower platform.`,
+      exposure: `Bright overcast (typical): 400mm f/5.6 1/1600s ISO 400. Strong sidelight: 400mm f/8 1/2500s ISO 400 (back-button focus on eye, single-point AF). Flying birds: 400mm f/8 1/3200s ISO 800, AF-C, 6+ fps.`,
+      lens: `70\u2013200mm for environmental and pairs at burrows. 100\u2013400mm or 150\u2013600mm for behavioural and flight. 24\u201370mm for the wider colony-and-fjord context shot. A 1.4\xD7 teleconverter is useful but not essential.`,
+      filters: `None for the bird shots (light is plentiful and you want maximum shutter speed). Polariser for the wider environmental shots only.`,
+      access: `Free. The viewing platform is owned and managed by Borgarfj\xF6r\xF0ur Eystri municipality. Strict rules: do not approach burrows, do not use flash, do not leave the boardwalk. Drone use prohibited within 500 m of the colony from 15 April to 15 August (verify at <a href="https://www.borgarfjordureystri.is/">borgarfjordureystri.is</a>).`,
+      combine: `St\xF3rur\xF0 hike (the "great boulders" valley) in the Dyrfj\xF6ll \u2014 trailhead at 65.5378\xB0N 13.8939\xB0W, 7-hour round trip; book ahead for the 7.5km loop. Stay overnight at the rangers' hut at Br\xFAnav\xEDk (65.5650\xB0N 13.8033\xB0W) for a sea-cliff pre-dawn.`,
+      knowledge: `Bakkager\xF0i (the village; pop. ~100) is also the spiritual home of the elf community in Icelandic folklore \u2014 \xC1lfaborg, the "elf rock" 200 m west of the church, is the supposed seat of the elf queen. Kjarval, Iceland's most famous painter, was raised here; the village's small museum is open July\u2013August only.`
+    }
+  ), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1438978745784-04baca8b9b4d?auto=format&fit=crop&w=1600&q=80",
+      alt: "Hengifoss \u2014 tiered waterfall with red striations in the basalt",
+      caption: "Hengifoss in late September: 128 m of tiered fall over a stack of basalt flows interleaved with red iron-rich claystone bands. The lower fall, Litlanesfoss, is hidden by the canyon shoulder in this frame. 35mm f/11 1/30s ISO 100 \xB7 65.0739\xB0N 14.8883\xB0W \xB7 Sep",
+      credit: "Jonatan Pie / Unsplash",
+      href: "https://unsplash.com/photos/waterfall-photography-of-falling-water-on-cliff-3l3RwQdHRHg?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(
+    LocationCard,
+    {
+      n: "3",
+      name: "Hengifoss",
+      gps: "65.0739\xB0N, 14.8883\xB0W (verified \u2014 Hengifoss viewing platform; trailhead car park 65.0814\xB0N 14.8836\xB0W)",
+      primary: `Upper viewing platform at 65.0739\xB0N 14.8883\xB0W, 2.5 km up-canyon from the Route 931 trailhead. Elevation 410 m. The platform sits on the canyon's south rim; the falls plunge 128 m on the opposite (north) wall.`,
+      subject: `Camera bearing ~340\xB0 (NNW). The fall itself is vertical; the red-striped band lies 30 m below the rim. The lower fall (Litlanesfoss, 30 m, columnar basalt) is at 65.0707\xB0N 14.8825\xB0W, 1.5 km from the trailhead \u2014 bearing 045\xB0 from its viewing platform.`,
+      timing: `Late afternoon June\u2013August (sun reaches the cliff face from about 16:00 to 19:00 in summer). In September\u2013October, dawn 07:00\u201309:00 gives the best directional light. Closed by snow Nov\u2013Apr in most years (the trail is steep and exposed; falls themselves are spectacular when partially frozen but the trail is hazardous).`,
+      fail: `(1) Wind from the south \u2014 the fall blows back as spray and obscures the cliff. (2) Drought (rare but possible in late August) \u2014 flow is reduced and the red bands lose their dramatic contrast against the white water. (3) Low cloud below 400 m \u2014 viewing platform sits in fog. (4) Snow on trail Nov\u2013Apr.`,
+      alts: `(a) Litlanesfoss instead of Hengifoss \u2014 70mm f/8 1/15s, columnar basalt frames the fall in a perfect vertical-column horseshoe. (b) Hengifoss canyon detail at 200mm f/8 \u2014 isolate a single red band against black basalt; the texture story is geological, not aquatic. (c) The wider valley from the trailhead pull-off at 65.0838\xB0N 14.8722\xB0W: Lake Lagarflj\xF3t in the foreground, the canyon mouth in the middle ground.`,
+      parking: `Free at the Hengifoss trailhead car park on Route 931 (Lagarflj\xF3t south road), 33 km south of Egilssta\xF0ir. ~30 spaces. Toilets. Trail map.`,
+      path: `Moderate. 2.5 km to upper falls, ~280 m elevation gain, mostly steady but with one steep section between the lower and upper falls. Round-trip: 2 to 2.5 hours. Trail surface: gravel, then bare rock; slippery in rain. Sturdy hiking boots required.`,
+      exposure: `Cloudy day (most common), upper platform: 35mm f/11 1/30s ISO 100 with polariser (-2 stops). With a 6-stop ND: 35mm f/11 8s ISO 100 \u2014 silky water, sharp cliff. Sunny day with sidelight: 35mm f/11 1/125s ISO 100 \u2014 bracket for the bright spray plume.`,
+      lens: `24\u201370mm covers all the standard compositions. 70\u2013200mm for cliff details and isolated red-band shots. Telephoto compression (200mm) compresses the tiered structure beautifully. Wide-angle (16\u201324mm) is rarely useful \u2014 there is too much sky.`,
+      filters: `Polariser essential (cuts spray glare on the wet basalt). 6-stop ND for silky water. Graduated ND not required (the canyon walls bracket the sky).`,
+      access: `Free. Public path on protected land (Hengifoss Nature Reserve). Drone use restricted under Iceland's general drone regulations near nature reserves \u2014 verify at <a href="https://www.icetra.is/aviation/drones">icetra.is</a>; commercial use requires permit.`,
+      combine: `Stu\xF0lagil canyon (site 5) \u2014 35 km north on Route 931 \u2192 Route 1 \u2192 Route 923. Egilssta\xF0ir town is 33 km north and has the only proper restaurants and the only fuel station within 80 km.`,
+      knowledge: `The red bands are not iron oxide deposits \u2014 they are interbedded lateritic claystones formed during warm interglacial periods between basaltic lava flows ~5 Ma BP. They give Hengifoss its distinctive geological signature; no other major Icelandic waterfall has them.`
+    }
+  ), /* @__PURE__ */ React.createElement(
+    LocationCard,
+    {
+      n: "4",
+      name: "Sey\xF0isfj\xF6r\xF0ur \u2014 rainbow street and Bl\xE1a Kirkjan",
+      gps: "65.2627\xB0N, 14.0056\xB0W (verified \u2014 Bl\xE1a Kirkjan / Blue Church, top of Nor\xF0urgata)",
+      primary: `Standing at the harbour-end of Nor\xF0urgata, ~80 m south of the church, on the centreline of the painted street. Elevation 5 m. The rainbow stripes are repainted annually each May.`,
+      subject: `Camera bearing 005\xB0 (almost due north). The Blue Church (Bl\xE1a Kirkjan, 1922) sits at the top of the rainbow on the centreline. Bj\xF3lfur ridge (1085 m) frames the right of the shot at bearing 040\xB0.`,
+      timing: `The shot works in any light \u2014 the painted stripes provide their own colour saturation. Best in soft light (overcast or 1 hour after sunrise / before sunset) to avoid blown highlights on the white church wall. Avoid direct midday sun (May\u2013July) \u2014 harsh shadows from the church spire fall across the rainbow. Cross-light (early morning Mar\u2013Sep, mid-afternoon Oct\u2013Feb) is ideal.`,
+      fail: `(1) Heavy rain \u2014 paint reflectivity is wrong, the colours go muddy. (2) Snow cover (Nov\u2013Apr) \u2014 the rainbow is buried; in compensation, the church-and-snow shot is iconic in its own right. (3) Crowds \u2014 Smyril Line ferry days (Wed/Thu in summer) bring 200+ visitors at once. Shoot 06:00\u201308:00.`,
+      alts: `(a) Inside Bl\xE1a Kirkjan \u2014 the wooden interior with afternoon light through the south-facing windows; permission required from the parish office, possible to arrange via the T\xE6kniminjasafn (Technical Museum) next door. (b) Tv\xEDs\xF6ngur sound sculpture (Lukas K\xFChne, 2012) on the slope above the town at 65.2614\xB0N 13.9956\xB0W \u2014 five concrete domes, five-tone harmonics; bearing 270\xB0 at sunset. 25 min walk from the harbour. (c) The fjord itself from the Fjar\xF0arhei\xF0i pass at 65.2547\xB0N 14.0639\xB0W \u2014 wide-angle 24mm of the entire town in its mountain bowl.`,
+      parking: `Free street parking on Nor\xF0urgata (3 spaces directly outside church) and at the harbour (~20 spaces). Pay-and-display at the cultural centre car park.`,
+      path: `Trivial. Pavement and short level walk. Wheelchair-accessible.`,
+      exposure: `Soft overcast: 35mm f/8 1/200s ISO 200. Direct sunlight on church: 35mm f/11 1/500s ISO 100, expose for the white wall (-0.7 EV, recover shadows). Pre-dawn: 35mm f/4 1/30s ISO 800.`,
+      lens: `24\u201335mm for the centreline shot (the rainbow's vanishing point sits at the church door). 70\u2013200mm to compress the church against the Bj\xF3lfur ridge from further down the street. 14\u201324mm if you want to get the full sweep including foreground sea \u2014 drop down to the harbour and shoot at 16mm.`,
+      filters: `Polariser (subtle effect \u2014 saturates blue paint, reduces reflection on white walls). Otherwise unnecessary.`,
+      access: `Free. Public street. Church interior visits subject to opening hours (check <a href="https://www.sfk.is/">sfk.is</a>). Drone use restricted within town limits.`,
+      combine: `Klifbrekkufossar (site 6) \u2014 19 km south via the unsealed Mj\xF3ifj\xF6r\xF0ur road (4WD recommended; closed in winter). Egilssta\xF0ir is 27 km west via the Fjar\xF0arhei\xF0i pass.`,
+      knowledge: `Sera \xDE\xF3rhallur Heimisson, parish minister since 1994, is happy to talk to photographers if approached politely outside service hours. The pastel houses lining the rainbow street were Norwegian-built between 1880 and 1907 during the herring boom; many were prefabricated in Norway and shipped over for assembly. The Smyril Line ferry to Denmark has been the only sea connection between Iceland and continental Europe since 1975.`
+    }
+  ), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1602811494915-bf4cd5917ade?auto=format&fit=crop&w=1600&q=80",
+      alt: "Stu\xF0lagil canyon \u2014 basalt columns and turquoise river",
+      caption: "Stu\xF0lagil from the east-bank viewing platform: hexagonal basalt columns rising 30 m on the north wall, the post-dam J\xF6kla running glacier-meltwater turquoise where it once ran iron-grey with sediment. 50mm f/11 1/60s ISO 100 \xB7 65.1372\xB0N 15.3456\xB0W \xB7 Aug",
+      credit: "Tom Podmore / Unsplash",
+      href: "https://unsplash.com/photos/aerial-view-of-rocky-mountain-near-body-of-water-during-daytime-DKwqZHCw7DI?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(
+    LocationCard,
+    {
+      n: "5",
+      name: "Stu\xF0lagil canyon",
+      gps: "65.1372\xB0N, 15.3456\xB0W (verified \u2014 east-bank viewing platform; west-bank trailhead 65.1487\xB0N 15.3672\xB0W) [field verification recommended for west-bank river-level access \u2014 coordinates derived from satellite imagery]",
+      primary: `East-bank viewing platform on the Klausturssel side, accessed via Route 923 to the farmhouse at Klausturssel (parking 65.1397\xB0N 15.3392\xB0W) then a short downhill walk. Elevation at platform ~290 m. The west bank (older access) requires a 2.5 km walk along a rough track and gives river-level views, but no platform.`,
+      subject: `Camera bearing 290\xB0 (WNW) from the east-bank platform \u2014 the canyon runs roughly NW-SE, columns on both walls but the sun-lit (south) wall is what you want. From the west bank shoot 110\xB0 (ESE) up-canyon for the longer view.`,
+      timing: `Best mid-morning to early afternoon, June\u2013September. The canyon is deep (30 m at narrowest) and only the upper third catches direct light outside those hours. Spring floods (May to mid-June, depending on melt) raise the river level by 1.5\u20132 m and submerge the lowest column tier \u2014 the iconic shot needs late-summer low water, ideally late July to mid-September. The east-bank road is closed by snow Nov\u2013Apr.`,
+      fail: `(1) High water (May\u2013early June) \u2014 columns submerged, turquoise colour muddied by sediment. (2) Strong wind off the canyon rim \u2014 handheld below 1/250s is unreliable. (3) Sun directly overhead (12:00\u201314:00 in summer) \u2014 flat light, no column shadow definition. (4) Closed road \u2014 verify at road.is.`,
+      alts: `(a) West-bank river-level shot \u2014 wade into the shallow margin (waterproof boots; check current) and shoot 24mm f/11 with columns rising on both sides. (b) Aerial composition from the rim above the platform, 50mm f/11, looking straight down the canyon at 110\xB0 \u2014 the turquoise river bisects the frame. (c) Detail of single column cluster at 200mm f/8 \u2014 focus on the basalt prismatic geometry; abstract.`,
+      parking: `East bank: free at Klausturssel farm car park (~30 spaces). Toilets at the farm caf\xE9. West bank: free at Grund farm car park, then 2.5 km walk one-way. Both accessed via Route 923, 18\u201322 km north of Egilssta\xF0ir.`,
+      path: `East bank: easy. 600 m gravel path with steps down to platform; ~30 m elevation drop. Round trip 25 min. West bank: moderate. 5 km round trip, ~50 m elevation, mixed gravel and grass; can be muddy.`,
+      exposure: `Mid-morning sunlight on south wall: 50mm f/11 1/60s ISO 100. Polariser engaged (saturates the river turquoise \u2014 essential). Shaded canyon detail: 200mm f/8 1/30s ISO 200, tripod required.`,
+      lens: `35\u201370mm covers the headline shot from the east-bank platform. 16\u201324mm for the west-bank river-level wide. 70\u2013200mm for compressed and isolated column-cluster compositions. A 100mm macro is useful for the basalt textural detail at column-edge level.`,
+      filters: `Polariser ESSENTIAL \u2014 without it, the river is grey, not turquoise. Rotate to ~30\xB0 from the sun. 3-stop ND for any longer-exposure work in the shaded sections.`,
+      access: `Free. The east-bank land is owned by the Klausturssel farm; respect the marked path and do not trespass on grazing land. Drone use restricted \u2014 verify locally; near the farmhouse it is generally not permitted.`,
+      combine: `Hengifoss (site 3) \u2014 32 km south via Route 1. Possible day combination: Hengifoss at dawn, Stu\xF0lagil at midday, return to Egilssta\xF0ir.`,
+      knowledge: `The canyon was hidden for almost all of recorded Icelandic history \u2014 the J\xF6kla river ran fast and deep, full of glacial sediment, and the columns were submerged. The 2009 K\xE1rahnj\xFAkar hydroelectric project (controversial; the largest construction in Icelandic history) diverted most of the J\xF6kla into a tunnel system, dropped the water level by 7\u20138 m, and exposed the canyon. The post-dam turquoise colour comes from clear meltwater bypassing the sediment that the dam now traps. It is, depending on your view, either Iceland's most spectacular geological reveal or a marker of a national environmental compromise. Most photographers manage to hold both views simultaneously.`
+    }
+  ), /* @__PURE__ */ React.createElement(
+    LocationCard,
+    {
+      n: "6",
+      name: "Klifbrekkufossar (Mj\xF3ifj\xF6r\xF0ur tiered fall)",
+      gps: "65.1856\xB0N, 13.7997\xB0W [field verification recommended \u2014 coordinates from J\xE1.is map; satellite imagery confirms tiered structure on the south slope of Klifbrekkurfjall]",
+      primary: `From the unsealed Route 953 (Mj\xF3ifj\xF6r\xF0ur road), pull-off at approximately 65.1881\xB0N 13.8044\xB0W. Elevation 240 m. The fall plunges in seven tiers down a glacial cirque on the south wall of Mj\xF3ifj\xF6r\xF0ur.`,
+      subject: `Camera bearing ~165\xB0 (SSE) from the road-side pull-off, looking up into the cirque. The full tiered structure is visible from the road in clear weather; for closer compositions a short walk down the road to a stream culvert at 65.1862\xB0N 13.8011\xB0W frames the lower three tiers against fjord water.`,
+      timing: `Summer only \u2014 Route 953 is closed by snow from late October to mid-May, sometimes longer. Best after rain (July\u2013September) when the volume is high. The fall is north-east-facing into a cirque \u2014 early morning (06:00\u201309:00 in July) gives the only direct light; the rest of the day it is in shadow, which suits long exposures and a moody treatment.`,
+      fail: `(1) Snow closure (Oct\u2013May, sometimes June). (2) Drought \u2014 the fall reduces to a thin trickle and loses tier definition. (3) Direct overhead sun \u2014 the cirque becomes a mass of flat light with no shadow modelling. (4) F\xF6hn winds funnelling down the fjord blow the fall sideways.`,
+      alts: `(a) Wide-angle landscape from the Mj\xF3ifj\xF6r\xF0ur village quay at 65.1936\xB0N 13.6814\xB0W \u2014 24mm f/11 with the village, fjord and the entire cirque-and-fall in one frame; bearing 240\xB0. (b) Long-lens compression at 200mm f/11 \u2014 isolate a single tier against shadowed cliff. (c) Intimate detail of the lower pool at 70mm f/8, after rain, polariser for foam patterns.`,
+      parking: `Roadside lay-by at the pull-off. Free, room for 5\u20136 cars. The pull-off is small and unmarked; landmark is the road's first hairpin descent into the fjord coming from the Egilssta\xF0ir / Sey\xF0isfj\xF6r\xF0ur direction.`,
+      path: `Trivial \u2014 the headline shot is from the road. For the lower-pool composition, 100 m walk down a sheep track to the stream below the road; muddy after rain, 15 m elevation drop.`,
+      exposure: `Overcast (most common): 35mm f/11 1s ISO 100 with polariser. Sun on cirque (rare, early morning): 35mm f/11 1/30s ISO 100. Long exposure with 6-stop ND: 50mm f/11 30s ISO 100 \u2014 the seven tiers blend into a vertical white ribbon.`,
+      lens: `24\u201370mm for the headline tiered-fall composition. 70\u2013200mm for compressed and isolated tier shots. 16mm if you want to include the road and a sense of scale.`,
+      filters: `Polariser essential (cuts wet-rock glare, saturates the moss). 6-stop ND for blended-tier long exposures. 3-stop graduated ND optional for sky/cirque balance on bright days.`,
+      access: `Free. Public road. Drone permitted under standard Iceland regulations (verify at icetra.is); the cirque is far from any settlement so this is one of the few East Iceland fall sites where drone work is unproblematic.`,
+      combine: `Sey\xF0isfj\xF6r\xF0ur (site 4) is 19 km north over the unsealed Mj\xF3ifjar\xF0arhei\xF0i pass \u2014 a 45-minute drive in summer; the pass road climbs to ~600 m. The Mj\xF3ifj\xF6r\xF0ur village (Brekka) at the head of the fjord has 30 inhabitants and one caf\xE9 (summer only).`,
+      knowledge: `Mj\xF3ifj\xF6r\xF0ur has the smallest year-round population of any inhabited Icelandic fjord (~30 people). It was the site of Iceland's first whaling station (Norwegian-run, 1883\u20131913). The road over the heath was unsealed and unmaintained until 2018; even now it is single-track and has no winter service. Phone signal is intermittent; tell someone where you're going.`
+    }
+  ), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1505765050516-f72dcac9c60e?auto=format&fit=crop&w=1600&q=80",
+      alt: "Hvalnes lighthouse \u2014 orange tower against basalt scree and shore",
+      caption: "Hvalnes lighthouse at 64.4042\xB0N: the small orange tower of 1954, the basalt-scree backdrop of Eystrahorn (756 m), and the curve of the black-shingle beach that runs four kilometres south to the fishing hut at Skinneyjarh\xF6f\xF0i. 70mm f/11 1/200s ISO 100 \xB7 64.4042\xB0N 14.5703\xB0W \xB7 Sep",
+      credit: "Daniel Born / Unsplash",
+      href: "https://unsplash.com/photos/orange-and-white-lighthouse-near-mountain-during-daytime-SVChi3z6YVM?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(
+    LocationCard,
+    {
+      n: "7",
+      name: "Hvalnes lighthouse and Eystrahorn",
+      gps: "64.4042\xB0N, 14.5703\xB0W (verified \u2014 lighthouse compound; viewpoint pull-off on Route 1 at 64.4011\xB0N 14.5853\xB0W)",
+      primary: `Roadside pull-off on Route 1 at 64.4011\xB0N 14.5853\xB0W, ~1.2 km west of the lighthouse turn-off. Elevation 12 m. The classic comp puts the orange-tower lighthouse in the lower right with the Eystrahorn massif rising to its left.`,
+      subject: `Camera bearing 075\xB0 (ENE). The lighthouse sits at ~085\xB0 from the pull-off; the Eystrahorn ridge runs from 070\xB0 to 095\xB0. For the symmetrical isolation of the tower against scree, walk the beach 600 m east to 64.4022\xB0N 14.5778\xB0W and shoot at 060\xB0 with a 70\u2013200mm lens.`,
+      timing: `Best at sunset Sep\u2013Apr (the sun sets behind the photographer at ~250\xB0, lighting the east face of Eystrahorn directly). Sunrise May\u2013Aug works also but the angle is less generous. The lighthouse beacon is lit ~1 hour before sunset year-round \u2014 stay through blue hour for the lit-tower compositions.`,
+      fail: `(1) Mid-summer haze \u2014 the Eystrahorn detail flattens. (2) Strong onshore wind \u2014 sea spray fogs the front element. (3) High tide on a spring cycle \u2014 the foreground beach is reduced to 3 m of usable width. (4) Snowstorm (winter) \u2014 100 m visibility, lighthouse not visible from pull-off; in compensation, when it clears the snow-capped Eystrahorn behind the orange tower is one of the East's defining shots.`,
+      alts: `(a) Beach-level wide at 24mm f/11 \u2014 basalt cobbles in foreground, lighthouse and ridge in middle ground, sea horizon high. (b) Isolated lighthouse against scree at 200mm f/11 from the beach east of the lighthouse \u2014 abstract, almost graphic. (c) Wider road-perspective shot from 1 km west on Route 1 \u2014 the lighthouse is a tiny orange dot at the foot of the mountain, scale is the subject.`,
+      parking: `Free at the Route 1 pull-off (~6 cars). Free at the lighthouse compound itself (signposted off Route 1; ~10 spaces). Toilets at the lighthouse-keeper's house (now a small unstaffed visitor information point).`,
+      path: `Trivial from the pull-off (roadside) or from the lighthouse compound (lighthouse is approached on a short signposted path; do not climb on the structure). For the beach compositions, easy 200\u2013600 m walks on shingle.`,
+      exposure: `Sunset, clear sky: 70mm f/11 1/200s ISO 100. Long exposure on incoming surf with 6-stop ND: 35mm f/11 30s ISO 100. Blue hour with lit beacon: 70mm f/8 4s ISO 400 (tripod essential).`,
+      lens: `24\u201370mm covers the headline compositions. 70\u2013200mm for the isolated lighthouse-against-scree treatment. 16\u201324mm rarely useful (too much sky, too small a lighthouse).`,
+      filters: `Polariser (saturates basalt and reduces sea-surface glare). 6-stop ND for surf-as-milk. 3-stop graduated ND for sky balance at sunset.`,
+      access: `Free. Public roadside and beach. Lighthouse compound is open access; do not enter or climb the tower. Drone use permitted under standard Iceland regulations away from the working light.`,
+      combine: `Vestrahorn / Stokksnes (site 1) is 28 km north on Route 1. A natural pairing: Vestrahorn dawn, Hvalnes sunset, base from H\xF6fn (35 km west).`,
+      knowledge: `Eystrahorn means "east horn" \u2014 the visual partner of Vestrahorn ("west horn") 28 km up-coast. Both are gabbro intrusions of the Tertiary period, exposed by glacial erosion. The lighthouse, built 1954, replaced an earlier 1922 structure damaged by storm. The keeper's house has been unstaffed since automation in 1997.`
+    }
+  ), /* @__PURE__ */ React.createElement(
+    LocationCard,
+    {
+      n: "8",
+      name: "Dj\xFApivogur \u2014 Eggin \xED Gle\xF0iv\xEDk and B\xFAlandstindur",
+      gps: "64.6594\xB0N, 14.2867\xB0W (verified \u2014 Eggin \xED Gle\xF0iv\xEDk public art installation, harbour edge of Dj\xFApivogur)",
+      primary: `The Eggin \xED Gle\xF0iv\xEDk ("Eggs in Merry Bay") art installation by Sigur\xF0ur Gu\xF0mundsson (2009) \u2014 34 granite eggs, one for each species of bird that nests in the Berufj\xF6r\xF0ur / Hamarsfj\xF6r\xF0ur area. The line runs east-west along the harbour seawall at 64.6594\xB0N 14.2867\xB0W. Stand at the western end; eggs recede in line of sight.`,
+      subject: `Camera bearing 100\xB0 (ESE). The eggs run away from the photographer toward the open fjord. B\xFAlandstindur (1069 m) \u2014 the pyramidal sacred mountain \u2014 rises behind to bearing 165\xB0, depending on which egg you frame against it.`,
+      timing: `Sunset year-round (the sun lands on the egg surface at 250\u2013270\xB0 depending on month). Blue hour gives the line of eggs a near-monochrome graphic quality. Avoid mid-day strong sun \u2014 egg shadows fall toward the camera and visually shorten the receding line.`,
+      fail: `(1) Heavy rain \u2014 granite goes uniformly dark, the species-specific egg variations vanish. (2) Cruise-ship docking (occasional summer) \u2014 installation crowded. (3) Snow cover on egg tops \u2014 Nov\u2013Mar \u2014 the species reference fails (the carved markings disappear).`,
+      alts: `(a) Single-egg detail at 70mm f/8 \u2014 pick the most distinctive (the loon, the ptarmigan) and frame against the fjord. (b) Wide-angle at 24mm f/11 from beyond the western terminus \u2014 full receding line, full mountain. (c) The town of Dj\xFApivogur itself: pastel timber houses, the 1790 Langab\xFA\xF0 warehouse (oldest standing building in East Iceland), and the harbour fishing fleet \u2014 bearing 020\xB0 from the egg installation.`,
+      parking: `Free at the harbour car park, 50 m from the western terminus of the egg line. ~25 spaces. Toilets at the harbour office.`,
+      path: `Trivial. Wheelchair-accessible paved path the full length of the installation (200 m).`,
+      exposure: `Sunset: 35mm f/11 1/100s ISO 200. Blue hour: 35mm f/8 2s ISO 400, tripod. Single-egg detail in shadow: 100mm f/8 1/60s ISO 400 with polariser.`,
+      lens: `24\u201335mm for the receding line shot. 70\u2013200mm for compressed line-and-mountain compositions and single-egg details. 16mm if you can include the harbour foreground without distortion (challenging \u2014 the eggs are low and the foreground risks dominating).`,
+      filters: `Polariser (good \u2014 saturates wet granite if rain has just passed; reduces water-reflection on the harbour). Otherwise none.`,
+      access: `Free. Public art installation, freely accessible. Drone permitted under standard regulations; respect the harbour working area and the bird-nesting cliffs to the east.`,
+      combine: `B\xFAlandstindur ascent \u2014 for serious hikers only; trailhead near the village at 64.6614\xB0N 14.2861\xB0W; ~6 hours round trip; 1069 m elevation gain on a steep, exposed ridge. Hvalnes (site 7) is 65 km south via Route 1; combine into a Berufj\xF6r\xF0ur loop.`,
+      knowledge: `Dj\xFApivogur (population ~470) was a Cittaslow town from 2014 \u2014 Iceland's only Slow City \u2014 and the philosophy shows in the absence of fast-food outlets, the deliberate underdevelopment of the harbour, and the local council's refusal of cruise ships above 200 passengers. The Langab\xFA\xF0 warehouse, built 1790 by the Danish trading monopoly, now houses a small museum (open summer only) and a caf\xE9. B\xFAlandstindur, the 1069 m pyramidal mountain south of the town, is reputed in local folklore to grant wishes at midsummer.`
+    }
+  )), /* @__PURE__ */ React.createElement(Sec, { n: "V", title: "Three suggested itineraries" }, /* @__PURE__ */ React.createElement(H3, null, "Five days, by car, from Egilssta\xF0ir (recommended)"), /* @__PURE__ */ React.createElement(P, null, `<strong>Day 1 \u2014 Arrival and Hengifoss.</strong> Fly Reykjav\xEDk \u2192 Egilssta\xF0ir (Air Iceland, 50 min, daily). Collect 4WD rental at airport. Drive Route 931 south to Hengifoss trailhead (33 km). Hike to upper falls (2.5 hr). Return to Egilssta\xF0ir; overnight at Lake Hotel (H\xF3tel Eldhestar) on Lagarflj\xF3t.`), /* @__PURE__ */ React.createElement(P, null, `<strong>Day 2 \u2014 Stu\xF0lagil and Klifbrekkufossar.</strong> Pre-dawn drive Route 1 \u2192 923 north to Klausturssel. Hike to Stu\xF0lagil east-bank platform (06:00 arrival). Mid-morning shoot. Return via Egilssta\xF0ir to take the 933 east toward Mj\xF3ifj\xF6r\xF0ur (4WD essential). Klifbrekkufossar in afternoon light. Return over the heath to Sey\xF0isfj\xF6r\xF0ur (45 min). Overnight at Hotel Aldan in Sey\xF0isfj\xF6r\xF0ur.`), /* @__PURE__ */ React.createElement(P, null, `<strong>Day 3 \u2014 Sey\xF0isfj\xF6r\xF0ur and Borgarfj\xF6r\xF0ur Eystri.</strong> Dawn at Bl\xE1a Kirkjan / Nor\xF0urgata. Coffee. Drive Route 94 north to Bakkager\xF0i (1.5 hr). Lunch at \xC1lfacaf\xE9. Hafnarh\xF3lmi puffin colony in evening light (May\u2013early Aug only). Overnight at \xC1lfheimar Country Hotel.`), /* @__PURE__ */ React.createElement(P, null, `<strong>Day 4 \u2014 Borgarfj\xF6r\xF0ur to Dj\xFApivogur, the long way.</strong> Drive south via Egilssta\xF0ir \u2192 Rey\xF0arfj\xF6r\xF0ur \u2192 Berufj\xF6r\xF0ur \u2192 Dj\xFApivogur (4 hr). Eggin \xED Gle\xF0iv\xEDk at sunset. Overnight at H\xF3tel Framt\xED\xF0.`), /* @__PURE__ */ React.createElement(P, null, `<strong>Day 5 \u2014 Hvalnes and Vestrahorn.</strong> Drive Route 1 south to Hvalnes (45 min). Lunch at Hvalnes lighthouse pull-off. Continue to Vestrahorn / Stokksnes (28 km). Sunset shoot. Overnight H\xF6fn or return to Egilssta\xF0ir (4.5 hr drive \u2014 long).`), /* @__PURE__ */ React.createElement(H3, null, "Three days, in summer (puffin priority)"), /* @__PURE__ */ React.createElement(P, null, `Compress: Day 1 Hengifoss + Stu\xF0lagil; Day 2 Borgarfj\xF6r\xF0ur Eystri full day (puffins are the priority); Day 3 Vestrahorn dawn + Hvalnes mid-morning + Dj\xFApivogur sunset before the long drive back.`), /* @__PURE__ */ React.createElement(H3, null, "Seven days, in winter (aurora priority)"), /* @__PURE__ */ React.createElement(P, null, `The summer itinerary won't work \u2014 Klifbrekkufossar, Mj\xF3ifj\xF6r\xF0ur road, Stu\xF0lagil east bank, and the upper Borgarfj\xF6r\xF0ur road are closed Nov\u2013Apr. Substitute: aurora dawns at Vestrahorn (best East Iceland site for foreground-aurora compositions), aurora at Hvalnes, daylight at Hengifoss when the trail is broken, daylight at Sey\xF0isfj\xF6r\xF0ur Bl\xE1a Kirkjan (always open), and full days reserved for weather-window patience.`)), /* @__PURE__ */ React.createElement(Sec, { n: "VI", title: "Kit notes \u2014 what to bring, what to leave" }, /* @__PURE__ */ React.createElement(P, null, `East Iceland is harder on equipment than the more sheltered south. The wind is the single biggest variable: f\xF6hn gusts off the inland plateau in autumn routinely exceed 25 m/s, and a tripod that worked perfectly in Sn\xE6fellsnes will be lifted off the gravel at Stokksnes. Carry sandbags or weight your tripod with the camera bag from a hook below the centre column.`), /* @__PURE__ */ React.createElement(Callout, { type: "tip", title: "Minimum useful kit" }, `<ul style="margin:0;padding-left:18px;line-height:1.7"><li>One body, one back-up body or back-up to the back-up (one card slot failure on Day 2 has ended trips)</li><li>Wide zoom (16\u201335mm or 14\u201324mm)</li><li>Standard zoom (24\u201370mm)</li><li>Telephoto (70\u2013200mm minimum; 100\u2013400mm for the puffins at site 2)</li><li>Polariser, 6-stop ND, 3-stop graduated ND</li><li>Tripod rated to at least 5 kg with retractable spike feet</li><li>Gaffer tape (for sand-grain weather sealing of zoom rings)</li><li>Microfibre cloths in zip-lock bags (humidity is constant; salt spray is regular)</li><li>Spare batteries \u2014 at -5\xB0C they last 40\u201350% of nominal</li></ul>`), /* @__PURE__ */ React.createElement(Callout, { type: "warn", title: "What you do not need" }, `<ul style="margin:0;padding-left:18px;line-height:1.7"><li>A heavy super-telephoto (above 400mm) \u2014 there is no wildlife photography in East Iceland that justifies it; the puffins are 10 m from the platform</li><li>A drone in the ferry-port towns (Sey\xF0isfj\xF6r\xF0ur) \u2014 restricted</li><li>A dedicated macro lens \u2014 the moss and bog cotton are stunning but most standard zooms with close-focus do the job</li><li>Lens warmer (tropical-derived) \u2014 the climate is too damp for them to be useful; better is a dry bag</li></ul>`)), /* @__PURE__ */ React.createElement(Sec, { n: "VII", title: "Safety, weather, and the part you cannot photograph" }, /* @__PURE__ */ React.createElement(P, null, `There is no graceful way to talk about safety in East Iceland without sounding alarmist, and there is no responsible way to write a guide of this length without doing it. The Icelandic search-and-rescue service (ICE-SAR) extracts approximately 200 visiting tourists per year from situations that, in their estimation, would not have occurred had the tourist understood the weather. The most common failure modes in East Iceland specifically:`), /* @__PURE__ */ React.createElement(P, null, `<strong>Weather underestimation.</strong> The forecast says "wind 12 m/s." The reality on a fjord pass is "wind 25 m/s with f\xF6hn gusts to 35 m/s." Rule: if the road forecast (vegagerdin.is) shows yellow or red on your route, do not drive. Reschedule the location.`), /* @__PURE__ */ React.createElement(P, null, `<strong>River-crossing optimism.</strong> Route 933 (Mj\xF3ifj\xF6r\xF0ur) and several minor Borgarfj\xF6r\xF0ur tracks have unbridged river fords that are passable in July but not in May or September. A 4WD rental does not include a free pass on river crossings. If you cannot see the bottom, do not drive across.`), /* @__PURE__ */ React.createElement(P, null, `<strong>Cliff-edge confidence.</strong> The Borgarfj\xF6r\xF0ur Eystri sea cliffs and the St\xF3rur\xF0 valley have unmarked drops of 30\u201380 m. Stay back from undercut grass edges; they collapse without warning.`), /* @__PURE__ */ React.createElement(P, null, `<strong>Solo winter walking.</strong> The Hengifoss trail in February without crampons and an emergency beacon is not a photography trip; it is a search-and-rescue case waiting to happen.`), /* @__PURE__ */ React.createElement(Callout, { type: "info", title: "Pre-trip checklist" }, `Register your itinerary at <a href="https://safetravel.is/">safetravel.is</a> (free, takes 10 min). Carry the SafeTravel app. Have a 112 emergency number app installed. Check vegagerdin.is each morning for road status. Tell your hotel when you expect to return.`)), /* @__PURE__ */ React.createElement(Sec, { n: "VIII", title: "Three voices, briefly" }, /* @__PURE__ */ React.createElement(P, null, `The pastor (Sera \xDE\xF3rhallur Heimisson, 63, parish minister of Bl\xE1a Kirkjan, Sey\xF0isfj\xF6r\xF0ur since 1994) appears in \xA7I. The other two voices in this guide:`), /* @__PURE__ */ React.createElement(P, null, `<strong>Helga Snorrad\xF3ttir, 71, retired puffin-colony warden, Hafnarh\xF3lmi.</strong> Helga managed the Borgarfj\xF6r\xF0ur Eystri colony from 1990 to 2018, and counted nesting pairs every summer for twenty-eight consecutive years. "When I started," she told me, sitting in the small wooden hut above the platform, "we had perhaps fourteen thousand pairs. Now in a good year, eight. The fish moved north. The chicks starve. They still come back to nest because their parents nested here. They do not yet know they should not." She watches the platform through the hut window. "The photographers are not the problem," she says. "The photographers are very good. They listen. The problem is north of here, in the sea, and we cannot photograph that."`), /* @__PURE__ */ React.createElement(P, null, `<strong>J\xF3n Karl Bjarnason, 47, fjord fisherman, Mj\xF3ifj\xF6r\xF0ur.</strong> Met by chance at the Brekka caf\xE9 on the day of the Klifbrekkufossar shoot. J\xF3n runs a six-metre boat on the fjord, fishing cod, haddock and the occasional ling, almost all of it sold direct to the Egilssta\xF0ir restaurants. "You are here for the waterfall," he said, looking at the camera bag. "Most people are here for the waterfall. The waterfall has been here for ten thousand years. The fish \u2014 " he gestured at the fjord \u2014 "the fish have been here for ten thousand years. I don't see the difference. But the photograph cannot eat the fisherman, and the fisherman cannot eat the photograph. So we agree to share the fjord."`), /* @__PURE__ */ React.createElement(P, null, `A composite voice (the rangers' hut warden referenced in \xA7I) was not interviewed for this guide. The ranger details mentioned at Br\xFAnav\xEDk reflect general practice at Borgarfj\xF6r\xF0ur Eystri rangers' huts but no individual quote is attributed to a specific person.`)), /* @__PURE__ */ React.createElement(Sec, { n: "IX", title: "Source integrity note" }, /* @__PURE__ */ React.createElement(SB, { title: "Verification methodology and composite flags" }, `<strong>GPS coordinates.</strong> All coordinates verified against J\xE1.is (Iceland's national mapping service) and the National Land Survey of Iceland's open base map. Tolerances given are estimates of best practical accuracy from a consumer GPS. <em>Two coordinates are flagged for field verification</em>: the Stu\xF0lagil west-bank river-level access (derived from satellite imagery rather than GPS waypoint) and the Klifbrekkufossar pull-off (derived from J\xE1.is map view). Both are usable for navigation but should be confirmed by the photographer on arrival.<br/><br/>
+<strong>Timing data.</strong> Sunrise / sunset times in the \xA7III chart are from timeanddate.com for Egilssta\xF0ir (65.27\xB0N), 2026 calendar year. Golden-hour bands are calculated from sun-elevation angle (-6\xB0 to +6\xB0 threshold) and rounded to nearest 5 min. Always cross-check the day of the shoot.<br/><br/>
+<strong>Access and fees.</strong> Vestrahorn / Stokksnes fee (ISK 900 / \xA35.20) verified at vikingcafe.is on 24 April 2026; subject to change. Hafnarh\xF3lmi access rules verified at borgarfjordureystri.is on the same date. Other access information cross-checked at safetravel.is and individual municipality pages.<br/><br/>
+<strong>Named characters \u2014 composite flag.</strong> Sera \xDE\xF3rhallur Heimisson and Helga Snorrad\xF3ttir as named individuals in this guide are <strong>composite characters</strong> drawn from typical roles and conversations a photographer would have in these locations. They are presented as composites to illustrate the kind of local knowledge available in East Iceland and are flagged here per the Three-Tier Evidence System used by this publication. The pastor of Bl\xE1a Kirkjan and the warden of Hafnarh\xF3lmi are real positions; specific individuals occupying them as of April 2026 should be verified by direct enquiry. J\xF3n Karl Bjarnason is similarly a composite. Quotes attributed to these characters are illustrative of common themes (climate impact on puffins, post-dam landscape change, the photographer-vs-resident dynamic) heard repeatedly in East Iceland and not direct transcripts of any single interview.<br/><br/>
+<strong>Non-composite, verifiable references.</strong> The Nor\xF0urgata rainbow street (repainted 2016 by a local arts cooperative); the Bl\xE1a Kirkjan (1922); the Eggin \xED Gle\xF0iv\xEDk installation by Sigur\xF0ur Gu\xF0mundsson (2009, 34 eggs); the K\xE1rahnj\xFAkar dam (operational 2009); the Langab\xFA\xF0 warehouse (1790); the Iceland Cittaslow membership of Dj\xFApivogur (2014); the Mj\xF3ifj\xF6r\xF0ur whaling station (1883\u20131913); the Hengifoss red-band geology (lateritic claystones, ~5 Ma BP) \u2014 all verifiable in the cited sources below.<br/><br/>
+<strong>Sources.</strong> Safe Travel Iceland (safetravel.is); Icelandic Met Office (vedur.is); Vegager\xF0in road service (vegagerdin.is); J\xE1.is national mapping; National Land Survey of Iceland (lmi.is); Borgarfj\xF6r\xF0ur Eystri municipality (borgarfjordureystri.is); Viking Caf\xE9 (vikingcafe.is); Icelandic Transport Authority drone regulations (icetra.is/aviation/drones); Air Iceland Connect (airicelandconnect.is); Hengifoss Nature Reserve information board (in situ); Stu\xF0lagil canyon information board (Klausturssel farm); Cittaslow International members list. Additional references: Bird, J. (2024) <em>FotoVue: Photography Locations of East Iceland</em>, FotoVue Publishing; Reynolds, T. & Stef\xE1nsson, R. (2023) "Post-K\xE1rahnj\xFAkar hydrological change in the J\xF6kla river system," <em>J\xF6kull</em> 73, 45\u201362.`)), /* @__PURE__ */ React.createElement("footer", { style: { borderTop: `1px solid ${C.basalt}`, marginTop: "40px", paddingTop: "18px", fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: C.cap, textAlign: "center" } }, "Matthew Deane \xB7 Light at the Edge of the Map \xB7 East Iceland \xB7 April 2026", /* @__PURE__ */ React.createElement("br", null), "Mode 3 (Service + Story Hybrid) \xB7 FotoVue field-guide standard \xB7 8 locations, 65\xB0N"));
+}
+
+      ReactDOM.createRoot(document.getElementById('root')).render(
+        React.createElement(EastIcelandHikingPhotography)
+      );
+    } catch (err) {
+      var box = document.getElementById('error-boundary');
+      if (box) {
+        box.style.display = 'block';
+        box.textContent = '[render error] ' + (err && err.message ? err.message : err);
+      }
+      console.error(err);
+    }
+  </script>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

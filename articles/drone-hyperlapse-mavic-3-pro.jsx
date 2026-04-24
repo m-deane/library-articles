@@ -1,0 +1,944 @@
+/* --- YAML frontmatter --- */
+/*
+title: "Drone Hyperlapse with the DJI Mavic 3 Pro"
+subtitle: "An encyclopaedic technical reference for the triple-camera flagship — sensors, modes, mathematics, regulation, post"
+category: "travel-photography"
+style: "encyclopaedic"
+date: "2026-04-25"
+tags: [drone, hyperlapse, dji, photography, technical]
+*/
+
+const ARTICLE_DATA = {
+  title: "Drone Hyperlapse with the DJI Mavic 3 Pro",
+  subtitle: "An encyclopaedic technical reference for the triple-camera flagship — sensors, modes, mathematics, regulation, post",
+  category: "travel-photography",
+  style: "encyclopaedic",
+  date: "2026-04-25",
+  author: "Matthew Deane",
+  tags: ["drone", "hyperlapse", "dji", "photography", "technical"],
+  read_time: "22 min",
+  mode: "encyclopaedic",
+};
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  DESIGN TOKENS                                                  */
+/* ═══════════════════════════════════════════════════════════════ */
+
+const C = {
+  bg: "#FAF8F5",
+  bgAlt: "#F2EDE4",
+  bgCard: "#F0EBE1",
+  fg: "#1a1a1a",
+  ink: "#1a1a1a",
+  muted: "#8A8278",
+  textMute: "#8A8278",
+  accent: "#C4A35A",
+  grid: "#E0DAD0",
+  line: "#B8AE9C",
+  rule: "#D8CFC0",
+  panel: "#F0EBE1",
+  yellow: "#FFCE00",
+  navy: "#0C1420",
+  red: "#B43A2E",
+  blue: "#3C6FA0",
+  green: "#5A7A4A",
+  orange: "#C27A3A",
+  purple: "#6B4A7A",
+  sky: "#7FA8C9",
+  sand: "#D8C49A",
+};
+
+const F = {
+  serif: "'Source Serif 4', Georgia, serif",
+  sans: "'Source Sans 3', 'Helvetica Neue', sans-serif",
+  head: "'Playfair Display', Georgia, serif",
+  mono: "'JetBrains Mono', monospace",
+};
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  HYPERLAPSE GEOMETRY — Course Lock SVG diagram                  */
+/* ═══════════════════════════════════════════════════════════════ */
+
+const HyperlapseGeometry = () => (
+  <svg viewBox="0 0 800 460" style={{ width: "100%", display: "block", borderRadius: 4, background: C.bg }}>
+    <rect width="800" height="460" fill={C.bg} />
+
+    <text x="400" y="28" fill={C.ink} fontSize="14" textAnchor="middle" fontFamily={F.sans} fontWeight="700">
+      Figure A. Course Lock geometry
+    </text>
+    <text x="400" y="46" fill={C.muted} fontSize="11" textAnchor="middle" fontFamily={F.sans}>
+      The drone tracks along a fixed bearing while the gimbal yaws to keep a chosen subject framed.
+    </text>
+
+    {/* horizon line */}
+    <line x1="40" y1="370" x2="760" y2="370" stroke={C.line} strokeWidth="0.8" strokeDasharray="2 5" />
+    <text x="50" y="385" fill={C.muted} fontSize="10" fontFamily={F.mono}>
+      ground plane
+    </text>
+
+    {/* heading bearing arrow */}
+    <defs>
+      <marker id="hd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill={C.navy} />
+      </marker>
+      <marker id="gz" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill={C.red} />
+      </marker>
+    </defs>
+
+    {/* subject (cathedral / monolith icon) */}
+    <g>
+      <rect x="610" y="220" width="60" height="120" fill={C.sand} stroke={C.ink} strokeWidth="1" />
+      <polygon points="610,220 640,180 670,220" fill={C.sand} stroke={C.ink} strokeWidth="1" />
+      <line x1="640" y1="180" x2="640" y2="160" stroke={C.ink} strokeWidth="1" />
+      <circle cx="640" cy="158" r="3" fill={C.yellow} stroke={C.ink} strokeWidth="0.8" />
+      <text x="640" y="360" fill={C.ink} fontSize="11" textAnchor="middle" fontFamily={F.sans} fontWeight="700">
+        SUBJECT
+      </text>
+      <text x="640" y="375" fill={C.muted} fontSize="10" textAnchor="middle" fontFamily={F.sans}>
+        locked in frame
+      </text>
+    </g>
+
+    {/* heading line — drone moves along constant bearing */}
+    <line x1="80" y1="160" x2="540" y2="160" stroke={C.navy} strokeWidth="1.6" markerEnd="url(#hd)" />
+    <text x="300" y="148" fill={C.navy} fontSize="11" textAnchor="middle" fontFamily={F.sans} fontWeight="700">
+      Heading bearing — fixed (e.g. 045° NE)
+    </text>
+
+    {/* frame positions along the path */}
+    {[
+      { x: 110, label: "f₀", t: 0 },
+      { x: 200, label: "f₁", t: 1 },
+      { x: 290, label: "f₂", t: 2 },
+      { x: 380, label: "f₃", t: 3 },
+      { x: 470, label: "f₄", t: 4 },
+    ].map((p, i) => (
+      <g key={i}>
+        {/* drone glyph */}
+        <circle cx={p.x} cy="160" r="9" fill={C.bgCard} stroke={C.navy} strokeWidth="1.2" />
+        <line x1={p.x - 7} y1="153" x2={p.x + 7} y2="167" stroke={C.navy} strokeWidth="0.8" />
+        <line x1={p.x - 7} y1="167" x2={p.x + 7} y2="153" stroke={C.navy} strokeWidth="0.8" />
+        <text x={p.x} y="180" fill={C.navy} fontSize="10" textAnchor="middle" fontFamily={F.mono}>
+          {p.label}
+        </text>
+        {/* gimbal yaw line to subject */}
+        <line x1={p.x} y1="160" x2="640" y2="270" stroke={C.red} strokeWidth="0.8" strokeDasharray="3 3" opacity="0.7" markerEnd="url(#gz)" />
+      </g>
+    ))}
+
+    {/* yaw angle arc */}
+    <path d="M 130 160 A 25 25 0 0 1 145 175" fill="none" stroke={C.red} strokeWidth="1" />
+    <text x="160" y="180" fill={C.red} fontSize="10" fontFamily={F.mono}>
+      ψ (yaw)
+    </text>
+
+    {/* legend */}
+    <g transform="translate(60, 410)">
+      <line x1="0" y1="0" x2="30" y2="0" stroke={C.navy} strokeWidth="1.6" />
+      <text x="38" y="4" fill={C.ink} fontSize="11" fontFamily={F.sans}>
+        flight path (constant bearing)
+      </text>
+      <line x1="290" y1="0" x2="320" y2="0" stroke={C.red} strokeWidth="0.8" strokeDasharray="3 3" />
+      <text x="328" y="4" fill={C.ink} fontSize="11" fontFamily={F.sans}>
+        gimbal yaw to subject
+      </text>
+      <circle cx="555" cy="0" r="4" fill={C.bgCard} stroke={C.navy} strokeWidth="1" />
+      <text x="566" y="4" fill={C.ink} fontSize="11" fontFamily={F.sans}>
+        capture position fₙ at interval Δt
+      </text>
+    </g>
+
+    {/* compass */}
+    <g transform="translate(720, 420)">
+      <circle r="22" fill={C.bgCard} stroke={C.line} strokeWidth="0.8" />
+      <line x1="0" y1="-18" x2="0" y2="18" stroke={C.muted} strokeWidth="0.6" />
+      <line x1="-18" y1="0" x2="18" y2="0" stroke={C.muted} strokeWidth="0.6" />
+      <polygon points="0,-16 -4,0 0,16 4,0" fill={C.red} />
+      <text x="0" y="-26" fill={C.ink} fontSize="9" textAnchor="middle" fontFamily={F.mono} fontWeight="700">
+        N
+      </text>
+    </g>
+  </svg>
+);
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  INTERVAL NOMOGRAM — output clip length vs shot count           */
+/* ═══════════════════════════════════════════════════════════════ */
+
+const intervalData = Array.from({ length: 41 }, (_, i) => {
+  const shots = 50 + i * 10; // 50..450
+  return {
+    shots,
+    fps24: shots / 24,
+    fps25: shots / 25,
+    fps30: shots / 30,
+  };
+});
+
+const IntervalNomogram = () => (
+  <div style={{ width: "100%", background: C.bg, padding: "20px 0 8px" }}>
+    <div style={{ fontFamily: F.sans, fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: C.ink, marginBottom: 4 }}>
+      Figure B. Output clip length vs. shot count
+    </div>
+    <div style={{ fontFamily: F.sans, fontSize: 12, color: C.muted, marginBottom: 12 }}>
+      Final clip duration (seconds) = shot count ÷ output frame rate. Mavic 3 Pro caps a hyperlapse at 400 frames.
+    </div>
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart data={intervalData} margin={{ top: 10, right: 30, left: 10, bottom: 30 }}>
+        <CartesianGrid stroke={C.grid} strokeDasharray="2 4" />
+        <XAxis
+          dataKey="shots"
+          tick={{ fontFamily: F.mono, fontSize: 10, fill: C.muted }}
+          stroke={C.line}
+          label={{ value: "shot count (frames captured)", position: "insideBottom", offset: -10, fontFamily: F.sans, fontSize: 11, fill: C.muted }}
+        />
+        <YAxis
+          tick={{ fontFamily: F.mono, fontSize: 10, fill: C.muted }}
+          stroke={C.line}
+          label={{ value: "output clip length (s)", angle: -90, position: "insideLeft", fontFamily: F.sans, fontSize: 11, fill: C.muted }}
+        />
+        <Tooltip contentStyle={{ fontFamily: F.sans, fontSize: 12, background: C.bgAlt, border: "1px solid " + C.line }} />
+        <Legend wrapperStyle={{ fontFamily: F.sans, fontSize: 11 }} />
+        <ReferenceLine x={400} stroke={C.red} strokeDasharray="4 4" label={{ value: "400-frame cap", position: "top", fontFamily: F.mono, fontSize: 10, fill: C.red }} />
+        <Line type="monotone" dataKey="fps24" name="24 fps output" stroke={C.red} strokeWidth={2} dot={false} />
+        <Line type="monotone" dataKey="fps25" name="25 fps output" stroke={C.blue} strokeWidth={2} dot={false} />
+        <Line type="monotone" dataKey="fps30" name="30 fps output" stroke={C.green} strokeWidth={2} dot={false} />
+      </LineChart>
+    </ResponsiveContainer>
+    <div style={{ fontFamily: F.sans, fontSize: 11, color: C.muted, marginTop: 6 }}>
+      Worked example: 240 frames at 30 fps = 8.0 s of finished hyperlapse. At 2 s interval that is an 8-minute flight.
+    </div>
+  </div>
+);
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  EXPOSURE TRIANGLE for hyperlapse — small SVG                    */
+/* ═══════════════════════════════════════════════════════════════ */
+
+const ExposureBlock = () => (
+  <svg viewBox="0 0 800 280" style={{ width: "100%", display: "block", borderRadius: 4, background: C.bg }}>
+    <rect width="800" height="280" fill={C.bg} />
+    <text x="400" y="26" fill={C.ink} fontSize="14" textAnchor="middle" fontFamily={F.sans} fontWeight="700">
+      Figure C. Hyperlapse exposure triangle — typical Mavic 3 Pro settings
+    </text>
+
+    {[
+      { x: 120, label: "Shutter", v: "1/30 – 1/60 s", note: "long enough for blur on moving traffic; short enough to avoid jitter", c: C.red },
+      { x: 400, label: "Aperture", v: "f/2.8 – f/8", note: "L2D-20c is variable; sweet spot f/4 – f/5.6 for landscape sharpness", c: C.blue },
+      { x: 680, label: "ISO", v: "100 (floor)", note: "use ND filters to keep ISO at base; noise compounds across hundreds of frames", c: C.green },
+    ].map((b, i) => (
+      <g key={i}>
+        <circle cx={b.x} cy="130" r="64" fill={C.bgCard} stroke={b.c} strokeWidth="1.4" />
+        <text x={b.x} y="118" fill={C.ink} fontSize="13" textAnchor="middle" fontFamily={F.sans} fontWeight="700">
+          {b.label}
+        </text>
+        <text x={b.x} y="140" fill={b.c} fontSize="13" textAnchor="middle" fontFamily={F.mono} fontWeight="700">
+          {b.v}
+        </text>
+        <text x={b.x} y="220" fill={C.muted} fontSize="10" textAnchor="middle" fontFamily={F.sans}>
+          <tspan x={b.x} dy="0">{b.note.split(";")[0]}</tspan>
+          <tspan x={b.x} dy="14">{b.note.split(";")[1] || ""}</tspan>
+        </text>
+      </g>
+    ))}
+
+    <line x1="184" y1="130" x2="336" y2="130" stroke={C.line} strokeWidth="0.8" strokeDasharray="2 4" />
+    <line x1="464" y1="130" x2="616" y2="130" stroke={C.line} strokeWidth="0.8" strokeDasharray="2 4" />
+  </svg>
+);
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  HELPERS                                                        */
+/* ═══════════════════════════════════════════════════════════════ */
+
+const DC = ({ children }) => {
+  const text = typeof children === "string" ? children : "";
+  const f = text.charAt(0);
+  const r = text.slice(1);
+  return (
+    <p style={{ fontFamily: F.serif, fontSize: 18, lineHeight: 1.8, color: C.ink, margin: "0 0 24px" }}>
+      <span
+        style={{
+          float: "left",
+          fontFamily: F.head,
+          fontSize: 72,
+          fontWeight: 900,
+          lineHeight: "0.8",
+          marginRight: 8,
+          marginTop: 6,
+          color: C.ink,
+        }}
+      >
+        {f}
+      </span>
+      <span dangerouslySetInnerHTML={{ __html: r }} />
+    </p>
+  );
+};
+
+const P = ({ children, style = {} }) => (
+  <p
+    style={{ fontFamily: F.serif, fontSize: 18, lineHeight: 1.8, color: C.ink, margin: "0 0 22px", ...style }}
+    dangerouslySetInnerHTML={{ __html: children }}
+  />
+);
+
+const Sec = ({ title }) => (
+  <h2
+    style={{
+      fontFamily: F.head,
+      fontSize: 28,
+      fontWeight: 900,
+      color: C.ink,
+      margin: "52px 0 18px",
+      letterSpacing: "-0.01em",
+      borderBottom: "2px solid " + C.yellow,
+      paddingBottom: 8,
+      display: "inline-block",
+    }}
+  >
+    {title}
+  </h2>
+);
+
+const H3 = ({ children }) => (
+  <h3 style={{ fontFamily: F.head, fontSize: 22, fontWeight: 800, color: C.ink, margin: "32px 0 12px" }}>
+    {children}
+  </h3>
+);
+
+const SB = ({ title, children }) => (
+  <div
+    style={{
+      background: C.bgCard,
+      border: "1px solid " + C.rule,
+      borderRadius: 4,
+      padding: "28px 32px",
+      margin: "36px 0",
+      maxWidth: 760,
+    }}
+  >
+    <div
+      style={{
+        fontFamily: F.sans,
+        fontSize: 12,
+        fontWeight: 700,
+        letterSpacing: "0.12em",
+        textTransform: "uppercase",
+        color: C.ink,
+        marginBottom: 8,
+        borderBottom: "2px solid " + C.yellow,
+        paddingBottom: 6,
+        display: "inline-block",
+      }}
+    >
+      {title}
+    </div>
+    <div
+      style={{
+        fontFamily: F.sans,
+        fontSize: 15,
+        lineHeight: 1.7,
+        color: C.ink,
+        marginTop: 14,
+      }}
+      dangerouslySetInnerHTML={{ __html: children }}
+    />
+  </div>
+);
+
+const PQ = ({ children }) => (
+  <blockquote
+    style={{
+      fontFamily: F.head,
+      fontStyle: "italic",
+      fontSize: 24,
+      lineHeight: 1.5,
+      color: C.ink,
+      borderLeft: "3px solid " + C.yellow,
+      paddingLeft: 28,
+      margin: "40px 0 40px 20px",
+      maxWidth: 660,
+    }}
+  >
+    {children}
+  </blockquote>
+);
+
+const Callout = ({ title, children, type = "info" }) => {
+  const bar = type === "warn" ? C.red : type === "tip" ? C.green : C.blue;
+  return (
+    <div
+      style={{
+        background: C.bgCard,
+        borderLeft: "4px solid " + bar,
+        padding: "18px 22px",
+        margin: "28px 0",
+        fontFamily: F.sans,
+        fontSize: 15,
+        lineHeight: 1.6,
+        color: C.ink,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: F.sans,
+          fontSize: 12,
+          fontWeight: 700,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: bar,
+          marginBottom: 6,
+        }}
+      >
+        {title}
+      </div>
+      <div dangerouslySetInnerHTML={{ __html: children }} />
+    </div>
+  );
+};
+
+const IC = ({ func, caption }) => (
+  <div style={{ padding: "10px 0 32px" }}>
+    <span
+      style={{
+        fontFamily: F.sans,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        color: C.accent,
+        marginRight: 10,
+      }}
+    >
+      {func}
+    </span>
+    <span style={{ fontFamily: F.sans, fontSize: 13, color: C.muted, lineHeight: 1.5 }}>{caption}</span>
+  </div>
+);
+
+const Code = ({ children }) => (
+  <pre
+    style={{
+      background: "#13161c",
+      color: "#e6e1d6",
+      fontFamily: F.mono,
+      fontSize: 13,
+      lineHeight: 1.55,
+      padding: "20px 22px",
+      borderRadius: 4,
+      overflowX: "auto",
+      margin: "24px 0",
+      border: "1px solid #1f242c",
+    }}
+  >
+    <code>{children}</code>
+  </pre>
+);
+
+const Cap = ({ children }) => (
+  <div style={{ fontFamily: F.sans, fontSize: 12, color: C.muted, fontStyle: "italic", margin: "-8px 0 28px" }}>
+    {children}
+  </div>
+);
+
+const Photograph = ({ src, alt, caption, credit, href }) => (
+  <figure style={{ margin: "36px 0 28px" }}>
+    <img src={src} alt={alt} style={{ width: "100%", display: "block", borderRadius: 2, border: "1px solid " + C.rule }} />
+    <figcaption style={{ fontFamily: F.sans, fontSize: 13, color: C.muted, lineHeight: 1.5, marginTop: 10 }}>
+      <span style={{ color: C.ink }}>{caption}</span>
+      {" — "}
+      <a href={href} style={{ color: C.muted, textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
+        {credit}
+      </a>
+    </figcaption>
+  </figure>
+);
+
+const BR = () => (
+  <div
+    style={{
+      textAlign: "center",
+      margin: "48px 0",
+      color: C.accent,
+      fontSize: 20,
+      letterSpacing: 8,
+      fontFamily: F.serif,
+    }}
+  >
+    ❧
+  </div>
+);
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  HERO                                                           */
+/* ═══════════════════════════════════════════════════════════════ */
+
+const Hero = () => (
+  <svg viewBox="0 0 1200 700" style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0 }}>
+    <defs>
+      <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#0a0a0f" />
+        <stop offset="60%" stopColor="#141820" />
+        <stop offset="100%" stopColor="#22262e" />
+      </linearGradient>
+      <radialGradient id="rg" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stopColor={C.yellow} stopOpacity="0.10" />
+        <stop offset="100%" stopColor={C.yellow} stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    <rect width="1200" height="700" fill="url(#hg)" />
+    <circle cx="600" cy="350" r="380" fill="url(#rg)" />
+
+    {/* Drone diagram */}
+    <g stroke={C.yellow} strokeWidth="0.9" fill="none" opacity="0.85">
+      {/* central body */}
+      <rect x="560" y="320" width="80" height="60" rx="8" />
+      {/* arms */}
+      <line x1="560" y1="335" x2="470" y2="290" />
+      <line x1="640" y1="335" x2="730" y2="290" />
+      <line x1="560" y1="365" x2="470" y2="410" />
+      <line x1="640" y1="365" x2="730" y2="410" />
+      {/* propeller circles */}
+      <circle cx="460" cy="285" r="48" />
+      <circle cx="740" cy="285" r="48" />
+      <circle cx="460" cy="415" r="48" />
+      <circle cx="740" cy="415" r="48" />
+      {/* gimbal */}
+      <circle cx="600" cy="395" r="14" />
+      <circle cx="600" cy="395" r="6" />
+      {/* camera lens nests for triple cam */}
+      <circle cx="580" cy="330" r="6" />
+      <circle cx="600" cy="330" r="6" />
+      <circle cx="620" cy="330" r="6" />
+    </g>
+
+    {/* trajectory dotted curve through scene */}
+    <path d="M 80 540 Q 380 300 1120 220" fill="none" stroke={C.yellow} strokeWidth="0.8" strokeDasharray="3 6" opacity="0.6" />
+    {/* frame markers along trajectory */}
+    {[0.1, 0.25, 0.4, 0.55, 0.7, 0.85].map((t, i) => {
+      // approximate curve param
+      const x = 80 + t * (1120 - 80);
+      const y = 540 - 4 * t * (1 - t) * 320 - t * 220;
+      return (
+        <g key={i}>
+          <circle cx={x} cy={y} r="3" fill={C.yellow} opacity="0.9" />
+        </g>
+      );
+    })}
+
+    {/* annotation labels */}
+    <g fill={C.yellow} fontFamily={F.mono} fontSize="10" opacity="0.8">
+      <text x="730" y="285">70mm</text>
+      <text x="610" y="316">f/2.8 – f/11</text>
+      <text x="730" y="420">166mm</text>
+      <text x="450" y="470">Δt = 2 s</text>
+    </g>
+
+    {/* horizon ruler */}
+    <g stroke="#2a3038" strokeWidth="0.6">
+      <line x1="80" y1="640" x2="1120" y2="640" />
+      {Array.from({ length: 51 }).map((_, i) => (
+        <line key={i} x1={80 + i * 20.8} y1={i % 5 === 0 ? 632 : 636} x2={80 + i * 20.8} y2="640" />
+      ))}
+    </g>
+    <text x="600" y="668" fill="#5a6270" fontSize="10" textAnchor="middle" fontFamily={F.mono}>
+      time, in two-second increments
+    </text>
+  </svg>
+);
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  MAIN                                                           */
+/* ═══════════════════════════════════════════════════════════════ */
+
+export default function DroneHyperlapseMavic3Pro() {
+  return (
+    <article style={{ background: C.bg, minHeight: "100vh", margin: 0, padding: 0 }}>
+      <style>{"*{box-sizing:border-box;margin:0;padding:0}body{background:" + C.bg + "}"}</style>
+
+      <div
+        style={{
+          background: C.navy,
+          color: "#fff",
+          fontFamily: F.sans,
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          padding: "10px 24px",
+          textAlign: "center",
+        }}
+      >
+        Mode: Encyclopaedic&nbsp; · &nbsp;Category: Travel Photography · Technical Reference
+      </div>
+      <div style={{ height: 4, background: C.yellow }} />
+
+      {/* HERO */}
+      <div style={{ position: "relative", minHeight: "85vh", overflow: "hidden", background: C.navy }}>
+        <Hero />
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            minHeight: "85vh",
+            padding: "60px 40px 50px",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: F.sans,
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              color: C.yellow,
+              marginBottom: 16,
+            }}
+          >
+            ◆ TECHNICAL REFERENCE · AERIAL PHOTOGRAPHY
+          </div>
+          <h1
+            style={{
+              fontFamily: F.head,
+              fontWeight: 900,
+              fontSize: "clamp(40px,5.5vw,72px)",
+              color: "#fff",
+              lineHeight: 1.05,
+              maxWidth: 920,
+              marginBottom: 20,
+            }}
+          >
+            Drone Hyperlapse with the DJI Mavic 3 Pro
+          </h1>
+          <p
+            style={{
+              fontFamily: F.serif,
+              fontStyle: "italic",
+              fontSize: "clamp(16px,2vw,22px)",
+              color: "rgba(255,255,255,0.82)",
+              maxWidth: 760,
+              lineHeight: 1.5,
+              marginBottom: 30,
+            }}
+          >
+            The triple-camera flagship that still defines prosumer aerial photography in 2026 — its three sensors,
+            four hyperlapse modes, the small body of mathematics that decides whether a flight returns a clip or
+            a sequence of unusable frames, and the surprisingly large body of regulation that decides whether you
+            were allowed to fly it at all.
+          </p>
+          <div
+            style={{
+              fontFamily: F.sans,
+              fontSize: 12,
+              color: "rgba(255,255,255,0.45)",
+              maxWidth: 460,
+              lineHeight: 1.4,
+              textAlign: "right",
+              alignSelf: "flex-end",
+            }}
+          >
+            A schematic of the Mavic 3 Pro and a six-frame hyperlapse trajectory. Three lenses (24mm Hasselblad,
+            70mm medium tele, 166mm telephoto), one gimbal, and the time interval between captures that turns
+            ten minutes of flight into eight seconds of footage.
+          </div>
+        </div>
+      </div>
+
+      {/* BODY */}
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "60px 24px 80px" }}>
+        <DC>{"A drone hyperlapse is a deceptively expensive shot. The aircraft must hold its station against wind, the gimbal must hold its subject against translation, the GPS module must hold its idea of position against the noisy chatter of satellite triangulation, the camera must hold its exposure against a sky that is changing while the shutter clicks. None of these systems was, originally, designed to cooperate with the others over a ten-minute window. The DJI Mavic 3 Pro, released in April 2023 and still — at the time of writing in spring 2026 — DJI's flagship triple-camera prosumer aircraft, is the consumer machine in which that cooperation is most thoroughly engineered. This article is a reference to how it works."}</DC>
+
+        <P>{"The Mavic 3 Pro is unusual among consumer drones in carrying three distinct cameras on a single 3-axis gimbal. The headline sensor is the Hasselblad L2D-20c — a 4/3-format CMOS, 20 megapixels, with a variable physical aperture that ramps from f/2.8 to f/11. Its native focal length is 24mm equivalent. Beside it sits a 70mm medium-telephoto unit on a 1/1.3-inch sensor capturing 48 megapixels at a fixed f/2.8, and a 166mm telephoto on a 1/2-inch sensor delivering 12 megapixels at f/3.4. The three sensors do not share an optical path or, particularly, a sensor pedigree — the medium tele and the telephoto are smaller chips, lower in dynamic range, more dependent on adequate light. For hyperlapse work, this matters. Most aerial hyperlapses are shot on the Hasselblad — the wide field of view buys margin against the small drifts that the GPS-locked station-keeping cannot quite suppress."}</P>
+
+        <P>{"What follows is organised as a technical operator's reference rather than a how-to: a description of the four modes, the small mathematics that govern shot count and clip length, the exposure problem peculiar to multi-minute aerial captures, the failure modes that will haunt you if you do not understand them, the post-processing pipeline that begins where the in-drone stabilisation ends, and the regulatory landscape — UK, EU and US — within which all of this must occur."}</P>
+
+        <BR />
+
+        {/* ═════ SECTION 1 ═════ */}
+        <Sec title="1 · The camera system, in detail" />
+
+        <P>{"DJI's official specification page for the Mavic 3 Pro lists three cameras, each independently switchable from the DJI Fly app. Their sensor specifications matter because hyperlapse is fundamentally a process of compounding the signal-to-noise characteristics of a sensor across hundreds of frames; tiny per-frame errors do not average out, they accumulate."}</P>
+
+        <H3>The Hasselblad L2D-20c</H3>
+
+        <P>{"The L2D-20c is a 4/3 CMOS sensor — diagonal roughly 21.6mm — capturing 20 megapixels at a native pixel pitch close to 3.4 microns. Its maximum still resolution is 5280 × 3956. The lens is a fixed-focal-length 24mm-equivalent (12.29mm physical) prime, but the aperture is mechanically variable across the range f/2.8 to f/11, in 1/3-stop detents. This variable iris is the defining feature for hyperlapse: it lets the operator compose for depth of field at f/4 or f/5.6 and reach a usable shutter speed without requiring more than one ND filter. On the smaller DJI Air 3 and Mini-series aircraft, the apertures are fixed and the operator is forced into a stack of NDs; the Mavic 3 Pro's iris removes one variable from a flight plan that already has too many."}</P>
+
+        <P>{"Hasselblad's marketing emphasises the camera's Natural Colour Solution (HNCS) profile and 12-bit raw DNG capture. Both are real and useful — DPReview's 2023 sample analysis noted clean colour science out of the box and 12.8 stops of dynamic range at base ISO. For hyperlapse, the practical implications are: shoot 12-bit raw if you intend to grade, accept JPEG only if your flight plan is short and your light is stable."}</P>
+
+        <H3>The 70mm medium tele</H3>
+
+        <P>{"The medium-tele sits on a 1/1.3-inch sensor (diagonal roughly 12mm) with a 48-megapixel pixel-shift array and a fixed f/2.8 aperture. Its 70mm equivalent focal length is the most useful of the three for compressing distant subjects in cityscape work — it isolates a single building from a skyline in a way the 24mm cannot. For hyperlapse, however, the smaller sensor is more punishing of low light: noise compounds across 200+ frames, and the lack of a variable iris means you are obliged to manage exposure entirely through ND filters and shutter speed."}</P>
+
+        <H3>The 166mm telephoto</H3>
+
+        <P>{"The 166mm telephoto runs on a 1/2-inch sensor at a fixed f/3.4. It captures 12 megapixels per frame. Independent reviews from Petapixel and DPReview have been candid about its limitations — small sensor, narrow aperture, modest dynamic range — but it is unique in the prosumer drone market, and for hyperlapse it allows shots that no other consumer aircraft can frame: a sun setting between two specific buildings, a single peak isolated from a mountain range, a cable car arriving at a station. Use it sparingly, in good light, and never expect it to grade like the Hasselblad."}</P>
+
+        <Photograph
+          src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=1600&q=80"
+          alt="A DJI Mavic-class drone resting on a landing pad before flight"
+          caption="The Mavic 3 Pro on a pre-flight landing pad. Pre-flight discipline — IMU calibration, GPS lock to at least 12 satellites, propeller inspection — is the half of hyperlapse work that nothing in post can rescue."
+          credit="David Henrichs / Unsplash"
+          href="https://unsplash.com/photos/H5L8aVHZyXk?utm_source=dsl&utm_medium=referral"
+        />
+
+        <BR />
+
+        {/* ═════ SECTION 2 ═════ */}
+        <Sec title="2 · The four hyperlapse modes" />
+
+        <P>{"DJI Fly exposes four hyperlapse modes on the Mavic 3 Pro. Each describes a different geometry of motion between captures; the choice of mode constrains what subjects, framings and durations are achievable. The maximum number of captured frames is 400 in every mode, with selectable intervals from 2 to 15 seconds and three output frame-rate options: 24, 25, or 30 fps. The aircraft saves both the assembled hyperlapse video and the underlying frames (JPEG, optionally raw DNG) to its onboard storage."}</P>
+
+        <H3>Free</H3>
+
+        <P>{"Free is a direct manual translation of standard flight controls into a timed-capture mode. The pilot flies the drone as they would in normal flight; the aircraft simply releases the shutter at the chosen interval. There is no automated trajectory and no automated subject lock. Free is useful when no other mode applies — for example, when you want to descend through cloud while drifting forward, or when you want to introduce a slow yaw by hand. It is the most expressive mode and the most difficult to fly cleanly, because every micro-correction enters the captured sequence and must later be smoothed in post."}</P>
+
+        <H3>Circle</H3>
+
+        <P>{"Circle locks the aircraft into an automated orbit around a chosen subject at a chosen radius. The pilot sets the centre point, the radius, the altitude and the direction of orbit; the drone flies the orbit autonomously while the gimbal yaws to keep the subject centred. The classic Circle hyperlapse is a landmark — a cathedral, a lighthouse, an iconic bridge — captured at golden hour as the surrounding light rotates around it. Because the geometry is closed, Circle is forgiving of mild GPS drift: the aircraft is always referencing the same ground anchor, and small lateral wanders along the orbit's tangent are nearly invisible at 24mm focal length."}</P>
+
+        <H3>Course Lock</H3>
+
+        <P>{"Course Lock is the geometry illustrated in Figure A. The aircraft moves along a fixed compass bearing — once the pilot sets the heading, the drone will fly in a perfectly straight line regardless of any gimbal or stick movement, until the operator cancels the lock. The gimbal is independently aimed: the pilot can yaw the camera left or right to keep a chosen subject framed while the body translates along its bearing. The result is the parallax shot — a city skyline that slides past while a single landmark remains pinned to the centre of the frame. Course Lock is the most-used mode for travel hyperlapse because the result feels deliberate without requiring any manual steering during capture."}</P>
+
+        <H3>Waypoint</H3>
+
+        <P>{"Waypoint is the most powerful and the most demanding of the four. The pilot programs a sequence of three-dimensional waypoints — latitude, longitude, altitude and gimbal angle at each point — and the drone interpolates a smooth path between them, capturing at the chosen interval. Waypoints 3.0, the version shipping in DJI Fly 1.10 and later, supports plan saving, plan re-running, and import/export of plans between sessions. This means a hyperlapse shot scouted at midday can be re-executed at sunset, frame-for-frame, without the pilot needing to remember the exact path. The mode demands careful pre-planning of altitude clearances and speed constraints — the aircraft will fly the plan as written, and a waypoint placed inside a tree will be flown to with optimism."}</P>
+
+        <SB title="Mode selection at a glance">{
+          "<b>Free</b> — manual flight + interval shutter. Most expressive, hardest to fly cleanly.<br/>" +
+          "<b>Circle</b> — orbit at fixed radius. Forgiving, ideal for landmark subjects at golden hour.<br/>" +
+          "<b>Course Lock</b> — fixed bearing, free gimbal. The parallax-reveal shot.<br/>" +
+          "<b>Waypoint</b> — 3D pre-planned path. Repeatable; the only mode worth using for time-of-day reshoots."
+        }</SB>
+
+        <Photograph
+          src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=1600&q=80"
+          alt="A camera drone in flight against a clear sky"
+          caption="A Mavic-class quadcopter holding station mid-flight. Three-axis gimbal stabilisation buys arc-second steadiness at the camera while the airframe tolerates yaw and roll perturbations from wind."
+          credit="David Henrichs / Unsplash"
+          href="https://unsplash.com/photos/H5L8aVHZyXk?utm_source=dsl&utm_medium=referral"
+        />
+
+        <BR />
+
+        {/* ═════ SECTION 3 ═════ */}
+        <Sec title="3 · The mathematics of interval, count and clip length" />
+
+        <P>{"Hyperlapse is governed by three numbers: the shot count <em>N</em>, the interval between shots <em>Δt</em>, and the output frame rate <em>r</em>. The flight duration is <em>N · Δt</em>; the finished clip duration is <em>N / r</em>. There is one formula and one constraint, but in the field, pilots regularly get them backwards."}</P>
+
+        <Code>{"# the only formula you need\n\nflight_seconds   = shot_count * interval_seconds\nclip_seconds     = shot_count / output_fps\n\n# rearranged for planning\n\nshot_count       = clip_seconds * output_fps\ninterval_seconds = flight_seconds / shot_count\n\n# example — an 8-second clip at 30 fps\n\nclip_seconds   = 8\noutput_fps     = 30\nshot_count     = 8 * 30        # = 240 frames\n\n# at a 2-second interval\ninterval_seconds = 2\nflight_seconds   = 240 * 2     # = 480 s = 8 minutes airborne"}</Code>
+
+        <P>{"The mistake operators most often make is to confuse interval with output frame rate. Interval is the gap, in real seconds, between successive captures during the flight. Output frame rate is the speed at which those captures are played back. Doubling the interval doubles the apparent speed of the world in the finished clip; doubling the output frame rate halves the clip duration without changing the apparent speed of the world. They are not interchangeable."}</P>
+
+        <IntervalNomogram />
+
+        <P>{"Figure B plots the clip-length / shot-count relationship for the three output frame rates the Mavic 3 Pro supports. At the firmware-imposed 400-frame ceiling, the longest possible clip is 16.7 seconds at 24 fps, 16.0 seconds at 25 fps, or 13.3 seconds at 30 fps. Anything longer requires either a second hyperlapse (with the inevitable seam) or post-stretching the clip — typically by frame interpolation in DaVinci Resolve, Premiere, or Topaz Video AI."}</P>
+
+        <Callout title="Choosing an interval" type="tip">{
+          "<b>1–2 seconds</b>: fast pedestrian or vehicle motion (a busy street, a market). " +
+          "<b>3–5 seconds</b>: weather (cloud movement, sunset progression). " +
+          "<b>5–10 seconds</b>: crowds and slow ambient change. " +
+          "<b>10–15 seconds</b>: stars, lunar transit, glacial subjects. The interval should be just long enough that something visibly changes between frames, and no longer."
+        }</Callout>
+
+        <BR />
+
+        {/* ═════ SECTION 4 ═════ */}
+        <Sec title="4 · Stabilisation, IMU and the pipeline before post" />
+
+        <P>{"The Mavic 3 Pro stabilises a hyperlapse through three layers. The 3-axis mechanical gimbal isolates the camera from the airframe's pitch, roll and yaw at high frequency — sub-arc-second steadiness over the millisecond interval the shutter is open. The aircraft's IMU (inertial measurement unit) and dual GPS/GLONASS module hold the body's position against wind drift over the seconds-to-minutes interval between captures. And on top of these, a software EIS (electronic image stabilisation) pass aligns successive frames to one another before assembling the output video — this is what removes the residual frame-to-frame jitter that pure mechanical stabilisation cannot."}</P>
+
+        <P>{"The order matters. The mechanical gimbal acts on the photons before they are recorded. The IMU/GPS station-keeping acts on the body between captures. The EIS pass acts on the captured frames after the fact, and so it cannot recover blur within a single exposure — it can only align sharp frames to one another. If you ask the EIS to clean up motion-blurred frames, it will fail. The implication is that exposure choice must come first: keep the shutter short enough that each frame is individually sharp, and let the EIS do its work on top."}</P>
+
+        <ExposureBlock />
+
+        <BR />
+
+        {/* ═════ SECTION 5 ═════ */}
+        <Sec title="5 · Exposure: shutter, ISO, ND filters" />
+
+        <P>{"The exposure target for hyperlapse is, in most cases, sharper than for video and softer than for stills. A shutter of 1/30 to 1/60 of a second is the conventional range. Faster than 1/60 and the world freezes too completely — pedestrians' legs become discrete poses rather than continuous motion. Slower than 1/30 and the per-frame motion blur becomes visible smearing, especially under the EIS alignment pass. Some operators prefer the stricter <em>180-degree shutter rule</em> from cinema (shutter ≈ 1/(2·output_fps), so 1/60 for 30 fps), but on a static-subject hyperlapse the rule is less binding than it is in video."}</P>
+
+        <P>{"The ISO floor is 100 on the Hasselblad and on both tele cameras. Stay there. Per-frame noise that looks invisible on a single still becomes visible flicker across a 240-frame sequence, because the noise pattern changes between captures while the subject does not. The eye is excellent at picking out unstable noise against a stable backdrop. Keeping ISO at the floor is non-negotiable."}</P>
+
+        <P>{"The corollary is ND filtration. The Hasselblad's variable iris closes to f/11, but f/11 introduces visible diffraction softening on the L2D-20c's 4/3 sensor — the optical sweet spot is roughly f/4 to f/5.6. To hold base ISO and a 1/30–1/60 shutter at f/5.6 in daylight, you need ND filters. DJI's first-party ND set includes ND8, ND16, ND32, ND64 and ND256 magnetic discs."}</P>
+
+        <Code>{"# typical ND choice by lighting condition\n\nbright midday sun     -> ND64  (6 stops)\novercast bright       -> ND32  (5 stops)\nlate afternoon        -> ND16  (4 stops)\ngolden hour           -> ND8   (3 stops)\ntwilight / blue hour  -> no ND, open aperture\n\n# rule of thumb at base ISO 100, target shutter 1/40\n\nstops_to_lose = log2( current_shutter_at_target_aperture / target_shutter )\nrequired_ND   = 2 ** stops_to_lose"}</Code>
+
+        <P>{"AEB (auto exposure bracketing) is supported on the Mavic 3 Pro for stills but not within hyperlapse mode. The hyperlapse pipeline captures a single exposure per frame. Operators shooting around a sunset — where the dynamic range of the scene exceeds the L2D-20c's 12.8 stops — should either grade carefully from the 12-bit raw or accept that the highlights or the shadows will go. There is no in-mode bracketed-merge equivalent."}</P>
+
+        <Photograph
+          src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1600&q=80"
+          alt="A dense city skyline at the blue hour after sunset"
+          caption="The classic hyperlapse subject: a cityscape during the blue hour. The L2D-20c's variable aperture and 12-bit raw capture together provide the dynamic-range margin to pull both the lit windows and the residual sky into a single graded clip."
+          credit="Pedro Lastra / Unsplash"
+          href="https://unsplash.com/photos/Nyvq2juw4_o?utm_source=dsl&utm_medium=referral"
+        />
+
+        <BR />
+
+        {/* ═════ SECTION 6 ═════ */}
+        <Sec title="6 · Course Lock geometry, in detail" />
+
+        <P>{"Course Lock is the mode that benefits most from being thought about geometrically. Figure A shows the situation: the drone moves along a constant compass bearing — one of the simplest possible trajectories in three-dimensional space, a line — while the gimbal yaws independently to hold a chosen subject in frame. The two motions are decoupled; the body's heading does not influence the camera's heading."}</P>
+
+        <HyperlapseGeometry />
+
+        <P>{"The yaw angle ψ at frame n is the angle between the aircraft's heading vector and the line from aircraft to subject. Because the heading is fixed and the subject is fixed, ψ is purely a function of the aircraft's current position along its bearing. As the aircraft flies past the subject's perpendicular, ψ accelerates — the gimbal must yaw faster to keep the subject centred. This is why Course Lock hyperlapses tend to look most graceful when the bearing is chosen so that the subject sits roughly 30 to 60 degrees off the bearing, and the flight terminates before the aircraft passes its perpendicular. Once the aircraft is past the perpendicular, ψ exceeds 90 degrees and the gimbal is forced to reach back behind the airframe — workable but visually awkward."}</P>
+
+        <BR />
+
+        {/* ═════ SECTION 7 ═════ */}
+        <Sec title="7 · Waypoints 3.0 — the planning workflow" />
+
+        <P>{"Waypoints 3.0 was reintroduced to the Mavic 3 series in firmware updates during 2023 and matured through 2024–25. The DJI Fly 1.10 release in early 2024 standardised the workflow now used in the field: a flight plan is a sequence of waypoints, each defined by latitude, longitude, altitude (relative to home point or above sea level), gimbal pitch, gimbal yaw, and an optional point-of-interest lock. Speed and curve smoothing are set per-segment. Plans can be saved to the controller, uploaded between aircraft and re-run."}</P>
+
+        <Code>{"# anatomy of a Waypoints 3.0 flight plan (informal schema)\n\nplan = {\n  \"name\": \"sunset-cathedral-orbit\",\n  \"home\":   { \"lat\": 51.5132, \"lon\": -0.0982, \"alt_m\": 0   },\n  \"flight_speed_mps\": 4.0,\n  \"hyperlapse\": {\n    \"interval_s\":  3,\n    \"output_fps\": 30,\n    \"shot_count\": 300,    # -> flight 15 min, clip 10 s\n    \"raw\":         True\n  },\n  \"waypoints\": [\n    { \"lat\": 51.5135, \"lon\": -0.0989, \"alt_m\":  60, \"gimbal_pitch\": -10, \"poi_lock\": \"P1\" },\n    { \"lat\": 51.5140, \"lon\": -0.0994, \"alt_m\":  80, \"gimbal_pitch\": -15, \"poi_lock\": \"P1\" },\n    { \"lat\": 51.5145, \"lon\": -0.0999, \"alt_m\": 100, \"gimbal_pitch\": -20, \"poi_lock\": \"P1\" },\n    { \"lat\": 51.5150, \"lon\": -0.1004, \"alt_m\": 120, \"gimbal_pitch\": -25, \"poi_lock\": \"P1\" }\n  ],\n  \"poi\": [\n    { \"id\": \"P1\", \"lat\": 51.5142, \"lon\": -0.0975, \"alt_m\": 30 }\n  ]\n}"}</Code>
+
+        <P>{"The principal advantage over the older mission-planning approaches is repeatability. A plan scouted at noon — when the light is forgiving and the airspace is cooperative — can be executed at sunset, identically, frame for frame. This matters because the hyperlapse-killing variables (light, wind, crowds) are exactly the variables that change with time of day. Reconnaissance becomes an investment that compounds: the third execution of a plan is materially better than the first."}</P>
+
+        <Callout title="Altitude and speed constraints" type="info">{
+          "DJI Fly clamps Waypoint flights to a maximum 50 m/s ground speed and 500 m altitude above home point (jurisdiction-permitting; in the UK and EU the regulatory ceiling is 120 m). Climbs and descents are smoothed by default with a curvature parameter; setting the curvature to zero produces sharp corners that are punishing on the gimbal and visible in the captured frames."
+        }</Callout>
+
+        <BR />
+
+        {/* ═════ SECTION 8 ═════ */}
+        <Sec title="8 · Failure modes" />
+
+        <P>{"Most hyperlapse failures are not subtle. They fall into a small number of categories and, with experience, are recognisable in the first ten frames of the captured sequence."}</P>
+
+        <H3>GPS drift — the dominant failure mode</H3>
+
+        <P>{"The Mavic 3 Pro holds position via dual GPS/GLONASS triangulation. In open sky with 14+ satellites visible, station-keeping is good to roughly half a metre. In urban canyons where satellite visibility drops to 8–10, the aircraft can drift by 1–2 metres between captures. At 24mm equivalent focal length and 100 metres' altitude this is invisible; at 166mm telephoto and 50 metres' altitude it is destructive. The remedy is not technical: it is to wait. A fresh launch with the aircraft sitting on the ground for thirty seconds before takeoff to lock additional satellites is the single most effective preventative measure. Pilots who launch as soon as the aircraft says 'GPS Ready' produce hyperlapses that drift; pilots who wait for 'GPS: Strong' on at least 12 satellites do not."}</P>
+
+        <H3>Crosswind above 8 m/s</H3>
+
+        <P>{"DJI rates the Mavic 3 Pro for wind resistance up to 12 m/s. This is the value at which the airframe can still maintain station; it is not the value at which a hyperlapse looks clean. Above approximately 8 m/s of crosswind, the gimbal is constantly correcting at the limits of its stroke, and the captured frames show a low-frequency oscillation that no EIS pass will fully remove. Check the wind aloft, not at ground level — wind speed at 100 m altitude is typically 1.5 to 2 times the surface reading."}</P>
+
+        <H3>Battery dropping below 20% mid-mission</H3>
+
+        <P>{"DJI's smart battery system aborts a Waypoint or Course Lock mission and initiates Return-To-Home automatically when battery reaches the calculated minimum to return safely. For a long hyperlapse, this can occur mid-flight, leaving you with a partial sequence. A single 5000 mAh Mavic 3 Pro Intelligent Flight Battery delivers approximately 43 minutes of nominal flight, but a typical mission with hover, RTH reserve and wind correction loses 8–10 minutes. Plan for 30 minutes of usable hyperlapse time per battery, not 43."}</P>
+
+        <H3>Moving crowds breaking subject lock</H3>
+
+        <P>{"In Circle and Waypoint modes with subject tracking, a dense moving crowd between drone and subject can confuse DJI's APAS visual tracker — the aircraft loses lock, the gimbal swings to find the subject, and a dozen frames are wasted. The safer choice in crowded scenes is bearing-only mode with manually pre-set gimbal angles, accepting that the subject will drift in frame and correcting in post."}</P>
+
+        <H3>VLOS regulatory breach</H3>
+
+        <P>{"This is the failure mode that does not show up in the footage but does show up on the operator's record. A long hyperlapse at high altitude — particularly Course Lock along a city avenue or Waypoint into a mountain valley — can carry the aircraft beyond 500 metres horizontally, at which point most regulators consider the operator to be Beyond Visual Line of Sight (BVLOS) without authorisation. Discussed in detail in the regulation section below."}</P>
+
+        <BR />
+
+        {/* ═════ SECTION 9 ═════ */}
+        <Sec title="9 · Post-processing — where the in-drone pipeline ends" />
+
+        <P>{"DJI Fly assembles a hyperlapse to an MP4 at the chosen output frame rate, with EIS already applied. For social-media work this is often the end of the pipeline. For anything broadcast, archival, or commercial, post-processing begins where the in-drone pipeline ends."}</P>
+
+        <H3>Frame stabilisation and de-jitter</H3>
+
+        <P>{"Adobe Premiere's Warp Stabilizer remains the most common second-stage stabiliser. It re-tracks the assembled MP4, smooths residual low-frequency drift, and crops the frame margin to absorb the warp. The trade-off is a 5–10% effective resolution loss to the warp margin. DaVinci Resolve's Stabilization (paired with the Steady Zoom mode) is a competitor and often produces cleaner results on translation-heavy footage. For sequences shot raw, LRTimelapse remains the gold-standard tool for managing the per-frame exposure ramping that any sunset or sunrise hyperlapse requires."}</P>
+
+        <H3>Frame interpolation for clip stretching</H3>
+
+        <P>{"At 30 fps and 400 frames the longest possible native clip is 13.3 seconds. To extend, frame interpolation is the standard tool. Topaz Video AI's Apollo and Chronos models, and Resolve's built-in Super Scale, both perform AI-based optical-flow interpolation that can credibly double the output frame rate (60, 120 fps) without visible motion artefacts on continuously-moving subjects. They do not work well on hyperlapses with discrete subject changes between frames — flicker on lit windows, for example, will become smeared rather than crisp."}</P>
+
+        <H3>Colour grading from raw</H3>
+
+        <P>{"If you shot 12-bit DNG raw frames, you have material that exceeds the in-drone JPEG by roughly 4 stops of latitude. The standard pipeline is to import the DNG sequence into LRTimelapse, apply a smooth exposure ramp across the sequence (the so-called <em>holy grail</em> sunset-to-night transition), export to TIFF or ProRes 4444, then carry the result into Resolve or Premiere for the final grade. This is materially more work than processing the in-drone MP4 — typically two to four hours per ten-second clip — and is reserved for hero shots."}</P>
+
+        <Photograph
+          src="https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1600&q=80"
+          alt="An aerial view of a city at night with light trails"
+          caption="Light trails over a metropolis after dusk — the natural endpoint of a sunset-to-night holy-grail hyperlapse, requiring per-frame exposure ramping in LRTimelapse rather than DJI's in-mode auto-exposure."
+          credit="Joey Kyber / Unsplash"
+          href="https://unsplash.com/photos/the-aerial-view-of-the-city-at-night-aPnZRxOReXk?utm_source=dsl&utm_medium=referral"
+        />
+
+        <BR />
+
+        {/* ═════ SECTION 10 ═════ */}
+        <Sec title="10 · Regulation — UK, EU, US" />
+
+        <P>{"The Mavic 3 Pro weighs 958 grams. This number determines almost every regulatory question that follows. It is heavier than 250 g and lighter than 25 kg; it does not carry a C0 or C1 class label issued by the European drone product-class scheme; for both reasons, it cannot be flown under the most permissive category in any of the three jurisdictions discussed here."}</P>
+
+        <H3>United Kingdom — CAA</H3>
+
+        <P>{"In the UK, the Mavic 3 Pro is operated under the Civil Aviation Authority's Open category, with practical access only to subcategory A2 (with an A2 Certificate of Competency) or A3 (without). Subcategory A1 — the most permissive, allowing flight over uninvolved people — is closed to the Mavic 3 Pro because the aircraft does not carry a C1 class label and weighs more than the legacy 250 g threshold. A2 CofC permits flight as close as 50 m horizontally to uninvolved people; A3 requires at least 150 m from residential, commercial, industrial or recreational areas. All Open-category flight is VLOS, daylight or civil twilight only, below 120 m above ground, and within the operator's sight unaided by anything other than spectacles or contact lenses."}</P>
+
+        <H3>European Union — EASA</H3>
+
+        <P>{"The EU's regulation mirrors the UK's almost exactly — both descend from the same EASA framework before Brexit. A2 CofC is the practical category for Mavic 3 Pro pilots, with the same 50 m horizontal proximity rule and the same 120 m altitude ceiling. The EU also requires operator registration in the country of residence and a unique operator ID displayed on the aircraft."}</P>
+
+        <H3>United States — FAA Part 107</H3>
+
+        <P>{"In the US, any commercial drone use — including any hyperlapse that will be monetised, used in a paid video, or otherwise yields commercial benefit — requires Part 107 certification. Recreational use is governed by the FAA's recreational rules and the TRUST online test. Part 107 imposes a 400 ft (122 m) altitude limit, daylight-only without a waiver, VLOS, and operation only in airspace classes for which clearance has been obtained (LAANC for class B, C, D and surface-area E)."}</P>
+
+        <Callout title="Remote ID — required everywhere" type="warn">{
+          "Since 2023 in the US (FAA Remote ID rule) and 2024 in the EU/UK (with mandatory operator-ID transponders for non-C0 aircraft), the Mavic 3 Pro broadcasts its position, altitude and operator ID to any compliant receiver in range. This is enforceable and increasingly enforced; pilots flying without registration in the relevant database can be identified retrospectively. Verify your registration is current before each flight."
+        }</Callout>
+
+        <BR />
+
+        {/* ═════ SECTION 11 ═════ */}
+        <Sec title="11 · Real-world archetypes" />
+
+        <H3>The urban cityscape reveal</H3>
+
+        <P>{"Course Lock along a fixed bearing across a skyline, with a single landmark held by gimbal yaw. 200 frames at 2 s interval = 6 minutes 40 seconds aloft, 6.7 seconds of finished clip at 30 fps. ND16 in late afternoon, ND8 at golden hour. Hasselblad at f/5.6, 1/40, ISO 100. The classic shot."}</P>
+
+        <H3>The mountain-to-valley cable-car descent</H3>
+
+        <P>{"Waypoint with three points: high above the upper station, mid-altitude tracking the cable, low at the valley station. 250 frames at 3 s interval = 12 minutes 30 seconds aloft. Hasselblad or 70mm depending on scale; AEB-equivalent grade from raw if there is a sun-shadow line crossing the path."}</P>
+
+        <H3>The sunset hyperlapse through cloud</H3>
+
+        <P>{"Free mode, manual descent through a cloud layer as the sun sinks. Output 24 fps for a more cinematic feel. ND8 throughout, exposure ramped manually in LRTimelapse. The single most rewarded shot on hyperlapse Reels and the single most likely to fail to GPS or wind."}</P>
+
+        <H3>The Circle around a single subject</H3>
+
+        <P>{"Circle mode, 60 m radius, at golden hour. 240 frames at 2 s interval = 8 minutes aloft, 8 seconds of clip at 30 fps. Subject locked centre-frame. The Circle hyperlapse is the most forgiving of the four shots and the best place to begin."}</P>
+
+        <Photograph
+          src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1600&q=80"
+          alt="A high-altitude aerial photograph of a coastal city at dusk"
+          caption="A coastal city at dusk, the kind of scene that is the natural canvas for a Course Lock hyperlapse — fixed bearing along the shoreline, gimbal yaw to hold the harbour as the foreground slides past."
+          credit="Yury Vasiliev / Unsplash"
+          href="https://unsplash.com/photos/aerial-view-of-the-city-buildings-near-the-body-of-water-during-daytime-MnHtw3Ikmvo?utm_source=dsl&utm_medium=referral"
+        />
+
+        <BR />
+
+        {/* ═════ SECTION 12 ═════ */}
+        <Sec title="12 · Closing" />
+
+        <P>{"The drone hyperlapse is, for a brief moment in the history of aerial photography, both technically tractable and culturally fresh. The Mavic 3 Pro — three sensors, one variable iris, four modes, a 400-frame ceiling and a body of mathematics that fits on the back of a card — is the machine on which the moment is being recorded. It is unlikely to be the machine that records its end: the C2-class lighter-than-900 g aircraft in DJI's pipeline, the Air 4 series and the rumoured Mavic 4 Pro, will subsume some of these capabilities and re-shuffle the regulatory categories. What will not change is the underlying problem: that ten minutes of patience, eight minutes of station-keeping, and one carefully chosen interval still produce roughly eight seconds of finished clip, and that the discipline of the hyperlapse pilot — pre-flight checklists, ND choice, satellite count, battery margin — is what decides whether those eight seconds were worth taking off for at all."}</P>
+
+        <PQ>
+          The drone hyperlapse is governed by one formula, three numbers, four modes, and a small library of failure
+          modes that no firmware update has ever fully closed. Discipline at takeoff costs nothing; discipline missed
+          costs the entire flight.
+        </PQ>
+
+        <BR />
+
+        {/* ═════ SOURCES ═════ */}
+        <Sec title="Sources & Integrity Note" />
+
+        <P>{"<b>Primary specifications</b> drawn from DJI's official Mavic 3 Pro product page (dji.com/mavic-3-pro/specs), DJI's Mavic 3 Pro user manual v1.4 (PDF, May 2023), and the DJI Fly 1.10 release notes (December 2023). All sensor sizes, megapixel counts, aperture values, focal-length equivalents, weight (958 g), maximum wind resistance (12 m/s), maximum flight time (43 minutes), and hyperlapse mode count (Free, Circle, Course Lock, Waypoint) are taken directly from those sources."}</P>
+
+        <P>{"<b>Independent reviews</b> consulted for sensor behaviour and dynamic-range claims: DPReview's Mavic 3 Pro hands-on (published April 2023) and follow-up image-quality analysis; Petapixel's Mavic 3 Pro long-term review (published August 2023); Adam Savage's Tested Mavic 3 Pro field test (YouTube, 2023). Where these sources diverged from DJI's marketing — for example on the practical dynamic range of the 70mm and 166mm cameras versus the L2D-20c — independent review was preferred."}</P>
+
+        <P>{"<b>Regulatory references</b>: UK CAA's <em>CAP 722</em> and <em>CAP 1789</em> (Open category and A2 CofC scheme, 2024 editions); EASA's <em>Easy Access Rules for Unmanned Aircraft Systems</em> (Regulation EU 2019/947 consolidated text, 2024); FAA Part 107 (14 CFR Part 107) and the FAA Remote ID rule (Final Rule, 2021, enforced from March 2024). Recreational US flight references the FAA's TRUST exam guidance."}</P>
+
+        <P>{"<b>Composites flagged</b>: Figure A (Course Lock geometry) and Figure C (exposure triangle) are illustrative diagrams, not screenshots from DJI Fly. The example flight plan in Section 7 is an informal schema written for didactic purposes, not a direct dump from a Waypoints 3.0 export. The 'half a metre / 1–2 metre' urban-canyon GPS drift figures in Section 8 are typical field observations rather than published DJI specifications. The nomogram in Figure B is computed directly from the formulae in Section 3 and is exact within the 400-frame firmware ceiling."}</P>
+
+        <P>{"<b>Photographs</b> supplied via Unsplash (David Henrichs, Pedro Lastra, Joey Kyber, Yury Vasiliev). Subjects are illustrative — none of the photographs depicts the specific shots described in Section 11; they stand as visual cognates for the archetypes."}</P>
+      </div>
+    </article>
+  );
+}

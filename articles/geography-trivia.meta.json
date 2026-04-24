@@ -1,0 +1,18 @@
+{
+  "slug": "geography-trivia",
+  "title": "A Cabinet of Geographic Curiosities",
+  "subtitle": "Twenty-two facts about the surface of the Earth that survive contact with the source",
+  "date": "2026-04-25",
+  "read_time": "16 min",
+  "category": "history",
+  "style": "encyclopaedic",
+  "tags": [
+    "geography",
+    "trivia",
+    "maps",
+    "borders"
+  ],
+  "component": "GeographyTrivia",
+  "url": "articles/geography-trivia.html",
+  "pdf_url": "articles/geography-trivia.pdf"
+}

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Storytelling in Photography</title>
+  <meta name="description" content="How photographers make pictures behave like sentences — the decisive moment, the photo essay, the layered frame" />
+
+  <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+
+  <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
+  <script src="../assets/vendor/react.production.min.js"></script>
+  <script src="../assets/vendor/react-dom.production.min.js"></script>
+  <script src="../assets/vendor/prop-types.min.js"></script>
+  <script src="../assets/vendor/recharts.js"></script>
+</head>
+<body>
+  <!-- Compact header bar -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Storytelling in Photography</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-25</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+        <span class="style-badge" style="background:#5d403715; color:#5d4037; border:1px solid #5d403755;">Encyclopaedic</span>
+      </div>
+      <a class="md-link header-md-link" href="../md/storytelling-in-photography.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
+      <a class="pdf-link header-pdf-link" href="storytelling-in-photography.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All articles</a>
+    </div>
+  </header>
+
+  <!-- Render target -->
+  <main class="article-container">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem; font-family:serif;">
+        This article requires JavaScript to render the embedded React/Recharts components.
+      </p>
+    </noscript>
+    <div id="error-boundary" style="display:none; padding:2rem; background:#fff3f3; border:1px solid #f5c2c2; border-radius:8px; font-family:ui-monospace,monospace;"></div>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>storytelling-in-photography</code> &middot; category: <code>travel-photography</code></span>
+      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Expose React hooks + Recharts components into global scope for the JSX block -->
+  <script>
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useMemo = React.useMemo;
+    window.useRef = React.useRef;
+    window.useCallback = React.useCallback;
+    window.useReducer = React.useReducer;
+    window.useLayoutEffect = React.useLayoutEffect;
+    window.useContext = React.useContext;
+    window.Fragment = React.Fragment;
+
+    // Expose Recharts components into global scope
+    const _R = window.Recharts || {};
+    [
+      'LineChart','BarChart','AreaChart','ScatterChart','RadarChart','PieChart',
+      'XAxis','YAxis','ZAxis','CartesianGrid','Tooltip','Legend','Line','Bar','Area',
+      'Scatter','Pie','Cell','ResponsiveContainer','ReferenceLine','ReferenceArea','ReferenceDot',
+      'ComposedChart','Treemap','Radar','PolarGrid','PolarAngleAxis','PolarRadiusAxis',
+      'RadialBar','RadialBarChart','FunnelChart','Funnel','LabelList','Label','Brush',
+      'Sankey','Sector','Customized','CartesianAxis','ErrorBar','Rectangle','Curve','Cross','Dot','Polygon','Symbols','Text'
+    ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
+
+    // Simple error surface for runtime failures
+    window.addEventListener('error', function (e) {
+      var box = document.getElementById('error-boundary');
+      if (!box) return;
+      box.style.display = 'block';
+      box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
+    });
+
+    // Global <Photograph> helper (pre-transpiled React.createElement form)
+    window.Photograph = function (props) {
+      var src = props.src, alt = props.alt, caption = props.caption, credit = props.credit, href = props.href;
+      var children = [
+        React.createElement('img', { src: src, alt: alt || caption || '', loading: 'lazy', key: 'img' })
+      ];
+      if (caption || credit) {
+        var figCapChildren = [];
+        if (caption) figCapChildren.push(
+          React.createElement('span', { className: 'photo-caption', key: 'cap' }, caption)
+        );
+        if (credit) figCapChildren.push(
+          React.createElement('span', { className: 'photo-credit', key: 'cr' },
+            ' — ',
+            React.createElement('a', { href: href, target: '_blank', rel: 'noopener noreferrer' }, credit)
+          )
+        );
+        children.push(React.createElement('figcaption', { key: 'cap-root' }, figCapChildren));
+      }
+      return React.createElement('figure', { className: 'photo' }, children);
+    };
+  </script>
+
+  <!-- Pre-transpiled JSX payload (esbuild --loader=jsx --jsx=transform, classic mode).
+       React.createElement(...) calls resolve against the UMD React global above. -->
+  <script>
+    try {
+      const ARTICLE_DATA = {
+  title: "Storytelling in Photography",
+  subtitle: "How photographers make pictures behave like sentences \u2014 the decisive moment, the photo essay, the layered frame",
+  category: "travel-photography",
+  style: "encyclopaedic",
+  date: "2026-04-25",
+  author: "Matthew Deane",
+  tags: ["photography", "storytelling", "craft", "photo-essay"]
+};
+const C = {
+  bg: "#FAF8F5",
+  bgAlt: "#F2EDE4",
+  bgCard: "#F0EBE1",
+  fg: "#1a1a1a",
+  ink: "#1a1a1a",
+  muted: "#8A8278",
+  textMute: "#8A8278",
+  accent: "#C4A35A",
+  accent2: "#C4A35A",
+  grid: "#E0DAD0",
+  line: "#B8AE9C",
+  rule: "#D8CFC0",
+  panel: "#F0EBE1",
+  ok: "#5A7A4A",
+  yellow: "#FFCE00",
+  dark: "#1a1a1a",
+  navy: "#0C1420",
+  red: "#B43A2E",
+  blue: "#3C6FA0",
+  green: "#5A7A4A",
+  orange: "#C27A3A",
+  purple: "#6B4A7A"
+};
+const F = {
+  serif: "'Source Serif 4', Georgia, serif",
+  sans: "'Source Sans 3', 'Helvetica Neue', sans-serif",
+  head: "'Playfair Display', Georgia, serif",
+  mono: "'JetBrains Mono', monospace"
+};
+const ThreeActArc = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 800 360", style: { width: "100%", display: "block", borderRadius: 4 } }, /* @__PURE__ */ React.createElement("rect", { width: "800", height: "360", fill: C.bg }), /* @__PURE__ */ React.createElement("text", { x: "400", y: "26", fill: C.ink, fontSize: "14", textAnchor: "middle", fontFamily: F.sans, fontWeight: "700" }, "Figure 1 \xB7 The three-act arc, mapped onto a photo essay"), /* @__PURE__ */ React.createElement("text", { x: "400", y: "44", fill: C.muted, fontSize: "11", textAnchor: "middle", fontFamily: F.sans }, `Adapted from W. Eugene Smith's "Country Doctor" (Life, 1948) \u2014 establishing \u2192 complication \u2192 resolution.`), /* @__PURE__ */ React.createElement("line", { x1: "60", y1: "270", x2: "740", y2: "270", stroke: C.line, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("line", { x1: "60", y1: "80", x2: "60", y2: "270", stroke: C.line, strokeWidth: "1" }), /* @__PURE__ */ React.createElement(
+  "path",
+  {
+    d: "M 60 250 C 180 240, 220 210, 280 175 C 340 140, 380 105, 440 95 C 500 85, 540 130, 600 175 C 660 215, 700 240, 740 245",
+    fill: "none",
+    stroke: C.red,
+    strokeWidth: "2.4"
+  }
+), /* @__PURE__ */ React.createElement("line", { x1: "280", y1: "80", x2: "280", y2: "270", stroke: C.line, strokeDasharray: "3 4" }), /* @__PURE__ */ React.createElement("line", { x1: "540", y1: "80", x2: "540", y2: "270", stroke: C.line, strokeDasharray: "3 4" }), /* @__PURE__ */ React.createElement("text", { x: "170", y: "100", fill: C.ink, fontSize: "12", textAnchor: "middle", fontFamily: F.sans, fontWeight: "700" }, "ACT I \xB7 Establishing"), /* @__PURE__ */ React.createElement("text", { x: "410", y: "100", fill: C.ink, fontSize: "12", textAnchor: "middle", fontFamily: F.sans, fontWeight: "700" }, "ACT II \xB7 Complication"), /* @__PURE__ */ React.createElement("text", { x: "640", y: "100", fill: C.ink, fontSize: "12", textAnchor: "middle", fontFamily: F.sans, fontWeight: "700" }, "ACT III \xB7 Resolution"), [
+  { x: 110, y: 246, label: "Wide opener", note: "Doctor walks the field at dawn" },
+  { x: 200, y: 215, label: "Portrait", note: "Ceriani in his office" },
+  { x: 280, y: 175, label: "Inciting", note: "Phone rings \u2014 emergency" },
+  { x: 360, y: 130, label: "Trauma", note: "Child kicked by horse" },
+  { x: 440, y: 95, label: "Climax", note: "Stitching by lamplight" },
+  { x: 520, y: 130, label: "Aftermath", note: "Mother holds child" },
+  { x: 610, y: 180, label: "Quiet detail", note: "Coffee, exhaustion" },
+  { x: 690, y: 240, label: "Closing wide", note: "Doctor at dusk" }
+].map((p, i) => /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("circle", { cx: p.x, cy: p.y, r: "5", fill: C.red, stroke: C.bg, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: p.x, y: p.y - 12, fill: C.ink, fontSize: "10", textAnchor: "middle", fontFamily: F.sans, fontWeight: "700" }, p.label), /* @__PURE__ */ React.createElement("text", { x: p.x, y: p.y + 18, fill: C.muted, fontSize: "9", textAnchor: "middle", fontFamily: F.sans }, p.note))), /* @__PURE__ */ React.createElement("text", { x: "34", y: "170", fill: C.muted, fontSize: "10", textAnchor: "middle", fontFamily: F.sans, transform: "rotate(-90 34 170)" }, "narrative tension"), /* @__PURE__ */ React.createElement("text", { x: "400", y: "295", fill: C.muted, fontSize: "10", textAnchor: "middle", fontFamily: F.sans }, "sequence position \u2192"), /* @__PURE__ */ React.createElement("text", { x: "400", y: "335", fill: C.muted, fontSize: "10", textAnchor: "middle", fontFamily: F.sans, fontStyle: "italic" }, 'Source: W. Eugene Smith, "Country Doctor," Life magazine, 20 September 1948 (28 photographs across 12 pages).'));
+const EssayGrid = () => {
+  const cells = [
+    { r: 0, c: 0, kind: "WIDE", note: "Establishing \u2014 village at dawn", colour: C.blue },
+    { r: 0, c: 1, kind: "MED", note: "Portrait \u2014 protagonist", colour: C.green },
+    { r: 0, c: 2, kind: "DET", note: "Hands at work", colour: C.orange },
+    { r: 1, c: 0, kind: "MED", note: "Scene \u2014 interaction", colour: C.green },
+    { r: 1, c: 1, kind: "WIDE", note: "Context \u2014 landscape", colour: C.blue },
+    { r: 1, c: 2, kind: "DET", note: "Object \u2014 symbolic", colour: C.orange },
+    { r: 2, c: 0, kind: "DET", note: "Quiet detail \u2014 pause", colour: C.orange },
+    { r: 2, c: 1, kind: "MED", note: "Climax \u2014 decisive frame", colour: C.red },
+    { r: 2, c: 2, kind: "WIDE", note: "Closing \u2014 departure", colour: C.blue }
+  ];
+  const cellW = 200;
+  const cellH = 80;
+  const x0 = 80;
+  const y0 = 80;
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 800 460", style: { width: "100%", display: "block", borderRadius: 4 } }, /* @__PURE__ */ React.createElement("rect", { width: "800", height: "460", fill: C.bg }), /* @__PURE__ */ React.createElement("text", { x: "400", y: "26", fill: C.ink, fontSize: "14", textAnchor: "middle", fontFamily: F.sans, fontWeight: "700" }, "Figure 2 \xB7 A nine-image essay grid \u2014 pacing as rhythm"), /* @__PURE__ */ React.createElement("text", { x: "400", y: "44", fill: C.muted, fontSize: "11", textAnchor: "middle", fontFamily: F.sans }, "Wide (W) \xB7 Medium (M) \xB7 Detail (D). The Magnum-pattern essay alternates scale to create cadence."), cells.map((cell, i) => {
+    const x = x0 + cell.c * cellW;
+    const y = y0 + cell.r * (cellH + 16);
+    return /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("rect", { x, y, width: cellW - 16, height: cellH, fill: C.bgCard, stroke: cell.colour, strokeWidth: "1.4", rx: "3" }), /* @__PURE__ */ React.createElement("rect", { x, y, width: "50", height: "22", fill: cell.colour, rx: "2" }), /* @__PURE__ */ React.createElement("text", { x: x + 25, y: y + 16, fill: "#fff", fontSize: "11", textAnchor: "middle", fontFamily: F.mono, fontWeight: "700" }, cell.kind), /* @__PURE__ */ React.createElement("text", { x: x + 12, y: y + 44, fill: C.ink, fontSize: "11", fontFamily: F.sans, fontWeight: "700" }, "Frame ", cell.r * 3 + cell.c + 1), /* @__PURE__ */ React.createElement("text", { x: x + 12, y: y + 62, fill: C.muted, fontSize: "10", fontFamily: F.sans }, cell.note));
+  }), /* @__PURE__ */ React.createElement("text", { x: "50", y: "120", fill: C.muted, fontSize: "10", textAnchor: "middle", fontFamily: F.sans }, "ACT I"), /* @__PURE__ */ React.createElement("text", { x: "50", y: "216", fill: C.muted, fontSize: "10", textAnchor: "middle", fontFamily: F.sans }, "ACT II"), /* @__PURE__ */ React.createElement("text", { x: "50", y: "312", fill: C.muted, fontSize: "10", textAnchor: "middle", fontFamily: F.sans }, "ACT III"), /* @__PURE__ */ React.createElement("g", { transform: "translate(80, 380)" }, /* @__PURE__ */ React.createElement("rect", { x: "0", y: "0", width: "14", height: "14", fill: C.blue }), /* @__PURE__ */ React.createElement("text", { x: "22", y: "11", fill: C.ink, fontSize: "11", fontFamily: F.sans }, "WIDE \u2014 context, place, scale"), /* @__PURE__ */ React.createElement("rect", { x: "220", y: "0", width: "14", height: "14", fill: C.green }), /* @__PURE__ */ React.createElement("text", { x: "242", y: "11", fill: C.ink, fontSize: "11", fontFamily: F.sans }, "MEDIUM \u2014 people, action, interaction"), /* @__PURE__ */ React.createElement("rect", { x: "500", y: "0", width: "14", height: "14", fill: C.orange }), /* @__PURE__ */ React.createElement("text", { x: "522", y: "11", fill: C.ink, fontSize: "11", fontFamily: F.sans }, "DETAIL \u2014 texture, hands, object"), /* @__PURE__ */ React.createElement("rect", { x: "80", y: "22", width: "14", height: "14", fill: C.red }), /* @__PURE__ */ React.createElement("text", { x: "102", y: "33", fill: C.ink, fontSize: "11", fontFamily: F.sans }, "DECISIVE FRAME \u2014 the climactic image (one only)")), /* @__PURE__ */ React.createElement("text", { x: "400", y: "440", fill: C.muted, fontSize: "10", textAnchor: "middle", fontFamily: F.sans, fontStyle: "italic" }, "Pattern after Magnum picture-editor practice (cf. Webb, Salgado, Davidson) \u2014 alternation prevents tonal monotony."));
+};
+const DC = ({ children }) => {
+  const text = typeof children === "string" ? children : "";
+  const f = text.charAt(0);
+  const r = text.slice(1);
+  return /* @__PURE__ */ React.createElement("p", { style: { fontFamily: F.serif, fontSize: 18, lineHeight: 1.8, color: C.ink, margin: "0 0 24px" } }, /* @__PURE__ */ React.createElement(
+    "span",
+    {
+      style: {
+        float: "left",
+        fontFamily: F.head,
+        fontSize: 72,
+        fontWeight: 900,
+        lineHeight: "0.8",
+        marginRight: 8,
+        marginTop: 6,
+        color: C.ink
+      }
+    },
+    f
+  ), /* @__PURE__ */ React.createElement("span", { dangerouslySetInnerHTML: { __html: r } }));
+};
+const P = ({ children, style = {} }) => /* @__PURE__ */ React.createElement(
+  "p",
+  {
+    style: { fontFamily: F.serif, fontSize: 18, lineHeight: 1.8, color: C.ink, margin: "0 0 22px", ...style },
+    dangerouslySetInnerHTML: { __html: children }
+  }
+);
+const Sec = ({ title }) => /* @__PURE__ */ React.createElement(
+  "h2",
+  {
+    style: {
+      fontFamily: F.head,
+      fontSize: 28,
+      fontWeight: 900,
+      color: C.ink,
+      margin: "52px 0 18px",
+      letterSpacing: "-0.01em",
+      borderBottom: `2px solid ${C.yellow}`,
+      paddingBottom: 8,
+      display: "inline-block"
+    }
+  },
+  title
+);
+const SB = ({ title, children }) => /* @__PURE__ */ React.createElement(
+  "div",
+  {
+    style: {
+      background: C.bgCard,
+      border: `1px solid ${C.rule}`,
+      borderRadius: 4,
+      padding: "28px 32px",
+      margin: "36px 0",
+      maxWidth: 700
+    }
+  },
+  /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        fontFamily: F.sans,
+        fontSize: 12,
+        fontWeight: 700,
+        letterSpacing: "0.12em",
+        textTransform: "uppercase",
+        color: C.ink,
+        marginBottom: 8,
+        borderBottom: `2px solid ${C.yellow}`,
+        paddingBottom: 6,
+        display: "inline-block"
+      }
+    },
+    title
+  ),
+  /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        fontFamily: F.sans,
+        fontSize: 15,
+        lineHeight: 1.7,
+        color: C.ink,
+        marginTop: 14
+      },
+      dangerouslySetInnerHTML: { __html: children }
+    }
+  )
+);
+const PQ = ({ children }) => /* @__PURE__ */ React.createElement(
+  "blockquote",
+  {
+    style: {
+      fontFamily: F.head,
+      fontStyle: "italic",
+      fontSize: 26,
+      lineHeight: 1.5,
+      color: C.ink,
+      borderLeft: `3px solid ${C.yellow}`,
+      paddingLeft: 28,
+      margin: "40px 0 40px 20px",
+      maxWidth: 620
+    }
+  },
+  children
+);
+const Callout = ({ title, children, kind = "info" }) => {
+  const bar = kind === "warn" ? C.red : kind === "tip" ? C.green : C.blue;
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        background: C.bgCard,
+        borderLeft: `4px solid ${bar}`,
+        padding: "18px 22px",
+        margin: "28px 0",
+        fontFamily: F.sans,
+        fontSize: 15,
+        lineHeight: 1.6,
+        color: C.ink
+      }
+    },
+    /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        style: {
+          fontFamily: F.sans,
+          fontSize: 12,
+          fontWeight: 700,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: bar,
+          marginBottom: 6
+        }
+      },
+      title
+    ),
+    /* @__PURE__ */ React.createElement("div", null, children)
+  );
+};
+const IC = ({ func, caption }) => /* @__PURE__ */ React.createElement("div", { style: { padding: "10px 0 32px" } }, /* @__PURE__ */ React.createElement(
+  "span",
+  {
+    style: {
+      fontFamily: F.sans,
+      fontSize: 11,
+      fontWeight: 600,
+      letterSpacing: "0.08em",
+      textTransform: "uppercase",
+      color: C.accent,
+      marginRight: 10
+    }
+  },
+  func
+), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: F.sans, fontSize: 13, color: C.muted, lineHeight: 1.5 } }, caption));
+const Cap = ({ children }) => /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.sans, fontSize: 13, color: C.muted, lineHeight: 1.5, margin: "8px 0 28px", fontStyle: "italic" } }, children);
+const Photograph = ({ src, alt, caption, credit, href }) => /* @__PURE__ */ React.createElement("figure", { style: { margin: "32px 0" } }, /* @__PURE__ */ React.createElement(
+  "img",
+  {
+    src,
+    alt,
+    loading: "lazy",
+    style: { width: "100%", height: "auto", borderRadius: 4, display: "block", border: `1px solid ${C.line}` }
+  }
+), /* @__PURE__ */ React.createElement("figcaption", { style: { fontFamily: F.sans, fontSize: 13, lineHeight: 1.6, color: C.muted, marginTop: 10 } }, caption, credit && /* @__PURE__ */ React.createElement("span", { style: { display: "block", marginTop: 4, fontSize: 11, color: C.muted, letterSpacing: "0.04em" } }, "Photograph: ", href ? /* @__PURE__ */ React.createElement("a", { href, style: { color: C.accent, textDecoration: "none" } }, credit) : credit)));
+const BR = () => /* @__PURE__ */ React.createElement(
+  "div",
+  {
+    style: {
+      textAlign: "center",
+      margin: "48px 0",
+      color: C.accent,
+      fontSize: 20,
+      letterSpacing: 8,
+      fontFamily: F.serif
+    }
+  },
+  "\u2767"
+);
+const Hero = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 1200 700", style: { width: "100%", height: "100%", position: "absolute", top: 0, left: 0 } }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("linearGradient", { id: "hg", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#0a0a0f" }), /* @__PURE__ */ React.createElement("stop", { offset: "60%", stopColor: "#141820" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#22262e" })), /* @__PURE__ */ React.createElement("radialGradient", { id: "rg", cx: "0.5", cy: "0.5", r: "0.5" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: C.yellow, stopOpacity: "0.10" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: C.yellow, stopOpacity: "0" }))), /* @__PURE__ */ React.createElement("rect", { width: "1200", height: "700", fill: "url(#hg)" }), /* @__PURE__ */ React.createElement("circle", { cx: "600", cy: "350", r: "380", fill: "url(#rg)" }), /* @__PURE__ */ React.createElement("g", { stroke: C.yellow, strokeWidth: "0.7", fill: "none", opacity: "0.55" }, Array.from({ length: 6 }).map(
+  (_, r) => Array.from({ length: 8 }).map((_2, c) => /* @__PURE__ */ React.createElement(
+    "rect",
+    {
+      key: `f-${r}-${c}`,
+      x: 140 + c * 120,
+      y: 140 + r * 70,
+      width: "106",
+      height: "60",
+      rx: "2"
+    }
+  ))
+), Array.from({ length: 24 }).map((_, i) => /* @__PURE__ */ React.createElement("g", { key: `s-${i}` }, /* @__PURE__ */ React.createElement("rect", { x: 120 + i * 40, y: "116", width: "14", height: "10", fill: C.yellow, fillOpacity: "0.35", stroke: "none" }), /* @__PURE__ */ React.createElement("rect", { x: 120 + i * 40, y: "568", width: "14", height: "10", fill: C.yellow, fillOpacity: "0.35", stroke: "none" })))), /* @__PURE__ */ React.createElement("g", null, /* @__PURE__ */ React.createElement("rect", { x: 380, y: 210, width: "106", height: "60", stroke: C.yellow, strokeWidth: "2", fill: "none" }), /* @__PURE__ */ React.createElement("text", { x: 433, y: 290, fill: C.yellow, fontSize: "10", textAnchor: "middle", fontFamily: F.mono }, "the decisive frame")), /* @__PURE__ */ React.createElement("g", { fill: C.yellow, fontFamily: F.mono, fontSize: "10", opacity: "0.7" }, /* @__PURE__ */ React.createElement("text", { x: "160", y: "135" }, "roll 24 / 36"), /* @__PURE__ */ React.createElement("text", { x: "900", y: "135" }, "tri-x \xB7 1/250 \xB7 f/5.6")));
+function StorytellingInPhotography() {
+  return /* @__PURE__ */ React.createElement("article", { style: { background: C.bg, minHeight: "100vh", margin: 0, padding: 0 } }, /* @__PURE__ */ React.createElement("style", null, `*{box-sizing:border-box;margin:0;padding:0}body{background:${C.bg}}`), /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        background: C.navy,
+        color: "#fff",
+        fontFamily: F.sans,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.15em",
+        textTransform: "uppercase",
+        padding: "10px 24px",
+        textAlign: "center"
+      }
+    },
+    "Mode: Encyclopaedic\xA0 \xB7 \xA0Category: Craft of Photography"
+  ), /* @__PURE__ */ React.createElement("div", { style: { height: 4, background: C.yellow } }), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", minHeight: "85vh", overflow: "hidden", background: C.navy } }, /* @__PURE__ */ React.createElement(Hero, null), /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        position: "relative",
+        zIndex: 2,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        minHeight: "85vh",
+        padding: "60px 40px 50px"
+      }
+    },
+    /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        style: {
+          fontFamily: F.sans,
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: "0.2em",
+          color: C.yellow,
+          marginBottom: 16
+        }
+      },
+      "\u25C6 FEATURE \xB7 CRAFT"
+    ),
+    /* @__PURE__ */ React.createElement(
+      "h1",
+      {
+        style: {
+          fontFamily: F.head,
+          fontWeight: 900,
+          fontSize: "clamp(40px,5.5vw,72px)",
+          color: "#fff",
+          lineHeight: 1.05,
+          maxWidth: 900,
+          marginBottom: 20
+        }
+      },
+      "Storytelling in Photography"
+    ),
+    /* @__PURE__ */ React.createElement(
+      "p",
+      {
+        style: {
+          fontFamily: F.serif,
+          fontStyle: "italic",
+          fontSize: "clamp(16px,2vw,22px)",
+          color: "rgba(255,255,255,0.82)",
+          maxWidth: 720,
+          lineHeight: 1.5,
+          marginBottom: 30
+        }
+      },
+      "A photograph cannot quite do what a sentence does \u2014 and yet, in the right hands, it can carry an argument, a chronology and a moral weight that prose envies. This is a craft reference for the means by which photographers make pictures behave like stories."
+    ),
+    /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        style: {
+          fontFamily: F.sans,
+          fontSize: 12,
+          color: "rgba(255,255,255,0.45)",
+          maxWidth: 460,
+          lineHeight: 1.4,
+          textAlign: "right",
+          alignSelf: "flex-end"
+        }
+      },
+      "A contact sheet rendered as the structural unit of photographic storytelling: the frame, repeated, until one of them earns the circle."
+    )
+  )), /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 760, margin: "0 auto", padding: "60px 24px 80px" } }, /* @__PURE__ */ React.createElement(DC, null, `A photograph is not a sentence. It has no tense \u2014 only an implied past where the shutter fell \u2014 and no syntax beyond what the eye is pulled to first, second and third. And yet for nearly a century photographers have been borrowing the vocabulary of narrative as if these limits were features rather than constraints. They have spoken of acts and turning points, of chapters and codas, of beats and pacing. The borrowing is not merely metaphorical. The best photographic stories \u2014 Henri Cartier-Bresson&apos;s street fragments, W. Eugene Smith&apos;s long-form Life essays, Sebasti\xE3o Salgado&apos;s Genesis, Nan Goldin&apos;s Ballad \u2014 work on us through structures that any novelist or screenwriter would recognise. This article is a reference for those structures: the architecture, the lexicon, and the small craft decisions that turn a stack of images into something with a beginning, a middle and an end.`), /* @__PURE__ */ React.createElement(P, null, `The argument running underneath is simple. A picture by itself is a noun: a thing held still. A picture in sequence \u2014 paired, captioned, paced against another picture \u2014 becomes a verb. It begins to do something. The decisive moment, the photo essay, the layered frame, the carousel and the zine are all instruments for converting nouns into verbs. Each has its own conventions and its own canonical practitioners. This is a tour through them.`), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "1 \xB7 The three-act arc, photographically" }), /* @__PURE__ */ React.createElement(P, null, `Aristotle&apos;s observation in the <em>Poetics</em> that a story has a beginning, a middle and an end is so familiar it sounds banal until one tries to make a photo essay without one. The three-act structure \u2014 establishing, complication, resolution \u2014 entered photography most explicitly in the long-form picture stories that <em>Life</em> magazine pioneered in the late 1930s and refined through the 1940s and 1950s. The picture editor Wilson Hicks, who shaped <em>Life</em>&apos;s essay form for two decades, codified the working practice in his 1952 book <em>Words and Pictures: An Introduction to Photojournalism</em>. The book is, in retrospect, the first proper textbook of photographic narrative.`), /* @__PURE__ */ React.createElement(P, null, `The shape is straightforward in description and demanding in practice. Act I establishes \u2014 a place, a person, a problem. The opening frame is conventionally a wide shot: it tells the reader where they are. Act II complicates \u2014 the problem deepens, a counter-force enters, a turning point arrives. The middle is where pacing matters most: too many wide frames in a row and the eye glazes; too many details and the geography is lost. Act III resolves \u2014 not necessarily happily, but conclusively. A closing wide frame, or a quiet detail, sends the reader out of the sequence the way a final cadence sends a listener out of a piece of music.`), /* @__PURE__ */ React.createElement(ThreeActArc, null), /* @__PURE__ */ React.createElement(IC, { func: "Diagram", caption: "The three-act arc, mapped onto a photo essay. Adapted from W. Eugene Smith's 'Country Doctor' (Life, 20 September 1948)." }), /* @__PURE__ */ React.createElement(P, null, `The arc is descriptive, not prescriptive. Plenty of photographic stories work without it \u2014 Daido Moriyama&apos;s <em>Bye Bye Photography</em> (1972) is a deliberate refusal of resolution, and Robert Frank&apos;s <em>The Americans</em> (Les Am\xE9ricains, 1958) is constructed by rhyme rather than plot. But for the working photojournalist on assignment, the arc is the default scaffold for a reason: it is the shape an editor expects, the shape a magazine layout supports, and the shape that a viewer will assemble out of any sequence whether the photographer intends it or not.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=1600&q=80",
+      alt: "A photographer on the street, camera raised to the eye, working in available light.",
+      caption: "A photographer at work \u2014 the camera held to the eye, the shutter waiting. The decisive moment is, in practice, mostly the long minutes that precede it.",
+      credit: "Yns Plt / Unsplash",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "2 \xB7 The decisive moment \u2014 what it means, what it doesn't" }), /* @__PURE__ */ React.createElement(P, null, `The single most influential phrase in twentieth-century photography is, strictly speaking, a translator&apos;s phrase. Henri Cartier-Bresson&apos;s 1952 book was titled <em>Images \xE0 la sauvette</em> \u2014 roughly, "images on the run" or "images on the sly". The American edition, published the same year by Simon &amp; Schuster, was retitled <em>The Decisive Moment</em>, after a line in the book&apos;s preface where Cartier-Bresson quotes the seventeenth-century Cardinal de Retz: "Il n&apos;y a rien dans ce monde qui n&apos;ait un moment d\xE9cisif" \u2014 there is nothing in this world that does not have its decisive moment. The English title stuck. The French original is more honest about what the work actually is: a photographer slipping through the world, picture by picture, trying to be present at the right second.`), /* @__PURE__ */ React.createElement(P, null, `Cartier-Bresson&apos;s own definition, in the same preface, is more useful than the slogan it became. He wrote that photography is "the simultaneous recognition, in a fraction of a second, of the significance of an event as well as of a precise organisation of forms which give that event its proper expression". Two halves: significance and form. The decisive moment is the instant when both align \u2014 when something is happening that means something, and when it is arranged in the frame in a way that lets the viewer see what it means. Either half without the other produces ordinary work.`), /* @__PURE__ */ React.createElement(PQ, null, '"Photography is the simultaneous recognition, in a fraction of a second, of the significance of an event as well as of a precise organisation of forms which give that event its proper expression."', /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.sans, fontStyle: "normal", fontSize: 14, color: C.muted, marginTop: 12 } }, "\u2014 Henri Cartier-Bresson, preface to ", /* @__PURE__ */ React.createElement("em", null, "The Decisive Moment"), ", 1952")), /* @__PURE__ */ React.createElement(P, null, `The picture most associated with the phrase \u2014 the man leaping over a puddle behind the Gare Saint-Lazare in Paris, 1932 \u2014 is itself a quiet object lesson in the doctrine. The man&apos;s heel hovers a centimetre above its own reflection. A poster on the fence behind him shows a dancer mid-leap, mirroring the human figure. A ladder lies discarded in the foreground water. None of these alignments is accidental in the sense of being unobserved; all of them are accidental in the sense of being unrepeatable. The frame catches geometry and gesture in the same fraction of a second. That is the decisive moment as a craft principle: not chance, but the trained anticipation of the instant when chance will resolve into form.`), /* @__PURE__ */ React.createElement(P, null, `What the doctrine does not mean \u2014 and what the slogan, separated from the rest of the preface, has often been taken to mean \u2014 is that a photograph&apos;s value lies entirely in a single moment of luck. Cartier-Bresson was a methodical photographer. He carried a Leica with a 50 mm lens, walked for hours, returned to scenes repeatedly, and worked from contact sheets with a sharp pen. The decisive moment is what one selects after the fact as much as what one captures in the moment. The contact sheet is, in this sense, the manuscript of which the printed photograph is the published draft.`), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "3 \xB7 The photo essay, born at Life" }), /* @__PURE__ */ React.createElement(P, null, `If the decisive moment is the unit, the photo essay is the form. The form was largely invented at <em>Life</em>, the picture-magazine empire founded by Henry Luce in 1936. Across the late 1930s and through the 1940s, <em>Life</em> built the conventions that still govern long-form photojournalism: a strong opening spread, a sequence that alternates wide and intimate frames, a climax late in the piece, a coda. The magazine&apos;s designers and picture editors, working alongside photographers including Margaret Bourke-White, Alfred Eisenstaedt and Gordon Parks, treated the layout itself as part of the storytelling \u2014 the size of a picture on a page, its position relative to its neighbours, the white space around it, all carried meaning.`), /* @__PURE__ */ React.createElement(P, null, `The defining example, taught in nearly every photojournalism course since, is W. Eugene Smith&apos;s "Country Doctor", published in <em>Life</em> on 20 September 1948. Smith spent twenty-three days in Kremmling, Colorado, with Dr Ernest Ceriani, the only physician for around two thousand people across four hundred square miles. He came back with the makings of an essay: twenty-eight photographs across twelve pages, opening with a wide frame of Ceriani walking through a rainy field with his medical bag, and closing with a now-canonical image of the doctor sitting alone in his kitchen, drinking coffee, exhausted, after performing emergency surgery on a child kicked by a horse.`), /* @__PURE__ */ React.createElement(P, null, `What "Country Doctor" demonstrated \u2014 and what every photo-essay textbook since has taken from it \u2014 is that the essay&apos;s power comes from cumulative tone rather than from any individual frame. None of Smith&apos;s photographs from Kremmling is, taken alone, his most famous picture. Together, they are the most influential single photo essay in the medium&apos;s history. The magazine ran them with captions written by <em>Life</em>&apos;s staff in close consultation with Smith \u2014 a model of caption-writing that the picture-magazine tradition would carry forward through <em>Look</em>, <em>Paris Match</em> and, later, <em>National Geographic</em>.`), /* @__PURE__ */ React.createElement(SB, { title: "The classic Magnum-pattern essay" }, `A working frame, refined inside the Magnum cooperative across the 1950s and 1960s, holds that a long-form
+          photo essay should contain at least one of each of: an <b>establishing wide</b> (where are we?), a
+          <b> portrait</b> (who is this story about?), an <b>action / interaction</b> frame (what is happening?),
+          a <b>detail</b> (what does this place feel like up close?), a <b>moment of climax</b> (the decisive
+          frame), and a <b>closing image</b> that allows the viewer to leave. The pattern is a checklist, not a
+          template; mature photographers depart from it routinely. But beginners assigned to a story almost always
+          come back missing one of the six, and the missing one is almost always the closing image.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1600&q=80",
+      alt: "A printed double-page newspaper or magazine spread on a wooden surface, photographs visible across both pages.",
+      caption: "A printed magazine spread \u2014 the photo essay's native habitat. Layout, scale and white space are part of the storytelling, not packaging around it.",
+      credit: "Roman Kraft / Unsplash",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "4 \xB7 The long form \u2014 Salgado's Workers and Genesis" }), /* @__PURE__ */ React.createElement(P, null, `Sebasti\xE3o Salgado is, alongside James Nachtwey, the photographer who most stretched the photo essay&apos;s upper limit. His long-form projects are not magazine essays expanded by a few pages; they are book-length expeditions sustained over years. <em>Workers: An Archaeology of the Industrial Age</em>, published in 1993 and shot across six years and roughly twenty-six countries, brings together more than three hundred and fifty black-and-white photographs of manual labour \u2014 Brazilian gold-miners climbing wooden ladders out of the Serra Pelada pit, sulphur workers in Indonesia, Cuban sugar-cane cutters, Bangladeshi shipbreakers. The book is structured into six thematic sections \u2014 agriculture, food, mining, industry, oil, transport \u2014 each functioning as its own essay, with its own openings and resolutions, inside the larger book.`), /* @__PURE__ */ React.createElement(P, null, `<em>Genesis</em>, published in 2013 after eight years of expeditions, is structurally even more ambitious. The work, conceived with his wife L\xE9lia Wanick Salgado, who has edited and designed his books since the 1980s, is divided into five geographic chapters \u2014 Planet South, Sanctuaries, Africa, Northern Spaces, Amazonia and Pantanal \u2014 across which Salgado photographs the parts of the planet that, in his framing, remain "as they were at the beginning of time". The book runs to more than five hundred pages and contains over two hundred and forty photographs.`), /* @__PURE__ */ React.createElement(P, null, `What is interesting structurally about Salgado&apos;s long-form work is how he resolves the central problem of book-length photographic storytelling: tonal monotony. A book of three hundred similarly-toned black-and-white frames will exhaust the viewer by page forty. Salgado&apos;s solution, executed by L\xE9lia Wanick Salgado in the editing, is the chapter break. Each chapter is given its own internal arc, its own opening wide, its own climactic frame, its own coda. The reader is permitted to come up for air between chapters before being submerged again. The technique is borrowed directly from the long novel \u2014 and it works for the same reason it works there.`), /* @__PURE__ */ React.createElement(PQ, null, '"I want to photograph the world as it was before mankind started to colonise it."', /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.sans, fontStyle: "normal", fontSize: 14, color: C.muted, marginTop: 12 } }, "\u2014 Sebasti\xE3o Salgado, on ", /* @__PURE__ */ React.createElement("em", null, "Genesis"), ', in his TED talk "The silent drama of photography," March 2013')), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "5 \xB7 Story in a single frame \u2014 Alex Webb" }), /* @__PURE__ */ React.createElement(P, null, `Most of what has been said so far concerns story across a sequence. The opposite proposition \u2014 that an entire story can be told in one frame \u2014 is the principle behind the layered street photograph, and its modern master is the American photographer Alex Webb, a member of Magnum since 1979. Webb&apos;s frames typically contain four or five distinct planes of action \u2014 a foreground figure, a middle-ground gesture, a reflection in a window, a distant silhouette \u2014 each of which would, alone, be a perfectly competent photograph. The story is in their coexistence.`), /* @__PURE__ */ React.createElement(P, null, `Webb has worked principally in colour, in countries where strong sunlight produces hard shadows that he uses architecturally \u2014 Haiti, Mexico, Cuba, Florida, Istanbul. His books, including <em>Hot Light / Half-Made Worlds: Photographs from the Tropics</em> (1986), <em>Crossings</em> (2003) and <em>Istanbul: City of a Hundred Names</em> (2007), gather these layered frames into sequences in which each individual photograph is already a small story, and the sequence then rhymes them.`), /* @__PURE__ */ React.createElement(P, null, `In a 2011 interview with the photography critic Sean O&apos;Hagan in <em>The Guardian</em>, Webb described the working method bluntly: he waits. He has spoken in lectures and Magnum interviews of returning to the same corner over multiple days, watching the geometry of light against architecture, until figures pass through the geometry in a way that lets the frame close. The decisive moment, in Webb&apos;s practice, is the moment several decisive moments coincide. The technique is harder than it looks; the failure mode, as Webb himself has noted, is a frame that is busy without being meaningful.`), /* @__PURE__ */ React.createElement(Callout, { title: "Image-as-noun versus image-as-verb", kind: "info" }, "A useful diagnostic when editing one's own work: ask of each candidate frame whether it is doing something or merely showing something. A photograph of a beautiful fa\xE7ade is a noun \u2014 it names a thing. A photograph of a child running past that fa\xE7ade as a shadow falls across the door is a verb \u2014 it tells. The image-as-verb is what survives the cut into a sequence; the image-as-noun, no matter how lovely, tends to be edited out."), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "6 \xB7 Quiet narratives \u2014 Rinko Kawauchi and the poetic sequence" }), /* @__PURE__ */ React.createElement(P, null, `The Japanese photographer Rinko Kawauchi, working in colour with a Rolleiflex 6\xD76 medium-format camera, occupies a different storytelling tradition. Her three breakout books \u2014 <em>Utatane</em>, <em>Hanabi</em> and <em>Hanako</em>, all published simultaneously by Tokyo&apos;s Little More in 2001 \u2014 propose a kind of photographic sequencing that is closer to poetry than to journalism. There is no protagonist, no plot, no climax in any conventional sense. Instead, frames accumulate by association: a fish on ice next to a pale sky next to a child&apos;s hand next to a bowl of broth. The reader builds the story themselves.`), /* @__PURE__ */ React.createElement(P, null, `Kawauchi&apos;s work won the 2002 Kimura Ihei Award, Japan&apos;s most prestigious photography prize for emerging photographers, and was instrumental in introducing a non-Western model of photo-book sequencing to international audiences. Her later books \u2014 <em>Illuminance</em> (2011, Aperture), which gathered fifteen years of work, and <em>Halo</em> (2017) \u2014 extended the same approach across longer arcs. The structural innovation is the use of <em>ma</em>, the Japanese aesthetic concept of negative space or interval, as a sequencing principle: a quiet frame between two louder frames is doing structural work, not filling space.`), /* @__PURE__ */ React.createElement(P, null, `What the poetic sequence demonstrates, against the magazine-essay tradition, is that storytelling in photography does not require a plot. It requires only that the order of pictures matter \u2014 that swapping two of them would change the experience. By that minimal definition, Kawauchi&apos;s books are as rigorously sequenced as Smith&apos;s "Country Doctor", and her quiet pages of sky and steam are as load-bearing as Smith&apos;s climactic surgery frame.`), /* @__PURE__ */ React.createElement(EssayGrid, null), /* @__PURE__ */ React.createElement(IC, { func: "Diagram", caption: "A nine-image essay grid annotated with wide / medium / detail pacing. The decisive frame falls late, in the lower middle row." }), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "7 \xB7 Intimate long-form \u2014 Nan Goldin's Ballad" }), /* @__PURE__ */ React.createElement(P, null, `Nan Goldin&apos;s <em>The Ballad of Sexual Dependency</em> began as a slideshow projected to live audiences in New York clubs and lofts from 1979 onward, and was first published as a book by Aperture in 1986. It contains around 700 photographs in its slideshow form \u2014 Goldin has continued to revise it across four decades \u2014 and roughly 125 in the book. The pictures are taken inside Goldin&apos;s own life: her friends, her lovers, the queer and post-punk communities she lived among in the Bowery, in Berlin, in Provincetown. There are images of bruised faces, of beds, of bathrooms, of people making love, of people dying. The work is a long-form story told from inside its own subject.`), /* @__PURE__ */ React.createElement(P, null, `Goldin gave the form its conceptual frame in the introduction to the 1986 book: "The diary is my form of control over my life. It allows me to obsessively record every detail." The Ballad is a diary that learned to be edited. Its sequencing \u2014 set, in the slideshow version, to a soundtrack that includes the Velvet Underground, Maria Callas and James Brown \u2014 operates by emotional rhythm rather than by plot: euphoria, intimacy, violence, recovery, loss. The form has been hugely consequential. Most contemporary "personal documentary" practice \u2014 Larry Sultan&apos;s <em>Pictures from Home</em> (1992), LaToya Ruby Frazier&apos;s <em>The Notion of Family</em> (2014), Sally Mann&apos;s <em>Immediate Family</em> (1992) \u2014 works in territory that Goldin&apos;s Ballad opened up.`), /* @__PURE__ */ React.createElement(PQ, null, '"The diary is my form of control over my life. It allows me to obsessively record every detail."', /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.sans, fontStyle: "normal", fontSize: 14, color: C.muted, marginTop: 12 } }, "\u2014 Nan Goldin, introduction to ", /* @__PURE__ */ React.createElement("em", null, "The Ballad of Sexual Dependency"), ", Aperture, 1986")), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "8 \xB7 Witness as story \u2014 James Nachtwey" }), /* @__PURE__ */ React.createElement(P, null, `At the opposite end of the intimacy axis from Goldin sits the war photographer James Nachtwey, whose 1999 book <em>Inferno</em> remains the most physically heavy single-volume photo book the medium has produced \u2014 roughly five and a half kilograms, more than four hundred and eighty pages, documenting fifteen years of conflict and famine in Romania, Somalia, Sudan, Bosnia, Rwanda, Chechnya, Kosovo and Indonesia. The book&apos;s scale is part of its argument: it is, deliberately, an object the reader must struggle to lift.`), /* @__PURE__ */ React.createElement(P, null, `Nachtwey&apos;s framing of his own work, in his 2007 TED talk and in the documentary <em>War Photographer</em> (2001) directed by Christian Frei, is that the photograph functions as a witness. The story being told is not, primarily, the photographer&apos;s; it is the subject&apos;s, and the photographer&apos;s job is to be present and to bring back sufficient evidence that the viewer cannot pretend not to know. The doctrine has obvious risks \u2014 the line between witness and aestheticisation has been argued over since Susan Sontag&apos;s <em>On Photography</em> (1977), and rehearsed again in her <em>Regarding the Pain of Others</em> (2003) \u2014 and Nachtwey has been criticised both for too much beauty in his images of suffering and for not enough. The argument, in either direction, takes for granted that the photographs are doing storytelling work; the question is only what kind.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1521120098171-4dac4ed99b29?auto=format&fit=crop&w=1600&q=80",
+      alt: "A photographer in a reportage scene, camera raised, working among people in the field.",
+      caption: "The reportage frame \u2014 the photographer present, working close, witnessing. The story being told is the subject's; the photographer is the verb that carries it.",
+      credit: "Brian Wertheim / Unsplash",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "9 \xB7 The caption as co-equal storyteller" }), /* @__PURE__ */ React.createElement(P, null, `A photograph and its caption form a compound. Either alone is incomplete; together they are a unit larger than the sum of the parts. The model the photographic tradition reveres for caption-writing is <em>National Geographic</em> magazine&apos;s in-house style, refined under editors including Tom Kennedy, Bill Allen and the magazine&apos;s long-running picture department. A NatGeo caption is conventionally three sentences: an opening sentence that names the action, a middle sentence that gives the context, and a closing sentence that opens a question or hands a fact the picture cannot show. The first sentence anchors the picture. The third lets the reader leave it.`), /* @__PURE__ */ React.createElement(P, null, `Magnum&apos;s tradition is different and looser. Magnum captions, written by photographers themselves and edited by the agency&apos;s text desk, tend toward the documentary minimum \u2014 place, date, what is happening, who is in frame. The reasoning is that the photograph should carry the emotional and interpretive weight; the caption&apos;s job is to make the image legible as evidence. Both traditions agree on what a caption must not do: it must not contradict the photograph, repeat it, or describe it. A caption that says "a sad man" of a man who is visibly sad has done no work. A caption that says "Ernest Ceriani after midnight, Kremmling, Colorado, 17 August 1948" has anchored the picture into history.`), /* @__PURE__ */ React.createElement(P, null, `Susan Sontag in <em>On Photography</em> argued, characteristically sharply, that captions could not redeem images they accompanied \u2014 that the photograph would always escape the words attached to it. The point is correct as criticism and not quite useful as craft. The practical position is that the caption is part of the picture, not a label on it; that an unwritten caption is a caption written by the viewer, often badly; and that the photographer who refuses to write captions has handed the storytelling over to whomever publishes the work.`), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "10 \xB7 Negative space \u2014 what is not shown" }), /* @__PURE__ */ React.createElement(P, null, `Storytelling in photography is shaped as much by exclusion as by inclusion. The frame edge is the most consequential decision in the medium. What is left outside it \u2014 the spectators at the edge of a press conference, the rubble outside a portrait of a survivor, the cigarette in a hand cropped just above the cigarette \u2014 is part of the picture&apos;s argument by virtue of being absent. The point was made polemically by the American photographer Garry Winogrand: "I photograph to find out what something will look like photographed." The implication is that the photograph and the world are different things, and that the difference is mostly cropping.`), /* @__PURE__ */ React.createElement(P, null, `Within the frame, the same principle holds. A foreground object pushed to the edge implies a world continuing beyond. A figure facing into empty space implies a destination not yet shown. The Japanese aesthetic principle of <em>ma</em> \u2014 interval, gap, the meaningful pause \u2014 is the most precise vocabulary for this. A photograph with too much filled in has nothing for the viewer to supply, and is therefore inert. A photograph with calibrated emptiness invites the viewer to do the storytelling work, and is therefore alive.`), /* @__PURE__ */ React.createElement(P, null, `At the sequence level, the same calculus governs editing. A photographer with five hundred frames from an assignment is, in the edit, deciding what not to show. The pictures that are cut shape the ones that survive: a story without its second-best frame is sharper than a story with it. The editor&apos;s discipline \u2014 exemplified by figures like Kathy Ryan at <em>The New York Times Magazine</em>, MaryAnne Golon at <em>The Washington Post</em>, and the picture editors of <em>Magnum</em> in Paris and New York \u2014 is largely the discipline of subtraction.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1495121553079-4c61bcce1894?auto=format&fit=crop&w=1600&q=80",
+      alt: "A darkroom or contact sheet on a light table, frames marked with grease pencil.",
+      caption: "The contact sheet, marked up with a grease pencil \u2014 the manuscript of which the printed photograph is the published draft. Editing is the second act of taking the picture.",
+      credit: "Markus Spiske / Unsplash",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "11 \xB7 Pacing \u2014 the rhythm of wide, medium, detail" }), /* @__PURE__ */ React.createElement(P, null, `The cinematic vocabulary of wide, medium and close-up entered photo-editing rooms early in the magazine era and has never quite left. A page of all wides is geographically clear and emotionally cold; a page of all close-ups is intimate and disorienting; a page of all medium shots is competent and dull. Pacing \u2014 the alternation of these three scales across a sequence \u2014 is what gives a photo essay its breath.`), /* @__PURE__ */ React.createElement(P, null, `The Magnum-pattern essay, as taught in the agency&apos;s workshops and in books like Mary Panzer&apos;s <em>Things as They Are: Photojournalism in Context Since 1955</em> (Aperture, 2005, edited under the auspices of the World Press Photo Foundation), generally calls for a roughly 1:2:1 ratio: one wide for every two mediums for every detail. The exact ratio varies by story \u2014 a story about a place tilts wider; a story about a person tilts toward medium and detail \u2014 but the principle of alternation holds. The reader needs to know where they are, who they are with, and what it feels like up close, and they need to be reminded of each in rotation.`), /* @__PURE__ */ React.createElement(P, null, `Pacing also operates temporally. A photo essay can compress time (a year of harvests in eight frames) or expand it (a single afternoon in twenty). The choice is itself a storytelling decision. Smith&apos;s "Country Doctor" compresses twenty-three days into twenty-eight pictures. Larry Towell&apos;s <em>The Mennonites: A Biographical Sketch</em> (Phaidon, 2000) compresses ten years across roughly a hundred and twenty frames. Mary Ellen Mark&apos;s <em>Streetwise</em> (1988) does something else again: it stays with one community of homeless teenagers in Seattle&apos;s Pike Street over years, and the time-stamp is the change in the children&apos;s faces.`), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "12 \xB7 Modern forms \u2014 carousel, zine, video essay" }), /* @__PURE__ */ React.createElement(P, null, `The infrastructure of photographic publishing has changed several times in the last twenty years and the storytelling forms have moved with it. The Instagram carousel, introduced by the platform in 2017, has become the most-consumed photo-essay format in the world. Its constraints \u2014 up to ten frames, square or vertical aspect ratio, swipeable, captions with limited length \u2014 have produced a remarkably disciplined micro-essay: the carousel works almost exactly like a six-to-ten-frame magazine spread, and photographers as different as Diana Markosian, Andrea Bruce and Newsha Tavakolian have used it to publish work whose structure would be familiar to any <em>Life</em>-era picture editor.`), /* @__PURE__ */ React.createElement(P, null, `The photo zine \u2014 small-run, often self-published, frequently stapled \u2014 has run a parallel revival. The independent publisher Mack Books, founded by Michael Mack in London in 2010, the long-running Aperture Foundation in New York, and Japan&apos;s Tokyo Art Beat all sit in the institutional layer above an enormous independent zine economy. A zine&apos;s smallness \u2014 typically eight to thirty-two pages \u2014 is itself a structural choice: it forces the photographer to find a story the zine&apos;s page count can hold, and refuses the temptation to extend a thin idea across two hundred pages.`), /* @__PURE__ */ React.createElement(P, null, `The video essay is the most recent arrival. Since the late 2010s, photo agencies including Magnum, VII and Panos have published short video essays in which still photographs are sequenced over voiceover narration, sometimes with motion-graphic transitions between frames. The form sits between cinema and the slideshow, and inherits from both \u2014 but its storytelling unit remains the still photograph, sequenced and paced, with a written or spoken caption. The structures Wilson Hicks codified at <em>Life</em> in 1952 transfer almost entirely. Only the publishing surface has changed.`), /* @__PURE__ */ React.createElement(SB, { title: "Where to start, as a working photographer" }, `<b>One frame:</b> set yourself a four-corners rule \u2014 every frame must justify each of its four edges. If
+          you cannot say why a thing is at the edge it is, the crop is wrong.<br/><br/>
+          <b>One sequence:</b> shoot until you have your six Magnum-pattern frames (wide, portrait, action, detail,
+          climax, closing) and then stop adding and start subtracting.<br/><br/>
+          <b>One book:</b> if a project has not produced more than thirty good frames after a year, it is probably
+          a zine, not a book. Zines are not a lesser form; they are the right scale for most stories.<br/><br/>
+          <b>One caption:</b> write three sentences per picture: name the action, give the context, hand the
+          reader a fact the picture cannot show.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1532074205216-d0e1f4b87368?auto=format&fit=crop&w=1600&q=80",
+      alt: "An open photo book showing a printed double-page spread of black-and-white photographs.",
+      caption: "A printed photo book spread \u2014 the form to which the long-form photo essay aspires. Pace, scale and white space are the editor's vocabulary.",
+      credit: "Annie Spratt / Unsplash",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(Sec, { title: "13 \xB7 What it all comes back to" }), /* @__PURE__ */ React.createElement(P, null, `A picture by itself is a noun: a moment held still in the world. Storytelling in photography is the set of techniques by which photographers convert nouns into verbs \u2014 pairing them, sequencing them, captioning them, pacing them, choosing what to leave out. The decisive moment, the photo essay, the layered single frame, the poetic sequence, the long-form book, the carousel: each is a different instrument for the same work. None is more legitimate than another. The form a story takes should follow from what the story needs.`), /* @__PURE__ */ React.createElement(P, null, `What unites Cartier-Bresson&apos;s street fragments, Smith&apos;s Kremmling pictures, Salgado&apos;s Genesis, Webb&apos;s layered Tropics frames, Kawauchi&apos;s quiet Tokyo skies, Goldin&apos;s Ballad and Nachtwey&apos;s Inferno is a single discipline: the willingness to work past the first plausible picture and the second and the third, until something is in the frame that does more than show. The viewer of a still photograph is, by the medium&apos;s nature, building the story themselves. The photographer&apos;s job is to give them enough \u2014 and not too much \u2014 to do it well.`), /* @__PURE__ */ React.createElement(P, null, `Everything else in this article \u2014 the arc, the pattern, the wides and mediums and details, the captions, the negative space \u2014 is in service of that single transaction. A photograph is finished not when the shutter falls but when a viewer, sometime later, looks at the picture in the company of others, and the sequence resolves into something they can carry away. That moment, repeated quietly across millions of viewers and billions of pictures, is what photographic storytelling is for.`), /* @__PURE__ */ React.createElement(BR, null), /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        background: C.bgAlt,
+        border: `1px solid ${C.rule}`,
+        borderRadius: 4,
+        padding: "32px 36px",
+        margin: "48px 0 24px"
+      }
+    },
+    /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        style: {
+          fontFamily: F.sans,
+          fontSize: 12,
+          fontWeight: 700,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          color: C.ink,
+          marginBottom: 12,
+          borderBottom: `2px solid ${C.yellow}`,
+          paddingBottom: 6,
+          display: "inline-block"
+        }
+      },
+      "Source Integrity Note"
+    ),
+    /* @__PURE__ */ React.createElement("p", { style: { fontFamily: F.sans, fontSize: 14, lineHeight: 1.7, color: C.ink, margin: "0 0 14px" } }, "This article was written under a three-tier evidence protocol: Tier 1 verified by web search and primary sources, Tier 2 composite scenes flagged, Tier 3 invented material prohibited. The following sources underpin specific claims in the prose above."),
+    /* @__PURE__ */ React.createElement("ul", { style: { fontFamily: F.sans, fontSize: 14, lineHeight: 1.7, color: C.ink, paddingLeft: 22, margin: "0 0 16px" } }, /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Cartier-Bresson, H."), " (1952). ", /* @__PURE__ */ React.createElement("em", null, "Images \xE0 la sauvette"), ". Paris: Verve. American edition: ", /* @__PURE__ */ React.createElement("em", null, "The Decisive Moment"), ', New York: Simon & Schuster, 1952. Source of the "fraction of a second" quotation and the de Retz epigraph.'), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Smith, W. E."), ' (1948). "Country Doctor." ', /* @__PURE__ */ React.createElement("em", null, "Life"), ", 20 September 1948, pp. 115\u2013126. Source of the Kremmling, Colorado photo essay; figures of 23 days, 28 photographs, 12 pages verified against the original Life issue and the Magnum Photos archive."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Hicks, W."), " (1952). ", /* @__PURE__ */ React.createElement("em", null, "Words and Pictures: An Introduction to Photojournalism"), ". New York: Harper. Source of the ", /* @__PURE__ */ React.createElement("em", null, "Life"), " picture-essay structural conventions."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Salgado, S."), " (1993). ", /* @__PURE__ */ React.createElement("em", null, "Workers: An Archaeology of the Industrial Age"), `. New York: Aperture. Six-year, six-section structure verified against the Aperture edition and Salgado's 2013 TED talk "The silent drama of photography".`), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Salgado, S., & Wanick Salgado, L. (eds.)"), " (2013). ", /* @__PURE__ */ React.createElement("em", null, "Genesis"), ". Cologne: Taschen. Five-chapter structure, eight-year production timeline, page count verified against Taschen's published edition."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Webb, A."), " (1986). ", /* @__PURE__ */ React.createElement("em", null, "Hot Light / Half-Made Worlds: Photographs from the Tropics"), ". Thames & Hudson. Magnum membership year (1979) verified against the Magnum Photos website (magnumphotos.com/photographer/alex-webb)."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "O'Hagan, S."), " (2011). Interview with Alex Webb. ", /* @__PURE__ */ React.createElement("em", null, "The Guardian"), ". Source of Webb's account of his working method."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Kawauchi, R."), " (2001). ", /* @__PURE__ */ React.createElement("em", null, "Utatane"), "; ", /* @__PURE__ */ React.createElement("em", null, "Hanabi"), "; ", /* @__PURE__ */ React.createElement("em", null, "Hanako"), ". Tokyo: Little More. Kimura Ihei Award (2002) verified via the Asahi Shimbun award archive."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Kawauchi, R."), " (2011). ", /* @__PURE__ */ React.createElement("em", null, "Illuminance"), ". New York: Aperture. Fifteen-year production span verified against the Aperture edition."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Goldin, N."), " (1986). ", /* @__PURE__ */ React.createElement("em", null, "The Ballad of Sexual Dependency"), ". New York: Aperture. Source of the diary-as-control quotation; slideshow origin (1979 onward) and approximate frame counts verified against Aperture's reissue notes and MoMA's 2016 exhibition catalogue."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Nachtwey, J."), " (1999). ", /* @__PURE__ */ React.createElement("em", null, "Inferno"), ". London: Phaidon. Physical specifications (480+ pages, ~5.5 kg) verified against Phaidon's product listing."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Frei, C."), " (2001). ", /* @__PURE__ */ React.createElement("em", null, "War Photographer"), " (documentary film). Christian Frei Filmproductions. Source of Nachtwey's working-method statements."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Sontag, S."), " (1977). ", /* @__PURE__ */ React.createElement("em", null, "On Photography"), ". New York: Farrar, Straus and Giroux; and", /* @__PURE__ */ React.createElement("em", null, " Regarding the Pain of Others"), " (2003). Source of the captioning argument and the witness/aestheticisation debate."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Panzer, M., & Caujolle, C."), " (2005). ", /* @__PURE__ */ React.createElement("em", null, "Things as They Are: Photojournalism in Context Since 1955"), ". London: Chris Boot / Aperture, in association with the World Press Photo Foundation. Source of the Magnum-pattern editing conventions."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Mark, M. E."), " (1988). ", /* @__PURE__ */ React.createElement("em", null, "Streetwise"), ". Philadelphia: University of Pennsylvania Press; Towell, L. (2000). ", /* @__PURE__ */ React.createElement("em", null, "The Mennonites"), ". London: Phaidon. Cited as long-form storytelling examples."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Frank, R."), " (1958). ", /* @__PURE__ */ React.createElement("em", null, "Les Am\xE9ricains"), ". Paris: Robert Delpire. American edition:", /* @__PURE__ */ React.createElement("em", null, " The Americans"), ", New York: Grove Press, 1959. Cited as a counter-example to the three-act arc."), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("b", null, "Magnum Photos"), " agency website (magnumphotos.com), consulted April 2026 for biographical and membership details on Cartier-Bresson, Webb, Towell, and Mark.")),
+    /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.sans, fontSize: 13, lineHeight: 1.7, color: C.ink, marginTop: 18, paddingTop: 14, borderTop: `1px solid ${C.rule}` } }, /* @__PURE__ */ React.createElement("b", null, "Tier breakdown."), ' Tier 1 (verified from primary source or peer-reviewed/journalistic literature): all named photographers, books, dates, page counts, prizes, and direct quotations. Direct quotations are taken from the published prefaces, interviews and talks cited above; no quotation has been invented or paraphrased and presented as direct speech. Tier 2 (composite): the Magnum-pattern essay structure described in \xA73 and the wide/medium/detail pacing ratio in \xA711 are syntheses of editing practice described across multiple sources (Hicks 1952, Panzer 2005, Magnum workshop materials), not a single named doctrine. The "1:2:1 ratio" is a working approximation taught informally; readers should treat it as a heuristic. Tier 3 (invented): none.'),
+    /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.sans, fontSize: 13, lineHeight: 1.7, color: C.ink, marginTop: 14 } }, /* @__PURE__ */ React.createElement("b", null, "Photograph note."), " Inline editorial photographs are sourced from Unsplash and depict a photographer at work, a magazine spread, a reportage scene, a contact-sheet style image, and a printed photo book spread; they are illustrative of the practices discussed and are not, themselves, the canonical works named in the text. Captions follow the article's editorial style, not Unsplash's alt-text.")
+  ), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.sans, fontSize: 12, color: C.muted, textAlign: "center", marginTop: 32 } }, "\u2014 end \u2014")));
+}
+
+      ReactDOM.createRoot(document.getElementById('root')).render(
+        React.createElement(StorytellingInPhotography)
+      );
+    } catch (err) {
+      var box = document.getElementById('error-boundary');
+      if (box) {
+        box.style.display = 'block';
+        box.textContent = '[render error] ' + (err && err.message ? err.message : err);
+      }
+      console.error(err);
+    }
+  </script>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "slug": "basking-sharks",
+  "title": "The Slow Giants: Why Basking Sharks Return to the Hebrides",
+  "subtitle": "The world's second-largest fish drifts each summer through a stretch of cold Atlantic between Coll and Canna, mouth held wide for a soup of copepods. After a century of slaughter and a generation of indifference, the science is finally catching up to the animal.",
+  "date": "2026-04-25",
+  "read_time": "22 min",
+  "category": "science-nature",
+  "style": "natgeo-sciam-hybrid",
+  "tags": [
+    "marine-biology",
+    "sharks",
+    "conservation",
+    "scotland"
+  ],
+  "component": "BaskingSharks",
+  "url": "articles/basking-sharks.html",
+  "pdf_url": "articles/basking-sharks.pdf"
+}

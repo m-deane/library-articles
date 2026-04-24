@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drone Hyperlapse with the DJI Mavic 3 Pro — Plain Reader</title>
+  <meta name="description" content="An encyclopaedic technical reference for the triple-camera flagship — sensors, modes, mathematics, regulation, post" />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Drone Hyperlapse with the DJI Mavic 3 Pro</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-25</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read">22 min</span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/drone-hyperlapse-mavic-3-pro.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/drone-hyperlapse-mavic-3-pro.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <h3 id="the-hasselblad-l2d-20c">The Hasselblad L2D-20c</h3>
+<h3 id="the-70mm-medium-tele">The 70mm medium tele</h3>
+<h3 id="the-166mm-telephoto">The 166mm telephoto</h3>
+<p><img alt="The Mavic 3 Pro on a pre-flight landing pad. Pre-flight discipline — IMU calibration, GPS lock to at least 12 satellites, propeller inspection — is the half of hyperlapse work that nothing in post can rescue." src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=1600&amp;q=80"></p>
+<p><em>The Mavic 3 Pro on a pre-flight landing pad. Pre-flight discipline — IMU calibration, GPS lock to at least 12 satellites, propeller inspection — is the half of hyperlapse work that nothing in post can rescue. — <a href="https://unsplash.com/photos/H5L8aVHZyXk?utm_source=dsl&amp;utm_medium=referral">David Henrichs / Unsplash</a></em></p>
+<h3 id="free">Free</h3>
+<h3 id="circle">Circle</h3>
+<h3 id="course-lock">Course Lock</h3>
+<h3 id="waypoint">Waypoint</h3>
+<p><img alt="A Mavic-class quadcopter holding station mid-flight. Three-axis gimbal stabilisation buys arc-second steadiness at the camera while the airframe tolerates yaw and roll perturbations from wind." src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=1600&amp;q=80"></p>
+<p><em>A Mavic-class quadcopter holding station mid-flight. Three-axis gimbal stabilisation buys arc-second steadiness at the camera while the airframe tolerates yaw and roll perturbations from wind. — <a href="https://unsplash.com/photos/H5L8aVHZyXk?utm_source=dsl&amp;utm_medium=referral">David Henrichs / Unsplash</a></em></p>
+<p><img alt="The classic hyperlapse subject: a cityscape during the blue hour. The L2D-20c's variable aperture and 12-bit raw capture together provide the dynamic-range margin to pull both the lit windows and the residual sky into a single graded clip." src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1600&amp;q=80"></p>
+<p><em>The classic hyperlapse subject: a cityscape during the blue hour. The L2D-20c's variable aperture and 12-bit raw capture together provide the dynamic-range margin to pull both the lit windows and the residual sky into a single graded clip. — <a href="https://unsplash.com/photos/Nyvq2juw4_o?utm_source=dsl&amp;utm_medium=referral">Pedro Lastra / Unsplash</a></em></p>
+<h3 id="gps-drift-the-dominant-failure-mode">GPS drift — the dominant failure mode</h3>
+<h3 id="crosswind-above-8-ms">Crosswind above 8 m/s</h3>
+<h3 id="battery-dropping-below-20-mid-mission">Battery dropping below 20% mid-mission</h3>
+<h3 id="moving-crowds-breaking-subject-lock">Moving crowds breaking subject lock</h3>
+<h3 id="vlos-regulatory-breach">VLOS regulatory breach</h3>
+<h3 id="frame-stabilisation-and-de-jitter">Frame stabilisation and de-jitter</h3>
+<h3 id="frame-interpolation-for-clip-stretching">Frame interpolation for clip stretching</h3>
+<h3 id="colour-grading-from-raw">Colour grading from raw</h3>
+<p><img alt="Light trails over a metropolis after dusk — the natural endpoint of a sunset-to-night holy-grail hyperlapse, requiring per-frame exposure ramping in LRTimelapse rather than DJI's in-mode auto-exposure." src="https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1600&amp;q=80"></p>
+<p><em>Light trails over a metropolis after dusk — the natural endpoint of a sunset-to-night holy-grail hyperlapse, requiring per-frame exposure ramping in LRTimelapse rather than DJI's in-mode auto-exposure. — <a href="https://unsplash.com/photos/the-aerial-view-of-the-city-at-night-aPnZRxOReXk?utm_source=dsl&amp;utm_medium=referral">Joey Kyber / Unsplash</a></em></p>
+<h3 id="united-kingdom-caa">United Kingdom — CAA</h3>
+<h3 id="european-union-easa">European Union — EASA</h3>
+<h3 id="united-states-faa-part-107">United States — FAA Part 107</h3>
+<h3 id="the-urban-cityscape-reveal">The urban cityscape reveal</h3>
+<h3 id="the-mountain-to-valley-cable-car-descent">The mountain-to-valley cable-car descent</h3>
+<h3 id="the-sunset-hyperlapse-through-cloud">The sunset hyperlapse through cloud</h3>
+<h3 id="the-circle-around-a-single-subject">The Circle around a single subject</h3>
+<p><img alt="A coastal city at dusk, the kind of scene that is the natural canvas for a Course Lock hyperlapse — fixed bearing along the shoreline, gimbal yaw to hold the harbour as the foreground slides past." src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1600&amp;q=80"></p>
+<p><em>A coastal city at dusk, the kind of scene that is the natural canvas for a Course Lock hyperlapse — fixed bearing along the shoreline, gimbal yaw to hold the harbour as the foreground slides past. — <a href="https://unsplash.com/photos/aerial-view-of-the-city-buildings-near-the-body-of-water-during-daytime-MnHtw3Ikmvo?utm_source=dsl&amp;utm_medium=referral">Yury Vasiliev / Unsplash</a></em></p>
+<blockquote>
+<p>The drone hyperlapse is governed by one formula, three numbers, four modes, and a small library of failure
+modes that no firmware update has ever fully closed. Discipline at takeoff costs nothing; discipline missed
+costs the entire flight.</p>
+</blockquote>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>drone-hyperlapse-mavic-3-pro</code> &middot; category: <code>travel-photography</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

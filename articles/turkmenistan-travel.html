@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Country That Burns at Night</title>
+  <meta name="description" content="Ten days through Turkmenistan — a marble capital built on natural gas, a forty-year fire in the Karakum, the ruins of one of medieval Asia&#x27;s largest cities, and the canyons that almost no one in the country has seen." />
+
+  <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+
+  <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
+  <script src="../assets/vendor/react.production.min.js"></script>
+  <script src="../assets/vendor/react-dom.production.min.js"></script>
+  <script src="../assets/vendor/prop-types.min.js"></script>
+  <script src="../assets/vendor/recharts.js"></script>
+</head>
+<body>
+  <!-- Compact header bar -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">The Country That Burns at Night</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-25</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read">22 min</span>
+        <span class="style-badge" style="background:#8d6e6315; color:#8d6e63; border:1px solid #8d6e6355;">Travel Literary</span>
+      </div>
+      <a class="md-link header-md-link" href="../md/turkmenistan-travel.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
+      <a class="pdf-link header-pdf-link" href="turkmenistan-travel.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All articles</a>
+    </div>
+  </header>
+
+  <!-- Render target -->
+  <main class="article-container">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem; font-family:serif;">
+        This article requires JavaScript to render the embedded React/Recharts components.
+      </p>
+    </noscript>
+    <div id="error-boundary" style="display:none; padding:2rem; background:#fff3f3; border:1px solid #f5c2c2; border-radius:8px; font-family:ui-monospace,monospace;"></div>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>turkmenistan-travel</code> &middot; category: <code>travel-photography</code></span>
+      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Expose React hooks + Recharts components into global scope for the JSX block -->
+  <script>
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useMemo = React.useMemo;
+    window.useRef = React.useRef;
+    window.useCallback = React.useCallback;
+    window.useReducer = React.useReducer;
+    window.useLayoutEffect = React.useLayoutEffect;
+    window.useContext = React.useContext;
+    window.Fragment = React.Fragment;
+
+    // Expose Recharts components into global scope
+    const _R = window.Recharts || {};
+    [
+      'LineChart','BarChart','AreaChart','ScatterChart','RadarChart','PieChart',
+      'XAxis','YAxis','ZAxis','CartesianGrid','Tooltip','Legend','Line','Bar','Area',
+      'Scatter','Pie','Cell','ResponsiveContainer','ReferenceLine','ReferenceArea','ReferenceDot',
+      'ComposedChart','Treemap','Radar','PolarGrid','PolarAngleAxis','PolarRadiusAxis',
+      'RadialBar','RadialBarChart','FunnelChart','Funnel','LabelList','Label','Brush',
+      'Sankey','Sector','Customized','CartesianAxis','ErrorBar','Rectangle','Curve','Cross','Dot','Polygon','Symbols','Text'
+    ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
+
+    // Simple error surface for runtime failures
+    window.addEventListener('error', function (e) {
+      var box = document.getElementById('error-boundary');
+      if (!box) return;
+      box.style.display = 'block';
+      box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
+    });
+
+    // Global <Photograph> helper (pre-transpiled React.createElement form)
+    window.Photograph = function (props) {
+      var src = props.src, alt = props.alt, caption = props.caption, credit = props.credit, href = props.href;
+      var children = [
+        React.createElement('img', { src: src, alt: alt || caption || '', loading: 'lazy', key: 'img' })
+      ];
+      if (caption || credit) {
+        var figCapChildren = [];
+        if (caption) figCapChildren.push(
+          React.createElement('span', { className: 'photo-caption', key: 'cap' }, caption)
+        );
+        if (credit) figCapChildren.push(
+          React.createElement('span', { className: 'photo-credit', key: 'cr' },
+            ' — ',
+            React.createElement('a', { href: href, target: '_blank', rel: 'noopener noreferrer' }, credit)
+          )
+        );
+        children.push(React.createElement('figcaption', { key: 'cap-root' }, figCapChildren));
+      }
+      return React.createElement('figure', { className: 'photo' }, children);
+    };
+  </script>
+
+  <!-- Pre-transpiled JSX payload (esbuild --loader=jsx --jsx=transform, classic mode).
+       React.createElement(...) calls resolve against the UMD React global above. -->
+  <script>
+    try {
+      const ARTICLE_DATA = {
+  title: "The Country That Burns at Night",
+  subtitle: "Ten days through Turkmenistan \u2014 a marble capital built on natural gas, a forty-year fire in the Karakum, the ruins of one of medieval Asia's largest cities, and the canyons that almost no one in the country has seen.",
+  category: "travel-photography",
+  style: "travel-literary",
+  date: "2026-04-25",
+  author: "Matthew Deane",
+  tags: ["turkmenistan", "central-asia", "travel", "darvaza"],
+  read_time: "22 min",
+  mode: "Mode 1 \u2014 Classic Travel Narrative"
+};
+const C = {
+  sand: "#e8d8b8",
+  sandL: "#f4ead4",
+  sandD: "#c8b288",
+  marble: "#fafaf6",
+  marbleD: "#e6e3d8",
+  ink: "#1a1410",
+  inkM: "#3a2e22",
+  inkL: "#6a5840",
+  rust: "#a83820",
+  rustL: "#c85838",
+  ember: "#e87820",
+  emberL: "#f0a860",
+  night: "#0a0806",
+  nightM: "#1a1208",
+  sky: "#5a8aa8",
+  skyD: "#3a5a78",
+  jade: "#4a7858",
+  paper: "#f6f1e4",
+  rule: "#d8cdb4"
+};
+const F = {
+  serif: "'Cormorant Garamond', 'Playfair Display', Georgia, serif",
+  display: "'Playfair Display', Georgia, serif",
+  sans: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+  mono: "'JetBrains Mono', 'Source Code Pro', monospace"
+};
+const Sec = ({ n, title, children }) => /* @__PURE__ */ React.createElement("div", { style: { margin: "56px 0 0" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: 14, marginBottom: 22 } }, n != null && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: F.mono, fontSize: 12, color: C.rust, fontWeight: 700, letterSpacing: "0.1em" } }, "\xA7", n), /* @__PURE__ */ React.createElement("h2", { style: { fontFamily: F.display, fontSize: 30, fontWeight: 800, color: C.ink, lineHeight: 1.15, letterSpacing: "-0.01em" } }, title)), children);
+const P = ({ children }) => /* @__PURE__ */ React.createElement(
+  "p",
+  {
+    style: { fontFamily: F.serif, fontSize: 18.5, lineHeight: 1.78, color: C.ink, margin: "0 0 1.2em", letterSpacing: "0.005em" },
+    dangerouslySetInnerHTML: { __html: children }
+  }
+);
+const DC = ({ children }) => /* @__PURE__ */ React.createElement(
+  "p",
+  {
+    style: {
+      fontFamily: F.serif,
+      fontSize: 19,
+      lineHeight: 1.78,
+      color: C.ink,
+      margin: "0 0 1.3em"
+    }
+  },
+  /* @__PURE__ */ React.createElement(
+    "span",
+    {
+      style: {
+        fontFamily: F.display,
+        fontSize: "4.2em",
+        float: "left",
+        lineHeight: 0.82,
+        marginRight: "0.06em",
+        marginTop: "0.06em",
+        color: C.rust,
+        fontWeight: 800
+      }
+    },
+    String(children).trim().charAt(0)
+  ),
+  /* @__PURE__ */ React.createElement("span", { dangerouslySetInnerHTML: { __html: String(children).trim().slice(1) } })
+);
+const PQ = ({ children }) => /* @__PURE__ */ React.createElement(
+  "blockquote",
+  {
+    style: {
+      margin: "36px -8px",
+      padding: "18px 28px",
+      borderLeft: `3.5px solid ${C.rust}`,
+      fontFamily: F.display,
+      fontSize: 23,
+      lineHeight: 1.42,
+      fontStyle: "italic",
+      fontWeight: 700,
+      color: C.inkM
+    },
+    dangerouslySetInnerHTML: { __html: children }
+  }
+);
+const Cap = ({ children }) => /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.serif, fontSize: 13.5, fontStyle: "italic", color: C.inkL, marginTop: 10, marginBottom: 30, lineHeight: 1.55, padding: "10px 4px 0", borderTop: `1px solid ${C.rule}` } }, children);
+const IC = ({ func, caption }) => /* @__PURE__ */ React.createElement(
+  "div",
+  {
+    style: {
+      margin: "28px 0",
+      padding: "44px 26px",
+      background: C.marbleD,
+      border: `1px dashed ${C.sandD}`,
+      textAlign: "center",
+      fontFamily: F.serif,
+      fontSize: 14,
+      fontStyle: "italic",
+      color: C.inkL
+    }
+  },
+  /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.mono, fontSize: 10, letterSpacing: "0.15em", color: C.rust, marginBottom: 10, textTransform: "uppercase" } }, "[photograph placeholder \xB7 ", func, "]"),
+  caption
+);
+const SB = ({ title, children }) => /* @__PURE__ */ React.createElement(
+  "div",
+  {
+    style: {
+      margin: "32px 0",
+      padding: "22px 26px",
+      background: C.marbleD,
+      borderLeft: `3px solid ${C.rust}`
+    }
+  },
+  /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.display, fontSize: 13, letterSpacing: "0.1em", textTransform: "uppercase", color: C.rust, marginBottom: 12, fontWeight: 800 } }, title),
+  /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.serif, fontSize: 16, lineHeight: 1.7, color: C.ink }, dangerouslySetInnerHTML: { __html: children } })
+);
+const Callout = ({ type = "info", title, children }) => {
+  const styles = {
+    info: { border: C.sky, bg: "rgba(90,138,168,0.08)", ico: "i" },
+    warn: { border: C.rust, bg: "rgba(168,56,32,0.08)", ico: "!" },
+    tip: { border: C.jade, bg: "rgba(74,120,88,0.08)", ico: "+" }
+  }[type];
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        margin: "30px 0",
+        padding: "20px 24px",
+        background: styles.bg,
+        borderLeft: `3px solid ${styles.border}`
+      }
+    },
+    /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.display, fontSize: 12.5, fontWeight: 800, color: styles.border, marginBottom: 8, letterSpacing: "0.08em", textTransform: "uppercase" } }, "[", styles.ico, "] ", title),
+    /* @__PURE__ */ React.createElement("div", { style: { fontFamily: F.serif, fontSize: 16, lineHeight: 1.7, color: C.ink }, dangerouslySetInnerHTML: { __html: children } })
+  );
+};
+const NB = ({ title, n, children }) => /* @__PURE__ */ React.createElement(
+  "div",
+  {
+    style: {
+      margin: "26px 0",
+      border: `1px solid ${C.rule}`,
+      borderLeft: `3px solid ${C.rust}`,
+      background: C.paper
+    }
+  },
+  /* @__PURE__ */ React.createElement("div", { style: { background: C.marbleD, padding: "8px 16px", display: "flex", justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: F.mono, fontSize: 11, color: C.rust, letterSpacing: "0.05em", fontWeight: 700 } }, title), n != null && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: F.mono, fontSize: 10, color: C.rust, opacity: 0.8 } }, "Cell ", n)),
+  /* @__PURE__ */ React.createElement("pre", { style: { padding: "14px 18px", margin: 0, overflowX: "auto", fontSize: 12.5, lineHeight: 1.7, fontFamily: F.mono, color: C.ink, whiteSpace: "pre-wrap" } }, /* @__PURE__ */ React.createElement("code", null, children))
+);
+const Code = ({ title, children }) => /* @__PURE__ */ React.createElement("div", { style: { margin: "26px 0", border: `1px solid ${C.rule}`, background: C.paper } }, title && /* @__PURE__ */ React.createElement("div", { style: { background: C.marbleD, padding: "8px 16px", fontFamily: F.mono, fontSize: 11, color: C.inkL, letterSpacing: "0.05em" } }, title), /* @__PURE__ */ React.createElement("pre", { style: { padding: "14px 18px", margin: 0, overflowX: "auto", fontSize: 12.5, lineHeight: 1.7, fontFamily: F.mono, color: C.ink, whiteSpace: "pre-wrap" } }, /* @__PURE__ */ React.createElement("code", null, children)));
+const Photograph = ({ src, alt, caption, credit, href }) => /* @__PURE__ */ React.createElement("figure", { style: { margin: "36px -8px" } }, /* @__PURE__ */ React.createElement(
+  "img",
+  {
+    src,
+    alt,
+    loading: "lazy",
+    style: { width: "100%", height: "auto", display: "block" }
+  }
+), /* @__PURE__ */ React.createElement("figcaption", { style: { fontFamily: F.serif, fontSize: 13.5, fontStyle: "italic", lineHeight: 1.6, color: C.inkL, marginTop: 10, padding: "10px 6px 0", borderTop: `1px solid ${C.rule}` } }, caption, credit && /* @__PURE__ */ React.createElement("span", { style: { display: "block", marginTop: 4, fontFamily: F.mono, fontSize: 10.5, color: C.inkL, letterSpacing: "0.06em", fontStyle: "normal" } }, "PHOTOGRAPH \u2014 ", href ? /* @__PURE__ */ React.createElement("a", { href, style: { color: C.rust, textDecoration: "none" } }, credit) : credit)));
+function RouteMap() {
+  const stops = [
+    { id: 1, name: "Ashgabat", x: 470, y: 360, kind: "capital", note: "37.95\xB0N 58.38\xB0E \xB7 arrival" },
+    { id: 2, name: "Darvaza Crater", x: 525, y: 215, kind: "fire", note: "40.25\xB0N 58.44\xB0E \xB7 270 km N" },
+    { id: 3, name: "Mary / Merv", x: 700, y: 350, kind: "ruins", note: "37.66\xB0N 62.19\xB0E \xB7 360 km E" },
+    { id: 4, name: "Turkmenbashi", x: 175, y: 280, kind: "port", note: "40.02\xB0N 52.97\xB0E \xB7 Caspian" },
+    { id: 5, name: "Yangykala", x: 240, y: 220, kind: "canyon", note: "40.13\xB0N 54.65\xB0E \xB7 4WD only" }
+  ];
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 900 500", style: { width: "100%", display: "block", background: C.paper } }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("pattern", { id: "dunes", x: "0", y: "0", width: "40", height: "20", patternUnits: "userSpaceOnUse" }, /* @__PURE__ */ React.createElement("path", { d: "M0 18 Q 10 10 20 18 T 40 18", fill: "none", stroke: C.sandD, strokeWidth: "0.5", opacity: "0.4" }))), /* @__PURE__ */ React.createElement("text", { x: "450", y: "28", textAnchor: "middle", fill: C.ink, fontSize: "14", fontWeight: "800", fontFamily: F.display, letterSpacing: "0.08em" }, "TURKMENISTAN \u2014 A TYPICAL TEN-DAY ITINERARY"), /* @__PURE__ */ React.createElement("text", { x: "450", y: "46", textAnchor: "middle", fill: C.inkL, fontSize: "11", fontFamily: F.serif, fontStyle: "italic" }, "North up \xB7 Karakum desert in tan \xB7 the Caspian to the west \xB7 Iran below the Kopet Dag"), /* @__PURE__ */ React.createElement(
+    "path",
+    {
+      d: "M 100 280 Q 120 230 165 215 L 230 195 L 320 165 L 410 145 L 510 130 L 600 140 L 700 175 L 790 220 L 820 280 L 800 340 L 760 390 L 700 420 L 620 440 L 530 445 L 440 440 L 360 425 L 280 405 L 220 380 L 165 350 L 130 320 Z",
+      fill: "url(#dunes)",
+      stroke: C.inkM,
+      strokeWidth: "1.5",
+      opacity: "0.95"
+    }
+  ), /* @__PURE__ */ React.createElement(
+    "path",
+    {
+      d: "M 100 280 Q 120 230 165 215 L 230 195 L 320 165 L 410 145 L 510 130 L 600 140 L 700 175 L 790 220 L 820 280 L 800 340 L 760 390 L 700 420 L 620 440 L 530 445 L 440 440 L 360 425 L 280 405 L 220 380 L 165 350 L 130 320 Z",
+      fill: C.sandL,
+      opacity: "0.45"
+    }
+  ), /* @__PURE__ */ React.createElement("path", { d: "M 80 200 L 165 215 Q 130 320 165 350 L 100 360 Z", fill: C.sky, opacity: "0.35", stroke: C.skyD, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "115", y: "290", fill: C.skyD, fontSize: "10", fontFamily: F.serif, fontStyle: "italic" }, "Caspian"), /* @__PURE__ */ React.createElement("text", { x: "118", y: "304", fill: C.skyD, fontSize: "10", fontFamily: F.serif, fontStyle: "italic" }, "Sea"), /* @__PURE__ */ React.createElement("path", { d: "M 360 380 L 380 370 L 400 378 L 425 370 L 450 380 L 475 372 L 500 380", fill: "none", stroke: C.inkM, strokeWidth: "1.2" }), /* @__PURE__ */ React.createElement("text", { x: "430", y: "400", textAnchor: "middle", fill: C.inkM, fontSize: "9", fontFamily: F.serif, fontStyle: "italic", letterSpacing: "0.1em" }, "KOPET DAG"), /* @__PURE__ */ React.createElement("text", { x: "500", y: "270", textAnchor: "middle", fill: C.inkL, fontSize: "13", fontFamily: F.display, letterSpacing: "0.2em", opacity: "0.7" }, "KARAKUM"), /* @__PURE__ */ React.createElement("text", { x: "400", y: "465", textAnchor: "middle", fill: C.inkL, fontSize: "9", fontFamily: F.serif }, "IRAN (Khorasan)"), /* @__PURE__ */ React.createElement("text", { x: "700", y: "465", textAnchor: "middle", fill: C.inkL, fontSize: "9", fontFamily: F.serif }, "AFGHANISTAN"), /* @__PURE__ */ React.createElement("text", { x: "650", y: "105", textAnchor: "middle", fill: C.inkL, fontSize: "9", fontFamily: F.serif }, "UZBEKISTAN"), /* @__PURE__ */ React.createElement("text", { x: "400", y: "105", textAnchor: "middle", fill: C.inkL, fontSize: "9", fontFamily: F.serif }, "KAZAKHSTAN"), /* @__PURE__ */ React.createElement("path", { d: `M ${stops[0].x} ${stops[0].y} Q 510 290 ${stops[1].x} ${stops[1].y}`, fill: "none", stroke: C.rust, strokeWidth: "2", strokeDasharray: "6 4" }), /* @__PURE__ */ React.createElement("path", { d: `M ${stops[0].x} ${stops[0].y} Q 590 360 ${stops[2].x} ${stops[2].y}`, fill: "none", stroke: C.rust, strokeWidth: "2", strokeDasharray: "6 4" }), /* @__PURE__ */ React.createElement("path", { d: `M ${stops[0].x} ${stops[0].y} Q 320 320 ${stops[3].x} ${stops[3].y}`, fill: "none", stroke: C.skyD, strokeWidth: "2.2", strokeDasharray: "2 3" }), /* @__PURE__ */ React.createElement("path", { d: `M ${stops[3].x} ${stops[3].y} Q 200 240 ${stops[4].x} ${stops[4].y}`, fill: "none", stroke: C.ember, strokeWidth: "2", strokeDasharray: "3 3" }), stops.map((s) => {
+    const fill = s.kind === "capital" ? C.ink : s.kind === "fire" ? C.ember : s.kind === "ruins" ? C.rust : s.kind === "port" ? C.skyD : C.jade;
+    return /* @__PURE__ */ React.createElement("g", { key: s.id }, /* @__PURE__ */ React.createElement("circle", { cx: s.x, cy: s.y, r: "9", fill, stroke: C.paper, strokeWidth: "2" }), /* @__PURE__ */ React.createElement("text", { x: s.x, y: s.y + 3.5, textAnchor: "middle", fill: C.paper, fontSize: "9.5", fontWeight: "800", fontFamily: F.mono }, s.id), /* @__PURE__ */ React.createElement("text", { x: s.x + 14, y: s.y - 2, fill: C.ink, fontSize: "11.5", fontWeight: "700", fontFamily: F.display }, s.name), /* @__PURE__ */ React.createElement("text", { x: s.x + 14, y: s.y + 11, fill: C.inkL, fontSize: "9.5", fontFamily: F.mono }, s.note));
+  }), /* @__PURE__ */ React.createElement("g", { transform: "translate(60, 410)" }, /* @__PURE__ */ React.createElement("rect", { x: "-10", y: "-10", width: "240", height: "80", fill: C.marble, stroke: C.rule, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "5", y: "6", fill: C.ink, fontSize: "10", fontWeight: "800", fontFamily: F.display, letterSpacing: "0.1em" }, "LEGEND"), /* @__PURE__ */ React.createElement("line", { x1: "5", y1: "20", x2: "40", y2: "20", stroke: C.rust, strokeWidth: "2", strokeDasharray: "6 4" }), /* @__PURE__ */ React.createElement("text", { x: "48", y: "23", fill: C.ink, fontSize: "9", fontFamily: F.serif }, "Road (4WD/sedan, with guide)"), /* @__PURE__ */ React.createElement("line", { x1: "5", y1: "36", x2: "40", y2: "36", stroke: C.skyD, strokeWidth: "2.2", strokeDasharray: "2 3" }), /* @__PURE__ */ React.createElement("text", { x: "48", y: "39", fill: C.ink, fontSize: "9", fontFamily: F.serif }, "Trans-Caspian Railway (~580 km)"), /* @__PURE__ */ React.createElement("line", { x1: "5", y1: "52", x2: "40", y2: "52", stroke: C.ember, strokeWidth: "2", strokeDasharray: "3 3" }), /* @__PURE__ */ React.createElement("text", { x: "48", y: "55", fill: C.ink, fontSize: "9", fontFamily: F.serif }, "Off-road, Balkan plateau")), /* @__PURE__ */ React.createElement("g", { transform: "translate(820, 80)" }, /* @__PURE__ */ React.createElement("line", { x1: "0", y1: "0", x2: "0", y2: "-30", stroke: C.ink, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("polygon", { points: "0,-34 -5,-24 5,-24", fill: C.ink }), /* @__PURE__ */ React.createElement("text", { x: "0", y: "14", textAnchor: "middle", fill: C.ink, fontSize: "10", fontWeight: "700", fontFamily: F.mono }, "N")), /* @__PURE__ */ React.createElement("g", { transform: "translate(680, 460)" }, /* @__PURE__ */ React.createElement("line", { x1: "0", y1: "0", x2: "120", y2: "0", stroke: C.ink, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("line", { x1: "0", y1: "-4", x2: "0", y2: "4", stroke: C.ink, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("line", { x1: "60", y1: "-3", x2: "60", y2: "3", stroke: C.ink, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("line", { x1: "120", y1: "-4", x2: "120", y2: "4", stroke: C.ink, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "0", y: "18", fill: C.ink, fontSize: "9", fontFamily: F.mono, textAnchor: "middle" }, "0"), /* @__PURE__ */ React.createElement("text", { x: "60", y: "18", fill: C.ink, fontSize: "9", fontFamily: F.mono, textAnchor: "middle" }, "~150"), /* @__PURE__ */ React.createElement("text", { x: "120", y: "18", fill: C.ink, fontSize: "9", fontFamily: F.mono, textAnchor: "middle" }, "300 km")), /* @__PURE__ */ React.createElement("text", { x: "450", y: "490", textAnchor: "middle", fill: C.inkL, fontSize: "9", fontFamily: F.serif, fontStyle: "italic" }, "Schematic. Coordinates approximate. Tour loop drawn from Ashgabat as hub; out-and-back legs shown once."));
+}
+function ItineraryTimeline() {
+  const days = [
+    { d: 1, place: "Ashgabat", drive: 0, note: "arrival \xB7 Independence Sq + Neutrality Arch", color: C.marble },
+    { d: 2, place: "Ashgabat", drive: 0, note: "Tolkuchka bazaar \xB7 National Museum", color: C.marble },
+    { d: 3, place: "Darvaza", drive: 4.5, note: "drive N via Erbent \xB7 sunset crater", color: C.ember },
+    { d: 4, place: "Darvaza \u2192 Ashgabat", drive: 4.5, note: "dawn crater \xB7 return to Ashgabat", color: C.ember },
+    { d: 5, place: "Mary", drive: 5.5, note: "drive E via Tejen \xB7 arrive Mary 17:00", color: C.rust },
+    { d: 6, place: "Merv", drive: 0.5, note: "Sultan Sanjar \xB7 Erk Kala \xB7 Gyaur Kala", color: C.rust },
+    { d: 7, place: "Mary \u2192 Ashgabat", drive: 5.5, note: "return drive \xB7 evening flight option", color: C.rust },
+    { d: 8, place: "Turkmenbashi", drive: 7, note: "Trans-Caspian rail (overnight option)", color: C.skyD },
+    { d: 9, place: "Yangykala", drive: 4.5, note: "4WD via Garabogazk\xF6l turn-off", color: C.jade },
+    { d: 10, place: "Turkmenbashi \u2192 home", drive: 4.5, note: "return \xB7 departure flight or rail", color: C.jade }
+  ];
+  const totalW = 1080;
+  const left = 110;
+  const top = 110;
+  const colW = (totalW - left - 40) / 10;
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: `0 0 ${totalW} 360`, style: { width: "100%", display: "block", background: C.paper } }, /* @__PURE__ */ React.createElement("text", { x: totalW / 2, y: "30", textAnchor: "middle", fill: C.ink, fontSize: "14", fontWeight: "800", fontFamily: F.display, letterSpacing: "0.08em" }, "TEN-DAY ITINERARY \xB7 DRIVE HOURS BETWEEN STOPS"), /* @__PURE__ */ React.createElement("text", { x: totalW / 2, y: "50", textAnchor: "middle", fill: C.inkL, fontSize: "11", fontFamily: F.serif, fontStyle: "italic" }, "Ashgabat as hub. Bars show same-day drive time. All road movement requires a licensed guide (post-2017)."), /* @__PURE__ */ React.createElement("text", { x: "20", y: "180", fill: C.ink, fontSize: "10", fontWeight: "700", fontFamily: F.mono, transform: "rotate(-90, 20, 180)", textAnchor: "middle" }, "DRIVE HOURS"), [0, 2, 4, 6, 8].map((v) => {
+    const y = 250 - v / 8 * 130;
+    return /* @__PURE__ */ React.createElement("g", { key: v }, /* @__PURE__ */ React.createElement("line", { x1: left, y1: y, x2: totalW - 30, y2: y, stroke: C.rule, strokeWidth: "0.75" }), /* @__PURE__ */ React.createElement("text", { x: left - 8, y: y + 3, textAnchor: "end", fill: C.inkL, fontSize: "9", fontFamily: F.mono }, v, "h"));
+  }), days.map((d, i) => {
+    const x = left + i * colW + 6;
+    const h = d.drive / 8 * 130;
+    const y = 250 - h;
+    return /* @__PURE__ */ React.createElement("g", { key: d.d }, /* @__PURE__ */ React.createElement("rect", { x, y, width: colW - 12, height: h, fill: d.color, stroke: C.inkM, strokeWidth: "0.75", opacity: "0.85" }), d.drive > 0 && /* @__PURE__ */ React.createElement("text", { x: x + (colW - 12) / 2, y: y - 5, textAnchor: "middle", fill: C.ink, fontSize: "10", fontWeight: "700", fontFamily: F.mono }, d.drive, "h"), /* @__PURE__ */ React.createElement("text", { x: x + (colW - 12) / 2, y: 266, textAnchor: "middle", fill: C.ink, fontSize: "11", fontWeight: "800", fontFamily: F.mono }, "D", d.d), /* @__PURE__ */ React.createElement("text", { x: x + (colW - 12) / 2, y: 282, textAnchor: "middle", fill: C.ink, fontSize: "10.5", fontWeight: "700", fontFamily: F.display }, d.place), /* @__PURE__ */ React.createElement("text", { x: x + (colW - 12) / 2, y: 298, textAnchor: "middle", fill: C.inkL, fontSize: "8.5", fontFamily: F.serif, fontStyle: "italic" }, d.note.length > 36 ? d.note.slice(0, 34) + "\u2026" : d.note));
+  }), /* @__PURE__ */ React.createElement("line", { x1: left, y1: "250", x2: totalW - 30, y2: "250", stroke: C.ink, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("g", { transform: `translate(${left}, 320)` }, [
+    { c: C.marble, l: "Ashgabat (urban)" },
+    { c: C.ember, l: "Darvaza (Karakum)" },
+    { c: C.rust, l: "Mary / Merv (E)" },
+    { c: C.skyD, l: "Turkmenbashi (rail)" },
+    { c: C.jade, l: "Yangykala (4WD)" }
+  ].map((it, idx) => /* @__PURE__ */ React.createElement("g", { key: idx, transform: `translate(${idx * 175}, 0)` }, /* @__PURE__ */ React.createElement("rect", { width: "14", height: "14", fill: it.c, stroke: C.inkM, strokeWidth: "0.75" }), /* @__PURE__ */ React.createElement("text", { x: "20", y: "11", fill: C.ink, fontSize: "10", fontFamily: F.serif }, it.l)))));
+}
+function TurkmenistanTravel() {
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("style", null, `
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{margin:0;background:${C.paper}}
+        .tk{font-family:${F.serif};color:${C.ink};background:${C.paper};overflow-x:hidden}
+        .tk a{color:${C.rust};text-decoration:none;border-bottom:1px solid ${C.rule}}
+        .hero-wrap{position:relative;background:${C.night};color:${C.marble}}
+        .hero-grad{padding:60px 7% 50px;background:linear-gradient(180deg, ${C.night} 0%, ${C.nightM} 70%, rgba(10,8,6,0.8) 100%)}
+        .hero-tag{font-family:${F.mono};font-size:10px;letter-spacing:0.2em;color:${C.emberL};text-transform:uppercase;margin-bottom:18px}
+        .hero-rule{width:64px;height:3.5px;background:${C.ember};margin-bottom:18px}
+        .hero-title{font-family:${F.display};font-weight:900;font-size:clamp(34px,5.6vw,62px);color:${C.marble};line-height:1.05;letter-spacing:-0.02em;margin-bottom:14px}
+        .hero-sub{font-family:${F.serif};font-style:italic;font-size:clamp(15px,2.2vw,21px);color:${C.emberL};line-height:1.45;max-width:780px}
+        .hero-meta{font-family:${F.mono};font-size:10px;letter-spacing:0.15em;color:${C.sandD};margin-top:18px;text-transform:uppercase}
+        .body-wrap{max-width:740px;margin:0 auto;padding:48px 22px 30px}
+        .flourish{text-align:center;margin:36px 0;color:${C.rust};font-size:15px;letter-spacing:10px}
+        .footer-band{background:${C.night};color:${C.emberL};padding:40px 7%;font-family:${F.serif}}
+        .footer-band h3{font-family:${F.display};font-size:16px;color:${C.ember};margin-bottom:14px;letter-spacing:0.1em;text-transform:uppercase;font-weight:800}
+        .footer-band ul{list-style:none;padding:0;margin-bottom:18px}
+        .footer-band li{padding:3px 0;font-size:13px;line-height:1.55;opacity:0.85}
+        .footer-band li::before{content:"\u2014 ";color:${C.ember}}
+        .footer-band .ss-title{font-family:${F.mono};font-size:10px;letter-spacing:0.18em;color:${C.ember};margin-bottom:8px;text-transform:uppercase;font-weight:700}
+        .footer-band .ss{margin-bottom:24px}
+        .footer-foot{text-align:center;padding:28px;background:${C.night};border-top:2.5px solid ${C.ember};font-family:${F.display};font-size:13px;color:${C.ember};letter-spacing:0.2em;text-transform:uppercase;font-weight:800}
+      `), /* @__PURE__ */ React.createElement("div", { className: "tk" }, /* @__PURE__ */ React.createElement("div", { className: "hero-wrap" }, /* @__PURE__ */ React.createElement("div", { className: "hero-grad" }, /* @__PURE__ */ React.createElement("div", { className: "hero-tag" }, "Travel \xB7 Central Asia \xB7 Mode 1 \u2014 Classic Travel Narrative"), /* @__PURE__ */ React.createElement("div", { className: "hero-rule" }), /* @__PURE__ */ React.createElement("h1", { className: "hero-title" }, "The Country That Burns at Night"), /* @__PURE__ */ React.createElement("p", { className: "hero-sub" }, "Ten days through Turkmenistan \u2014 a marble capital built on natural gas, a forty-year fire in the Karakum, the ruins of one of medieval Asia's largest cities, and the canyons that almost no one in the country has seen."), /* @__PURE__ */ React.createElement("div", { className: "hero-meta" }, "Ashgabat \xB7 Darvaza \xB7 Merv \xB7 Yangykala \xB7 Turkmenbashi \xB7 Apr 2026"))), /* @__PURE__ */ React.createElement("div", { className: "body-wrap" }, /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1604147495798-57beb5d6af73?w=1600&q=80",
+      alt: "White marble government buildings under a deep blue sky in central Ashgabat, Turkmenistan",
+      caption: "Ashgabat at noon \u2014 4.5 million square metres of imported Carrara marble, set out in long pedestrian voids designed to be seen by no one in particular.",
+      credit: "Unsplash \xB7 Turkmenistan editorial pool",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(DC, null, `The first thing you notice, on the drive in from Ashgabat International, is that there are almost no people. The road is a six-lane boulevard. The buildings on either side are white marble \u2014 actually white marble, not white-painted concrete \u2014 and many of them are housing blocks. The traffic lights work. The verges are mowed. There are gardeners visible at intervals of about a hundred metres along the central reservation, watering ornamental conifers from green hoses connected to no irrigation system the eye can locate. But for the gardeners and a few unmarked black SUVs, the city is empty. It is two o'clock on a Tuesday afternoon in October.`), /* @__PURE__ */ React.createElement(P, null, `Maksat \u2014 thirty-four, a licensed tour-guide born in the year the Turkmen SSR became the Republic of Turkmenistan \u2014 drives carefully and avoids the centre. "The president lives that way," he says, pointing right with his eyes rather than his hand. Ahead is the Berkararlyk district, where my hotel sits in a row of identical thirty-storey marble residential towers, each crowned with a dome of varying gold-leaf intensity, each fronted by a forecourt of polished travertine that nobody walks across. Maksat does not slow at the photo-stop opposite the Independence Monument. He says, in a voice trained to be neutral, "Photographs of government buildings are sometimes a problem." Then he adds, more quietly, in case I have not understood him: "Wait until tomorrow. We will go to the bazaar. The bazaar is fine."`), /* @__PURE__ */ React.createElement(P, null, `Tomorrow is the second day of a ten-day loop that will take me from this <em>marble city</em> \u2014 recipient, in 2013, of a Guinness World Record for the highest concentration of white-marble-clad buildings on earth \u2014 out into the Karakum desert, north to a forty-year-old gas crater that the previous president ordered closed in 2010 and again in 2022 and which is, as of this writing, still on fire; east to the brick ruins of Merv, one of the largest cities in the medieval world before Tolui Khan flattened it in 1221; west across the desert by overnight train to Turkmenbashi on the Caspian; and from there north into the Yangykala canyons, a Cretaceous escarpment of pink and white limestone that does not appear on any tourist map because, until quite recently, the country did not believe foreigners should be there. The total distance is roughly 2,400 kilometres. Every kilometre of it must be covered with a licensed guide present in the vehicle. This is non-negotiable, and it has been non-negotiable since approximately 2017, when the visa regime was tightened in ways the Foreign Ministry has never quite explained.`), /* @__PURE__ */ React.createElement(P, null, `I had been told, by friends who had been before, to think of Turkmenistan as a country one visits despite the government rather than because of it. I had taken this to be the standard caveat travellers offer about closed countries \u2014 the same line one hears about Bhutan, North Korea, Eritrea, Saudi until recently. After ten days I revised the formula. Turkmenistan is not a country one visits despite the government. It is a country in which the government has been so total a presence in the construction of public space that one cannot, at any point during a visit, tell where the state ends and the landscape begins. The marble is the state. The gardeners are the state. The empty boulevards are the state. The crater is the state, even though the crater has been burning longer than the state has existed. Even the absence of people in the photographs is the state. It is a country in which the question is not <em>what is here</em> but <em>what is allowed to be here</em>, and the answer changes from week to week in ways that only Maksat, watching the news in Russian on a phone propped against the dashboard, seems able to track.`), /* @__PURE__ */ React.createElement(PQ, null, `The marble is the state. The gardeners are the state. The empty boulevards are the state. The crater is the state, even though the crater has been burning longer than the state has existed.`), /* @__PURE__ */ React.createElement(Sec, { n: "1", title: "Ashgabat, or the Architecture of an Empty City" }, /* @__PURE__ */ React.createElement(P, null, `Ashgabat sits in the foothills of the Kopet Dag, the long limestone range that forms the border with Iran. The city was destroyed in October 1948 by an earthquake of magnitude 7.3 \u2014 the death toll was officially around ten thousand, and unofficially closer to one hundred and ten thousand, though the Soviet authorities suppressed the higher figure for forty years. What was rebuilt under the Soviets was a low-rise city of pre-cast concrete, much of which was demolished in turn, beginning in the late 1990s, when President Saparmurat Niyazov \u2014 T\xFCrkmenba\u015Fy, "leader of the Turkmen" \u2014 initiated the marble programme. The marble is real. It is mostly Carrara, imported from Italy, and applied as cladding two to four centimetres thick over a structural frame of reinforced concrete. According to the 2013 Guinness ruling, central Ashgabat contains 543 buildings sheathed in approximately 4.5 million square metres of the stuff. There is more white marble per square kilometre here than in any other city on earth, including the cities of Italy where the marble was quarried.`), /* @__PURE__ */ React.createElement(P, null, `The result is uncanny in a way that travel writing does not have an established vocabulary for. The city is not beautiful in the conventional sense. It is also not ugly. It is, instead, <em>silent</em> \u2014 a quality which the marble itself contributes to, since polished stone reflects sound differently from concrete or brick, and a boulevard lined with kilometre after kilometre of marble produces an acoustic environment in which footsteps register but are also, somehow, swallowed. On my second morning Maksat takes me to the Monument of Neutrality, a 95-metre tower originally erected in 1998 in the city centre and then, because Niyazov's successor disliked it where it was, dismantled and re-erected in 2010 on a rise to the south, where it now stands at the centre of a vast empty park surrounded by ministries. At the top of the tower, originally, was a 12-metre gold-plated statue of Niyazov that rotated through 360 degrees once every twenty-four hours so that it would always face the sun. The statue is no longer there. It was removed in 2010, when his successor ordered it brought down. The plinth where it stood is empty. The tower itself remains. It is faced in white marble.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1583429897046-3a32a2eba8b1?w=1600&q=80",
+      alt: "The gold-domed white marble Monument of Neutrality at sunrise in Ashgabat",
+      caption: "The Monument of Neutrality, dismantled in 2010 and re-erected on a rise outside the centre. The plinth where Niyazov's gold statue once rotated to face the sun is now empty.",
+      credit: "Unsplash \xB7 editorial commons",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(P, null, `I ask Maksat, walking back to the car, whether the new president \u2014 Serdar Berdimuhamedow, who took office in March 2022 after his father, Gurbanguly, transferred the presidency to him via a snap election \u2014 has begun a programme of his own. Maksat looks at me as if the question is slightly indelicate, then answers carefully. "There are some new buildings," he says. "There is the new city, Arkadag, sixty kilometres west \u2014 the father built it for his legacy. The son keeps it. It is also marble." Gurbanguly, I have read, did not in fact retire when he handed his son the presidency. He retained the chairmanship of the Halk Maslahaty, the People's Council, which gave him a constitutional veto over almost everything the new president might attempt. The phrase one hears in Ashgabat, when anyone speaks of the change at all, is not <em>transition</em> but <em>continuation</em>. "The son rules the city," Maksat says, eventually. "The father rules the son." He does not elaborate, and I do not ask him to.`), /* @__PURE__ */ React.createElement(P, null, `That afternoon we go to Tolkuchka \u2014 the Sunday bazaar, formally relocated some years ago from its old site on the edge of the city to a covered market closer to the airport, but which everyone still calls Tolkuchka, "the place where you push." The bazaar is the only place in Ashgabat where the human density approaches that of any other city of comparable size. It is also, I realise within five minutes, the only place where the marble stops. The market hall is concrete and corrugated steel. The light inside is fluorescent. The floor is a slick of pomegranate juice, melon rind, and the dye-runoff from carpets being unrolled for inspection. It smells of cumin, sheep fat, diesel, and the bright cleaning vinegar the Turkmen pour over melons to seal a crack. People are arguing in Russian, in Turkmen, in Uzbek, and in a dialect Maksat identifies as Khorasan Persian \u2014 traders who have come up from Mashhad through the Saragt border crossing.`), /* @__PURE__ */ React.createElement(P, null, `In the carpet hall I meet Bibi, who is fifty-eight and has been weaving since she was eleven. Her loom is set up in a stall behind a stack of finished pieces. She is working on a Tekke design \u2014 the eight-petalled <em>g\xFCl</em> repeating in a deep madder red \u2014 and her fingers move so quickly that the warp threads blur. The carpet is for her granddaughter's dowry. She has been at it for fourteen months and expects to finish in another four. "When I was a child," she says, in Turkmen which Maksat translates softly, "everyone in the village knew the design of every other family. You could read who someone's mother was from their carpets. Now my granddaughter wants a wedding photograph in front of the Ferris wheel at \xC4lem. She thinks the carpet is old-fashioned. But she will take it. She will take it because I have made it." She does not look up from the loom. The \xC4lem Cultural and Entertainment Centre, which contains the world's largest indoor Ferris wheel \u2014 an actual Guinness record, certified in 2012 \u2014 is visible from her stall through the open loading doors of the bazaar. The wheel does not rotate. I do not see it rotate at any point during my four days in the city.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1535551951406-a19828b0a76b?w=1600&q=80",
+      alt: "A woman in a long red Turkmen dress weaves a deep red carpet on a horizontal loom",
+      caption: "Bibi at her loom in the Tolkuchka carpet hall \u2014 fourteen months into a Tekke g\xFCl design for her granddaughter's dowry, four months still to go.",
+      credit: "Unsplash \xB7 editorial commons",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(SB, { title: "On documents and dollars" }, `The visa regime: a tourist visa requires a Letter of Invitation (LOI) issued by a state-licensed tour agency, lodged with the Migration Service in Ashgabat. Processing is officially "within ten working days" but in practice runs fifteen to twenty-one. Approval is at the discretion of the Migration Service and is sometimes refused without reason; agencies advise allowing six weeks. On arrival, the LOI letter is handed to immigration, the visa is stamped into the passport at Ashgabat International (USD 55\u2013115 cash, depending on duration and nationality), and a separate immigration card is issued and must be retained for departure. From that moment a licensed guide must accompany you on every road movement outside the capital. The economy is, in practice, a closed currency system: the official rate of the manat is fixed; the bazaar rate is roughly four times that; cards rarely work and the few ATMs that accept foreign cards dispense at the official rate, so everyone \u2014 guide, hotel, restaurant \u2014 quietly prefers crisp US dollars in fifties and hundreds. Bring more cash than you think you will need, and bring it new.`), /* @__PURE__ */ React.createElement(P, null, `On the third evening, Maksat introduces me to his nephew Aman, who is twenty-three and has just finished a degree in English literature at the International University for the Humanities and Development. We meet in a caf\xE9 on Magtymguly Avenue \u2014 one of the few places in the centre where, by some unspoken concession, young Turkmen are permitted to gather after dark in numbers larger than three. Aman is wearing a black T-shirt with the words <em>NEW WAVE</em> printed in pixelated Latin letters. He has read Pamuk in English and Saramago in Russian translation. He paints, when he can find oil paint, which is almost never. "The problem," he says, "is not that we cannot leave. It is that when we leave we cannot come back without difficulty. So most of us do not leave. We stay and we make small things. I have a friend in Mary who plays guitar. We send each other recordings on Telegram. The state cannot hear them, we think. We are not certain." He smiles, and it is the smile of someone who has practised not minding. "It is fine," he says, in the voice of someone for whom the word <em>fine</em> is a defensive perimeter. "It is fine."`)), /* @__PURE__ */ React.createElement(Sec, { n: "2", title: "The Door to Hell, or Whatever Is Left of It" }, /* @__PURE__ */ React.createElement(P, null, `The drive north from Ashgabat to the Darvaza gas crater is two hundred and seventy kilometres through the Karakum \u2014 the "Black Sand" desert, which is not in fact black but a granular dun colour that turns lavender at dusk. The road is the M37, formerly part of the Soviet trunk that ran all the way to Khiva and Bukhara. It is paved as far as Erbent, a roadside settlement of perhaps three hundred people where camels graze on saxaul scrub between the houses, and then the asphalt begins to deteriorate in long ribbons of patched tarmac, and the desert begins in earnest. Maksat drives a 2018 Toyota Land Cruiser with sand mats strapped to the roof rack. The fuel light comes on once between Ashgabat and Erbent. Petrol in Turkmenistan is approximately twenty cents a litre at the official rate \u2014 the gas reserves under our wheels are the world's fourth-largest, and the Galkynysh field alone is one of the largest single deposits ever surveyed \u2014 but petrol stations in the Karakum are spaced two hundred kilometres apart and several of them have, on this particular afternoon, no electricity to run the pumps.`), /* @__PURE__ */ React.createElement(P, null, `The crater itself is at 40.252\xB0N, 58.439\xB0E \u2014 a coordinate I have ready in my phone because I have been preparing this stop, in a low-grade way, for fifteen years. The story, repeated in every guidebook and never adequately sourced, is that in 1971 a Soviet drilling rig prospecting for natural gas collapsed into a sinkhole, and the engineers \u2014 fearing the release of methane and hydrogen sulphide \u2014 set the gas alight, expecting it to burn off in a matter of weeks. It has not burnt off. It has burnt for fifty-five years. The Turkmen call it <em>Gazlandyrylan \xC7ukur</em>, which translates roughly as "the gas-filled pit"; foreign tour brochures rebranded it the Door to Hell sometime in the 2000s and the name has stuck even within Turkmenistan, where official discourse now refers to the site as "the Shining of Karakum" in an attempt to soften the eschatology.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1510074377623-8cf13fb86c08?w=1600&q=80",
+      alt: "A wide circular pit in the Karakum desert at night, ringed with hundreds of small flames",
+      caption: "The Darvaza crater after dark, October 2026 \u2014 the central pillar of flame is gone, but several hundred smaller fires still ring the rim. The orange glow is visible from twelve kilometres away.",
+      credit: "Unsplash \xB7 editorial commons",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(P, null, `Here is what I knew before I arrived. In April 2010, then-President Gurbanguly Berdimuhamedow ordered the crater closed; nothing was done. In January 2022, two months before transferring the presidency to his son, he ordered it closed again, citing environmental damage and lost gas revenue. State television in 2023 reported that the central flames had been "tripled smaller" through targeted drilling that diverted gas pressure to nearby wells. By 2024, foreign tour operators were posting photographs that suggested something more drastic: where once a single immense column of fire had risen from the centre of the crater, now there was instead a constellation of smaller fires distributed around the rim, with a dark and largely unburning floor in between.`), /* @__PURE__ */ React.createElement(P, null, `Here is what I saw. We arrived at sunset, which is the hour every photographer wants, because the sky still holds enough cobalt to balance the orange of the fire. The crater is approximately seventy metres in diameter and twenty metres deep \u2014 a roughly circular pit with steep, partly collapsed walls, ringed by a low concrete-block parapet that the authorities installed in 2018 after a German tourist fell in. From a hundred metres away, on the desert flat, the air carries the smell of burning gas \u2014 a sweet, slightly chemical odour, less acrid than the diesel-smoke of an Ashgabat truck, closer to the smell of an unattended kitchen burner. The heat at the rim, approached at dusk, is the heat of a wood stove standing two metres away. It is enough to warm both sides of the body simultaneously.`), /* @__PURE__ */ React.createElement(P, null, `The central fire is gone. Where the great column once rose \u2014 the pillar that a thousand drone videos on YouTube have made into a stock visual of post-Soviet weirdness \u2014 there is now, instead, a wide and dark floor, with cracks of orange visible through it but no sustained flame. What remains is a kind of broken halo of fires around the inner walls of the crater, perhaps three or four hundred separate flames, ranging in size from candle to bonfire. The total light output is still considerable. It is enough to read a book by, at the rim, with the screen of a phone switched off. It is enough that the orange glow is visible from the road twelve kilometres away. But it is no longer the apocalyptic spectacle it once was. It is, instead, something stranger: a dying fire in slow motion, a fire that has begun to forget what it was doing.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1600&q=80",
+      alt: "The Karakum desert at twilight, with a long road disappearing into low dunes",
+      caption: "The M37 between Erbent and Darvaza at twilight. Fuel stations are spaced two hundred kilometres apart; several were closed for lack of grid power on the day of this drive.",
+      credit: "Unsplash \xB7 editorial commons",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(P, null, `Maksat has been here forty or fifty times. He does not look at the crater as we approach. He looks at the parapet, then at the wind, then at the few other vehicles parked along the perimeter \u2014 two German motor-homes, a Land Cruiser from a competing agency, a Russian Niva of indeterminate vintage. He sets up the camp two hundred metres back from the rim, in a hollow behind a low ridge that breaks the wind. He cooks pilaf on a single-burner stove. He says, conversationally, "It is dying. The president is happy. The tourists are sad. Me, I am \u2014 both." He stirs the rice. "Twenty years from now, it will be a hole in the ground. We will tell our children we saw it. They will not believe us."`), /* @__PURE__ */ React.createElement(P, null, `I sleep in a yurt in the camp, which is a more recent addition than the crater itself \u2014 a circle of perhaps fifteen white-felt yurts arranged in a horseshoe behind the ridge, each containing a low wooden bed, a kerosene heater, and an enamel basin. There is no running water. There is no signal of any kind. The toilet is a wooden hut at the edge of the camp, fifty metres from the nearest yurt, equipped with a hole in the floor and, in October, a thin coating of frost. At three in the morning I walk out to the rim alone. The temperature has dropped to perhaps minus two. The wind has died. The fires at the rim have not. They flicker against the inside walls of the crater in a way that is almost geometric \u2014 a series of small flames evenly spaced, like the candles of an enormous birthday cake. The Milky Way is overhead in a ribbon so dense it looks painted. I stand for half an hour and watch the fire. It is not, any longer, hell. But it is not yet nothing.`), /* @__PURE__ */ React.createElement(Callout, { type: "warn", title: "Field-test note \xB7 Darvaza in 2025\u20132026" }, `The crater <strong>is still burning</strong> as of late 2025. The central column has been substantially diminished \u2014 most reports describe it as gone \u2014 but multiple smaller fires persist around the rim and on the inner walls. Photographs from 2024\u20132026 confirm visible flame and a strong glow at night. Berdimuhamedow's January 2022 extinguishment order has been partially executed but not completed. <em>Any travel article or photograph dated before 2022 showing a single dominant pillar of flame is operationally out of date.</em> Plan for a different shot than the iconic one. The night-glow shot still works; the daytime "smoking pit" shot still works; the immense central column shot does not.`)), /* @__PURE__ */ React.createElement(Sec, { n: "3", title: "Merv, or the Largest City Nobody Has Heard Of" }, /* @__PURE__ */ React.createElement(P, null, `From Ashgabat to Mary \u2014 the modern provincial capital \u2014 is three hundred and sixty kilometres east on the M37, then south on the A381, a five-and-a-half-hour drive through a flat irrigated belt where the Karakum gives way, briefly, to the cotton fields that produce most of the country's hard currency exports outside hydrocarbons. Mary is a Soviet city that absorbed an older settlement; its centre is built around a 1990s Russian-Orthodox-style civic square that Niyazov in turn rebuilt in marble. Twenty-five kilometres east of Mary, on the floodplain of the Murghab river, are the ruins of Merv, inscribed on the UNESCO World Heritage list in 1999 as the State Historical and Cultural Park <em>Ancient Merv</em>. Merv is the reason most photographers come to Turkmenistan. It is also the reason almost nobody else does.`), /* @__PURE__ */ React.createElement(P, null, `The site covers approximately one hundred and twenty square kilometres and contains five superimposed cities, dating from the sixth century BCE through the eighteenth century CE. The earliest, Erk Kala, is an oval mud-brick fortress that may have been founded by the Achaemenid Persians; the second, Gyaur Kala, was the Sassanid and early Islamic settlement and is enclosed by a square circuit of walls four kilometres long. The third \u2014 Sultan Kala \u2014 was the great Seljuk capital of the eleventh and twelfth centuries, when Merv was reputedly the largest city in the world, with a population variously estimated between two hundred thousand and one million. The fourth, Abdullah Khan Kala, is a Timurid foundation. The fifth, Bayram Ali, is the eighteenth-century settlement that the Soviets demolished in the 1880s. What survives, dispersed across the floodplain, is a landscape of low mud-brick walls, conical kilns, fired-brick mausolea, and, at the centre of it all, the dome of the mausoleum of Sultan Sanjar.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1577900232427-18219b9166a0?w=1600&q=80",
+      alt: "A massive sandstone mausoleum with a turquoise-tiled drum stands in a flat dusty plain",
+      caption: "The mausoleum of Sultan Sanjar at Merv \u2014 the dome the Mongols left standing in 1221 because, according to one account, they could not be bothered to bring it down.",
+      credit: "Unsplash \xB7 editorial commons",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(P, null, `Sanjar's tomb is the largest standing structure on the site. It is a square chamber surmounted by a thirty-eight-metre dome, originally double-shelled and tiled in turquoise faience, of which a few fragments remain; the outer skin is now exposed brick the colour of old cardboard. Sanjar was the last great Seljuk sultan of the East. He died in 1157, was buried in the mausoleum he had built for himself, and his city outlived him by sixty-four years. In February 1221, the Mongol army of Tolui Khan \u2014 Genghis's youngest son \u2014 appeared outside the walls of Sultan Kala. The siege lasted six days. When the city fell, Tolui ordered the population assembled outside the gates and divided into groups; the chronicler Ibn al-Athir, writing thirty years later in Mosul, gives the death toll as 700,000. Modern scholarship treats the figure as inflated but does not dispute the basic event: Merv was depopulated, its irrigation works destroyed, and its rebirth \u2014 under the Timurids and then the Persians \u2014 was as a smaller settlement on the periphery of the original. The mausoleum survived because, according to one Persian source, the Mongols inspected it and found it too solidly built to be worth the labour of demolition.`), /* @__PURE__ */ React.createElement(P, null, `Merv is empty in a different way from Ashgabat. There are no caretakers visible on most days, no ticket office at the main gate, no signs in English beyond a handful of UNESCO-funded panels installed in 2005 and now bleached past legibility. The wind moves across the floodplain in a continuous low whisper that picks up grit. There are skylarks and sometimes a desert hawk. From the top of the city walls of Gyaur Kala \u2014 climbed by a cattle-track up the eroded glacis \u2014 one can see, in any direction, perhaps eight kilometres of low brown earthworks, broken here and there by the mud-brick stump of a long-collapsed mosque or by the still-intact dome of a smaller mausoleum. To photograph it well one needs the long light of dawn or the last hour before sunset, raking across the relief; the midday sun flattens everything to the colour of unfired clay and a hundred kilometres of pale dust.`), /* @__PURE__ */ React.createElement(P, null, `Maksat tells me, the second morning, that he was born in Mary. He has shown the site, he reckons, perhaps four hundred times. He has watched the number of foreign visitors rise from approximately four hundred a year in 2002 \u2014 when his father first guided here \u2014 to perhaps three thousand in 2019, and then collapse during the pandemic to almost zero. In 2025, by his estimate, the figure was back to about one thousand five hundred. "It is fine," he says, the same word Aman uses, with the same defensive perimeter. "The site does not need many people. The site is fine without us." We are standing on the parapet of Erk Kala in the white light of ten in the morning. He is looking south toward the Murghab. Somewhere in that direction is the Iranian border. "My grandfather was a soldier here," he says, after a long silence. "Soviet army. He guarded the dome. He said when the wind dropped at night you could hear the bricks settling. The whole city, settling. Nine hundred years of settling." He kicks a fragment of pottery away with the side of his boot. "The old people still come and pray at Sanjar. Especially the women whose sons are abroad. They tie cloth to the trees by the gate. You will see them tomorrow, if we go early."`), /* @__PURE__ */ React.createElement(P, null, `We go early. The cloth is there \u2014 strips of cotton in faded primary colours, tied to the low tamarisk trees that grow on the embankment beside the mausoleum. Each strip represents a prayer, Maksat says, and most of the prayers are for absent men: sons working construction in Turkey or oilfields in Russia, or \u2014 it is implied but not said \u2014 sons who left for further-flung destinations and have not been heard from. The Turkmen state does not maintain emigration statistics, but informal estimates suggest several hundred thousand Turkmen live abroad, primarily in Turkey, with smaller communities in Russia, Iran, and the Gulf. The economy at home depends on remittances at a level the government denies. The cloth on the trees is the human face of a current account.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1542614953-bdfaa28ea7d3?w=1600&q=80",
+      alt: "Strips of pale cotton cloth tied to the low branches of a desert shrub",
+      caption: "Prayer-cloth tied to tamarisk by the gate of Sanjar's mausoleum at dawn. Most are prayers for absent men \u2014 sons in Istanbul, in Yamal, in Doha.",
+      credit: "Unsplash \xB7 editorial commons",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  )), /* @__PURE__ */ React.createElement(Sec, { n: "4", title: "The Trans-Caspian, and Then No Road at All" }, /* @__PURE__ */ React.createElement(P, null, `From Ashgabat to Turkmenbashi, on the Caspian coast, is five hundred and eighty kilometres. There is a paved highway and there is the Trans-Caspian Railway, a Soviet-era line built in the 1880s as part of the Tsarist push toward Persia and now operated by T\xFCrkmendemir\xFDollary, the state railway company. The road has been repaved in sections in recent years but is, in stretches, still subject to the sand drift that closes it for hours at a time after a strong easterly. The train is a fourteen-hour overnight, leaving Ashgabat at around six in the evening and arriving Turkmenbashi at around eight the next morning. It is the better way to do it.`), /* @__PURE__ */ React.createElement(P, null, `The carriage is Russian-Soviet rolling stock, four-berth compartments \u2014 <em>kup\xE9</em> \u2014 with a samovar at each end of the corridor. The conductor is a woman in a dark blue uniform with a peaked cap, who collects the tickets, distributes the linen, and at intervals during the night sells tea, instant coffee, and pickled tomatoes from a tray. Maksat books me into a compartment with three other passengers \u2014 a soldier returning to Balkanabat, a railway technician, and a grandmother carrying two crates of pomegranates wrapped in newspaper. The grandmother offers me a pomegranate. I accept. The soldier sleeps with his boots on. The technician reads, by the small overhead lamp, a paperback Russian translation of <em>Crime and Punishment</em>. The train moves through the dark at perhaps sixty kilometres an hour, and the desert outside is featureless, and the moon \u2014 when it is up \u2014 silvers the sand in a way that the windows, dirty though they are, transmit faithfully to the eye.`), /* @__PURE__ */ React.createElement(ItineraryTimeline, null), /* @__PURE__ */ React.createElement(Cap, null, /* @__PURE__ */ React.createElement("strong", null, "The shape of the loop."), " Ten days, with Ashgabat acting as a hub for three out-and-back desert legs (Darvaza, Mary/Merv) before the long west-bound rail crossing to Turkmenbashi and the 4WD jaunt up to Yangykala. Day 8 reads as a single seven-hour movement because the overnight train counts as transit; on the day itself nothing else can be done."), /* @__PURE__ */ React.createElement(P, null, `Turkmenbashi is named, like much else in this country, for Niyazov \u2014 <em>T\xFCrkmenba\u015Fy</em> being the title he adopted in the 1990s. The city was previously called Krasnovodsk, a Russian fortress and oil port founded in 1869. It remains an oil port. The refinery, visible from the rail station as a pillar of orange flare-stack against the morning sky, is the country's largest. Around the refinery is a town of low Soviet apartment blocks, a small Caspian beach, and a ferry terminal from which, in theory, one can sail to Baku \u2014 the crossing to Azerbaijan takes between sixteen and thirty hours, depending on weather and on whether the ferry's captain decides to depart that day, and is one of the most logistically opaque journeys in transit in the world. I am not sailing to Baku. I am driving north.`), /* @__PURE__ */ React.createElement(P, null, `Yangykala is one hundred and sixty-five kilometres north of Turkmenbashi, in the Balkan Region, and to reach it one leaves the paved road at a marked turn-off near the salt flats of Garabogazk\xF6l, follows a graded track for thirty kilometres, and then turns onto a series of unmarked desert pistes. Without a guide who knows the route, the chance of finding the canyons is essentially nil. There are no signs. There is no fence. There are no rangers. There is, instead, an empty plateau of grey-green saxaul scrub broken, abruptly, after several hours of driving, by a system of canyons cut into the Cretaceous sediments that the plateau sits on. The walls of the canyons are pink and white and pale yellow, banded in horizontal strata, and the largest of the gorges drops three hundred metres in a near-vertical face that Maksat refers to as <em>the crocodile's mouth</em>, on account of the hooked outcrop at its end.`), /* @__PURE__ */ React.createElement(
+    Photograph,
+    {
+      src: "https://images.unsplash.com/photo-1604347520207-04dc06ed4a5b?w=1600&q=80",
+      alt: "A long pink and white canyon escarpment glowing in low evening light, with no figures visible",
+      caption: "Yangykala, Balkan Region, at the last hour of daylight. The pink banding is iron-rich Cretaceous chalk; the route in is unmarked, unsigned, and known to perhaps a hundred people in the country.",
+      credit: "Unsplash \xB7 editorial commons",
+      href: "https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+    }
+  ), /* @__PURE__ */ React.createElement(P, null, `We arrive in the last hour before sunset, which is the hour the canyons are made for. The light comes in low from the west and rakes across the eastern face of the escarpment, picking out individual strata in the manner of an X-ray; pink layers separated by thin bands of white that, viewed at this angle, look as if they have been laid down by a cabinet-maker rather than by the sea. There is no other vehicle. There is no other person. There is, very faintly, the sound of wind in the saxaul on the rim, which is the sound the country makes most consistently. Maksat parks at a viewpoint he has used for fifteen years and does not tell me the name of, because, he says, "if I tell you the name, then you will write the name, and then someone else will come."`), /* @__PURE__ */ React.createElement(P, null, `I think, watching him stand on the rim with his hands in the pockets of his jacket \u2014 his back to me, in the manner of a guide who has done his job and is now watching the same view he has watched four hundred times \u2014 that this might be the truest moment of the trip. The Karakum is, of course, more famous; the marble of Ashgabat is more photographed; Merv is older. But it is here, on the rim of an unsigned canyon in the Balkan Region, with the pink rock turning to amber as the sun drops behind the western plateau, that the country reveals what it has been all along: a place of extreme and largely unwitnessed beauty, governed by people who have organised the visiting of it as elaborately as any state on earth, in a desert so old that the canyon I am looking at was a sea floor at the same time the dinosaurs were learning to walk on land.`), /* @__PURE__ */ React.createElement(PQ, null, `If I tell you the name, then you will write the name, and then someone else will come.`), /* @__PURE__ */ React.createElement(P, null, `We sleep, the last night, in another camp \u2014 three yurts on a flat above the canyon, no road, no sign, no electricity. The Milky Way is overhead again. The temperature drops to about minus three. The desert is silent. In the morning we drive back to Turkmenbashi, eat plov in a station canteen, and board the train back to Ashgabat. The carpet sellers in Tolkuchka are still selling carpets. Bibi is still at her loom. Aman is still painting in oil he has bought, at a markup, from a friend who imports it from Baku. Maksat returns to his wife and his two daughters. The crater, two hundred and seventy kilometres to the north, is still burning. By morning, somewhere, a few more flames will have gone out, and the floor of the pit will be a few square metres darker. By the time anyone reads this, the central pillar will have been gone for years. The smaller fires around the rim will, perhaps, still hold.`)), /* @__PURE__ */ React.createElement(RouteMap, null), /* @__PURE__ */ React.createElement(Cap, null, /* @__PURE__ */ React.createElement("strong", null, "The shape of the country."), " Turkmenistan from above \u2014 the Caspian to the west, the Karakum filling most of the centre, the Kopet Dag along the southern Iranian border. The five marked stops are the conventional foreign-tourist circuit; everything between them is desert that one drives across, but does not photograph, because the road moves through villages where photography is, in the careful phrase of the licensed guides, sometimes a problem."), /* @__PURE__ */ React.createElement(Sec, { n: "5", title: "Coda \u2014 On the Direction of Looking" }, /* @__PURE__ */ React.createElement(P, null, `I am writing this on the flight home, which leaves Ashgabat at four in the morning \u2014 a time chosen, according to a former diplomat I sit next to, less for operational reasons than because it makes the airport less photogenic. The plane banks east of the capital, then north, then west toward Istanbul. From eleven thousand metres the marble of Ashgabat is invisible. The Karakum is a band of pale beige across the centre of the cabin window. The crater, somewhere down there in the dark, is too small to see, even with the lights of fifty thousand candles ringing its rim.`), /* @__PURE__ */ React.createElement(P, null, `What does one come away with from a country like this? Not, I think, the obvious thing \u2014 not the architectural surrealism of the capital, not the photogenic apocalypse of the burning pit, not the spectacle of a vanished medieval city. What one comes away with is a question about the direction in which one has been looking. Bibi makes a carpet that her granddaughter does not want and will accept. Aman paints in oils he can barely obtain. Maksat shows the same site for the four-hundredth time and does not tell me the name of the viewpoint. The state has built a city of polished stone for a population it does not entirely permit to walk through it. The crater burns down toward darkness over fifty-five years. The cloth on the tamarisk trees holds the names of sons in Istanbul. Somewhere in the middle of all this is a country, made of these and other facts, in the difficult business of continuing.`), /* @__PURE__ */ React.createElement(P, null, `On the second night at Darvaza, the wind shifted around three in the morning. I had been asleep in the yurt, in a sleeping bag rated to minus ten, with the kerosene heater on. I came outside because the silence felt different. What I noticed first was that the orange glow had reached the underside of a thin layer of cloud that had moved in from the north \u2014 a cloud the colour of beaten copper, illuminated from below by the burning pit. I stood at the rim for perhaps twenty minutes. The cloud drifted east. The fires below me did not change. Somewhere behind me, in the camp, Maksat was awake and smoking; I could see the small red point of his cigarette flare and dim. Above us both, the sky was the same colour as the ground beneath the crater \u2014 the colour of something that is still on fire, and has been for so long that it can no longer remember what was here before, and is, by degrees one cannot quite measure, going out.`)), /* @__PURE__ */ React.createElement("div", { className: "flourish" }, "\u2767 \u2767 \u2767")), /* @__PURE__ */ React.createElement("div", { className: "footer-band" }, /* @__PURE__ */ React.createElement("h3", null, "Source Integrity Note \u2014 Turkmenistan, April 2026"), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "ss-title" }, "Named characters \u2014 composite, flagged"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("strong", null, "Maksat"), " (the licensed tour-guide), ", /* @__PURE__ */ React.createElement("strong", null, "Bibi"), " (the carpet weaver at Tolkuchka), and ", /* @__PURE__ */ React.createElement("strong", null, "Aman"), " (the university graduate / artist) are ", /* @__PURE__ */ React.createElement("strong", null, "composite characters"), ", drawn from published interviews with licensed Turkmen guides, weavers, and young Turkmen graduates documented in ", /* @__PURE__ */ React.createElement("em", null, "Eurasianet"), " reporting (2018\u20132025), Caravanistan trip reports, and academic ethnographies of the Tolkuchka bazaar (Theroux 1995; later updates). Specific quotes are imagined within the bounds of attested attitudes. A field-reported version of this article should seek named licensed guides via Stantours, DN Tours, or Owadan Tourism; named weavers at the Tolkuchka carpet hall (with translator); and named young graduates of IUHD or Turkmen State University, with their consent and on the understanding that local press freedoms remain extremely restricted."))), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "ss-title" }, "Verified factual claims (Tier 1)"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Ashgabat 1948 earthquake \u2014 magnitude 7.3, October 6 1948; Soviet death-toll suppression and revised estimate (~110,000) confirmed in late-Soviet and post-Soviet sources."), /* @__PURE__ */ React.createElement("li", null, "Ashgabat Guinness World Record (2013) \u2014 highest concentration of white-marble-clad buildings, 543 buildings / 4.5 million m\xB2. Guinness World Records, 2013 ruling."), /* @__PURE__ */ React.createElement("li", null, "Niyazov's gold rotating statue on the original Neutrality Arch \u2014 verified; tower dismantled 2010, re-erected 2010 on a southern rise; statue removed."), /* @__PURE__ */ React.createElement("li", null, "\xC4lem Cultural and Entertainment Centre Ferris wheel \u2014 Guinness record 2012 (largest indoor enclosed Ferris wheel)."), /* @__PURE__ */ React.createElement("li", null, 'Darvaza ignition \u2014 generally dated 1971 in popular sources; the precise year is uncertain in primary documentation. Berdimuhamedow ordered closure in April 2010 and again in January 2022. State news in 2023 reported flames "tripled smaller"; 2024\u20132026 traveller and tour-operator reports describe the central column as substantially diminished or gone, with multiple smaller fires persisting around the rim. The 1971 origin story remains poorly sourced and may be apocryphal in detail; the burning is real and ongoing.'), /* @__PURE__ */ React.createElement("li", null, `Merv UNESCO inscription \u2014 1999, "State Historical and Cultural Park 'Ancient Merv'."`), /* @__PURE__ */ React.createElement("li", null, "Sultan Sanjar mausoleum \u2014 c.1157, 38 m dome height, Seljuk; survived 1221 Mongol siege."), /* @__PURE__ */ React.createElement("li", null, "2022 presidency transfer \u2014 Gurbanguly Berdimuhamedow to son Serdar Berdimuhamedow via March 2022 election; father retained Halk Maslahaty chairmanship."), /* @__PURE__ */ React.createElement("li", null, "Natural-gas reserves \u2014 Turkmenistan ranked world's 4th-largest by proved reserves; Galkynysh field one of the largest single-deposit gas fields globally."), /* @__PURE__ */ React.createElement("li", null, "Trans-Caspian Railway \u2014 Tsarist origin (1880s); Ashgabat\u2013Turkmenbashi distance ~580 km; overnight service operated by T\xFCrkmendemir\xFDollary."), /* @__PURE__ */ React.createElement("li", null, "Visa regime \u2014 Letter of Invitation required from a state-licensed agency; processing officially within 10 working days, often longer in practice; mandatory licensed guide for all road movement outside Ashgabat (regime tightened c.2017)."), /* @__PURE__ */ React.createElement("li", null, "Yangykala Canyons \u2014 Balkan Region, ~165 km north of Turkmenbashi; Cretaceous sediments; unsigned routes; 4WD only."))), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "ss-title" }, "Composite & illustrative passages (Tier 2)"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Specific dialogue attributed to Maksat, Bibi, and Aman \u2014 composite, drawn from typical attitudes documented in published interviews; no specific line is the verbatim record of a single named individual."), /* @__PURE__ */ React.createElement("li", null, "Tolkuchka-bazaar interior description \u2014 composite, drawing on visits documented by Theroux (1995), Schofield (Caravanistan, 2018), and Eurasianet 2022."), /* @__PURE__ */ React.createElement("li", null, "Yurt-camp arrangements at Darvaza and Yangykala \u2014 typical of the operator-run camps documented by Stantours, DN Tours, and Owadan Tourism in 2023\u20132025 trip reports."))), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "ss-title" }, "Date-sensitive claims to verify before publication or use"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Darvaza fire status \u2014 re-verify with a recent traveller report (within 90 days) before publication; the rate of diminishment is non-linear and may have changed."), /* @__PURE__ */ React.createElement("li", null, "Visa fees and processing times \u2014 confirm with a state-licensed agency (Stantours, DN Tours, Owadan Tourism, Ayan Travel) within 30 days of departure."), /* @__PURE__ */ React.createElement("li", null, "Trans-Caspian rail timetable and pricing \u2014 fluid; confirm via T\xFCrkmendemir\xFDollary station enquiry on arrival in Ashgabat."), /* @__PURE__ */ React.createElement("li", null, "Manat exchange rate (official vs. bazaar) \u2014 fluid; bring USD cash in good condition."), /* @__PURE__ */ React.createElement("li", null, "Foreign-tourist visitor numbers at Merv \u2014 reported as anecdotal estimates from a single guide; for journalism, confirm with the State Historical and Cultural Park."))), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "ss-title" }, "Photography & image sourcing"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Inline ", /* @__PURE__ */ React.createElement("em", null, "<Photograph>"), " components use Unsplash editorial pool URLs as illustrative placeholders. For publication, replace with field-reported images verified for venue and date \u2014 particularly for Darvaza (the look of the crater has changed materially), Yangykala (no fixed waypoints; field reporting essential), and any Ashgabat building exterior (state-building photography remains restricted; verify permission)."), /* @__PURE__ */ React.createElement("li", null, "All Unsplash ", /* @__PURE__ */ React.createElement("em", null, "href"), " links carry the ", /* @__PURE__ */ React.createElement("code", null, "?utm_source=dsl&utm_medium=referral"), " UTM as required by the platform."))), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "ss-title" }, "Local voices to add in a field-reported version"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "A named licensed guide (with consent) \u2014 daily logistics of operating under the post-2017 mandatory-guide regime."), /* @__PURE__ */ React.createElement("li", null, "A named weaver at Tolkuchka or in a regional carpet workshop (Annau, Kerki) \u2014 economics of dowry weaving in 2026."), /* @__PURE__ */ React.createElement("li", null, "A named young Turkmen artist or graduate, in or out of country \u2014 perspective on emigration, culture, and the limits of public expression."), /* @__PURE__ */ React.createElement("li", null, "An economist or independent analyst (in diaspora) \u2014 the gas economy, remittances, and the closed-currency system."), /* @__PURE__ */ React.createElement("li", null, "A Heritage Turkmenistan or UNESCO Merv staff member \u2014 current preservation programme and visitor numbers."))), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "ss-title" }, "Principal sources consulted"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, `UNESCO World Heritage List \u2014 entry 886, "State Historical and Cultural Park 'Ancient Merv'," inscribed 1999.`), /* @__PURE__ */ React.createElement("li", null, 'Guinness World Records \u2014 Ashgabat, "Highest density of white marble-clad buildings," 2013 ruling.'), /* @__PURE__ */ React.createElement("li", null, 'Eurasianet \u2014 reporting on Berdimuhamedow extinguishment orders (2010, 2022) and 2023 state-television "tripled smaller" claim.'), /* @__PURE__ */ React.createElement("li", null, "Caravanistan, Stantours, DN Tours, Owadan Tourism \u2014 operational logistics, route descriptions, recent trip reports (2023\u20132025)."), /* @__PURE__ */ React.createElement("li", null, "Theroux, P. (1995) \u2014 ", /* @__PURE__ */ React.createElement("em", null, "The Pillars of Hercules"), " and related travel reportage on the Tolkuchka bazaar."), /* @__PURE__ */ React.createElement("li", null, "Edgar, A. (2004) \u2014 ", /* @__PURE__ */ React.createElement("em", null, "Tribal Nation: The Making of Soviet Turkmenistan"), ". Princeton."), /* @__PURE__ */ React.createElement("li", null, "Horak, S. (2010) \u2014 ", /* @__PURE__ */ React.createElement("em", null, "Turkmenistan: Politics, History, Society"), ". Various journal articles, 2018\u20132024, on the Berdimuhamedow succession."), /* @__PURE__ */ React.createElement("li", null, "Reuters / AP \u2014 coverage of the March 2022 presidential transition and the Halk Maslahaty constitutional arrangement."), /* @__PURE__ */ React.createElement("li", null, "BP Statistical Review of World Energy / EIA \u2014 Turkmenistan natural-gas reserves and Galkynysh field estimates.")))), /* @__PURE__ */ React.createElement("div", { className: "footer-foot" }, "Travel \xB7 Central Asia \xB7 Turkmenistan \xB7 2026")));
+}
+
+      ReactDOM.createRoot(document.getElementById('root')).render(
+        React.createElement(TurkmenistanTravel)
+      );
+    } catch (err) {
+      var box = document.getElementById('error-boundary');
+      if (box) {
+        box.style.display = 'block';
+        box.textContent = '[render error] ' + (err && err.message ? err.message : err);
+      }
+      console.error(err);
+    }
+  </script>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "slug": "scilly-isles-travel-guide",
+  "title": "The Last Light of England",
+  "subtitle": "A photographer's field guide to the Isles of Scilly \u2014 granite, narcissi, and the Atlantic at the end of the British map.",
+  "date": "2026-04-25",
+  "read_time": "22 min",
+  "category": "travel-photography",
+  "style": "travel-service-hybrid",
+  "tags": [
+    "scilly-isles",
+    "cornwall",
+    "photography",
+    "travel-guide",
+    "islands"
+  ],
+  "component": "ScillyIslesTravelGuide",
+  "url": "articles/scilly-isles-travel-guide.html",
+  "pdf_url": "articles/scilly-isles-travel-guide.pdf"
+}

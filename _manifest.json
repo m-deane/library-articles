@@ -1,5 +1,170 @@
 [
   {
+    "slug": "basking-sharks",
+    "title": "The Slow Giants: Why Basking Sharks Return to the Hebrides",
+    "subtitle": "The world's second-largest fish drifts each summer through a stretch of cold Atlantic between Coll and Canna, mouth held wide for a soup of copepods. After a century of slaughter and a generation of indifference, the science is finally catching up to the animal.",
+    "date": "2026-04-25",
+    "read_time": "22 min",
+    "category": "science-nature",
+    "style": "natgeo-sciam-hybrid",
+    "tags": [
+      "marine-biology",
+      "sharks",
+      "conservation",
+      "scotland"
+    ],
+    "component": "BaskingSharks",
+    "url": "articles/basking-sharks.html",
+    "pdf_url": "articles/basking-sharks.pdf"
+  },
+  {
+    "slug": "qatari-lng",
+    "title": "The Long Burn",
+    "subtitle": "Qatar bet that the world would still want gas in 2050. The North Field expansion is making that bet harder to refuse.",
+    "date": "2026-04-25",
+    "read_time": "",
+    "category": "energy",
+    "style": "economist",
+    "tags": [
+      "lng",
+      "qatar",
+      "energy-markets",
+      "geopolitics"
+    ],
+    "component": "QatariLng",
+    "url": "articles/qatari-lng.html",
+    "pdf_url": "articles/qatari-lng.pdf"
+  },
+  {
+    "slug": "scilly-isles-travel-guide",
+    "title": "The Last Light of England",
+    "subtitle": "A photographer's field guide to the Isles of Scilly \u2014 granite, narcissi, and the Atlantic at the end of the British map.",
+    "date": "2026-04-25",
+    "read_time": "22 min",
+    "category": "travel-photography",
+    "style": "travel-service-hybrid",
+    "tags": [
+      "scilly-isles",
+      "cornwall",
+      "photography",
+      "travel-guide",
+      "islands"
+    ],
+    "component": "ScillyIslesTravelGuide",
+    "url": "articles/scilly-isles-travel-guide.html",
+    "pdf_url": "articles/scilly-isles-travel-guide.pdf"
+  },
+  {
+    "slug": "turkmenistan-travel",
+    "title": "The Country That Burns at Night",
+    "subtitle": "Ten days through Turkmenistan \u2014 a marble capital built on natural gas, a forty-year fire in the Karakum, the ruins of one of medieval Asia's largest cities, and the canyons that almost no one in the country has seen.",
+    "date": "2026-04-25",
+    "read_time": "22 min",
+    "category": "travel-photography",
+    "style": "travel-literary",
+    "tags": [
+      "turkmenistan",
+      "central-asia",
+      "travel",
+      "darvaza"
+    ],
+    "component": "TurkmenistanTravel",
+    "url": "articles/turkmenistan-travel.html",
+    "pdf_url": "articles/turkmenistan-travel.pdf"
+  },
+  {
+    "slug": "storytelling-in-photography",
+    "title": "Storytelling in Photography",
+    "subtitle": "How photographers make pictures behave like sentences \u2014 the decisive moment, the photo essay, the layered frame",
+    "date": "2026-04-25",
+    "read_time": "",
+    "category": "travel-photography",
+    "style": "encyclopaedic",
+    "tags": [
+      "photography",
+      "storytelling",
+      "craft",
+      "photo-essay"
+    ],
+    "component": "StorytellingInPhotography",
+    "url": "articles/storytelling-in-photography.html",
+    "pdf_url": "articles/storytelling-in-photography.pdf"
+  },
+  {
+    "slug": "east-iceland-hiking-photography",
+    "title": "Light at the Edge of the Map",
+    "subtitle": "Hiking and photographing East Iceland \u2014 eight FotoVue-grade locations from Vestrahorn to Klifbrekkufossar, with timing, bearings, exposure, and the small humilities a 65\u00b0N latitude imposes on a tripod.",
+    "date": "2026-04-25",
+    "read_time": "32 min",
+    "category": "travel-photography",
+    "style": "travel-service-hybrid",
+    "tags": [
+      "iceland",
+      "photography",
+      "hiking",
+      "travel-guide",
+      "landscape"
+    ],
+    "component": "EastIcelandHikingPhotography",
+    "url": "articles/east-iceland-hiking-photography.html",
+    "pdf_url": "articles/east-iceland-hiking-photography.pdf"
+  },
+  {
+    "slug": "drone-hyperlapse-mavic-3-pro",
+    "title": "Drone Hyperlapse with the DJI Mavic 3 Pro",
+    "subtitle": "An encyclopaedic technical reference for the triple-camera flagship \u2014 sensors, modes, mathematics, regulation, post",
+    "date": "2026-04-25",
+    "read_time": "22 min",
+    "category": "travel-photography",
+    "style": "encyclopaedic",
+    "tags": [
+      "drone",
+      "hyperlapse",
+      "dji",
+      "photography",
+      "technical"
+    ],
+    "component": "DroneHyperlapseMavic3Pro",
+    "url": "articles/drone-hyperlapse-mavic-3-pro.html",
+    "pdf_url": "articles/drone-hyperlapse-mavic-3-pro.pdf"
+  },
+  {
+    "slug": "cape-verde-travel-guide",
+    "title": "Cape Verde: A Photographer's Field Guide to the Ten Islands",
+    "subtitle": "Mindelo morna at midnight, the lava plain at Ch\u00e3 das Caldeiras, the green knife of Ribeira do Paul. A literary and operational guide to photographing the Cabo Verde archipelago across five islands at 15\u00b0 north.",
+    "date": "2026-04-25",
+    "read_time": "32 min",
+    "category": "travel-photography",
+    "style": "travel-service-hybrid",
+    "tags": [
+      "cape-verde",
+      "photography",
+      "travel-guide",
+      "atlantic-islands"
+    ],
+    "component": "CapeVerdeTravelGuide",
+    "url": "articles/cape-verde-travel-guide.html",
+    "pdf_url": "articles/cape-verde-travel-guide.pdf"
+  },
+  {
+    "slug": "geography-trivia",
+    "title": "A Cabinet of Geographic Curiosities",
+    "subtitle": "Twenty-two facts about the surface of the Earth that survive contact with the source",
+    "date": "2026-04-25",
+    "read_time": "16 min",
+    "category": "history",
+    "style": "encyclopaedic",
+    "tags": [
+      "geography",
+      "trivia",
+      "maps",
+      "borders"
+    ],
+    "component": "GeographyTrivia",
+    "url": "articles/geography-trivia.html",
+    "pdf_url": "articles/geography-trivia.pdf"
+  },
+  {
     "slug": "fish-farms-environmental-impact",
     "title": "The Blue Paradox: What Fish Farms Are Doing To The Ocean",
     "subtitle": "Aquaculture now feeds the world more seafood than wild fisheries. Whether that is good news depends on which farm you visit \u2014 and which column of the ledger you are reading.",
@@ -258,23 +423,6 @@
     "component": "AdvancesInFinancialMachineLearningChapterNotes",
     "url": "articles/advances-in-financial-machine-learning-chapter-notes.html",
     "pdf_url": "articles/advances-in-financial-machine-learning-chapter-notes.pdf"
-  },
-  {
-    "slug": "test-chart-article",
-    "title": "A Visual Guide to Exponential Decay",
-    "subtitle": "Why everything fades, and how fast \u2014 a short tour of the simplest half-life you'll ever meet.",
-    "date": "2026-04-20",
-    "read_time": "3 min",
-    "category": "statistics",
-    "style": "technical-ds",
-    "tags": [
-      "statistics",
-      "visualisation",
-      "test"
-    ],
-    "component": "TestChartArticle",
-    "url": "articles/test-chart-article.html",
-    "pdf_url": "articles/test-chart-article.pdf"
   },
   {
     "slug": "forty-classic-crude-oil-trades-chapter-notes",

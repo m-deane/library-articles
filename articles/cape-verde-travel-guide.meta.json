@@ -1,0 +1,18 @@
+{
+  "slug": "cape-verde-travel-guide",
+  "title": "Cape Verde: A Photographer's Field Guide to the Ten Islands",
+  "subtitle": "Mindelo morna at midnight, the lava plain at Ch\u00e3 das Caldeiras, the green knife of Ribeira do Paul. A literary and operational guide to photographing the Cabo Verde archipelago across five islands at 15\u00b0 north.",
+  "date": "2026-04-25",
+  "read_time": "32 min",
+  "category": "travel-photography",
+  "style": "travel-service-hybrid",
+  "tags": [
+    "cape-verde",
+    "photography",
+    "travel-guide",
+    "atlantic-islands"
+  ],
+  "component": "CapeVerdeTravelGuide",
+  "url": "articles/cape-verde-travel-guide.html",
+  "pdf_url": "articles/cape-verde-travel-guide.pdf"
+}
