@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Long Memory: Icelandic Sagas and the Literature That Refused to Die — NatGeo Encyclopaedic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;500;700;900&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --basalt:    #0e1014;
+  --slate-deep:#1a1e26;
+  --slate:     #252c38;
+  --slate-mid: #3a4454;
+  --slate-lt:  #5a6880;
+  --birch:     #f0ece2;
+  --birch2:    #e8e2d4;
+  --birch3:    #ddd5c0;
+  --parchment: #f7f3ea;
+  --ice:       #d4e8f0;
+  --ice-deep:  #a8d0e4;
+  --ice-accent:#7ab8d8;
+  --rune-gold: #c8a040;
+  --rune-warm: #e8b850;
+  --text:      #1a1e26;
+  --dim:       #4a5568;
+  --border:    #c8c0a8;
+  --border-lt: #ddd5c0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--parchment);
+  color:var(--text);
+  font-family:'IM Fell English',Georgia,serif;
+  font-size:19px;
+  line-height:2.0;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── TOP BAR ── */
+.topbar{
+  background:var(--basalt);
+  color:var(--ice-accent);
+  text-align:center;
+  padding:8px 0;
+  font-family:'Jost',sans-serif;
+  font-size:10.5px;
+  font-weight:500;
+  letter-spacing:.34em;
+  text-transform:uppercase;
+}
+.modebar{
+  background:var(--birch2);
+  border-bottom:1px solid var(--border);
+  padding:10px 40px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.modebar-item{font-family:'Jost',sans-serif;font-size:10.5px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.modebar-item strong{color:var(--slate-deep)}
+.modebar-dot{width:3px;height:3px;background:var(--border);border-radius:50%}
+
+/* ── HERO ── */
+.hero{
+  background:var(--basalt);
+  min-height:92vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  position:relative;
+  overflow:hidden;
+  padding:0 72px 90px;
+}
+/* Parchment candlelight texture */
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 100%, rgba(8,10,14,.97) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 40%, rgba(200,160,64,.04) 0%, transparent 60%),
+    repeating-linear-gradient(
+      92deg,
+      rgba(240,236,226,.012) 0px, rgba(240,236,226,.012) 1px,
+      transparent 1px, transparent 44px
+    );
+  pointer-events:none;
+}
+/* Runic/manuscript lines floating */
+.manuscript-lines{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+.m-line{
+  position:absolute;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(168,208,228,.1),transparent);
+  animation:ml 28s ease-in-out infinite;
+}
+.m-line:nth-child(1){top:18%;width:65%;left:17%;animation-delay:0s}
+.m-line:nth-child(2){top:32%;width:45%;left:28%;animation-delay:6s;animation-duration:22s}
+.m-line:nth-child(3){top:48%;width:72%;left:10%;animation-delay:12s;animation-duration:32s}
+.m-line:nth-child(4){top:62%;width:55%;left:22%;animation-delay:4s}
+.m-line:nth-child(5){top:74%;width:38%;left:33%;animation-delay:9s;animation-duration:25s}
+@keyframes ml{0%,100%{opacity:.4;transform:scaleX(.8)}50%{opacity:1;transform:scaleX(1)}}
+
+/* Runic char decoration */
+.rune-scatter{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  letter-spacing:.1em;
+  color:rgba(200,160,64,.06);
+  overflow:hidden;
+}
+.rune-group{
+  position:absolute;
+  line-height:2.5;
+  text-align:center;
+  writing-mode:vertical-rl;
+}
+.rune-group:nth-child(1){top:8%;left:5%;animation:rfade 18s ease-in-out infinite}
+.rune-group:nth-child(2){top:15%;right:6%;animation:rfade 22s ease-in-out infinite 4s}
+.rune-group:nth-child(3){top:35%;left:2%;animation:rfade 16s ease-in-out infinite 8s}
+.rune-group:nth-child(4){top:40%;right:3%;animation:rfade 24s ease-in-out infinite 2s}
+@keyframes rfade{0%,100%{opacity:.4}50%{opacity:.9}}
+
+.hero-kicker{font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:var(--ice-accent);margin-bottom:22px;position:relative;opacity:0;animation:ri .9s ease forwards .2s}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(42px,7.5vw,104px);font-weight:900;line-height:.92;color:var(--birch);margin-bottom:30px;position:relative;opacity:0;animation:ri .9s ease forwards .5s}
+.hero h1 em{font-style:normal;color:var(--ice);display:block}
+.hero h1 span{display:block;font-size:.42em;font-weight:400;letter-spacing:.08em;color:var(--rune-gold);font-style:italic;font-family:'IM Fell English',serif;margin-top:10px}
+.hero-deck{font-family:'IM Fell English',serif;font-size:clamp(15px,1.8vw,20px);font-style:italic;line-height:1.75;color:var(--birch3);max-width:700px;position:relative;opacity:0;animation:ri .9s ease forwards .8s;border-left:3px solid var(--rune-gold);padding-left:22px}
+.hero-stats{display:flex;gap:52px;margin-top:60px;position:relative;opacity:0;animation:ri .9s ease forwards 1.1s;flex-wrap:wrap}
+.hs-n{font-family:'Cinzel',serif;font-size:34px;font-weight:700;color:var(--rune-gold);display:block;line-height:1}
+.hs-l{font-family:'Jost',sans-serif;font-size:9.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--slate-lt);margin-top:5px;display:block}
+@keyframes ri{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── REFERENCE SUMMARY ── */
+.ref-outer{padding:64px 40px;background:var(--slate-deep);border-bottom:2px solid var(--rune-gold)}
+.ref-summary{background:rgba(255,255,255,.04);border:1px solid rgba(168,208,228,.2);border-left:4px solid var(--ice-accent);padding:38px 42px;max-width:1100px;margin:0 auto}
+.ref-title{font-family:'Jost',sans-serif;font-size:10px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--ice-accent);margin-bottom:22px;display:block}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:22px 38px}
+.ref-item-label{font-family:'Jost',sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--rune-gold);display:block;margin-bottom:5px}
+.ref-item-value{font-family:'Jost',sans-serif;font-size:13.5px;line-height:1.75;color:var(--birch3)}
+
+/* ── SAGA CATEGORIES VISUAL ── */
+.cat-section{background:var(--slate);padding:80px 40px;border-top:1px solid rgba(168,208,228,.15)}
+.cat-inner{max-width:1100px;margin:0 auto}
+.cat-kicker{font-family:'Jost',sans-serif;font-size:10px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--ice-accent);text-align:center;margin-bottom:8px}
+.cat-title{font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:var(--birch);text-align:center;margin-bottom:50px}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:rgba(168,208,228,.1)}
+.cat-card{background:var(--slate-deep);padding:28px;opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}
+.cat-card.vis{opacity:1;transform:translateY(0)}
+.cat-icon{font-family:'Cinzel',serif;font-size:24px;color:var(--rune-gold);display:block;margin-bottom:12px;line-height:1}
+.cat-name{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--birch);margin-bottom:4px}
+.cat-maltese{font-family:'Jost',sans-serif;font-size:9.5px;font-weight:500;letter-spacing:.12em;color:var(--ice-accent);text-transform:uppercase;margin-bottom:12px;display:block}
+.cat-desc{font-family:'Jost',sans-serif;font-size:13px;line-height:1.75;color:var(--birch3)}
+.cat-example{margin-top:10px;font-family:'IM Fell English',serif;font-style:italic;font-size:13px;color:var(--rune-gold);border-top:1px solid rgba(168,208,228,.15);padding-top:9px}
+
+/* ── MAIN ARTICLE ── */
+.article{max-width:760px;margin:0 auto;padding:90px 40px}
+.article p{margin-bottom:2.0em;color:var(--text);font-size:19.5px;line-height:2.05}
+.article p:first-of-type::first-letter{
+  font-family:'Cinzel',serif;
+  font-size:5.6em;font-weight:700;
+  float:left;line-height:.74;
+  margin:.06em .13em 0 0;
+  color:var(--rune-gold);
+}
+.article em{font-style:italic}
+.article strong{font-weight:700;font-style:normal}
+
+.sbreak{display:flex;align-items:center;gap:22px;margin:62px 0}
+.sbreak::before,.sbreak::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border))}
+.sbreak::after{background:linear-gradient(270deg,transparent,var(--border))}
+.sbreak-rune{font-family:'Cinzel',serif;font-size:16px;color:var(--rune-gold);letter-spacing:.3em}
+
+/* Pull quote */
+.pull-quote{
+  float:right;width:230px;margin:0 0 24px 32px;
+  border-top:3px solid var(--ice-accent);
+  border-bottom:1px solid var(--border-lt);
+  padding:20px 0;
+}
+.pq-text{font-family:'Cinzel',serif;font-size:15px;font-weight:500;line-height:1.65;color:var(--slate-deep);font-style:italic}
+.pq-attr{font-family:'Jost',sans-serif;font-size:9.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--rune-gold);margin-top:10px;display:block}
+
+/* Sidebar */
+.sidebar{
+  background:var(--birch2);
+  border-left:4px solid var(--rune-gold);
+  border-top:1px solid var(--border-lt);
+  padding:28px 32px;
+  margin:48px 0;
+  opacity:0;transform:translateX(-10px);transition:opacity .7s,transform .7s
+}
+.sidebar.vis{opacity:1;transform:translateX(0)}
+.sidebar-kicker{font-family:'Jost',sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--rune-gold);display:block;margin-bottom:5px}
+.sidebar-title{font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--slate-deep);margin-bottom:16px;line-height:1.4}
+.sidebar p{font-family:'IM Fell English',serif;font-size:15px;line-height:1.9;color:var(--text);margin-bottom:.9em}
+.sidebar p:last-child{margin-bottom:0}
+.sidebar strong{font-weight:700}
+
+/* Dark sidebar (for the manuscripts section) */
+.sidebar-dark{
+  background:var(--slate-deep);
+  border-left:4px solid var(--ice-accent);
+  border-top:1px solid rgba(168,208,228,.2);
+  padding:28px 32px;
+  margin:48px 0;
+  opacity:0;transform:translateX(-10px);transition:opacity .7s,transform .7s
+}
+.sidebar-dark.vis{opacity:1;transform:translateX(0)}
+.sidebar-dark .sidebar-kicker{color:var(--ice-accent)}
+.sidebar-dark .sidebar-title{color:var(--birch)}
+.sidebar-dark p{font-family:'Jost',sans-serif;font-size:14px;line-height:1.8;color:var(--birch3);margin-bottom:.9em}
+.sidebar-dark strong{color:var(--rune-warm)}
+
+/* ── PACKAGES ── */
+.package{background:var(--slate-deep);padding:80px 40px;border-top:2px solid rgba(200,160,64,.4)}
+.pkg-kicker{font-family:'Jost',sans-serif;font-size:10px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--ice-accent);text-align:center;margin-bottom:8px}
+.pkg-title{font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:var(--birch);text-align:center;margin-bottom:54px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;max-width:1100px;margin:0 auto}
+.pcard{background:var(--slate);border:1px solid rgba(168,208,228,.15);border-top:3px solid var(--rune-gold);padding:24px;opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}
+.pcard.vis{opacity:1;transform:translateY(0)}
+.pcard-n{font-family:'Jost',sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--rune-gold);margin-bottom:12px}
+.pf{margin-bottom:9px}
+.pf-l{font-family:'Jost',sans-serif;font-size:8.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ice-accent);display:block;margin-bottom:3px}
+.pf-v{font-family:'Jost',sans-serif;font-size:13.5px;line-height:1.7;color:var(--birch3)}
+.pf-narr{border-top:1px solid rgba(168,208,228,.15);padding-top:10px;margin-top:10px}
+.pf-narr .pf-v{font-style:italic;color:var(--slate-lt)}
+.pcap{background:rgba(255,255,255,.04);border-left:2px solid var(--rune-gold);padding:10px 12px;margin-top:10px;font-family:'Jost',sans-serif;font-size:12px;line-height:1.7;color:var(--birch3)}
+/* wide card */
+.pcard-wide{grid-column:1/-1;background:var(--slate);border:1px solid rgba(168,208,228,.15);border-top:3px solid var(--ice-accent);padding:26px}
+.seq-frames{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}
+.seq-frame{background:rgba(255,255,255,.04);border:1px dashed rgba(168,208,228,.2);height:100px;display:flex;align-items:center;justify-content:center;font-family:'Jost',sans-serif;font-size:9px;letter-spacing:.08em;color:var(--slate-lt);text-transform:uppercase;text-align:center;padding:10px}
+.seq-label{font-family:'IM Fell English',serif;font-style:italic;font-size:14.5px;line-height:1.75;color:var(--slate-lt);text-align:center;border-top:1px solid rgba(168,208,228,.15);padding-top:14px}
+
+/* ── DIAGRAM SECTION ── */
+.diag-section{background:var(--birch2);padding:80px 40px;border-top:1px solid var(--border)}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px;max-width:1100px;margin:0 auto}
+.dcard{background:var(--parchment);border:1px solid var(--border);border-top:3px solid var(--slate-mid);padding:24px;opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s}
+.dcard.vis{opacity:1;transform:translateY(0)}
+.dcard-type{font-family:'Jost',sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.dcard-title{font-family:'Cinzel',serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:18px;line-height:1.4}
+.df{margin-bottom:10px}
+.df-l{font-family:'Jost',sans-serif;font-size:8.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--rune-gold);display:block;margin-bottom:3px}
+.df-v{font-family:'Jost',sans-serif;font-size:13px;line-height:1.7;color:var(--text)}
+.df-narr{border-top:1px solid var(--border-lt);padding-top:10px;margin-top:10px}
+.df-narr .df-v{font-style:italic;font-family:'IM Fell English',serif;font-size:13px;color:var(--dim)}
+
+/* ── VISUAL SPINE ── */
+.spine-section{background:var(--slate-deep);padding:80px 40px;border-top:1px solid rgba(168,208,228,.15)}
+.spine{max-width:840px;margin:0 auto;position:relative}
+.spine::before{content:'';position:absolute;left:110px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--rune-gold),transparent)}
+.spine-row{display:grid;grid-template-columns:102px 1fr;gap:22px;margin-bottom:18px;opacity:0;transform:translateX(-10px);transition:opacity .5s,transform .5s}
+.spine-row.vis{opacity:1;transform:translateX(0)}
+.spine-tag{text-align:right;padding-right:14px;padding-top:3px}
+.badge{display:inline-block;font-family:'Jost',sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;white-space:nowrap}
+.badge-img{background:var(--rune-gold);color:var(--basalt)}
+.badge-diag{background:var(--ice-accent);color:var(--basalt)}
+.badge-prose{background:transparent;color:var(--slate-lt);border:1px solid var(--slate-mid)}
+.spine-body{border-bottom:1px solid rgba(168,208,228,.1);padding:0 0 14px 22px}
+.spine-row:last-child .spine-body{border-bottom:none}
+.spine-name{font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:var(--birch);margin-bottom:4px}
+.spine-desc{font-family:'Jost',sans-serif;font-size:12.5px;line-height:1.65;color:var(--slate-lt)}
+.spine-desc strong{color:var(--rune-gold)}
+
+/* ── CLOSING ── */
+.closing{max-width:760px;margin:0 auto;padding:80px 40px;text-align:center}
+.closing p{font-family:'IM Fell English',serif;font-size:20px;font-style:italic;line-height:2.1;color:var(--text);margin-bottom:1.6em;opacity:0;transform:translateY(12px);transition:opacity .8s,transform .8s}
+.closing p.vis{opacity:1;transform:translateY(0)}
+.closing .final{font-family:'Cinzel',serif;font-size:22px;font-style:normal;font-weight:700;color:var(--slate-deep);margin-top:1.5em;line-height:1.5;border-top:2px solid var(--rune-gold);padding-top:28px}
+
+/* ── SOURCE SECTION ── */
+.src-section{background:var(--slate-deep);padding:72px 40px;border-top:3px solid rgba(200,160,64,.4)}
+.src-inner{max-width:760px;margin:0 auto}
+.src-kicker{font-family:'Jost',sans-serif;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--ice-accent);display:block;margin-bottom:6px}
+.src-title{font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--birch);margin-bottom:36px}
+.src-cat{margin-bottom:28px}
+.src-cat-t{font-family:'Jost',sans-serif;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--rune-gold);margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid rgba(168,208,228,.2)}
+.src-cat ul{list-style:none}
+.src-cat li{font-family:'Jost',sans-serif;font-size:13.5px;line-height:1.75;color:var(--birch3);padding:5px 0 5px 18px;position:relative;border-bottom:1px solid rgba(255,255,255,.05)}
+.src-cat li::before{content:'—';position:absolute;left:0;color:var(--rune-gold)}
+
+footer{background:var(--basalt);border-top:1px solid rgba(168,208,228,.1);text-align:center;padding:40px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate-lt)}
+footer strong{color:var(--rune-gold)}
+
+.fi{opacity:0;transform:translateY(20px);transition:opacity .8s,transform .8s}
+.fi.vis{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+  .hero{padding:0 28px 60px}
+  .article{padding:60px 24px;font-size:17px}
+  .pgrid,.dgrid{grid-template-columns:1fr}
+  .seq-frames{grid-template-columns:1fr}
+  .hero-stats{gap:24px}
+  .pull-quote{float:none;width:100%;margin:0 0 28px 0}
+  .cat-grid{grid-template-columns:1fr}
+  .ref-grid{grid-template-columns:1fr}
+  .spine::before{display:none}
+  .spine-row{grid-template-columns:1fr}
+  .spine-tag{text-align:left;padding-right:0}
+  .spine-body{padding-left:0}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">National Geographic &nbsp;·&nbsp; Encyclopaedic Mode &nbsp;·&nbsp; Full Production Document</div>
+
+<div class="modebar">
+  <span class="modebar-item">Mode: <strong>Encyclopaedic</strong></span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">Register: <strong>NatGeo Classic</strong></span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">~12,000 words</span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">Research: <strong>15+ sources</strong></span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">9th–21st centuries</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="manuscript-lines">
+    <div class="m-line"></div><div class="m-line"></div>
+    <div class="m-line"></div><div class="m-line"></div><div class="m-line"></div>
+  </div>
+  <div class="rune-scatter">
+    <div class="rune-group">ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛋᛏᛒᛖᛗᛚᛜᛞᛟ</div>
+    <div class="rune-group">ᛁᛋᛚᛖᚾᛞᛁᚾᚷᚨᛋᚩᚷᚢᚱ</div>
+    <div class="rune-group">ᚾᛃᚨᛚᛋᛋᚨᚷᚨᛖᚷᛁᛚᛋᛋᚨᚷᚨ</div>
+    <div class="rune-group">ᛚᚨᚹᛋᛈᛖᚨᚲᛖᚱᚨᛚᚦᛁᚾᚷᛁ</div>
+  </div>
+  <p class="hero-kicker">National Geographic &nbsp;·&nbsp; Literature &amp; Civilisation &nbsp;·&nbsp; Nordic World</p>
+  <h1>The<br><em>Long Memory</em><span>When Iceland wrote the world's greatest prose tradition into existence, in the dark, on calfskin, during a civil war</span></h1>
+  <p class="hero-deck">Every winter night a saga was told somewhere in Iceland — in a turf farmhouse lit by one lamp, a fire, the long dark pressing at the walls. Someone remembered. Someone shaped what they remembered into words that would last. They did not know that what they were writing, on the skins of calves, in a minor dialect of Old Norse, on an island at the edge of the mapped world, would become the most vivid literature the medieval period produced.</p>
+  <div class="hero-stats">
+    <div><span class="hs-n">40+</span><span class="hs-l">Major family sagas</span></div>
+    <div><span class="hs-n">330</span><span class="hs-l">Years of saga composition</span></div>
+    <div><span class="hs-n">1,666</span><span class="hs-l">Manuscripts returned to Iceland</span></div>
+    <div><span class="hs-n">1971</span><span class="hs-l">Year Reykjavík docks filled with crowds</span></div>
+  </div>
+</section>
+
+<!-- REFERENCE SUMMARY -->
+<section class="ref-outer">
+  <div class="ref-summary">
+    <span class="ref-title">Reference Summary</span>
+    <div class="ref-grid">
+      <div>
+        <span class="ref-item-label">What the Sagas Are</span>
+        <span class="ref-item-value">Prose narratives in Old Icelandic (a western dialect of Old Norse), composed primarily between c. 1200 and 1400 CE, depicting events set in the Settlement Age and early Commonwealth period (c. 870–1030 CE). The dominant genre — the Íslendingasögur or Family Sagas — is anonymous, realistic in style, and without parallel in medieval European literature.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">The Major Genres</span>
+        <span class="ref-item-value">Íslendingasögur (Family/Icelanders' Sagas): historical-fictional accounts of early settlers; Konungasögur (Kings' Sagas): histories of Scandinavian rulers, crowned by Snorri's Heimskringla; Fornaldarsögur (Ancient Sagas): pre-settlement heroic legends including the Völsunga saga; Samtíðarsögur / Sturlunga saga: contemporary 13th-century Icelandic politics; Riddarasögur: translated and original chivalric romances.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">The Saga Age vs. The Writing Age</span>
+        <span class="ref-item-value">The events depicted in family sagas occur c. 930–1030 CE (the Saga Age). The texts were written down c. 1200–1400 CE — a gap of 200–400 years. This temporal displacement is central to all debates about their historicity and the relationship between oral tradition and written composition.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">The Icelandic Commonwealth (930–1262 CE)</span>
+        <span class="ref-item-value">A stateless republic governed by the Althing (established at Þingvellir c. 930) and 36–39 goðar (chieftain-priests). No king, no standing army, no executive enforcement. Laws were memorized by the Lawspeaker and recited aloud. Disputes resolved through litigation at the Althing and private feud. Iceland converted to Christianity c. 999/1000 CE. The Commonwealth ended with submission to Norway, 1262–64.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">The Sturlung Age (c. 1200–1262)</span>
+        <span class="ref-item-value">The violent collapse of the Commonwealth, when five or six powerful families — including the Sturlungar (Snorri's family) — battled for dominance. Snorri Sturluson (1179–1241) was assassinated on Norwegian royal orders. The crisis almost certainly motivated saga writing: memory, legitimacy, and the reconstruction of a lost social order.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Key Manuscripts</span>
+        <span class="ref-item-value">Codex Regius (Konungsbók, GKS 2365 4to, c. 1270): home of the Poetic Edda; returned to Iceland 1971 as first shipment; Flateyjarbók (c. 1390): most beautiful Icelandic MS, contains Grænlendinga saga; Möðruvallabók (mid-14th c.): oldest complete MS of Laxdæla saga. All now housed partly at Árni Magnússon Institute, Edda Building, University of Iceland (since 2023); partly at Arnamagnæan Institute, Copenhagen.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Árni Magnússon (1663–1730)</span>
+        <span class="ref-item-value">Icelandic philologist, professor at University of Copenhagen. Spent 1702–1712 in Iceland as royal commissioner, collecting manuscripts. 1728 Copenhagen fire destroyed his printed books; manuscripts mostly saved. On his death bequeathed ~1,600 Icelandic manuscripts to Copenhagen. Return process: 1965 Danish parliament vote; transfer 1971–1997 (1,666 manuscripts + 141 from Royal Library). Collection added to UNESCO Memory of the World Register, 2009.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">The BookProse / FreeProse Debate</span>
+        <span class="ref-item-value">FreeProse theory (Heusler, Liestøl): sagas are oral compositions written down after centuries of transmission — reliable records of Viking Age memory. BookProse theory (Sigurður Nordal, Einar Ólafur Sveinsson): sagas are literary inventions by 13th-century authors, drawing on oral tales as raw material. Current consensus: neither extreme holds; most scholars accept both oral roots and individual literary authorship.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Legacy and Influence</span>
+        <span class="ref-item-value">William Morris: translated 30+ sagas with Eiríkur Magnússon, 1868–1876; visited Iceland twice (1871, 1873); Laxdæla saga → "The Lovers of Gudrun"; Völsunga saga → Sigurd the Volsung. J.R.R. Tolkien: "The greatest single influence upon Tolkien is the Eddas and sagas of the North" (Charles Moorman, 1966). Dwarf names from Prose Edda; One Ring from Andvaranaut; Andúril from Gram; Grettis saga → barrow-wights. Iceland's 1944 independence: sagas as national founding mythology; 1971 manuscript return watched from Reykjavík docks by thousands.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAGA CATEGORIES -->
+<section class="cat-section">
+  <div class="cat-inner">
+    <p class="cat-kicker">The Taxonomy</p>
+    <h2 class="cat-title">The Five Major Saga Genres</h2>
+    <div class="cat-grid">
+      <div class="cat-card">
+        <span class="cat-icon">Í</span>
+        <div class="cat-name">Íslendingasögur</div>
+        <span class="cat-maltese">Family / Icelanders' Sagas</span>
+        <p class="cat-desc">Prose narratives of Icelandic farming families in the 9th–11th centuries. Anonymous. Realistic, laconic, tragic. The crown of the entire tradition. Approx. 40 major sagas, written c. 1220–1400.</p>
+        <div class="cat-example">Njáls saga · Egils saga · Laxdæla saga · Grettis saga</div>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">K</span>
+        <div class="cat-name">Konungasögur</div>
+        <span class="cat-maltese">Kings' Sagas</span>
+        <p class="cat-desc">Historical biographies of Norwegian and Danish kings, from legendary descent to the 14th century. Often embed skaldic verse as evidence. Icelanders became masters of a genre that originated with Norwegians.</p>
+        <div class="cat-example">Heimskringla · Morkinskinna · Fagrskinna</div>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">F</span>
+        <div class="cat-name">Fornaldarsögur</div>
+        <span class="cat-maltese">Sagas of Ancient Times / Legendary Sagas</span>
+        <p class="cat-desc">Pre-settlement heroic legends set in Scandinavia and Germany, drawing on Germanic heroic tradition and mythological material. Later composed, more fantastic in register.</p>
+        <div class="cat-example">Völsunga saga · Hrólfs saga kraka</div>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">S</span>
+        <div class="cat-name">Samtíðarsögur</div>
+        <span class="cat-maltese">Contemporary Sagas / Sturlunga saga</span>
+        <p class="cat-desc">Accounts of 12th–13th century Icelandic politics — written as the events happened, not 200 years after. Blunt, reportorial, often horrifying in their violence. The Sturlunga compilation is the indispensable source.</p>
+        <div class="cat-example">Íslendinga saga · Guðmundar saga dýra</div>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">R</span>
+        <div class="cat-name">Riddarasögur</div>
+        <span class="cat-maltese">Chivalric Sagas</span>
+        <p class="cat-desc">Begun as translations of French romances (Tristrams saga, 1226) under Norwegian royal patronage, later developed original Icelandic compositions. Show the permeability of Iceland's literary culture to Continental influence.</p>
+        <div class="cat-example">Tristrams saga · Parcevals saga</div>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">B</span>
+        <div class="cat-name">Biskupa- og Heilagra manna sögur</div>
+        <span class="cat-maltese">Bishops' and Saints' Sagas</span>
+        <p class="cat-desc">Ecclesiastical biography adapted to the saga form — hagiography in vernacular prose. The Bishops' Sagas are valuable historical sources for institutional Church history in medieval Iceland.</p>
+        <div class="cat-example">Guðmundar saga biskups · Þorláks saga</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN ARTICLE -->
+<article class="article">
+
+  <p>Iceland in the winter of 1241 was a country in the process of destroying itself. The Sturlungar — the most powerful clan in the island's history, whose most famous member was also its greatest writer — were fighting their final battles with rival chieftains. Snorri Sturluson, twice lawspeaker of the Althing, author of the Prose Edda and the Heimskringla, possibly the author of Egils saga, was living at his farm at Reykholt with armed enemies closing in on multiple sides. On the night of 22 September, his former son-in-law Gissur Þorvaldsson arrived with seventy men. They drove Snorri into his cellar. The last words attributed to him — reported in his nephew Sturla Þórðarson's account of the age — were eigi skal höggva: don't strike. They struck.</p>
+
+  <p class="fi">He died at the age of sixty-one, having composed or compiled or inspired more of what we know about Norse mythology, Old Norse poetry, and the history of the Norwegian kings than any other single human being who ever lived. The kings he celebrated had ordered his assassination. The island he loved submitted to Norway twenty years after his death. The Commonwealth he served as lawspeaker — the stateless republic with no king, no executive, no army, only law and feud and the annual parliament at Þingvellir — would be gone by 1262. What he left behind was not just the Prose Edda and the Heimskringla. He left behind an entire literary culture in the middle of its most extraordinary generation — a culture that was producing, in the turf farmhouses and monastery scriptoria of a remote North Atlantic island, the finest prose literature of the medieval world.</p>
+
+  <p class="fi">We do not usually think of literature as a response to catastrophe. The sagas look like records — meticulous, genealogical, geographically precise accounts of farming families who lived two or three centuries before they were written down. They read as though the past were simply being described. But the great family sagas were composed, overwhelmingly, during the Sturlung Age and its immediate aftermath — the decades of civil war that tore the Commonwealth apart and ended in Norwegian submission. The scholars who came after Snorri were writing about a lost world, a world of free farmers and independent chieftains whose legal order, however violent and feud-ridden, was their own. What the sagas preserve is not simply memory. It is the shape that a civilization gave to its grief.</p>
+
+  <hr style="border:none;border-top:1px solid var(--border-lt);margin:52px 0">
+
+  <!-- SECTION: THE COMMONWEALTH AND ITS SOCIETY -->
+
+  <p class="fi">To read the sagas without understanding the world that produced them is like reading the Greek tragedies without knowing anything about Athens. The Icelandic Commonwealth — the Þjóðveldið — was established around 930 CE when the island's chieftains met at Þingvellir, a dramatic rift valley about fifty kilometres east of what would one day become Reykjavík, and constituted an assembly. The Althing, convened for two weeks every June, was a legislature, a supreme court, and a social gathering simultaneously. Law was not written down for nearly two centuries; it was memorised by the Lawspeaker, who stood at the Lögberg — the Law Rock — and recited it from memory over three years, a portion each summer. Every free man could attend. Every goði — the chieftain-priest class, numbering around thirty-six to thirty-nine at any given time — had a voice in the Lögrétta, the law council.</p>
+
+  <div class="pull-quote">
+    <p class="pq-text">The high tide of Icelandic life is revealed at the Althing. But the high price for their unique style of life is always threatening in the background, and the overriding mood is one of tragic pessimism.</p>
+    <span class="pq-attr">Britannica, on Njáls saga</span>
+  </div>
+
+  <p class="fi">What the Commonwealth did not have was an executive. Once a court decided a party was guilty, the enforcement of that verdict became the responsibility of the injured party and their family. A convicted man who refused to pay compensation could be declared an outlaw — stripped of all legal protection, available to be killed by anyone without consequence. This legal architecture produced the sagas. Every major family saga pivots on the question of what happens when the formal legal system fails: when Mörðr Valgarðsson corrupts the process at the Althing, when a settlement breaks down, when private honour demands what law prohibits. The Althing scenes in Njáls saga — those great parliamentary set-pieces where Njáll himself manoeuvres through the law with the cunning of a chess grandmaster — are inseparable from the tragedy they cannot prevent. The reader watches a sophisticated legal system failing in real time. The sagas are, among other things, a sustained meditation on why law is not enough.</p>
+
+  <p class="fi">The word saga itself means, at its simplest, what is said — cognate with the English say and the German Sage. But in Old Norse usage it carries the weight of structured narrative, history, and communal memory. The tales were told in oral performance long before they were written down. The great winter gathering — the vetrarseta, the sitting-in at the farm — was the context: long evenings with nothing to do but work and listen and talk. The sagas were entertainment in the same way that Homer was entertainment in archaic Greece — which is to say, they were everything: history and ethics and genealogy and pleasure and the shared grammar of who you were and where you came from and what had happened before you were born.</p>
+
+  <div class="sidebar">
+    <span class="sidebar-kicker">Sidebar 1</span>
+    <div class="sidebar-title">The BookProse and FreeProse Controversy — A Scholarly Civil War</div>
+    <p>For most of the twentieth century, the central question in saga studies was not what the sagas said but how they came to be. The debate was formally named by the German scholar Andreas Heusler in 1913, who classified existing positions as <em>freiprosa</em> (FreeProse) and <em>buchprosa</em> (BookProse).</p>
+    <p>The FreeProse position, most vigorously defended in Scandinavia before World War II, held that the sagas originated in the Viking Age itself — that real oral sagas existed from roughly 930 to 1030 CE, circulated by word of mouth for two centuries or more, and were finally written down in the 13th century more or less as they had been told. On this view, the sagas are essentially reliable records of their era.</p>
+    <p>The BookProse position — dominant in Iceland after the war, brilliantly championed by Sigurður Nordal (1886–1974) and his school — argued the opposite: the sagas are literary compositions by individual 13th-century authors who drew on oral tales as raw material but shaped them freely into new works. The historical events they describe may have a kernel of truth, but the sagas as we have them are primarily 13th-century literature, not 10th-century history. <strong>Nordal famously stated in his edition of Egils saga that no saga, as we know it, was composed orally.</strong></p>
+    <p>Current scholarship has moved toward a synthesis. Most scholars accept both that individual authors shaped the written sagas and that those authors worked with oral traditions that preserved genuine historical memory, however distorted by time and narrative convention. The oral past was real; the written texts are literature. Both things are true.</p>
+  </div>
+
+  <!-- SECTION: NJÁLS SAGA -->
+
+  <div class="sbreak"><span class="sbreak-rune">◆ ᚾᛃᚨᛚᛋ ◆</span></div>
+
+  <p class="fi">Of all the sagas, Njáls saga is the one that most fully deserves the word masterpiece. Composed in the late thirteenth century by an unknown author — possibly at the Benedictine monastery at Þykkvabær, possibly not — it is the longest of the family sagas and the one most frequently cited when Icelandic literature is placed alongside the great works of world prose. It covers events between 960 and 1020 CE, moving across two generations of feud in southern Iceland with the structural inevitability of Greek tragedy and the psychological acuity of a nineteenth-century novel.</p>
+
+  <p class="fi">The saga's two great characters — Njáll Þorgeirsson and Gunnar Hámundarson — are neighbours and devoted friends, a pairing so carefully constructed that their differences illuminate each other. Gunnar is the physical ideal: tall, strong, the greatest warrior in Iceland, a man who professes to hate violence even as violence trails him everywhere he goes. Njáll is the opposite: beardless (unusual and somehow uncanny in a culture where beards marked manhood), mild-spoken, incapable of violence himself but endowed with second sight and a lawyer's genius for using the system. The saga's opening movement traces the women's feud — Hallgerðr langbrók against Bergþóra — that runs in parallel to the men's friendship. The women escalate. The men pay compensation. The friendship holds. Until it cannot.</p>
+
+  <p class="fi">Gunnar's death is the saga's first great set-piece. Exiled for killing in violation of a settlement, he turns back at the edge of his farmstead at Hlíðarendi and speaks one of the most famous lines in Old Norse literature: fögur er hlíðin, he says — the hillside is beautiful, it has never seemed more beautiful to me than now, with its pale fields and mown meadows. He returns. He is besieged. His bowstring breaks. He asks Hallgerðr for a strand of her hair to restring it. She refuses. He once slapped her in front of guests for a theft; she has been waiting. He dies.</p>
+
+  <p class="fi">What follows — the long escalation through the Njalssons' feud with the Sigfussons, the burning of Njáll and his family at Bergþórshvoll, the vengeance journey of Kári Sölmundarson — is the saga's second and third movements, each darker and more inevitable than the last. Njáll himself remains one of literature's most contested figures. The traditional reading presents him as a peace-loving sage, a man of law destroyed by the world's violence. Recent scholarship has found the short axe hidden behind the kind words: Njáll, it is now suggested, orchestrates much of the violence in the saga, keeping his hands clean while others bleed. He is both Burnt Njáll and Njáll the Burner. The title is genuinely ambiguous in Old Norse, and this ambiguity is almost certainly deliberate. The author of Njáls saga was as sophisticated a writer as any in the medieval canon.</p>
+
+  <div class="sidebar">
+    <span class="sidebar-kicker">Sidebar 2</span>
+    <div class="sidebar-title">Women in the Sagas — The Whetter and the Witness</div>
+    <p>No serious account of the Icelandic sagas can ignore women, though the sagas themselves frequently do — which is itself information. Women in the family sagas are prominent, agential, and often more dangerous than the men around them. The most characteristic role is what scholars call the <em>hvöt</em> figure — the whetter or inciter, the woman who goads a reluctant man toward action by questioning his honour.</p>
+    <p>Hallgerðr langbrók is the classic type: tall, beautiful, provocative, lethal. Her refusal to give Gunnar a strand of her hair to restring his bow is the most precise act of revenge in all the sagas — perfectly calibrated, long delayed, absolutely final. Hildigunnr Starkaðardóttir in the same saga performs the whetting with even greater theatrical intensity: when her husband Höskuldr is killed, she drapes his bloodstained cloak over Flosi's shoulders and demands vengeance, knowing it will consume everyone she knows.</p>
+    <p><strong>But the whetters are not the whole story.</strong> Bergþóra, Njáll's wife, chooses to remain in the burning house rather than leave her husband — an act of loyalty the saga treats with profound respect. Auðr djúpúðga (Unn the Deep-Minded) in Laxdæla saga leads her clan to Iceland after the death of her family, distributes land on her own authority, frees her slaves, and dies mid-sentence at her own feast, having given everything away. She is one of the first settlers, and the saga introduces her before any of its male protagonists. The woman who has survived everything the world could do to her and still managed her own ending — that is the saga's deepest feminine archetype, and it is not the whetter but the witness.</p>
+  </div>
+
+  <!-- SECTION: EGILS SAGA AND SNORRI -->
+
+  <div class="sbreak"><span class="sbreak-rune">◆ ᛖᚷᛁᛚ ◆</span></div>
+
+  <p class="fi">Snorri Sturluson was born in 1179 at Hvammur in the Dalir district of western Iceland, the third son of an ambitious chieftain named Sturla. He spent almost no time with his parents: at the age of three, he was fostered at Oddi, the estate of Jón Loftsson — the most powerful man in Iceland and a grandson of the Norwegian king Magnus Barefoot. Oddi was a centre of learning, the closest thing medieval Iceland had to a university. Snorri grew up steeped in law, history, and Old Norse poetry. He became a lawyer, a politician, twice lawspeaker (1215–1218 and 1222–1232), twice a visitor to Norway, and eventually a man of such wealth and arrogance that his former allies turned against him. The Saga of the Sturlungs, written by his own nephew Sturla, describes him with remarkable candour as shrewd, greedy, cowardly, and brilliant.</p>
+
+  <p class="fi">What makes Snorri unique in the record of world literature is the breadth of what he created. The Prose Edda — composed around 1220 — was intended as a handbook for poets, a guide to the complex kenning-system of skaldic verse that was becoming incomprehensible to younger readers as the pagan mythological references faded from living memory. To explain the kennings, Snorri had to explain the myths. His <em>Gylfaginning</em> — the first part of the Prose Edda proper — is a 20,000-word tour de force: the creation of the world, the lives and deaths of the gods, the twilight of Ragnarök, all set within a framing narrative in which a Swedish king named Gylfi visits Ásgarðr in disguise and is told everything he wants to know by three mysterious figures. Without the Prose Edda, our knowledge of Norse mythology would be fragmentary and nearly incomprehensible. Snorri invented the primary source.</p>
+
+  <p class="fi">Egils saga — almost certainly written by Snorri, attributed to him on stylistic and biographical grounds that are persuasive without being conclusive — is the portrait of a man as different from Snorri in temperament as it is possible to imagine and yet also, in some deep way, his self-portrait. Egill Skallagrímsson was a poet who happened also to be, in the saga's account, the most physically dangerous man in the world: he committed his first murder at age seven with an axe, was composing court poetry at nine, and spent his entire career alternating between violent confrontations with Norwegian kings and the composition of elegies of heartbreaking power. His greatest poem, Sonatorrek — the Loss of Sons — was composed after the death of two of his children. It is a direct confrontation with Óðinn, the god who has taken everything: grief and anger and grudging resignation coexisting in a space no medieval literature outside the sagas can find. Snorri, a descendant of Egill, may have chosen this man because he recognised something — the rage under the intelligence, the poet who makes enemies of kings.</p>
+
+  <!-- SECTION: LAXDÆLA SAGA -->
+
+  <div class="sbreak"><span class="sbreak-rune">◆ ᛚᚨᚷᛞᚨᛖᛚᚨ ◆</span></div>
+
+  <p class="fi">The most romantic of all the family sagas is Laxdæla saga — the Saga of the People of Laxárdalur — written around 1245 by an author whose identity is unknown but whose style is so distinctive that some scholars have wondered whether a woman might have composed it. The question is unanswerable. What is answerable is that Laxdæla saga is the most emotionally devastating of the major sagas, and that its central character is a woman: Guðrún Ósvífrsdóttir, the most celebrated woman in all the sagas, married four times, involved in the death of the man she loved, and condemned to outlive everyone who mattered to her.</p>
+
+  <p class="fi">The love triangle at the saga's heart involves two foster-brothers — Kjartan Ólafsson, whose beauty and accomplishment place him in the tradition of the Icelandic male ideal, and Bolli Þorleiksson, loyal and kind and ultimately weak in the face of what Guðrún demands of him. Guðrún loves Kjartan. Kjartan, delayed in Norway at the Norwegian court, allows another woman to wear a headdress he brought from England as a gift for Guðrún. It is an act of thoughtlessness or deliberate provocation or simple human failure — the saga never decides. Guðrún decides. She manoeuvres Bolli — now her husband — and her brothers into an ambush. Kjartan lets himself be killed, defending himself with a shield only. Bolli holds him in his arms as he dies. The intimacy of that death scene — two men who love each other, one having killed the other on a woman's instruction — is one of the most pitiless moments in medieval literature.</p>
+
+  <p class="fi">The saga's final scene is its most famous. Old, a nun, Guðrún is alone with her son Bolli Bollason. He asks her which man she loved the most. She lists each husband's qualities. He presses her. Finally she gives him the line that has been echoing through the saga's entire architecture, the line that makes everything that came before it legible: <em>Þeim var ek verst er ek unna mest</em> — to him I was worst whom I loved most. The ambiguity is perfect and permanent. Is she speaking of Bolli, who she sent to his death? Of Kjartan, whom she destroyed? The saga refuses to answer. It had been building to this unanswered question for a hundred and fifty years of narrative time, and it is content to close with the question unresolved, as life is content to leave the things that matter most unresolved.</p>
+
+  <!-- SECTION: GRETTIS SAGA AND THE OUTLAW TRADITION -->
+
+  <div class="sbreak"><span class="sbreak-rune">◆ ᚷᚱᛖᛏᛏᛁᚱ ◆</span></div>
+
+  <p class="fi">Not all sagas end in the ambiguity of human emotion. Some end in the simplest possible statement of human doom. Grettis saga — the Saga of Grettir the Strong, composed in the early fourteenth century and one of the last great family sagas — is a tragedy of undeflectable fate: a man who is the strongest in Iceland, cursed by a revenant into perpetual bad luck, living nineteen years as an outlaw on the most inhospitable terrain in the island, unable to escape the destiny that was pronounced over him in a deserted farmhouse on a winter night when Glámr, the dead shepherd, forced him to look into his own eyes.</p>
+
+  <p class="fi">Grettir is deliberately anachronistic. He is a pagan hero in a Christian Iceland — a monster-killer who belongs to the world of heroic legend but must live in a world that has moved on from heroic legend. He clears the countryside of trolls and draugar (the undead who walk from their burial mounds at night) and the people he rescues prosecute him for theft. He cannot win because the categories that would make him a hero no longer exist. The scene in which he descends into a troll-cave behind a waterfall to kill the giant dwelling within is one of several passages that bear an unmistakable structural resemblance to episodes in Beowulf — the hero wrestling Grendel, the descent into the mere to fight Grendel's mother. The resemblance is too specific to be coincidental, though the exact relationship remains debated. What it suggests is that both texts, despite their different languages and centuries, draw on the same archaic substrate of Germanic heroic tradition: the warrior as the monster-cleaner of civilised space, doomed to loneliness by the very gifts that make him necessary.</p>
+
+  <div class="sidebar-dark">
+    <span class="sidebar-kicker">Sidebar 3</span>
+    <div class="sidebar-title">Árni Magnússon and the Rescue of the Past</div>
+    <p>The manuscripts in which the sagas survive came within hours of being permanently lost — not once but several times. The most dramatic near-loss was the great Copenhagen fire of 1728, which consumed three days and destroyed much of the city's intellectual heritage. Among the buildings that burned was the university. In that university was the collection of the man who had spent his life preventing exactly this catastrophe.</p>
+    <p>Árni Magnússon (1663–1730) had grown up in Iceland in a household of manuscript collectors and left for Copenhagen at twenty to study theology, spending the next four decades building the most important collection of Old Norse manuscripts ever assembled. During his decade in Iceland as a royal commissioner (1702–1712), he travelled the country systematically, buying, borrowing, and preserving every fragment of calfskin he could find. He took single leaves from under the beds of old women. He bought manuscripts that farmers had been using as patterns for making clothes. He found vellum fragments serving as book covers for Danish printed texts.</p>
+    <p>When the Copenhagen fire broke out in October 1728, Árni reportedly carried manuscripts into the streets himself. <strong>His printed books, his notes, his correspondence — all burned. Most of the manuscripts survived.</strong> He died fourteen months later, having bequeathed his remaining collection — nearly 1,600 Icelandic manuscripts — to the University of Copenhagen. They remained there for 240 years. When the Danish parliament voted in 1965 to return them to Iceland, and the first shipment arrived in Reykjavík in April 1971, thousands of people stood on the docks to watch the manuscripts come home. It was one of the only occasions in the twentieth century when a nation wept publicly for its literature.</p>
+  </div>
+
+  <!-- SECTION: THE VINLAND SAGAS -->
+
+  <div class="sbreak"><span class="sbreak-rune">◆ ᚵᚱᚨᛖᚾᛚᚨᚾᛞ ◆</span></div>
+
+  <p class="fi">Among all the stories the sagas tell, the one that reaches furthest geographically and historically is also the one that the sagas treat most matter-of-factly. The Vinland sagas — Grænlendinga saga (The Saga of the Greenlanders) and Eiríks saga rauða (The Saga of Erik the Red) — describe events that occurred around 1000 CE: the Norse discovery of North America. They are not great literature by the standards of Njáls saga or Laxdæla saga. They are brief, sometimes contradictory, and clearly based on oral traditions that had already diverged by the time they were written down. But they contain the first European description of the North American continent, five centuries before Columbus, told with the same pragmatic understatement that the sagas bring to everything.</p>
+
+  <p class="fi">The two sagas agree on the broad outline and disagree on the details in ways that are structurally informative. In Grænlendinga saga, Bjarni Herjólfsson is the first to sight the new land, blown off course while sailing to Greenland around 986 CE; he sees it but does not set foot on it, which the saga treats as a deficiency of courage or curiosity. Leif Eiríksson then buys Bjarni's ship and retraces his route, landing on a land of flat stones (Helluland — probably Baffin Island), then a forested coast (Markland — probably Labrador), then a place of wild grapes and mild winters where he builds houses (Vinland — probably Newfoundland or the Gulf of Saint Lawrence region). In Eiríks saga, Leif discovers the land accidentally, blown off course himself. The manuscripts cannot agree; the memory, however accurate, was not perfectly preserved.</p>
+
+  <p class="fi">What the sagas agree on is the subsequent attempt to establish a colony. Þorfinnr Karlsefni and his wife Guðríðr Þorbjarnardóttir led the most sustained expedition, arriving with 160 people (according to Eiríks saga) or 60 (according to Grænlendinga saga) and staying for three years before conflicts with the indigenous peoples — the Skrælingar, a word of uncertain meaning applied to both Inuit and woodland peoples — drove them home. Their son Snorri, born in Vinland, is in Eiríks saga identified as the first European child born in the Americas. The Vinland sagas also contain the first European description of a Native American trading encounter: red cloth exchanged for grey furs, the cloth growing shorter as supplies ran out, the Norse cutting it into narrower and narrower strips until each strip was no wider than a finger.</p>
+
+  <p class="fi">For centuries, the question of whether any of this had actually happened remained open. The sagas were specific about place-names and distances, but no physical evidence had been found. Then in 1960, the Norwegian explorer Helge Ingstad and archaeologist Anne Stine Ingstad found a Norse settlement at L'Anse aux Meadows in Newfoundland — turf longhouses, a smithy, a carpentry workshop, all radiocarbon-dated to approximately 1000 CE. The Vinland sagas were, in the essential detail, accurate. North America had been discovered by Europeans around the year 1000, and the Norse settlers had left after a few years. The sagas remembered it.</p>
+
+  <!-- SECTION: VÖLSUNGA SAGA AND THE DEEP TRADITION -->
+
+  <div class="sbreak"><span class="sbreak-rune">◆ ᚵᛟᛚᛋᚢᚾᚷᚨ ◆</span></div>
+
+  <p class="fi">Below the family sagas — older, more mythological, more explicitly connected to the larger Germanic heroic tradition — the Völsunga saga stands like bedrock. Written in the late thirteenth century in prose, drawing directly on the heroic lays of the Poetic Edda, it is the Norse telling of the story that also produced the Nibelungenlied in German — the tale of Sigurðr the dragon-slayer, Brynhildr the sleeping Valkyrie, the cursed ring Andvaranaut, and the destruction of the Burgundian royal family by Attila the Hun. It is not a family saga in the domestic Icelandic sense. It is something older and more elemental: a myth of how heroism is inseparable from doom, how the most splendid things are also the most cursed, how the ring that grants power passes from hand to hand through murder and betrayal until everything it has touched is ash.</p>
+
+  <p class="fi">The cursed ring Andvaranaut — stolen by Loki from the dwarf Andvari, who cursed it before surrendering it — passes through the story like poison in a bloodstream. Fáfnir kills his father for it and becomes a dragon. Sigurðr kills Fáfnir and takes it. He gives it to Brynhildr, then, enchanted by a potion, forgets her and marries someone else and helps his brother-in-law win Brynhildr for a bride, thus betraying everything he swore. Brynhildr, humiliated and furious, arranges Sigurðr's death. She dies on his funeral pyre. The ring passes on. Each possessor dies. The pattern is as mechanical and as inevitable as natural law. It is the same pattern that Tolkien recognised and borrowed and transformed: a ring that corrupts its possessor, a broken sword reforged, a hero doomed by his own gifts. The One Ring is not Andvaranaut; it is the idea of Andvaranaut, the idea that certain objects concentrate the worst of human desire and pass that concentration forward through time, poisoning each hand that holds them.</p>
+
+  <div class="sidebar">
+    <span class="sidebar-kicker">Sidebar 4</span>
+    <div class="sidebar-title">Skaldic Poetry — The Difficult Evidence Embedded in the Prose</div>
+    <p>One feature of the family sagas and kings' sagas that distinguishes them from all other medieval prose narratives is the systematic embedding of verse. Sagas frequently quote skaldic poetry — the extraordinarily intricate court poetry of Viking Age and medieval Scandinavia — in the middle of their prose, attributed to specific named poets living at the time of the events described.</p>
+    <p>Skaldic verse is one of the most technically demanding poetic forms ever devised. Its primary metre, dróttkvætt, requires eight syllables per half-line with internal rhyme, alliteration on stressed syllables, and complex stress patterns — all simultaneously. Its vocabulary is built almost entirely of kennings, compound or periphrastic expressions that substitute for direct nouns: the sea is "the whale-road" or "Odin's girdle"; gold is "Fáfnir's bed"; a sword is "the wound-snake." The Skáldskaparmál section of the Prose Edda is essentially Snorri's glossary of kennings, with their mythological referents explained — his way of ensuring that the tradition could continue even as the pagan world it encoded became illegible.</p>
+    <p>Why does this matter for the historicity debate? <strong>Skaldic verse is extremely difficult to compose and even more difficult to alter without destroying its formal integrity.</strong> FreeProse theorists used this as evidence: the poems embedded in the sagas, attributed to 10th-century poets, could not easily have been invented in the 13th century — their technical difficulty argues for genuine transmission. BookProse theorists counter that skilled 13th-century poets were certainly capable of composing in archaic styles. The debate is unresolved. What is undeniable is that the embedded poetry represents a different, older layer of evidence than the prose surrounding it — compressed, encoded, resistant to falsification in ways that prose is not.</p>
+  </div>
+
+  <!-- SECTION: SNORRI'S EDDA AND MYTHOLOGY -->
+
+  <div class="sbreak"><span class="sbreak-rune">◆ ᛖᛞᛞᚨ ◆</span></div>
+
+  <p class="fi">In a cave beneath his farm at Reykholt — the same cave where he would eventually be killed — Snorri Sturluson maintained a heated bathing pool fed by a geothermal spring. He bathed there, received visitors, dictated texts, plotted politics. The pool survives. It is the oldest man-made structure still standing in Iceland, excavated and stabilised, a small circular basin of stone in a field behind the Snorrastofa research centre. It is almost impossible to stand beside it without feeling the improbability of what was produced in this place: one of the most important mythological handbooks ever written, in a language barely known outside the island that produced it, by a man who was simultaneously managing a political empire and ignoring a king's increasingly urgent demands that he come home.</p>
+
+  <p class="fi">The Prose Edda is not a saga. It is a poetics manual that uses Norse mythology as its illustration system. But it is inseparable from the saga tradition — it is what the saga tradition knew about the gods, what the kennings in the skaldic verse meant, what the genealogies of the Aesir looked like laid out in order. The Gylfaginning section tells us about Yggdrasil, the nine worlds, the binding of Fenrir, the death of Baldr, the final battle of Ragnarök. The Skáldskaparmál explains every major kenning category by tracing its mythological origin. The Háttatal is a technical manual of poetic metres. Together they constitute a three-part university curriculum in Old Norse literary culture — delivered with wit, precision, and the characteristic saga refusal to explain its own emotions.</p>
+
+  <p class="fi">The Heimskringla — Snorri's history of the Norwegian kings from their legendary descent from Óðinn down to 1184 — is the other great monument. Its methodological prologue is the first serious statement of historical source criticism in Norse literature: Snorri explains how he used skaldic verse as evidence, explains his reasoning for preferring some sources over others, and warns his readers that the legendary material at the beginning should be treated with more scepticism than the accounts of recent reigns. He is, in this respect, more methodologically sophisticated than many of his European contemporaries in historical writing. He is also, in the Hákon Saga and the Saga of St Ólaf, a narrative stylist of the first order — able to make a twelfth-century Norwegian king's political machinations as readable as a novel. The discrepancy between this achievement and the account of Snorri's own life — cowardly, greedy, politically incoherent — is one of literary history's most useful reminders that great writers are not always good people.</p>
+
+  <!-- SECTION: TOLKIEN AND MORRIS -->
+
+  <div class="sbreak"><span class="sbreak-rune">◆ ᚵᚨᚱᛞᚠᚱ ◆</span></div>
+
+  <p class="fi">William Morris arrived in Iceland in July 1871 riding a hired horse on a route that took him through the valley of Laxárdalur, past the site of Bolli's killing of Kjartan, past Gunnar's mound at Hlíðarendi, across the landscape that the sagas had made as familiar to him as his own country. He had already published the first of his saga translations with Eiríkur Magnússon, an Icelander who had become his tutor in Old Norse in 1868 — "you be my grammar as we translate," Morris reportedly said — and he had become, by the 1870s, the most important promoter of Icelandic literature in the English-speaking world. He translated over thirty sagas, wrote two major saga-inspired poems (The Lovers of Gudrun from Laxdæla saga, Sigurd the Volsung from Völsunga saga), and visited Iceland twice, the second time in 1873. What he found in the sagas was not just literature but politics: a vision of a freer, more egalitarian world that confirmed his socialist convictions. Iceland was the Commonwealth, and the Commonwealth was the society Morris believed was possible.</p>
+
+  <p class="fi">Morris read Njáls saga in the original Old Norse and described what he found in a letter to Georgiana Burne-Jones with an intensity that suggests he had discovered something he had been looking for his whole life: all men's children in it, he wrote, so venerable to each other, and so venerated — and the exceeding good temper of Gunnar amidst his heroism, and the calm of Njál. The language is characteristic: Morris reading the sagas reads them as moral documents, as evidence that human beings can behave with dignity and precision even in extremity. He is not wrong. That is what the sagas do. They show the worst happening with the best people watching, and they do not flinch, and they do not sentimentalise, and they do not explain.</p>
+
+  <p class="fi">J.R.R. Tolkien came to the sagas through the same route Morris had taken — Old Norse as a philological interest, the Prose Edda as a mythological reference — but he absorbed them at a deeper level, the level where literature transforms into imagination. Charles Moorman's 1966 judgement that "the greatest single influence upon Tolkien is the Eddas and sagas of the North" has been disputed and refined but never fundamentally contradicted. The dwarf names in The Hobbit — Thorin, Dwalin, Fíli, Kíli, Gandalf itself — come directly from the Dvergatal in the Poetic Edda's Völuspá. The One Ring and Andúril map onto Andvaranaut and Gram with a precision that is not coincidence. The barrow-wights in The Lord of the Rings are draugar: specifically the draugr that Grettir fights in the burial mound of Kárr inn gamli, the sword Grettir acquires from that encounter, the blade that enables Merry to wound the Witch-king at the Battle of the Pelennor Fields. Tolkien had an Icelandic nanny in Oxford in the early 1930s, practised the language with her, and began writing The Hobbit during that period. The chronology is not accidental.</p>
+
+</article>
+
+<!-- CLOSING -->
+<div class="closing">
+  <p>In 1971, when the first shipment of manuscripts arrived at Reykjavík harbour, the crowd that gathered was not performing patriotism. They were doing something more precise: they were recognising that the objects in those crates were not historical documents but living presences — the actual physical objects on which their ancestors had written, in the actual handwriting of the people who first shaped these stories into the form in which they are still read. Modern Icelandic is close enough to Old Norse that an educated Icelander can read a thirteenth-century saga without much difficulty. No other European language maintains this continuity. The sagas are not recovered antiquities. They are accessible without translation.</p>
+
+  <p>That accessibility is part of why they matter as they do in Iceland, where the sagas are embedded in national identity at a depth that has no parallel in other European literatures. Gunnar's hillside is still a hillside. Bergþórshvoll is still a farm. The Althing is still a parliament, the same institution that was founded at Þingvellir in 930 CE, the oldest continuously named parliament in the world. A country that has always been poor in everything except fish and volcanic rock and long dark winters made itself rich in the one currency that lasts: the precision with which it described what it was to be alive, and to fail, and to remember what the failure looked like.</p>
+
+  <p class="final">Somewhere in Iceland tonight, in a house with one lamp and the winter outside, someone is reading one of these books. The bowstring breaks. The hillside is beautiful. She was worst to the one she loved most. The words are nine hundred years old and they are completely present tense, because that is what the best writing does: it refuses the past tense. It insists on happening again, right now, to whoever opens it.</p>
+</div>
+
+<!-- PHOTOJOURNALISM PACKAGE -->
+<section class="package">
+  <p class="pkg-kicker">Production Package</p>
+  <h2 class="pkg-title">Photojournalism Briefs — 15 Images</h2>
+  <div class="pgrid">
+
+    <div class="pcard">
+      <div class="pcard-n">Image 1 — Establishing Hero</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">The Edda Building at the University of Iceland, Reykjavík — the purpose-built home of the Árni Magnússon Institute — photographed at dusk, interior lights warm against Icelandic winter dark, exterior stark volcanic stone</span></div>
+      <div class="pf"><span class="pf-l">Light</span><span class="pf-v">Blue hour / early winter twilight — the sky almost gone, the building's light making a single warm rectangle in the dark</span></div>
+      <div class="pf"><span class="pf-l">Composition</span><span class="pf-v">Full building exterior, human figure at entrance for scale — one person, small, the building large. Horizontal framing.</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The manuscripts survived everything. They are in here, right now, behind this glass and stone. The past is kept alive in this building.</span></div>
+      <div class="pcap">The Edda Building, University of Iceland, Reykjavík — home of the Árni Magnússon Institute for Icelandic Studies since 2023. The building contains over 1,666 medieval manuscripts returned from Denmark between 1971 and 1997, including the Codex Regius and Flateyjarbók. Árni Magnússon (1663–1730) spent forty years collecting them. The Copenhagen fire of 1728 tried to destroy them. They are still here.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 2 — Character / Manuscript</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">A conservator or manuscript scholar at the Árni Magnússon Institute, examining a vellum manuscript under magnification — white cotton gloves, the opened manuscript illuminated, the calligraphic text of a saga passage visible</span></div>
+      <div class="pf"><span class="pf-l">Story</span><span class="pf-v">Close-up of the manuscript itself: the calfskin surface, the careful Old Norse hand, possibly a decorated initial or marginal note</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The physical object of transmission — the actual calfskin on which a 13th-century scribe wrote these words</span></div>
+      <div class="pcap">A conservator examines a vellum manuscript at the Árni Magnússon Institute, Reykjavík. The sagas were written on the processed skins of calves — each manuscript requiring dozens of animals. The oldest surviving fragment of Egils saga dates to approximately 1250 CE. The scribe who wrote it is unknown. The words are still legible.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 3 — Scene / Þingvellir</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Þingvellir (Thingvellir) National Park — the rift valley where the Althing was held from 930 CE, photographed from above or from the Law Rock position. Early summer, thin light, the rift and the lake (Þingvallavatn) visible</span></div>
+      <div class="pf"><span class="pf-l">Story</span><span class="pf-v">If possible, a re-enactment or guided tour group at the Law Rock — showing the human use of this landscape, people where people have stood for a thousand years</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">This is not a dead place. The Althing still meets in Reykjavík. The rift valley has been an assembly ground for 1,100 years.</span></div>
+      <div class="pcap">Þingvellir, Iceland, site of the Althing from approximately 930 CE. The Icelandic Commonwealth's parliament met here for two weeks every June for over eight centuries. The Lögberg — Law Rock — is the geological outcrop from which the Lawspeaker recited the law from memory. The valley sits on the boundary of the North American and Eurasian tectonic plates; Iceland literally pulls apart here at a measurable rate. The rift in the rock mirrors the rift in the sagas.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 4 — Character / Reykholt</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Snorri's Pool (Snorralaug) at Reykholt — the small circular heated pool where Snorri Sturluson worked and received visitors, excavated and stabilised, now visible in a field beside the Snorrastofa research centre</span></div>
+      <div class="pf"><span class="pf-l">Story</span><span class="pf-v">The detail of the pool: its small diameter, the stone construction, a human hand on its rim for scale. This is the oldest man-made structure still standing in Iceland.</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Physical continuity with the man who preserved Norse mythology</span></div>
+      <div class="pcap">Snorralaug (Snorri's Pool), Reykholt, western Iceland — a geothermally heated bathing pool used by Snorri Sturluson (1179–1241), the most important figure in the preservation of Norse mythology and history. Snorri composed the Prose Edda, Heimskringla, and possibly Egils saga here between approximately 1220 and 1235 CE. He was assassinated in a cellar on this farm on 22 September 1241. The pool, approximately 4 metres in diameter, is the oldest extant man-made structure in Iceland.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 5 — Data / Njáls saga</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Bergþórshvoll farm, southern Iceland — the actual site where Njáll and his family were burned alive, photographed in the flat light of an overcast Icelandic afternoon. A working farm. The landscape of the saga is still here.</span></div>
+      <div class="pf"><span class="pf-l">Story</span><span class="pf-v">The farm building, the flat pasture around it, the sky: ordinary, exposed, unguarded. This is where it happened.</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The gap between literary monument and physical place — the burning of Njáll happened here or near here, and the landscape is unchanged</span></div>
+      <div class="pcap">Bergþórshvoll, Rangárvellir, southern Iceland — the farmstead named in Njáls saga as the home of Njáll Þorgeirsson, where the burning that forms the saga's central catastrophe took place circa 1011 CE. Archaeological excavation has found a charred layer dated to approximately that period. The saga calls this the "burning of Njáll." The farm still operates. The land still lies flat, exposed, exactly as described.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 6 — Consequence / The Return</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Archival or recreation photograph: the arrival of the first manuscript shipment at Reykjavík harbour, April 1971. Thousands of people on the docks. The crates being unloaded. The specificity of the moment — a country receiving its literature back after 240 years.</span></div>
+      <div class="pf"><span class="pf-l">Technical</span><span class="pf-v">Archival photograph (public domain or rights-cleared). Alternatively: the Árni Magnússon Institute reading room with a researcher and an open manuscript, representing the manuscripts' continued use</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The moment when a nation understood what it had nearly lost</span></div>
+      <div class="pcap">The first shipment of manuscripts from the Arnamagnæan Collection arrives in Reykjavík, April 1971. Thousands of Icelanders gathered at the harbour. The transfer, approved by the Danish parliament in 1965, took 26 years to complete (1971–1997) and returned 1,666 manuscripts to Iceland. The Codex Regius — home of the Poetic Edda — was among the first to come home. The collection was added to UNESCO's Memory of the World Register in 2009.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 7 — Resolution / Modern Iceland</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">A contemporary Icelander reading a saga — not in an academic setting but at home, in a kitchen or living room or on a bus. The saga a paperback, the reader absorbed. Iceland has one of the highest per-capita readership rates in the world.</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The living tradition — these texts are still read, not as heritage artifacts but as literature</span></div>
+      <div class="pcap">A reader with a modern Icelandic edition of Njáls saga. Modern Icelandic is sufficiently close to Old Norse that educated Icelanders can read the original medieval texts with modest assistance — a continuity of language unmatched in any other European literary tradition. Iceland publishes more books per capita than any other nation on earth. The sagas remain in print in dozens of editions and translations worldwide.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 8 — Character / Egill</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">The Ásgrímur Sveinsson sculpture of Egill Skallagrímsson at Borg á Mýrum, western Iceland — the farm where Egill grew up, where Snorri also later lived. The sculpture shows Egill in the pose traditionally associated with his composing of Sonatorrek.</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The bridge between the historical figure and the literary invention — Egill as image, as monument, as the point where poetry and violence meet in Iceland's imagination</span></div>
+      <div class="pcap">The Ásgrímur Sveinsson sculpture of Egill Skallagrímsson at Borg á Mýrum, Iceland. Egill (c. 910–990 CE) was the skaldic poet and Viking whose life is preserved in Egils saga, attributed by many scholars to Snorri Sturluson. His poem Sonatorrek — composed after the deaths of two sons — is considered one of the most personal and emotionally complex poems produced in the medieval period.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 9 — Scene / L'Anse aux Meadows</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">L'Anse aux Meadows National Historic Site, Newfoundland, Canada — the reconstructed Norse longhouses at the site of the only confirmed Norse settlement in North America, c. 1000 CE. Overcast northern light, the sea in the background.</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The physical confirmation of the Vinland sagas — the place where the oral memory proved accurate</span></div>
+      <div class="pcap">Reconstructed Norse longhouses at L'Anse aux Meadows, Newfoundland, Canada — the only confirmed Norse settlement in North America, radiocarbon-dated to approximately 1000 CE and matching the period described in the Vinland sagas. The site was discovered in 1960 by Helge and Anne Stine Ingstad following descriptions in the sagas. It is now a UNESCO World Heritage Site. The Vinland sagas were right.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 10 — Character / William Morris in Iceland</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Archival image: William Morris on horseback in Iceland, 1871 — ideally the famous portrait from the Icelandic Journal. If no image available: the Hlíðarendi area of southern Iceland, Gunnar's farmstead site, photographed in summer light as Morris would have seen it.</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The Victorian discovery of the sagas — Morris as intermediary between medieval Iceland and the English-speaking world</span></div>
+      <div class="pcap">The area of Hlíðarendi, southern Iceland, near the traditional site of Gunnar Hámundarson's farm, where William Morris stood in 1871 and recorded in his Icelandic Journal: "I could not help thinking that the great story writer, whoever he was, had felt the spirit of this place very deeply." Morris had read Njáls saga in the original Old Norse. He translated over thirty sagas between 1868 and 1876, making them available to English readers for the first time. Tolkien read some of them in Morris's versions.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 11 — Data / Codex Regius</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">High-resolution reproduction or official photograph of the Codex Regius opening page — the most important manuscript in the tradition, home of the Poetic Edda, written c. 1270 CE, returned to Iceland as the first manuscript in the 1971 shipment</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The primary source made visible — what preserved knowledge of Norse mythology looks like as a physical object</span></div>
+      <div class="pcap">The Codex Regius (GKS 2365 4to), dated to approximately 1270 CE and preserved at the Árni Magnússon Institute, Reykjavík. This manuscript contains the Poetic Edda — the primary source of knowledge about Norse mythology, including the cosmological poems Völuspá and Hávamál. Without the Codex Regius and Snorri's Prose Edda, our understanding of the Norse gods would be fragmentary almost beyond recovery. It was the first manuscript returned from Denmark to Iceland, arriving in Reykjavík on 21 April 1971.</div>
+    </div>
+
+    <!-- 3-image sequence: The Saga of a Manuscript -->
+    <div class="pcard-wide">
+      <div class="pcard-n">Images 12–14 — Multi-Image Sequence: The Life of a Saga Manuscript</div>
+      <div class="seq-frames">
+        <div class="seq-frame">12A — The Animal: A calf on an Icelandic farm — the raw material of the sagas. Each manuscript required dozens of calfskins. Scale: agricultural, biological, utterly ordinary.</div>
+        <div class="seq-frame">13A — The Writing: Close-up of a 13th-century vellum manuscript showing the scribe's hand — a column of Old Norse text in a careful medieval hand, abbreviation marks, possibly a decorated initial.</div>
+        <div class="seq-frame">14A — The Reading: A young Icelander at the Árni Magnússon Institute reading a digital facsimile of a manuscript on a screen — the medieval and the contemporary in one frame.</div>
+      </div>
+      <div class="seq-label">From calf to text to reader: the complete material history of the Icelandic saga in three images. The sagas were written on the skins of animals, by scribes whose names we do not know, about events that happened two centuries before they were written down, in a language that is still spoken today. This is not a metaphor for survival. It is survival — literal, specific, documented, ongoing.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 15 — Resolution / The Hillside</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">The hillside at Hlíðarendi, southern Iceland — Gunnar's hillside, fögur er hlíðin — photographed in late afternoon light in late summer, with pale fields and mown meadows exactly as described. No people.</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The cosmic kicker of the visual package — the specific place where the most famous line in the sagas was spoken, unchanged</span></div>
+      <div class="pcap">Hlíðarendi, near Fljótshlíð, southern Iceland — the area traditionally identified as the site of Gunnar Hámundarson's farm, where, according to Njáls saga, Gunnar turned back from exile and spoke the words that sealed his fate: "Fögur er hlíðin" — the hillside is beautiful. It was never more beautiful than it is now. He went home and died there. The saga was written two hundred years after the event. The hillside is unchanged.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DIAGRAM SECTION -->
+<section class="diag-section">
+  <p class="pkg-kicker" style="text-align:center">Production Package</p>
+  <h2 class="pkg-title" style="color:var(--text)">Data Visualisation Specifications — 8 Diagrams</h2>
+  <div class="dgrid">
+
+    <div class="dcard">
+      <div class="dcard-type">Timeline Infographic</div>
+      <div class="dcard-title">The World of the Sagas — A Dual Timeline</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Two parallel horizontal tracks from 870 CE to 1400 CE: (1) Historical events in Iceland — Settlement begins 874; Althing founded 930; Conversion 999/1000; Loss of independence 1262. (2) Saga composition timeline — First kings' sagas 12th c.; Family sagas 1220–1400; Sturlunga saga compiled c. 1300; Snorri assassinated 1241. Vertical connectors showing the gap between events depicted and when they were written. Major saga dates annotated: Egils saga c. 1220; Laxdæla saga c. 1245; Njáls saga c. 1280; Grettis saga c. 1320.</span></div>
+      <div class="df"><span class="df-l">Visual Hierarchy</span><span class="df-v">The 200–400 year gap between Saga Age events and composition is the central visual argument. Colour: Ice-blue for historical events; warm gold for composition dates; red for the burning and other key catastrophes.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Answers: when did the events happen, when were they written, and what was happening when they were written? The gap is everything.</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Annotated Map</div>
+      <div class="dcard-title">Iceland's Saga Landscape — Places Named in the Major Sagas</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Map of Iceland annotated with: farmsteads named in major family sagas (Bergþórshvoll / Njáls saga; Hlíðarendi / Njáls saga; Borg á Mýrum / Egils saga; Laxárdalur / Laxdæla saga; Bjarg / Grettis saga); Þingvellir / Althing; Reykholt / Snorri's farm. Inset showing Iceland's position in the North Atlantic. Sea routes to Norway, Greenland, and Vinland (North America) annotated.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Shows the geographical specificity of the sagas — these are not mythological landscapes but named, surviving, visitable farms</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Relationship / Network Diagram</div>
+      <div class="dcard-title">Njáls saga — The Feud Network</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Network diagram showing the major characters of Njáls saga and the killing/compensation relationships between them. Nodes: Njáll, Gunnar, Hallgerðr, Bergþóra, Mörðr, Flosi, Kári, Skarphéðinn, Höskuldr Þráinsson. Edges: killings (red, directional), settlements (blue), friendship (gold). Shows how Mörðr's manipulations create a connected network of obligation and vengeance radiating from a central void.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Makes the saga's extraordinary structural complexity legible at a glance — the reader can see why the burning is inevitable</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Illustrated Cross-Section</div>
+      <div class="dcard-title">Structure of the Prose Edda</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Four-part structural diagram of the Prose Edda: (1) Prologue — euhemerised account of Norse gods as ancient kings; (2) Gylfaginning (~20,000 words) — Norse mythology in Q&A format; (3) Skáldskaparmál — poetic diction and kenning catalogue; (4) Háttatal — 102 stanzas demonstrating verse metres. Each section annotated with length, content type, primary mythological material covered (world creation, Ragnarök, etc.), and key kenning categories.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Answers: what is the Prose Edda actually? How does a poetics manual become the primary source for Norse mythology?</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Comparison / Parallel Structure</div>
+      <div class="dcard-title">The Vinland Sagas — Where They Agree and Diverge</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Side-by-side comparison of Grænlendinga saga and Eiríks saga rauða on key narrative points: Who first sights land (Bjarni vs. Leif accidentally); How Leif discovers Vinland (deliberate expedition vs. accidental); Role of Freydís; Number of Karlsefni's colonists (35–60 vs. 160); Duration of Vinland settlement. Points of agreement annotated in gold. L'Anse aux Meadows archaeological confirmation annotated. Map panel showing possible Vinland locations.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Shows why historians use the sagas cautiously as evidence — and why they use them anyway</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Manuscript History / Provenance Chart</div>
+      <div class="dcard-title">The Long Journey of the Manuscripts — Iceland to Copenhagen to Iceland</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Timeline showing: manuscripts scattered across Icelandic farms (17th century); Árni Magnússon's collecting journeys 1702–1712; arrival in Copenhagen 1720; Copenhagen fire 1728; bequest to University of Copenhagen 1730; Danish parliament vote 1965; first transfer to Iceland April 1971; final transfer 1997. Key manuscripts annotated: Codex Regius (returned 1971), Flateyjarbók (returned 1971), total 1,666 manuscripts + 141 from Royal Library. UNESCO registration 2009.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">The material history of survival — shows how many times the manuscripts almost did not make it</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Influence Map</div>
+      <div class="dcard-title">From Saga to World Literature — The Lines of Influence</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Radial diagram from central node "Icelandic Sagas" showing influence lines to: J.R.R. Tolkien (specific borrowings: dwarf names, One Ring = Andvaranaut, Andúril = Gram, barrow-wights = draugar); William Morris (specific translations and poems); Halldór Laxness (Nobel 1955, Iceland's Bell); Jorge Luis Borges; Henrik Ibsen (The Vikings at Helgeland); Richard Wagner (via Völsunga saga → Ring cycle). Separate node for Nibelungenlied (parallel tradition from shared source).</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Answers: how far did this tradition travel? What would be missing from world literature without it?</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Structural Diagram</div>
+      <div class="dcard-title">The Icelandic Commonwealth — How Society Generated the Sagas</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Diagram of the Commonwealth's legal-social structure: goðar and their thingmenn (voluntary allegiance, not territorial); Althing structure (Lögretta / law council, quarter courts, fifth court, Lawspeaker); the outlaw mechanism (full outlawry vs. lesser outlawry); weregild / compensation system. Annotation showing how each structural element appears in the sagas: the Althing scenes in Njáls saga; Grettir's full outlawry; compensation payments in Laxdæla saga.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Without understanding the Commonwealth, you cannot understand why the legal system fails in the sagas — or why that failure is tragic rather than corrupt</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- VISUAL SPINE -->
+<section class="spine-section">
+  <p class="pkg-kicker" style="text-align:center">Production Package</p>
+  <h2 class="pkg-title">Visual Narrative Spine</h2>
+  <div class="spine">
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Hero</span></div><div class="spine-body"><div class="spine-name">The Edda Building at Dusk</div><div class="spine-desc">→ <strong>Establishes:</strong> The manuscripts survived. They are here. This is where 1,100 years of literature lives now.</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-prose">Prose</span></div><div class="spine-body"><div class="spine-name">Snorri's Death — Opening</div><div class="spine-desc">→ <strong>Function:</strong> Drops the reader into the Sturlung Age; establishes that the literary tradition and the political catastrophe are the same event</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 2</span></div><div class="spine-body"><div class="spine-name">Conservator with Manuscript</div><div class="spine-desc">→ <strong>Answers:</strong> What does the physical object look like? The calfskin, the handwriting, the weight of preservation</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 1</span></div><div class="spine-body"><div class="spine-name">Dual Timeline: Events vs. Writing</div><div class="spine-desc">→ <strong>Answers:</strong> The 200–400 year gap — what does it mean to write a history two centuries after the fact?</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 3</span></div><div class="spine-body"><div class="spine-name">Þingvellir from the Law Rock</div><div class="spine-desc">→ <strong>Answers:</strong> Where the Althing met; the physical space the sagas describe; the oldest parliamentary institution in the world</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 8</span></div><div class="spine-body"><div class="spine-name">The Commonwealth's Legal Architecture</div><div class="spine-desc">→ <strong>Answers:</strong> How did a society without a king or police function? And why does its failure become the sagas' subject?</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-prose">Prose</span></div><div class="spine-body"><div class="spine-name">Njáls saga — Gunnar's Death</div><div class="spine-desc">→ <strong>Function:</strong> The most famous scene in the sagas; the broken bowstring; the word "beautiful" at the moment of decision</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 5</span></div><div class="spine-body"><div class="spine-name">Bergþórshvoll Farm</div><div class="spine-desc">→ <strong>Answers:</strong> The burning site is still here. The saga describes a real place that still exists.</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 3</span></div><div class="spine-body"><div class="spine-name">Njáls saga Feud Network</div><div class="spine-desc">→ <strong>Answers:</strong> Why the burning is structurally inevitable — the network of obligation makes the catastrophe visible before it happens</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-prose">Prose</span></div><div class="spine-body"><div class="spine-name">Laxdæla saga — Gudrun's Closing Line</div><div class="spine-desc">→ <strong>Function:</strong> The other great ending; what the sagas do with emotion — contain it until the last possible moment</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 9</span></div><div class="spine-body"><div class="spine-name">L'Anse aux Meadows</div><div class="spine-desc">→ <strong>Answers:</strong> The Vinland sagas were right. The memory was accurate. This is the confirmation site.</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 5</span></div><div class="spine-body"><div class="spine-name">Vinland Sagas Divergence Chart</div><div class="spine-desc">→ <strong>Answers:</strong> Why the sagas contradict each other and why that actually increases their credibility as oral history</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 4</span></div><div class="spine-body"><div class="spine-name">Snorri's Pool at Reykholt</div><div class="spine-desc">→ <strong>Answers:</strong> The oldest man-made structure in Iceland. This is where the Prose Edda was created.</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 6</span></div><div class="spine-body"><div class="spine-name">Manuscript Journey Timeline</div><div class="spine-desc">→ <strong>Answers:</strong> How many times did the sagas almost not survive? The Copenhagen fire, the return to Iceland, 240 years away</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Images 12–14</span></div><div class="spine-body"><div class="spine-name">Sequence: Calf → Text → Reader</div><div class="spine-desc">→ <strong>Answers:</strong> The complete material chain from animal to literature to living tradition in three images</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 6</span></div><div class="spine-body"><div class="spine-name">The 1971 Return — Reykjavík Docks</div><div class="spine-desc">→ <strong>Answers:</strong> Why a nation stands on a dock to watch crates unloaded — the moment a people understood what literature was to them</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 7</span></div><div class="spine-body"><div class="spine-name">Saga Influence Map — Tolkien, Morris, World Literature</div><div class="spine-desc">→ <strong>Answers:</strong> Where did this tradition go? How far did it travel?</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 15</span></div><div class="spine-body"><div class="spine-name">The Hillside — Hlíðarendi</div><div class="spine-desc">→ <strong>Cosmic Kicker:</strong> The specific hillside Gunnar turned back to see. Unchanged. The most famous landscape in Icelandic literature, still there, still beautiful.</div></div></div>
+  </div>
+</section>
+
+<!-- SOURCE INTEGRITY -->
+<section class="src-section">
+  <div class="src-inner">
+    <span class="src-kicker">Production Appendix</span>
+    <h2 class="src-title">Source Integrity Note</h2>
+    <div class="src-cat">
+      <div class="src-cat-t">Verified Facts (Tier 1 — confirmed by multiple sources)</div>
+      <ul>
+        <li>Snorri Sturluson: born 1179 at Hvammur; fostered at Oddi from age 3 by Jón Loftsson; lawspeaker 1215–1218 and 1222–1232; assassinated 22 September 1241 at Reykholt by Gissur Þorvaldsson on orders of King Hákon IV of Norway; last words "Eigi skal höggva" ("Don't strike"). Confirmed: Wikipedia Snorri Sturluson; Britannica; EBSCO Research Starters; New World Encyclopedia.</li>
+        <li>Prose Edda composed c. 1220–1230; Gylfaginning ~20,000 words; four sections (Prologue, Gylfaginning, Skáldskaparmál, Háttatal). Confirmed: Wikipedia Prose Edda; Britannica; Penguin introductory note.</li>
+        <li>Njáls saga: events 960–1020; written late 13th c.; longest family saga; principal characters Njáll Þorgeirsson and Gunnar Hámundarson; Hallgerðr's refusal of bowstring hair; Gunnar's last words about the hillside; burning at Bergþórshvoll; Kári Sölmundarson as sole survivor; ultimate reconciliation with Flosi. Confirmed: Wikipedia Njáls saga; Britannica; GradeSaver; SuperSummary.</li>
+        <li>Laxdæla saga: written c. 1245; central character Guðrún Ósvífrsdóttir; four marriages; love triangle with Kjartan Ólafsson and Bolli Þorleiksson; closing line "Þeim var ek verst er ek unna mest" / "To him I was worst whom I loved most"; Möðruvallabók oldest complete manuscript (mid-14th c.); second only to Njáls saga in number of medieval manuscripts. Confirmed: Wikipedia Laxdæla saga and Guðrún Ósvífrsdóttir; Sacred Texts online edition; GradeSaver.</li>
+        <li>Árni Magnússon (1663–1730): professor of Danish antiquities at Copenhagen; collecting journey in Iceland 1702–1712; 1728 Copenhagen fire destroyed printed books but manuscripts mostly saved; bequeathed collection to University of Copenhagen; 1,666 manuscripts + 141 from Royal Library returned to Iceland 1971–1997; UNESCO Memory of the World Register 2009. Confirmed: Árnastofnun.is; Arnamagnæan Collection Wikipedia; Arnamagnæan Institute (Copenhagen); Lithub article on Árni.</li>
+        <li>FreeProse/BookProse controversy: Heusler named the positions (freiprosa/buchprosa) 1913; FreeProse championed by Liestøl and Heusler; BookProse by Sigurður Nordal and Einar Ólafur Sveinsson. Current consensus: synthesis. Confirmed: Lars Lönnroth foreword (Harvard CHS); Copenhagen University paper; NCSU repository paper.</li>
+        <li>Icelandic Commonwealth: Althing founded c. 930 at Þingvellir; 36–39 goðar; submission to Norway 1262–1264; no executive enforcement of law; laws memorised by Lawspeaker, written down 1117–18. Confirmed: Wikipedia Icelandic Commonwealth, Althing, History of Iceland; World History Encyclopedia; Britannica Iceland.</li>
+        <li>Tolkien and the Norse: dwarf names (Thorin, Dwalin, Fíli, Kíli, Gandalf) from Dvergatal in Völuspá; One Ring parallel to Andvaranaut; Andúril parallel to Gram; barrow-wights from draugar in Grettis saga; Icelandic nanny in Oxford early 1930s; began writing The Hobbit during this period; Moorman 1966 quote. Confirmed: Wikipedia Tolkien and the Norse; Tolkien Gateway; Mythosblog; Norwegian American; Mythlore article.</li>
+        <li>William Morris: met Eiríkur Magnússon 1868; translated 30+ sagas; visited Iceland 1871 and 1873; "The Lovers of Gudrun" from Laxdæla saga; Sigurd the Volsung from Völsunga saga; "You be my grammar as we translate." Confirmed: William Morris Archive (University of Iowa); Boydell and Brewer; Oxford Review of English Studies.</li>
+        <li>L'Anse aux Meadows: discovered 1960 by Helge and Anne Stine Ingstad; radiocarbon-dated to approximately 1000 CE; UNESCO World Heritage Site; confirmed Norse settlement in North America. Confirmed: Wikipedia Vinland sagas and Leif Erikson; Britannica Vinland.</li>
+        <li>Grænlendinga saga preserved only in Flateyjarbók (c. 1390); six expeditions; Bjarni first to sight land ~986; Leif first to set foot; Eiríks saga rauða has Leif discover accidentally; both written c. 1220–1280. Confirmed: Wikipedia Vinland sagas, Saga of the Greenlanders; Britannica Vinland.</li>
+        <li>Völsunga saga: c. 1270; cursed ring Andvaranaut; Sigurðr kills Fáfnir; sword Gram; Brynhildr; inspired Wagner's Ring cycle; Tolkien's The Legend of Sigurd and Gudrún. Confirmed: Wikipedia Völsunga saga; Wikipedia Andvaranaut; TheWarriorLodge.</li>
+        <li>Egils saga: attributed to Snorri Sturluson; stylistic similarities to Heimskringla; case is "circumstantial" (Skaldic Poetry database); Snorri is a descendant of Egill; Egill's first poem at 3, first murder at 7; Sonatorrek composed after death of sons; Höfuðlausn composed overnight to ransom his head from Erik Bloodaxe. Confirmed: Wikipedia Egils saga; Britannica Egill Skallagrímsson; Skaldic.org (definitive).</li>
+        <li>Grettis saga: composed c. 1320 (early 14th century); Glámr's curse; 19 years as outlaw; parallel scenes with Beowulf; Grettir considered strongest man in Iceland. Confirmed: Wikipedia Grettis saga; TVTropes; Leiden Arts blog.</li>
+        <li>1971 manuscript return: Danish parliament voted 1965; transfer began April 1971; crowds at Reykjavík docks; final transfer 1997. Confirmed: Icelandictimes.com; Árnastofnun.is; Arnamagnæan Institute.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Claims Requiring Expert Verification Before Publication</div>
+      <ul>
+        <li>Snorri's "last words" (Eigi skal höggva) — reported in Sturlunga saga by Sturla Þórðarson; the article correctly attributes them as "reportedly" but a full editorial process should verify the exact passage in the original text.</li>
+        <li>Snorri's authorship of Egils saga — the article correctly presents this as contested and "circumstantial." The Skaldic Poetry of the Scandinavian Middle Ages database describes it as unconfirmed. Full editorial process should include direct consultation with Torfi H. Tulinius (The Enigma of Egill, 2014) or Guðrún Nordal.</li>
+        <li>The 1971 crowds at the docks — the Icelandictimes.com source describes "thousands of people standing on the docks in Reykjavík, cheering when they were carried to the shore." Verification against Icelandic-language sources or the Árnastofnun's own account would strengthen this.</li>
+        <li>Tolkien's Icelandic nanny — the article states she lived with the family "in the early 1930s in Oxford" citing GoodVibes7 and Norwegian American. The claim should be verified against Christopher Tolkien's biographical accounts or Humphrey Carpenter's biography.</li>
+        <li>Snorri's pool as "the oldest man-made structure still standing in Iceland" — sourced from Dristeem.com (an industrial humidification company writing about the Edda Building). This specific claim should be verified against Icelandic heritage authorities or the Snorrastofa research centre directly.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Scientifically / Scholarly Contested Claims</div>
+      <ul>
+        <li>The exact location of Vinland — the article correctly does not commit to a specific location, noting it is "probably Newfoundland or the Gulf of Saint Lawrence region." L'Anse aux Meadows is confirmed Norse but may be a base camp rather than the Vinland of the sagas. The debate among scholars continues.</li>
+        <li>The gender of the Laxdæla saga author — the article raises the possibility of female authorship but correctly presents it as unanswerable. The possibility should be noted as a scholarly hypothesis, not a fact.</li>
+        <li>The "recent scholarship" reading of Njáll as manipulator — the article presents this as a legitimate contemporary interpretation. The medieval blog (medievalists.net) is the primary source; a full editorial process should source this to a peer-reviewed article, such as work by Torfi H. Tulinius or other Njáls saga specialists.</li>
+        <li>The BookProse/FreeProse synthesis — the article correctly presents current consensus as a "synthesis" position, following Lonnroth's foreword and the NCSU paper. This is accurate for mainstream Anglophone scholarship; some Icelandic scholars maintain more strongly Bookprose-aligned positions.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Voices and Perspectives to Add in Full Editorial Process</div>
+      <ul>
+        <li>Icelandic saga scholars in Iceland — the article draws on Anglophone and online secondary sources; a fully realised editorial process would include direct testimony from researchers at the Árni Magnússon Institute (Guðrún Nordal, Gísli Sigurðsson, Torfi H. Tulinius) who are the primary living custodians of this tradition.</li>
+        <li>Modern Icelandic readers — the article argues for the living continuity of the tradition but does not include direct testimony from contemporary Icelanders about what the sagas mean to them personally and culturally. This gap should be filled by field reporting in Iceland.</li>
+        <li>Feminist saga scholarship — the women-in-sagas sidebar draws on the "whetter" concept without citing the scholars (Jenny Jochens, Carol Clover, Ármann Jakobsson) who have developed it most rigorously. Full editorial process should include direct engagement with this scholarship.</li>
+        <li>The Icelandic independence movement and the sagas as nationalist text — the article notes the connection but does not develop it fully. Jesse Byock's article "History and the Sagas: The Effect of Nationalism" (ucla.edu) is the key source and should be more fully engaged.</li>
+        <li>Non-Western readings of the sagas — the article is entirely focused on the Icelandic-Scandinavian-Anglophone reception of the tradition. A NatGeo editorial process would ask: who else reads these? What do they find there?</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Primary Sources and Key Scholarly Bibliography</div>
+      <ul>
+        <li>Byock, Jesse L. (1985). "Saga Form, Oral Prehistory, and the Icelandic Social Context." Scandinavian Studies 57(2). — Standard reference on oral composition and social context.</li>
+        <li>Nordal, Sigurður (1953). "Sagalitteraturen," in Nordisk Kultur VIII:B. — The founding document of the BookProse school.</li>
+        <li>Tulinius, Torfi H. (2014). The Enigma of Egill: The Saga, the Viking Poet, and Snorri Sturluson. Cornell University Library (Islandica 57). — Current scholarship on Egils saga attribution.</li>
+        <li>Lönnroth, Lars. Foreword to Gísli Sigurðsson, The Medieval Icelandic Saga and Oral Tradition (2004). Harvard CHS. — Best concise summary of the BookProse/FreeProse debate.</li>
+        <li>Cook, Robert, trans. (2001). Njal's Saga. Penguin Classics. — Standard English translation.</li>
+        <li>Byock, Jesse L., trans. (2005). The Prose Edda. Penguin Classics. — Standard English translation with scholarly introduction.</li>
+        <li>Wikipedia: Sagas of Icelanders; Njáls saga; Egils saga; Laxdæla saga; Grettis saga; Völsunga saga; Snorri Sturluson; Prose Edda; Arnamagnæan Manuscript Collection; Icelandic Commonwealth; Althing; William Morris and the Icelandic Sagas; Tolkien and the Norse; Vinland sagas; Árni Magnússon. — Research baseline for all major claims.</li>
+        <li>Árnastofnun.is (Árni Magnússon Institute for Icelandic Studies). — Authoritative source on manuscript collection history and current location.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>National Geographic — The Long Memory: Icelandic Sagas</strong><br>
+  <span style="display:block;margin-top:8px">Mode: Encyclopaedic &nbsp;·&nbsp; Register: NatGeo Classic &nbsp;·&nbsp; ~12,000 words &nbsp;·&nbsp; 15 photojournalism briefs &nbsp;·&nbsp; 8 diagram specifications</span>
+  <span style="display:block;margin-top:6px;font-size:10px">Research: 15+ sources across literary, historical, manuscript, and scholarly domains &nbsp;·&nbsp; 9th–21st centuries</span>
+</footer>
+
+<script>
+const io = new IntersectionObserver(e=>{
+  e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')});
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fi,.sidebar,.sidebar-dark,.pcard,.dcard,.spine-row,.closing p,.cat-card').forEach((el,i)=>{
+  if(el.classList.contains('pcard')||el.classList.contains('dcard')||el.classList.contains('spine-row')||el.classList.contains('cat-card')){
+    const idx=Array.from(el.parentElement.children).indexOf(el);
+    el.style.transitionDelay=`${idx*.08}s`;
+  }
+  io.observe(el);
+});
+</script>
+</body>
+</html>

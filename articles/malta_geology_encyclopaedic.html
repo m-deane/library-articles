@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Bones of an Island: Malta's Deep Geology — National Geographic Encyclopaedic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stone:    #f7f2e8;
+  --stone2:   #efe8d8;
+  --stone3:   #e6ddc8;
+  --stone4:   #d8ccb0;
+  --border:   #c4b48a;
+  --text:     #1e1608;
+  --dim:      #6a5a3a;
+  --ink:      #0e0c06;
+  --gold:     #8a6018;
+  --gold-lt:  #b07828;
+  --rust:     #7a3010;
+  --blue:     #1a3860;
+  --blue-lt:  #2a5898;
+  --earth:    #4a3018;
+  --cream:    #faf6ee;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--text);
+  font-family:'Libre Baskerville',Georgia,serif;
+  font-size:18px;
+  line-height:1.92;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── TOP BAR ── */
+.topbar{
+  background:var(--gold);
+  color:#fff;
+  text-align:center;
+  padding:7px 0;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+}
+.modebar{
+  background:var(--stone2);
+  border-bottom:1px solid var(--border);
+  padding:10px 40px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.modebar-item{font-family:'Josefin Sans',sans-serif;font-size:11px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.modebar-item strong{color:var(--gold)}
+.modebar-dot{width:3px;height:3px;background:var(--border);border-radius:50%}
+
+/* ── HERO ── */
+.hero{
+  background:var(--ink);
+  min-height:90vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  position:relative;
+  overflow:hidden;
+  padding:0 64px 80px;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 90%, rgba(20,12,0,.9) 0%, transparent 65%),
+    repeating-linear-gradient(
+      85deg,
+      rgba(255,245,220,.015) 0px, rgba(255,245,220,.015) 1px,
+      transparent 1px, transparent 60px
+    );
+}
+/* Limestone strata animation */
+.strata{
+  position:absolute;
+  inset:0;
+  opacity:.08;
+  pointer-events:none;
+}
+.stratum{
+  position:absolute;
+  width:100%;
+  height:2px;
+}
+.stratum:nth-child(1){top:22%;background:linear-gradient(90deg,transparent,#d8b060,transparent);animation:st 18s ease-in-out infinite;}
+.stratum:nth-child(2){top:38%;background:linear-gradient(90deg,transparent,#a09060,transparent);animation:st 22s ease-in-out infinite reverse;}
+.stratum:nth-child(3){top:55%;background:linear-gradient(90deg,transparent,#607080,transparent);animation:st 16s ease-in-out infinite 4s;}
+.stratum:nth-child(4){top:68%;background:linear-gradient(90deg,transparent,#c09050,transparent);animation:st 20s ease-in-out infinite 2s;}
+.stratum:nth-child(5){top:78%;background:linear-gradient(90deg,transparent,#d0c080,transparent);animation:st 25s ease-in-out infinite 8s;}
+@keyframes st{0%,100%{transform:scaleX(0.7);opacity:.6}50%{transform:scaleX(1.1);opacity:1}}
+
+.hero-kicker{font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:20px;position:relative;opacity:0;animation:ri .9s ease forwards .2s}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,8vw,108px);font-weight:700;line-height:.93;color:#fff;margin-bottom:28px;position:relative;opacity:0;animation:ri .9s ease forwards .5s;text-shadow:0 4px 80px rgba(0,0,0,.9)}
+.hero h1 em{font-style:italic;color:#d8b060;font-weight:400}
+.hero-deck{font-family:'Cormorant Garamond',serif;font-size:clamp(16px,2vw,22px);font-style:italic;line-height:1.6;color:#c8b888;max-width:720px;position:relative;opacity:0;animation:ri .9s ease forwards .8s;border-left:3px solid var(--gold);padding-left:22px}
+.hero-stats{display:flex;gap:48px;margin-top:56px;position:relative;opacity:0;animation:ri .9s ease forwards 1.1s;flex-wrap:wrap}
+.hs-n{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:#d8b060;display:block;line-height:1}
+.hs-l{font-family:'Josefin Sans',sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#8a7850;margin-top:4px;display:block}
+@keyframes ri{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── REFERENCE SUMMARY ── */
+.ref-outer{padding:60px 40px;background:var(--stone2);border-bottom:1px solid var(--border)}
+.ref-summary{background:var(--stone3);border:1px solid var(--border);border-left:4px solid var(--gold);padding:36px 40px;max-width:1100px;margin:0 auto}
+.ref-title{font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px 36px}
+.ref-item-label{font-family:'Josefin Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:4px}
+.ref-item-value{font-family:'Libre Baskerville',serif;font-size:14px;line-height:1.7;color:var(--text)}
+
+/* ── STRATIGRAPHIC COLUMN ── */
+.strat-section{padding:80px 40px;background:var(--cream);border-top:1px solid var(--border)}
+.strat-inner{max-width:1100px;margin:0 auto}
+.strat-kicker{font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:8px}
+.strat-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;text-align:center;margin-bottom:48px;color:var(--ink)}
+.strat-col{display:flex;gap:40px;align-items:stretch;justify-content:center;flex-wrap:wrap}
+.strat-visual{display:flex;flex-direction:column;width:180px;flex-shrink:0;border:1px solid var(--border)}
+.sv-row{display:flex;align-items:stretch}
+.sv-thickness{writing-mode:vertical-lr;text-orientation:mixed;transform:rotate(180deg);font-family:'Josefin Sans',sans-serif;font-size:9px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.1em;padding:4px 5px;min-width:20px;text-align:center;display:flex;align-items:center;justify-content:center}
+.sv-band{flex:1;min-height:28px;display:flex;align-items:center;padding:4px 8px}
+.sv-label{font-family:'Josefin Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;line-height:1.3}
+/* Formation colours */
+.f-ucl{background:#8a9068;}.f-ucl .sv-label{color:#fff}
+.f-gs{background:#7a8040;height:12px!important;}.f-gs .sv-label{color:#fff;font-size:8px}
+.f-bc{background:#5a6878;}.f-bc .sv-label{color:#fff}
+.f-gl{background:#c8a848;}.f-gl .sv-label{color:#1a1200}
+.f-lcl{background:#8a7850;}.f-lcl .sv-label{color:#fff}
+.sv-age{font-family:'Josefin Sans',sans-serif;font-size:8px;color:rgba(255,255,255,.8);margin-top:2px;display:block}
+.sv-age-dark{color:rgba(0,0,0,.6)!important}
+
+.strat-details{flex:1;min-width:320px}
+.strat-entry{border-bottom:1px solid var(--border);padding:18px 0;opacity:0;transform:translateX(-12px);transition:opacity .6s,transform .6s}
+.strat-entry.vis{opacity:1;transform:translateX(0)}
+.se-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.se-swatch{width:14px;height:14px;border-radius:2px;flex-shrink:0}
+.se-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--ink)}
+.se-maltese{font-family:'Josefin Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;margin-left:4px}
+.se-meta{font-family:'Josefin Sans',sans-serif;font-size:9.5px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+.se-desc{font-family:'Libre Baskerville',serif;font-size:14px;line-height:1.75;color:var(--text)}
+.se-desc strong{color:var(--ink);font-weight:700}
+.strat-note{margin-top:20px;background:var(--stone3);border-left:3px solid var(--gold);padding:14px 18px;font-family:'Josefin Sans',sans-serif;font-size:12px;line-height:1.65;color:var(--dim)}
+.strat-note strong{color:var(--gold)}
+
+/* ── MAIN ARTICLE ── */
+.article{max-width:740px;margin:0 auto;padding:80px 40px}
+.article p{margin-bottom:1.8em;color:var(--text);font-size:18.5px}
+.article p:first-of-type::first-letter{
+  font-family:'Cormorant Garamond',serif;
+  font-size:5.4em;font-weight:700;
+  float:left;line-height:.74;
+  margin:.06em .12em 0 0;
+  color:var(--gold);
+}
+.article em{font-style:italic}
+.article strong{color:var(--ink);font-weight:700}
+.hrule{border:none;border-top:1px solid var(--border);margin:52px 0}
+.sbreak{display:flex;align-items:center;gap:20px;margin:56px 0}
+.sbreak::before,.sbreak::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border))}
+.sbreak::after{background:linear-gradient(270deg,transparent,var(--border))}
+.sbreak-icon{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold)}
+
+/* Pull stat */
+.pull-stat{float:right;width:175px;margin:0 0 20px 28px;background:var(--stone3);border-top:3px solid var(--gold);padding:14px 16px;text-align:center}
+.pull-stat-n{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:var(--gold);display:block;line-height:1}
+.pull-stat-l{font-family:'Josefin Sans',sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:6px;display:block}
+
+/* Sidebar */
+.sidebar{background:var(--stone2);border-left:4px solid var(--gold);padding:26px 30px;margin:44px 0;opacity:0;transform:translateX(-10px);transition:opacity .7s,transform .7s}
+.sidebar.vis{opacity:1;transform:translateX(0)}
+.sidebar-kicker{font-family:'Josefin Sans',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:4px}
+.sidebar-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:var(--ink);margin-bottom:14px;line-height:1.3}
+.sidebar p{font-family:'Libre Baskerville',serif;font-size:14.5px;line-height:1.8;color:var(--text);margin-bottom:.85em}
+.sidebar p:last-child{margin-bottom:0}
+.sidebar strong{color:var(--ink)}
+
+/* ── PACKAGES ── */
+.package{background:var(--stone2);padding:80px 40px;border-top:1px solid var(--border)}
+.pkg-kicker{font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:8px}
+.pkg-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:52px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;max-width:1100px;margin:0 auto}
+.pcard{background:var(--cream);border:1px solid var(--border);padding:22px;opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}
+.pcard.vis{opacity:1;transform:translateY(0)}
+.pcard-n{font-family:'Josefin Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.pf{margin-bottom:8px}
+.pf-l{font-family:'Josefin Sans',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:3px}
+.pf-v{font-family:'Libre Baskerville',serif;font-size:13.5px;line-height:1.65;color:var(--text)}
+.pf-narr{border-top:1px solid var(--border);padding-top:9px;margin-top:9px}
+.pf-narr .pf-v{font-style:italic;color:var(--dim)}
+.pcap{background:var(--stone3);border-left:2px solid var(--gold);padding:10px 12px;margin-top:9px;font-family:'Josefin Sans',sans-serif;font-size:12px;line-height:1.65;color:var(--text)}
+.pcard-wide{grid-column:1/-1;background:var(--cream);border:1px solid var(--border);padding:26px}
+.seq-frames{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.seq-frame{background:var(--stone3);border:1px dashed var(--border);height:100px;display:flex;align-items:center;justify-content:center;font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:.09em;color:var(--dim);text-transform:uppercase;text-align:center;padding:8px}
+.seq-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14.5px;line-height:1.7;color:var(--dim);text-align:center;border-top:1px solid var(--border);padding-top:12px}
+
+/* ── DIAGRAM SECTION ── */
+.diag-section{background:var(--cream);padding:80px 40px;border-top:1px solid var(--border)}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px;max-width:1100px;margin:0 auto}
+.dcard{background:var(--stone2);border:1px solid var(--border);border-top:3px solid var(--gold);padding:24px;opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s}
+.dcard.vis{opacity:1;transform:translateY(0)}
+.dcard-type{font-family:'Josefin Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.dcard-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:16px;line-height:1.4}
+.df{margin-bottom:10px}
+.df-l{font-family:'Josefin Sans',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:3px}
+.df-v{font-family:'Josefin Sans',sans-serif;font-size:13px;line-height:1.65;color:var(--text)}
+.df-narr{border-top:1px solid var(--border);padding-top:10px;margin-top:10px}
+.df-narr .df-v{font-style:italic;font-family:'Libre Baskerville',serif;font-size:13px;color:var(--dim)}
+
+/* ── VISUAL SPINE ── */
+.spine-section{background:var(--stone2);padding:80px 40px;border-top:1px solid var(--border)}
+.spine{max-width:820px;margin:0 auto;position:relative}
+.spine::before{content:'';position:absolute;left:108px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--gold),transparent)}
+.spine-row{display:grid;grid-template-columns:100px 1fr;gap:24px;margin-bottom:20px;opacity:0;transform:translateX(-10px);transition:opacity .5s,transform .5s}
+.spine-row.vis{opacity:1;transform:translateX(0)}
+.spine-tag{text-align:right;padding-right:12px;padding-top:3px}
+.badge{display:inline-block;font-family:'Josefin Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;white-space:nowrap}
+.badge-img{background:var(--gold);color:#fff}
+.badge-diag{background:var(--blue);color:#fff}
+.badge-prose{background:transparent;color:var(--dim);border:1px solid var(--border)}
+.spine-body{border-bottom:1px solid var(--border);padding:0 0 14px 22px}
+.spine-row:last-child .spine-body{border-bottom:none}
+.spine-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.spine-desc{font-family:'Josefin Sans',sans-serif;font-size:12.5px;line-height:1.6;color:var(--dim)}
+.spine-desc strong{color:var(--gold)}
+
+/* ── CLOSING ── */
+.closing{max-width:740px;margin:0 auto;padding:80px 40px;text-align:center}
+.closing p{font-family:'Cormorant Garamond',serif;font-size:21px;font-style:italic;line-height:2.0;color:var(--text);margin-bottom:1.5em;opacity:0;transform:translateY(12px);transition:opacity .8s,transform .8s}
+.closing p.vis{opacity:1;transform:translateY(0)}
+.closing .final{font-family:'Cormorant Garamond',serif;font-size:26px;font-style:normal;font-weight:700;color:var(--ink);margin-top:1.5em;letter-spacing:.02em}
+
+/* ── SOURCE SECTION ── */
+.src-section{background:var(--stone3);padding:72px 40px;border-top:3px solid var(--gold)}
+.src-inner{max-width:740px;margin:0 auto}
+.src-kicker{font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:6px}
+.src-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:36px}
+.src-cat{margin-bottom:26px}
+.src-cat-t{font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.src-cat ul{list-style:none}
+.src-cat li{font-family:'Libre Baskerville',serif;font-size:14px;line-height:1.7;color:var(--text);padding:5px 0 5px 18px;position:relative;border-bottom:1px solid rgba(0,0,0,.06)}
+.src-cat li::before{content:'—';position:absolute;left:0;color:var(--gold)}
+
+footer{background:var(--stone2);border-top:1px solid var(--border);text-align:center;padding:40px;font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+footer strong{color:var(--gold)}
+
+.fi{opacity:0;transform:translateY(20px);transition:opacity .8s,transform .8s}
+.fi.vis{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+  .hero{padding:0 28px 60px}
+  .article{padding:60px 24px;font-size:16.5px}
+  .pgrid,.dgrid{grid-template-columns:1fr}
+  .seq-frames{grid-template-columns:1fr}
+  .hero-stats{gap:24px}
+  .pull-stat{float:none;width:100%;margin:0 0 24px 0}
+  .ref-grid{grid-template-columns:1fr}
+  .strat-col{flex-direction:column}
+  .strat-visual{width:100%;flex-direction:row;flex-wrap:wrap;height:auto}
+  .spine::before{display:none}
+  .spine-row{grid-template-columns:1fr}
+  .spine-tag{text-align:left;padding-right:0}
+  .spine-body{padding-left:0}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">National Geographic &nbsp;·&nbsp; Encyclopaedic Mode &nbsp;·&nbsp; Full Production Document</div>
+
+<div class="modebar">
+  <span class="modebar-item">Mode: <strong>Encyclopaedic</strong></span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">Register: <strong>NatGeo Classic / SciAm Hybrid</strong></span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">~11,000 words</span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">Research: <strong>15+ sources</strong></span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">Oligocene — Present</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="strata">
+    <div class="stratum"></div><div class="stratum"></div>
+    <div class="stratum"></div><div class="stratum"></div><div class="stratum"></div>
+  </div>
+  <p class="hero-kicker">National Geographic &nbsp;·&nbsp; Earth Science &nbsp;·&nbsp; Mediterranean Islands</p>
+  <h1>The Bones<br>of an<br><em>Island</em></h1>
+  <p class="hero-deck">Every stone in Valletta was once a creature on a seabed. Every cave holds a hippo's tooth. Every cliff records the moment a continent began to tear itself apart. Malta's geology is not background — it is the island's entire story, 28 million years deep.</p>
+  <div class="hero-stats">
+    <div><span class="hs-n">28 Ma</span><span class="hs-l">Age of oldest exposed rock</span></div>
+    <div><span class="hs-n">5</span><span class="hs-l">Sedimentary formations</span></div>
+    <div><span class="hs-n">70%</span><span class="hs-l">Island surface is Globigerina Limestone</span></div>
+    <div><span class="hs-n">6,000</span><span class="hs-l">Years of continuous quarrying</span></div>
+  </div>
+</section>
+
+<!-- REFERENCE SUMMARY -->
+<section class="ref-outer">
+  <div class="ref-summary">
+    <span class="ref-title">Reference Summary</span>
+    <div class="ref-grid">
+      <div>
+        <span class="ref-item-label">Geological Setting</span>
+        <span class="ref-item-value">The Maltese archipelago rests on the Malta Plateau — a submerged shoulder of the African continental plate, positioned approximately 200 km south of the African-Eurasian subduction boundary. The platform is divided by the Sicily Channel Rift Zone, comprising three grabens: Pantelleria, Malta, and Linosa.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Rock Types</span>
+        <span class="ref-item-value">All rocks are exclusively sedimentary — primarily carbonate limestones and mudstones. No igneous or metamorphic rocks are found onshore. All five formations were deposited as marine sediments between ~28 and 5 million years ago (late Oligocene to Messinian Miocene).</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Five Formations (oldest → youngest)</span>
+        <span class="ref-item-value">Lower Coralline Limestone (LCL) → Globigerina Limestone (GL) → Blue Clay (BC) → Greensand (GS) → Upper Coralline Limestone (UCL). The GL outcropping covers ~70% of island surfaces. The BC is the only impermeable layer, controlling groundwater distribution.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Key Structures</span>
+        <span class="ref-item-value">Two main fault systems: the NE-SW Great Fault (Victoria Lines Fault), cutting east to west across Malta; and the NW-SE Magħlaq Fault along the south coast. Malta is a tilted block — highest at Dingli Cliffs (253 m, SW) and drowned on the northeastern coastline.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Fossil Record</span>
+        <span class="ref-item-value">Għar Dalam Cave: Pleistocene megafauna including Palaeoloxodon falconeri (dwarf elephant, under 1 m tall), Hippopotamus melitensis (endemic dwarf hippo), red deer, brown bear, wolf, and giant swan. Fossils date to >500,000 BP. Animals arrived via land bridge during glacial sea-level lowstands.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Water Geology</span>
+        <span class="ref-item-value">Two aquifer types: (1) Mean Sea Level Aquifer (MSLA) — freshwater Ghyben-Herzberg lens floating on saline water in the LCL and GL formations; (2) Perched Aquifer — rainwater trapped above the Blue Clay in the UCL. ~42 km of hand-cut galleries extract MSLA water. Residence time 15–40 years.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Globigerina as Heritage Stone</span>
+        <span class="ref-item-value">Designated Global Heritage Stone Resource by the IUGS. Used continuously for 6,000 years — from Neolithic temples (3600 BCE) through Knights of St John fortifications to modern construction. Two commercial grades: durable franka and less durable soll. Both are gold to honey coloured; exposed surfaces weather to warm ochre patina.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Seismicity</span>
+        <span class="ref-item-value">Seismic risk officially low but likely underestimated. Most significant event: 1693 Sicily earthquake (M 7.4), ~60,000 dead in Sicily; Malta suffered no casualties but extensive building damage in Valletta, Mdina, Vittoriosa, Senglea, Cospicua. Triggered the Baroque architectural revival in Mdina. Risk event of intensity 8 calculated as 1-in-1000-year occurrence.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Key Researchers</span>
+        <span class="ref-item-value">Vice-Admiral T.A.B. Spratt (Father of Maltese Geology — first correct stratigraphic description, 1843); Andrew Leith Adams (Pleistocene fauna excavations, 1860s); H.M. Pedley (modern stratigraphy, 1976–2002); J.H. Illies (graben formation, 1981); Janet Cassar (stone conservation); Maltese Continental Shelf Department (current geological surveys).</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Cosmic Context</span>
+        <span class="ref-item-value">Malta emerged from the sea as the Messinian Salinity Crisis ended (5.33 Ma), when the Atlantic catastrophically refilled the desiccated Mediterranean. The island was connected to Sicily and North Africa during Ice Age glacial maxima, enabling megafauna migrations; isolation during interglacials produced insular dwarfism. Tilting continues today — SE coast subsiding faster than NW.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATIGRAPHIC COLUMN (CSS) -->
+<section class="strat-section">
+  <div class="strat-inner">
+    <p class="strat-kicker">Scientific Foundation</p>
+    <h2 class="strat-title">The Five Formations — A Stratigraphic Column</h2>
+    <div class="strat-col">
+      <!-- Visual column -->
+      <div class="strat-visual">
+        <div class="sv-row f-ucl" style="min-height:90px">
+          <div class="sv-thickness" style="background:rgba(0,0,0,.2)">~140 m</div>
+          <div class="sv-band">
+            <div>
+              <div class="sv-label">Upper Coralline Limestone</div>
+              <span class="sv-age">7–5 Ma (Messinian)</span>
+            </div>
+          </div>
+        </div>
+        <div class="sv-row f-gs" style="min-height:14px">
+          <div class="sv-thickness" style="background:rgba(0,0,0,.2);min-width:18px">11m</div>
+          <div class="sv-band" style="padding:2px 6px">
+            <div class="sv-label" style="font-size:7.5px">Greensand</div>
+          </div>
+        </div>
+        <div class="sv-row f-bc" style="min-height:75px">
+          <div class="sv-thickness" style="background:rgba(0,0,0,.2)">≤65 m</div>
+          <div class="sv-band">
+            <div>
+              <div class="sv-label">Blue Clay</div>
+              <span class="sv-age">15–10 Ma (Langhian–Tortonian)</span>
+            </div>
+          </div>
+        </div>
+        <div class="sv-row f-gl" style="min-height:120px">
+          <div class="sv-thickness" style="background:rgba(0,0,0,.12)"><span style="color:#1a1200">23–207m</span></div>
+          <div class="sv-band">
+            <div>
+              <div class="sv-label" style="color:#1a1200">Globigerina Limestone</div>
+              <span class="sv-age sv-age-dark">23–14 Ma (Aquitanian–Langhian)</span>
+            </div>
+          </div>
+        </div>
+        <div class="sv-row f-lcl" style="min-height:100px">
+          <div class="sv-thickness" style="background:rgba(0,0,0,.2)">≤162 m</div>
+          <div class="sv-band">
+            <div>
+              <div class="sv-label">Lower Coralline Limestone</div>
+              <span class="sv-age">28–23 Ma (Chattian)</span>
+            </div>
+          </div>
+        </div>
+        <div style="background:#2a1e0e;padding:6px;text-align:center">
+          <div style="font-family:'Josefin Sans',sans-serif;font-size:8.5px;color:#a08060;letter-spacing:.12em;text-transform:uppercase">Continental shelf bedrock</div>
+        </div>
+      </div>
+
+      <!-- Formation details -->
+      <div class="strat-details">
+        <div class="strat-entry">
+          <div class="se-head"><div class="se-swatch" style="background:#8a9068"></div><div class="se-name">Upper Coralline Limestone</div><span class="se-maltese">Qawwi ta' Fuq</span></div>
+          <div class="se-meta">Messinian · ~7–5 Ma · up to ~140 m thick</div>
+          <div class="se-desc">The youngest Tertiary formation, chemically and palaeontologically similar to its counterpart at the bottom of the column — both deposited in shallow, well-lit seas. Hard and pale grey, it forms the high plateau tops of western Malta (including Dingli) and Gozo's distinctive flat-topped hills. The Cittadella of Gozo sits on this rock. <strong>Used exclusively in fortifications — too hard to carve with hand tools, ideal for defensive walls.</strong> Formed as sea level dropped during the Messinian Salinity Crisis; the system producing it died when the Mediterranean nearly desiccated.</div>
+        </div>
+        <div class="strat-entry">
+          <div class="se-head"><div class="se-swatch" style="background:#7a8040;height:14px;width:14px;border-radius:2px"></div><div class="se-name">Greensand</div><span class="se-maltese">Ġebla s-Safra</span></div>
+          <div class="se-meta">Tortonian · ~10–7 Ma · max 11 m, often absent</div>
+          <div class="se-desc">Malta's thinnest and most variable formation — frequently completely absent. Rich in glauconite (an iron-bearing mineral), it appears vivid green when freshly cut and weathers to orange on exposure. Forms an important transitional layer; <strong>where Greensand sits above Blue Clay, it assists in trapping perched groundwater.</strong></div>
+        </div>
+        <div class="strat-entry">
+          <div class="se-head"><div class="se-swatch" style="background:#5a6878"></div><div class="se-name">Blue Clay</div><span class="se-maltese">Tafal</span></div>
+          <div class="se-meta">Langhian–Tortonian · ~15–10 Ma · up to 65 m</div>
+          <div class="se-desc">A blue-grey mudstone deposited in deepwater conditions — possibly 150 m depth. Fine clay particles were wind- and river-eroded from the emerging Italian landmass to the north as shallow water conditions began to decline. <strong>Blue Clay is the only impermeable layer in the entire Maltese sequence, making it the geological foundation of the island's freshwater supply.</strong> Rain percolating through the permeable Upper Coralline Limestone encounters the clay and cannot descend further, creating the perched aquifer. Absent entirely from most of eastern Malta. When wet, it becomes plastic and flows, creating the characteristic rdum coastal landslides.</div>
+        </div>
+        <div class="strat-entry">
+          <div class="se-head"><div class="se-swatch" style="background:#c8a848"></div><div class="se-name">Globigerina Limestone</div><span class="se-maltese">Franka</span></div>
+          <div class="se-meta">Aquitanian–Langhian · ~23–14 Ma · 23–207 m thick · covers ~70% of islands</div>
+          <div class="se-desc"><strong>The defining rock of Malta — the building material of civilisation in this archipelago for 6,000 unbroken years.</strong> Fine-grained and gold-coloured, it is composed almost entirely of the microscopic calcareous shells of Globigerina foraminifera — free-floating planktonic organisms whose remains drifted down through hundreds of metres of open sea to the seafloor. Named franka (freestone) by Maltese stone masons. Freshly quarried, it is pale yellow; exposed to air, it weathers to a warm rosy ochre as iron oxides oxidise in the surface. <strong>Designated a Global Heritage Stone Resource by the IUGS in recognition of its uninterrupted 6,000-year history of use.</strong> Two commercial grades exist: the more durable franka and the weathering-prone soll, distinguishable chemically by SiO₂, Al₂O₃ and Fe₂O₃ content but visually identical when freshly cut.</div>
+        </div>
+        <div class="strat-entry">
+          <div class="se-head"><div class="se-swatch" style="background:#8a7850"></div><div class="se-name">Lower Coralline Limestone</div><span class="se-maltese">Żonqor</span></div>
+          <div class="se-meta">Chattian · ~28–23 Ma · up to 162 m · oldest exposed rock</div>
+          <div class="se-desc">The island's bedrock and foundation — hard, pale grey, and resistant. Composed of the skeletal remains of coralline red algae deposited in shallow, clear, sunlit lagoons in the late Oligocene. <strong>Forms the spectacular vertical plunging cliffs of the southwest coast</strong> — up to 140 m high at Xlendi in Gozo, exposed along the Dingli fault scarps. The Azure Window arch on Gozo, collapsed in a storm in March 2017 after approximately 500 years above sea level, was composed of Lower Coralline Limestone. Also hosts Malta's primary groundwater resource: the Mean Sea Level Aquifer, where rainwater filtered through the overlying formations accumulates as a freshwater lens floating above deeper saline water.</div>
+        </div>
+        <div class="strat-note"><strong>Note on thickness variation:</strong> Malta tilts northeast. The southeast is sinking relative to the northwest, producing dramatic thickness changes across short distances — Globigerina Limestone ranges from 23 m in northwest Gozo to over 200 m in southeast Malta. Blue Clay is over 70 m thick in western Malta and completely absent in the east. The island is, in geological terms, still moving.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN ARTICLE -->
+<article class="article">
+
+  <p>Stand at Dingli Cliffs on a clear January morning and you will see what 28 million years looks like. The plateau drops almost sheer from 253 metres to the sea — the highest point in the Maltese archipelago — and below the edge, if you know where to look, you can read the entire history of the island in the bands of rock exposed in the cliff face. Cream coralline limestone near the top. A thin stripe of orange-green. Then a dark blue-grey band like a watermark soaking upwards from the ocean. Then, at the cliff base where the sea strikes and retreats, the pale gold that every person who has ever lived on these islands has used to build with. Stacked in a few hundred metres of vertical rock face is the complete sequence of an ancient sea, a geological crisis, an island rising from the water, and 6,000 years of civilisation cut from the same stone the sea laid down.</p>
+
+  <p>Malta is unusual in the geological world for a very specific reason: there is almost nothing here that is not limestone. No volcanoes, no igneous rock, no metamorphic complexes, no ancient crystalline basement exposed at the surface. The entire archipelago is built from sedimentary carbonate — the compressed and cemented remains of marine creatures that lived and died in shallow warm seas between approximately 28 and 5 million years ago. This sounds like a limitation. In practice, it has made Malta one of the most legible geological landscapes on earth: a place where the relationship between deep time and daily life is not buried under glacial till or overwritten by lava flows but lies exposed in the walls of every building, the floor of every quarry, the ceiling of every cave.</p>
+
+  <p>The poet Samuel Taylor Coleridge arrived in Malta in 1804 as undersecretary to the British Civil Commissioner and spent two years here. What struck him most was not the Grand Harbour, not the baroque architecture, not the Siege fortifications — it was the stone. He described being "bewildered at the Maltese use of limestone for every kind of construction — house, street, and wall." He had never seen a place where a single geological material so completely defined the built environment. He was right to be astonished. What Coleridge was observing — and what this article attempts to explain — is the result of a specific set of geological accidents: the right kind of sea, at the right depth, for the right duration, followed by the right kind of tectonic disruption, followed by the right kind of human beings arriving at exactly the moment the stone was ready to be cut.</p>
+
+  <hr class="hrule">
+
+  <!-- SECTION: TECTONIC SETTING -->
+
+  <p class="fi">The first thing to understand about Malta's geology is where the island sits in the larger system. The Maltese archipelago rests on the Malta Plateau — a shallow continental shelf that forms a submerged bridge between the Hyblean platform of southern Sicily and the Tripolitanian platform of northern Libya. The underlying crust is African. Malta is, in the most literal geological sense, a fragment of Africa that has been nudged slightly northward and tilted on its axis.</p>
+
+  <div class="pull-stat">
+    <span class="pull-stat-n">200 km</span>
+    <span class="pull-stat-l">Distance to the African-Eurasian subduction boundary</span>
+  </div>
+
+  <p class="fi">The forces that created this situation originate 200 kilometres to the north, where the African and Eurasian tectonic plates have been converging for tens of millions of years. Their collision has built the Alps, folded the Apennines, raised the Atlas ranges. But in the central Mediterranean, the collision is not uniform. A rift zone crosses the Sicily Channel roughly perpendicular to the main collision front, creating three elongated pull-apart basins: the Pantelleria Graben, the Malta Graben, and the Linosa Graben. These rifts — zones where the crust is being stretched and thinned — are geologically active and have been since the Late Miocene, approximately 6–7 million years ago.</p>
+
+  <p class="fi">Malta sits on the northern shoulder of the Malta Graben. As the graben deepened and widened — as the crust on one side pulled away from the crust on the other — the shoulder was pushed upward. That uplift is what brought Malta above sea level. The island is not a volcanic creation, not a coral atoll, not a fragment broken from a larger landmass. It is a block that was lifted by the mechanical consequences of a rift system, the way a trapdoor rises when the hinge side is pushed down. The companion island of Lampedusa, to the southwest, is an identical structure on the opposite side of the same rift.</p>
+
+  <p class="fi">The rift imparted a tilt to the lifted block — northeast-ward, in Malta's case. The island's southwestern edge stands high (Dingli Cliffs, 253 m), while the northeastern coastline sits at sea level or is actively being submerged. The natural harbours of Valletta — the Grand Harbour, Marsamxett — are drowned river valleys that were carved out when sea level was lower and the island sat higher; they exist in their current form because the northeastern half of Malta has been sinking relative to its southwest. This is still happening. The southeast coast is subsiding faster than the northwest. The cliffs grow imperceptibly taller. The harbours grow imperceptibly deeper. Malta is not a fixed stage; it is a character in a continuing story.</p>
+
+  <div class="sidebar">
+    <span class="sidebar-kicker">Sidebar 1</span>
+    <div class="sidebar-title">The Messinian Salinity Crisis — When the Mediterranean Nearly Ceased to Exist</div>
+    <p>Between approximately 5.96 and 5.33 million years ago, the Mediterranean Sea underwent one of the most dramatic events in Cenozoic geological history: a near-complete desiccation. The gradual closure of the Atlantic gateway at Gibraltar — driven by the convergence of the African and Eurasian plates — cut off the Mediterranean's water supply. With evaporation exceeding inflow, the sea level fell. Within a few thousand years, what had been an ocean basin became, in large parts, a hypersaline desert more than a kilometre below global sea level.</p>
+    <p>The evidence is everywhere in the Mediterranean's geology. <strong>A layer of salt up to three kilometres thick lies under the seafloor</strong> — the evaporated remnant of that vanished sea. On Malta, the crisis is recorded in the Upper Coralline Limestone: this formation's bioherms (biogenic reef structures) were deposited as the sea shallowed and warmed during the drawdown phase. When the crisis ended, the Upper Coralline-producing system died out entirely — ending at the precise geological moment when the Atlantic reflooded the basin.</p>
+    <p>The reflooding itself was catastrophic. Around 5.33 Ma, the Gibraltar barrier failed — estimates suggest the Atlantic poured in at a rate that raised Mediterranean sea levels by metres per day, filling the basin within approximately 1,000 years in what is known as the Zanclean Flood. Malta's elevation above sea level at this point meant it would have been an island-mountain surrounded by this refilling event — connected to land beforehand, isolated afterward.</p>
+  </div>
+
+  <!-- SECTION: GLOBIGERINA — THE LIVING STONE -->
+
+  <div class="sbreak"><span class="sbreak-icon">◆</span></div>
+
+  <p class="fi">Of the five formations in Malta's stratigraphic sequence, one has shaped the island's history more than any other, and it is perhaps the least likely candidate: a soft, porous limestone composed almost entirely of the microscopic shells of single-celled organisms. Globigerina limestone — the franka of the Maltese stonemason — is not the hardest rock on the island, nor the oldest, nor the most dramatic. It is, however, the most workable. And in a world before steel tools and electric saws, workability was everything.</p>
+
+  <p class="fi">The Globigerina foraminifera are open-ocean plankton — microscopic spherical organisms, each less than a millimetre across, that float in the upper layers of warm seas and build calcareous shells around themselves. When they die, they sink. Their shells accumulate on the seafloor in a fine calcareous ooze. Compacted over millions of years, this ooze becomes limestone — fine-grained, homogeneous, free of the coarse fossil fragments that make other limestones harder and more variable. The result, when quarried and cut, is a stone that behaves almost like wood: it can be sawn cleanly, carved with precision, split along predictable planes. A skilled mason working franka in the 1st century BCE had essentially the same material properties to work with as a stonemason using it today.</p>
+
+  <p class="fi">The Neolithic builders who constructed the temples at Ħaġar Qim between 3600 and 3200 BCE understood this immediately. The temple complexes use both Globigerina and Lower Coralline Limestone — the harder coralline for the massive exterior orthostats and structural elements, the softer globigerina for interior surfaces and carved decorative elements, including the famous spiral reliefs and the Venus of Malta figurine. The builders' choice reflects a sophisticated material knowledge: use the harder stone where strength matters, the softer stone where precision matters. This division of labour between the two limestones persisted for 6,000 years and is still visible in any Maltese church built by the Knights of St John.</p>
+
+  <p class="fi">When franka is freshly quarried, it is pale yellow — almost cream. Over the months and years after cutting, as the stone's iron compounds oxidise on exposure to the Mediterranean air, it deepens to the warm honey-gold that defines the colour of Valletta, of Mdina, of every village church on the island. Buildings constructed with newly quarried stone are visibly lighter than their older neighbours. Neighbourhoods built in different eras can be dated approximately by their colour. The Knights' fortifications of the sixteenth and seventeenth centuries have had four hundred years to acquire their deepest ochre patina; blocks cut for a twentieth-century house are still golden-pale. The island's colour is not constant. It is a clock.</p>
+
+  <p class="fi">The IUGS designation of the Lower Globigerina Limestone as a Global Heritage Stone Resource in 2016 formalised what Maltese stonemasons have known for six millennia: this is a stone of extraordinary cultural significance. More than 60 kilometres of Knights' fortifications were built from it. The entire walled city of Valletta — a UNESCO World Heritage Site — is Globigerina Limestone. The prehistoric temples of Malta — also UNESCO-listed — are Globigerina Limestone. Every Baroque church, every Neolithic altar, every rubble wall dividing terraced fields, every street surface in the old towns. Even today, with machine saws and concrete alternatives available, Maltese construction continues to use the stone. Active quarries outside Siggiewi and elsewhere supply blocks for modern buildings and the restoration of historic ones.</p>
+
+  <div class="sidebar">
+    <span class="sidebar-kicker">Sidebar 2</span>
+    <div class="sidebar-title">Franka and Soll — The Hidden Quality Division in Maltese Stone</div>
+    <p>To a visitor, Maltese limestone looks uniform: the same warm gold, the same fine grain, the same workability. To a stonemason or a conservation scientist, the stone is sharply divided into two grades whose difference determines whether a building will last five centuries or five decades.</p>
+    <p>Franka (the durable grade) and soll (the weathering-prone grade) are geochemically distinct. Soll is richer in the non-carbonate fraction — silicon dioxide, aluminium oxide, iron oxide, and titanium dioxide — which occludes pore space differently and creates a higher proportion of small pores. In Malta's marine environment, heavily loaded with sodium chloride and sulphate aerosols, salt crystallises in these small pores as humidity cycles. The crystallisation pressure spalls the stone surface in the characteristic alveolar weathering (honeycomb patterns) visible on many historic buildings. <strong>Franka resists better; soll can deteriorate within decades in exposed coastal positions.</strong></p>
+    <p>The prehistoric temples demonstrate the problem at scale. Ħaġar Qim's outer southern wall, exposed to sea winds, shows severe weathering and surface flaking over the millennia — a consequence of the original builders using the stone most readily available on the ridge rather than selecting for franka quality. Protective tent shelters were installed in 2009 to slow further deterioration. The conservation challenge is formidable: you cannot replace Neolithic stonework with modern quarry stone and preserve authenticity, but the original stone is continuing to dissolve in the Mediterranean air.</p>
+  </div>
+
+  <!-- SECTION: THE GREAT FAULT -->
+
+  <div class="sbreak"><span class="sbreak-icon">◆</span></div>
+
+  <p class="fi">In 1843, a Royal Navy Vice-Admiral named Thomas Abel Brimage Spratt was stationed in Malta between expeditions. He was not primarily a geologist — his career was built around hydrographic surveys and oceanographic research — but he had the trained eye of a man who spent his professional life reading natural landscapes. What he noticed about Malta was that the island appeared to be divided in two: the north had a distinct topography of ridges and valleys trending northeast-southwest, while the south had a gentler, more open landscape with no clear directional grain. The dividing line between these two geological personalities was a sharp escarpment running across the full width of the island from east to west. He called it the Great Fault of Malta, marked it on his 1843 topographical map, and correctly identified it as a major tectonic feature. He has been known as the Father of Maltese Geology ever since.</p>
+
+  <p class="fi">The Great Fault — today called the Victoria Lines Fault — is a manifestation of Malta's older rift system, a WSW-ENE trending normal fault that drops the northern block of the island down relative to the southern block by several hundred metres. On the surface this displacement creates a prominent escarpment: a cliff of rock running coast to coast, separating the lower, flatter south of the island from the more deeply faulted and dissected north. The escarpment typically stands 20 to 60 metres above the ground to its north, and in places considerably more.</p>
+
+  <p class="fi">The military utility of this escarpment was recognised long before Spratt named it. The Knights of St John built infantry entrenchments along it in the early eighteenth century, understanding that a north-to-south invader who had landed on the northern beaches would have to scale or breach a natural cliff to reach Valletta's harbours. The British formalised this logic between 1875 and 1899, constructing the Victoria Lines — a 12-kilometre system of forts, stop-walls, batteries, and infantry parapets — along the crest of the fault escarpment. Named for Queen Victoria's Diamond Jubilee in 1897, the lines were never tested in battle. Military exercises held in 1900 revealed they could be bypassed at their weakest extremities. They were declared obsolete and abandoned by 1907. The geology that created the escarpment, however, continues to divide the island's landscapes as definitively as any wall.</p>
+
+  <p class="fi">A second major fault system — the Magħlaq Fault, trending northwest-southeast along the island's southern coast — belongs to the younger Pantelleria-related rift episode. It is responsible for the spectacular south coast cliff scenery near the Blue Grotto and for dropping the small island of Filfla to sea level. Together, these two fault systems, operating at different times and in different orientations, have produced Malta's asymmetric topography: dramatic cliffs and high plateaux in the southwest, drowned and gentle coastlines in the northeast.</p>
+
+  <!-- SECTION: CAVES, KARST, AND THE BLUE GROTTO -->
+
+  <div class="sbreak"><span class="sbreak-icon">◆</span></div>
+
+  <p class="fi">Limestone is soluble. Rainwater absorbs carbon dioxide from the atmosphere and soil, forming weak carbonic acid; this acid dissolves calcium carbonate wherever water finds cracks and joints in the rock. Over thousands of years, cracks become fissures, fissures become passages, passages become caves. Malta's limestone karst is not as dramatically developed as in some Mediterranean regions — the Blue Clay's impermeability limits the depth of vertical dissolution, and Malta's relatively young tectonic history means the caves are not ancient — but the coastal karst in particular produces some of the most spectacular scenery in the central Mediterranean.</p>
+
+  <p class="fi">The Blue Grotto near Żurrieq is the most celebrated of Malta's coastal cave systems: a series of interconnected sea caves cut into the Lower Coralline Limestone of the southwestern cliff face, including the main cavern with its cathedral-like arch more than 30 metres high, plus Honeymoon Cave, Reflection Cave, and several partially submerged chambers. The cave system's development involved three interacting processes: dissolution by groundwater creating initial voids in the limestone; marine wave action enlarging those voids during Holocene sea-level rise; and periodic roof collapse further opening the chambers. The vivid blue of the water inside — the phenomenon that gives the grotto its name — results from sunlight entering through the arch and sea-floor openings and scattering off the fine white sand below, the visibility extending 20 metres down through clear water.</p>
+
+  <p class="fi">The inland karst is subtler. Circular subsidence structures — sinkholes formed where subsurface dissolution has removed support and the overlying rock has collapsed — are distributed across the islands. The valleys (iljuli) cutting across the fault-block terrain of northern Malta were carved partly by surface streams during wetter Pleistocene periods and partly by subsurface karst drainage. Stalactites and stalagmites are found in some cave systems, indicating periods of vadose (above-water-table) conditions. Submerged speleothems — stalactites now below sea level — record sea-level positions during the Holocene and suggest remarkable tectonic stability over the past 10,000 years: the speleothems that grew when sea level was lower are now submerged at depths consistent with global sea-level change alone, without significant additional local tectonic movement.</p>
+
+  <p class="fi">The Azure Window, which collapsed into the sea in March 2017 during a severe storm, was perhaps the most visually striking example of Malta's coastal karst — a natural arch approximately 28 metres high and 25 metres in span, sculpted from Lower Coralline Limestone over roughly 500 years of wave attack. Geological accounts suggest the arch was not mentioned in seventeenth- and eighteenth-century descriptions of the area — its precursor was probably a sea cave at that time — and the earliest photograph dates to 1879. Its collapse after only approximately 140 years of documented existence as a true arch illustrates the geological timescale on which Malta's coastline is actively changing. What looked permanent to anyone alive in 1879 was, by geological standards, a brief transitional moment.</p>
+
+  <div class="sidebar">
+    <span class="sidebar-kicker">Sidebar 3</span>
+    <div class="sidebar-title">The Water Beneath the Stone — Malta's Invisible Geology</div>
+    <p>Malta has no permanent rivers, no natural lakes, and receives only about 550 millimetres of rain annually — all of it falling in the winter months. The island's entire freshwater supply depends on the geology of its subsurface: two aquifer systems whose existence and behaviour are direct consequences of the stratigraphic sequence.</p>
+    <p>The perched aquifer forms where Upper Coralline Limestone and Greensand overlie Blue Clay. Rainwater percolates easily through the porous limestone but cannot penetrate the impermeable clay; it accumulates on the clay surface as a lens of freshwater. Where the topography cuts below the level of the clay, this water emerges as springs — the Maltese word għajn (spring) is embedded in dozens of place names. Historical villages were almost invariably positioned near such springs. The Neolithic builders of the temples at Ħaġar Qim and Mnajdra cut rock-carved cisterns into the limestone nearby that are still visible today and were used for rainwater collection.</p>
+    <p>The Mean Sea Level Aquifer (MSLA) is more complex. In the Lower Coralline Limestone and Globigerina Limestone formations, freshwater — less dense than seawater — floats as a lens above the saline groundwater that permeates the rock at and below sea level. This Ghyben-Herzberg lens is the island's primary water reserve, with an estimated volume of approximately 1 km³. <strong>Every 1 metre drop in the freshwater table causes an approximately 20-metre rise in the saltwater-freshwater interface from below — meaning over-extraction rapidly degrades water quality.</strong> About 42 kilometres of hand-cut galleries were excavated in the Lower Coralline Limestone at sea level during the nineteenth and twentieth centuries to collect this water by gravity. Today, with population pressure and agricultural demand growing, the aquifer is being over-abstracted, and four reverse-osmosis desalination plants now supplement natural supplies.</p>
+  </div>
+
+  <!-- SECTION: GHAR DALAM — THE CAVE OF DARKNESS -->
+
+  <div class="sbreak"><span class="sbreak-icon">◆</span></div>
+
+  <p class="fi">The cave of Għar Dalam — the name means "dark cave" in Maltese — cuts 144 metres into the southern face of a limestone ridge near Birżebbuġa, in the southern part of Malta. Only the first 50 metres are accessible to visitors. The cave was first described scientifically by the Italian-German palaeontologist Arturo Issel in 1865, who had to evict the local farmers using it as an impromptu cattle pen before he could excavate. What he found — and what subsequent excavators including the British archaeologist Gertrude Caton-Thompson have continued to find — is a stratigraphic record of Malta's Quaternary history written entirely in bone.</p>
+
+  <p class="fi">The cave's floor deposits are layered in a sequence that reads like a compressed history of the Mediterranean world. At the base, more than half a million years old, are the remains of animals that no living person has ever seen in Malta: Palaeoloxodon falconeri, the Maltese dwarf elephant, stood under one metre tall at the shoulder — less than a third the height of its mainland ancestor, the straight-tusked elephant. The evolutionary dwarfism is a classic consequence of island isolation: with limited resources and no predators, large herbivores trending smaller is a consistent pattern across Mediterranean island faunas. Alongside the elephant bones are those of Hippopotamus melitensis — an endemic dwarf hippo species first formally described by Forsyth Major in 1902 from bones recovered from the cave — as well as red deer, brown bear, wolf, giant swan, and numerous smaller mammals. The presence of European species (bear, wolf, deer) rather than African species establishes that Malta was connected to Sicily and through Sicily to mainland Europe during the glacial lowstands, not to Africa.</p>
+
+  <p class="fi">The mechanism of that connection is well established. During the Last Glacial Maximum, approximately 20,000 years ago, global sea level was roughly 120 metres lower than today. The shallow shelf between Sicily and Malta — currently between 90 and 100 metres deep — would have been dry land. Animals could walk from mainland Italy through Sicily and across the Maltese shelf to the islands. The isolation came with sea-level rise: as the ice sheets melted and the sea climbed, the land bridge narrowed and eventually flooded, leaving populations of mainland species stranded on islands too small to sustain their full body mass. Dwarfism followed over thousands of generations. Extinction followed eventually — probably at the hands of the first human arrivals, who reached Malta from Sicily around 5,000 BCE.</p>
+
+  <p class="fi">Above the deep Pleistocene bone layers in Għar Dalam are the Neolithic occupation layers — pottery, charred bones, worked flint — representing Malta's first human inhabitants. The cave thus contains, in a single 50-metre accessible section, the complete record of Malta's transition from a fauna of dwarf megafauna to a human landscape. One of the cave's most remarkable finds, recovered in 1917, was a pair of human molars with fused roots — a morphological feature associated with Neanderthal populations. Their precise stratigraphic context has been debated; if they represent genuine Neanderthal habitation, they would indicate a human presence in Malta significantly earlier than the established Neolithic arrival. The question remains scientifically open.</p>
+
+  <!-- SECTION: THE 1693 EARTHQUAKE -->
+
+  <div class="sbreak"><span class="sbreak-icon">◆</span></div>
+
+  <p class="fi">On the evening of January 11, 1693, at approximately 21:00 local time, the ground shook in Malta for four minutes. The tremors were not generated here — the epicentre was offshore of southeastern Sicily, where a submarine fault in the Siculo-Calabrian rift zone unleashed an event with an estimated magnitude of 7.4, the most powerful earthquake in Italian recorded history. In Sicily, approximately 60,000 people died. In Catania, 63% of the population — about 12,000 people — were killed. At Augusta, the tsunami that followed the earthquake grounded galleys of the Knights of Malta that were anchored in the harbour.</p>
+
+  <p class="fi">In Malta itself, there were no casualties — the distance of roughly 190 kilometres had attenuated the shaking to a level that damaged buildings but did not collapse them outright. But the damage was extensive. At Valletta, contemporary accounts note that no building escaped unscathed, from simple cracking to partial demolition. Mdina, Malta's ancient capital, suffered more heavily than Valletta because the buildings were older and less well maintained. The Cathedral of St Paul in Mdina was substantially destroyed. The Banca Giuratale, the baroque civic building at the heart of the old capital, was wrecked. At Rabat, the bell tower and the apse of the church of St Paul collapsed. At Gozo, the walls of the Cittadella were damaged.</p>
+
+  <p class="fi">The architectural response was the Baroque rebuilding of Mdina in the 1720s — the same Baroque Revival triggered across Sicily by the same earthquake. The Grand Master Antonio Manuel de Vilhena commissioned military engineer François de Mondion to redesign the city in the fashionable new style. The Main Gate of Mdina (1724), the Corte Capitanale (1726), the rebuilt Cathedral: all are direct consequences of a seismic event in 1693. The earthquake that destroyed is also the earthquake that created the Mdina that visitors see today.</p>
+
+  <p class="fi">Malta's seismic vulnerability remains a subject of scientific attention. The archipelago sits on a stable portion of the African Plate, which makes major earthquakes from local faults relatively unlikely — but the proximity to the Sicilian rift zone and the Pantelleria-Malta graben system means Maltese buildings must be designed for the possibility of significant shaking from regional events. Official risk assessment calculates an earthquake of Mercalli intensity 8 as a 1-in-1000-year occurrence. Given Malta's current building stock — much of it Globigerina Limestone construction from the medieval period onward — and the island's dramatic population density, the human consequences of such an event could be severe. The 1693 earthquake was, by this estimate, approximately due to recur at some point in the next few centuries.</p>
+
+  <!-- SECTION: STONE AND HUMAN HISTORY -->
+
+  <div class="sbreak"><span class="sbreak-icon">◆</span></div>
+
+  <p class="fi">There is a thought experiment that reveals how completely Malta's geology has determined its history. Take away the Globigerina Limestone — replace it with something less workable, less available, less consistently deposited — and the island's 6,000-year unbroken tradition of monumental stone construction disappears. The Neolithic temples require a stone that can be quarried and moved with wooden rollers and human muscle and then shaped with flint tools; only franka, among Malta's rocks, fits that description. The Knights' fortifications require a stone that can be quarried in quantity, cut precisely, and laid in large blocks; only franka delivers all three. The domestic architecture of every Maltese village for seven millennia requires a stone that is locally available, affordable, and pleasant to work; franka, again, is the answer. Remove the geology and you remove the architecture. Remove the architecture and Malta's entire historical identity — as a sacred site, as a fortress, as a baroque jewel in the Mediterranean — evaporates.</p>
+
+  <p class="fi">The Victoria Lines provide perhaps the most explicit example of this entanglement. The British engineers who surveyed the Great Fault escarpment in the 1870s were not geologists; they were military engineers looking for a defensible line. What they found was a geological feature that the Knights of St John had already recognised in the eighteenth century and that Bronze Age inhabitants had fortified in some form before that. The fault that T.A.B. Spratt identified and described in 1843 had been in military service, in one form or another, for at least 3,000 years before Spratt named it. Geology, in Malta, is not a discipline separate from history. It is the medium in which history is written.</p>
+
+  <p class="fi">Water tells the same story. The Blue Clay — deposited in deep, cold, Middle Miocene water some 12 million years ago — is the foundation of every perched spring, every traditional well, every agricultural terracing system on the island's plateau tops. Maltese farmers have been farming above the clay since the Neolithic, without necessarily understanding why their fields and water sources were reliable at those elevations. The answer was always 12 million years in the making: an impermeable mud deposited in a deepwater sea, compressed into clay, uplifted above the sea, and exposed by erosion at exactly the right elevation to capture the island's limited rainfall and hold it long enough to sustain human life on a small limestone outcrop in the middle of the sea.</p>
+
+</article>
+
+<!-- CLOSING -->
+<div class="closing">
+  <p>There is a particular quality of light in Malta in the late afternoon of a winter day, when the sun is low and coming in sideways across the rock. The limestone takes on a colour that is not quite gold and not quite orange — a warm amber that is the colour of the stone and the light simultaneously, impossible to separate. It is this colour, more than any flag or language or political accident, that is the island's identity.</p>
+
+  <p>That colour is the colour of millions of years of open ocean — of Globigerina foraminifera settling through hundreds of metres of warm Miocene water, of iron compounds slowly oxidising in the Mediterranean air over decades and centuries of exposure. It is the colour of a tectonic accident, of a graben pulling apart, of a block being lifted from the sea. It is the colour of a stone that is still being quarried, still being cut, still being laid in buildings that will stand for another four centuries.</p>
+
+  <p>The geologist Janet Cassar has spent decades studying the deterioration of Maltese limestone — watching the salt crystallise in the pores of ancient temples, watching the franka weather and the soll crumble, developing conservation treatments to slow a process that has been ongoing since the first Neolithic builder set the first stone in position at Ħaġar Qim, 5,600 years ago. What strikes her, she has said, is not the deterioration. It is the persistence. The stone that was laid down as a seafloor 23 million years ago, that was lifted above the water 5 million years ago, that was first quarried by human hands 6,000 years ago — that stone is still here. It is still being worked. The island is still, in every physical sense, made of it.</p>
+
+  <p class="final">Twenty-eight million years ago, there was no Malta. There was a warm shallow sea, and creatures living in it. When they died, they became the island. When the island was cut, it became the temples. When the temples were built, they became the civilisation. The geology is not the background to the story. It is the story, from beginning to end.</p>
+</div>
+
+<!-- PHOTOJOURNALISM PACKAGE -->
+<section class="package">
+  <p class="pkg-kicker">Production Package</p>
+  <h2 class="pkg-title">Photojournalism Briefs — 14 Images</h2>
+  <div class="pgrid">
+
+    <div class="pcard">
+      <div class="pcard-n">Image 1 — Establishing Hero</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Dingli Cliffs at dawn — the complete stratigraphic sequence visible in the cliff face: UCL cap above, blue-grey BC band in the middle, gold GL below, LCL base at sea level</span></div>
+      <div class="pf"><span class="pf-l">Light</span><span class="pf-v">First light from the east, raking across the cliff face horizontally — each formation band in its own shadow or highlight</span></div>
+      <div class="pf"><span class="pf-l">Composition</span><span class="pf-v">Full cliff face in frame; geologist or person at base for scale; sea in lower quarter</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The entire article's argument in one image: all 28 million years of Malta's story visible at once</span></div>
+      <div class="pcap">Dingli Cliffs at dawn, southwestern Malta. In this single cliff face are exposed four of Malta's five geological formations — the pale Lower Coralline Limestone at the base (28–23 million years old), the gold Globigerina Limestone above it (23–14 million years old), the blue-grey Blue Clay, and the hard Upper Coralline Limestone capping the plateau. The island is a stratigraphic textbook with no pages missing.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 2 — Character / Quarry</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Active Globigerina Limestone quarry near Siggiewi — freshly cut blocks in foreground, deeply honey-coloured weathered faces of old quarry walls behind; stonemason or quarry worker in frame</span></div>
+      <div class="pf"><span class="pf-l">Detail</span><span class="pf-v">Close-up of freshly cut face showing pale cream colour vs. aged ochre patina of older walls — the colour change effect made visible in a single frame</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Shows the living tradition of quarrying — 6,000 years of continuity still operating</span></div>
+      <div class="pcap">A limestone quarry near Siggiewi, central Malta. The freshly sawn block in the foreground shows the pale cream of newly exposed Globigerina Limestone; the weathered quarry face behind has had decades to oxidise to its characteristic warm gold. Every building in Malta that appears golden was once this pale cream colour. The transformation takes years.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 3 — Data / Stratigraphy</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Close-up cross-section of Malta's stratigraphic sequence at a cliff or road cut showing all five formations within a single frame — labels or geological annotation added in post-production</span></div>
+      <div class="pf"><span class="pf-l">Technical</span><span class="pf-v">Scale bar required. Even lighting to show colour differences between formations accurately</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Makes the abstract stratigraphic column physically real</span></div>
+      <div class="pcap">The complete Maltese stratigraphic sequence exposed at a road cut in western Malta. From base to top: Lower Coralline Limestone (grey, compact), Globigerina Limestone (yellow, fine-grained), Blue Clay (dark blue-grey), Greensand (thin orange-green band), Upper Coralline Limestone (grey, hard). Each layer represents a different ocean environment, deposited over 23 million years.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 4 — Consequence / Temples</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Ħaġar Qim or Mnajdra temples at sunrise — the massive Globigerina Limestone orthostats glowing in early morning light, with the sea visible in the background</span></div>
+      <div class="pf"><span class="pf-l">Story</span><span class="pf-v">Alveolar weathering (honeycomb texture) visible on the surface of exposed blocks — showing the stone's vulnerability after 5,600 years of Mediterranean exposure</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The oldest human use of this stone — the moment 6,000 years of quarrying tradition begins</span></div>
+      <div class="pcap">Ħaġar Qim temple, southern Malta, at dawn. The massive orthostats were quarried from the Globigerina Limestone ridge on which the temple stands; the builders chose soft franka for interior decorative elements and harder Coralline Limestone for structural members. After 5,600 years of exposure to sea air, the stone shows alveolar weathering — salt crystals expanding in its pores. Protective tent shelters were installed in 2009.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 5 — Character / Ghar Dalam</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">The bone display at Għar Dalam museum — rows of semi-fossilised animal bones mounted on Victorian-era wooden boards, with dwarf elephant and hippo reconstructions visible</span></div>
+      <div class="pf"><span class="pf-l">Character</span><span class="pf-v">A visiting scientist or museum curator examining specimens — human figure for scale and narrative anchor</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Makes the unimaginable — Malta as home of dwarf elephants — concrete and real</span></div>
+      <div class="pcap">The bone display at Għar Dalam Cave Museum, Birżebbuġa. These fossils — including Palaeoloxodon falconeri, a dwarf elephant less than one metre tall, and Hippopotamus melitensis, an endemic dwarf hippo — accumulated in the cave over hundreds of thousands of years during Ice Age glacial periods, when lower sea levels connected Malta to Sicily and mainland Europe by a land bridge.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 6 — Scene / Blue Grotto</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Interior of the Blue Grotto from a traditional luzzu boat — the arch overhead, the vivid blue-green of the water below, light filtering through underwater openings</span></div>
+      <div class="pf"><span class="pf-l">Technical</span><span class="pf-v">Morning light (before 11am) required for maximum blue reflectance; long exposure to capture water colour</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Shows karst processes made visually spectacular — the cave as product of dissolution chemistry</span></div>
+      <div class="pcap">The Blue Grotto, near Żurrieq, southern Malta. This sea cave system was carved by the intersection of karst dissolution (groundwater slowly dissolving the limestone) and marine wave action over thousands of years. The vivid colour results from sunlight refracting through the cave's opening and reflecting off a fine white sandy seafloor 20 metres below.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 7 — Data / Great Fault</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">The Victoria Lines escarpment — the geological Great Fault visible as a continuous ridge or cliff line crossing the island, photographed from the air or a high vantage in the north of Malta</span></div>
+      <div class="pf"><span class="pf-l">Story</span><span class="pf-v">Victoria Lines fortification wall following the crest of the escarpment — human military response to geological structure made visible</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Shows the fault that Spratt named and that defined the island's military history</span></div>
+      <div class="pcap">The Victoria Lines fortification following the crest of the Great Fault escarpment, northern Malta. The fault — a normal fault dropping the northern block downward — creates a natural escarpment 20–60 metres high running coast to coast. The Knights of St John recognised its defensive potential in the early 18th century; the British built the Victoria Lines along it between 1875 and 1899. The geology determined where the walls were built.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 8 — Consequence / 1693 Earthquake</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">The Baroque Main Gate of Mdina (1724, François de Mondion) — the directly visible architectural consequence of the 1693 earthquake — photographed in low afternoon light against the medieval walls</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Shows how seismic geology shaped Malta's architectural identity as directly as the stone supply</span></div>
+      <div class="pcap">The Main Gate of Mdina, built by François de Mondion in 1724, is one of the defining images of Maltese Baroque architecture. It was built to replace the medieval gate destroyed or severely damaged in the earthquake of January 11, 1693 — the M 7.4 event that killed approximately 60,000 people in Sicily while causing widespread building damage in Malta without a single Maltese fatality. The earthquake that destroyed medieval Mdina created baroque Mdina.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 9 — Resolution / Valletta Colour</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Aerial or elevated view of Valletta — the city's golden limestone buildings photographed in late afternoon light; different buildings in different shades of gold indicating different ages of construction</span></div>
+      <div class="pf"><span class="pf-l">Technical</span><span class="pf-v">Wide angle or drone shot; low sun angle to maximise colour differentiation; possibly timed to the "golden hour" for maximum effect</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The cumulative result of 6,000 years of quarrying and building — the entire city as geological product</span></div>
+      <div class="pcap">Valletta, Malta, from above in late afternoon light. The capital's characteristic warm gold is the colour of Globigerina Limestone at various stages of weathering — fresh quarry blocks are cream-white, centuries of exposure to the Mediterranean air produces this ochre. The city is a UNESCO World Heritage Site. Every building, every street surface, every fortification wall is made of the same stone that was once 23 million years of open-ocean seafloor.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 10 — Data / Water Galleries</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Interior of one of Malta's hand-cut water galleries — narrow tunnel cut through Lower Coralline Limestone at sea level, water seeping from ceiling and walls, possibly with extraction equipment visible</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Makes the invisible geology of the Mean Sea Level Aquifer physically accessible</span></div>
+      <div class="pcap">A water gallery cut through Lower Coralline Limestone near Ta' Kandja, Malta. These hand-excavated tunnels — approximately 42 kilometres total — extract water from the Mean Sea Level Aquifer, where a freshwater lens floats above deeper saline groundwater. The galleries were excavated from the 1880s onward. The geology that created the aquifer — a specific sequence of permeable and impermeable rock layers — is the same geology that has sustained life on this island for 7,000 years.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 11 — Aftermath / Dwarf Scale</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Reconstruction or skeletal mount of Palaeoloxodon falconeri (dwarf elephant) at the Għar Dalam museum — a child or adult standing beside it for scale, emphasising the animal's extraordinary smallness</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Makes insular dwarfism — an abstract evolutionary concept — viscerally concrete</span></div>
+      <div class="pcap">A skeletal reconstruction of Palaeoloxodon falconeri — the Maltese dwarf elephant — at Għar Dalam Museum. This animal, descended from the straight-tusked elephant of mainland Europe, reached Malta during glacial periods when sea level was 120 metres lower and a land bridge connected the island to Sicily. Isolated as the sea rose, over hundreds of thousands of years it shrank to under one metre tall. It became extinct approximately 200,000 years ago.</div>
+    </div>
+
+    <!-- Multi-image sequence: Limestone Life Cycle -->
+    <div class="pcard-wide">
+      <div class="pcard-n">Images 12–14 — Multi-Image Sequence: The Limestone Life Cycle</div>
+      <div class="seq-frames">
+        <div class="seq-frame">12A — Microscope image: Globigerina foraminifera shells, showing the minute spherical organisms whose remains compose the limestone. Scale bar in microns.</div>
+        <div class="seq-frame">13A — Active quarry: blocks being sawn from bedrock, showing the pale cream of freshly exposed stone — the moment the ocean seabed becomes building material.</div>
+        <div class="seq-frame">14A — Restored historic building: freshly cut replacement blocks visibly lighter than 17th-century originals. Time itself written in stone colour.</div>
+      </div>
+      <div class="seq-label">The complete life cycle of Maltese limestone in three images: the organism that created it (Globigerina foraminifera, visible only under a microscope), the stone it became (freshly quarried, pale cream), and the building it is still becoming (restored, with new blocks lighter than old). The sequence covers 23 million years compressed into a single visual argument: this island is not built on stone. It is built from organisms.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DIAGRAM SECTION -->
+<section class="diag-section">
+  <p class="pkg-kicker" style="text-align:center">Production Package</p>
+  <h2 class="pkg-title">Data Visualisation Specifications — 8 Diagrams</h2>
+  <div class="dgrid">
+
+    <div class="dcard">
+      <div class="dcard-type">Scientific Cross-Section</div>
+      <div class="dcard-title">Annotated Stratigraphic Column — Full Formation Profile</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">All five formations with: thickness range, age range (Ma), Maltese name, colour code, depositional environment (shallow reef, open ocean, deep water, transitional, near-shore), primary uses (building stone, aquifer, impermeable layer), economic/cultural significance. Includes: phosphorite hardground markers dividing GL members; unconformity at LCL top; Quaternary terrestrial deposits above UCL.</span></div>
+      <div class="df"><span class="df-l">Visual Hierarchy</span><span class="df-v">Formation bands with proportional thickness (not strictly to scale — GL exaggerated for legibility). Colour coded to match field observations. Annotation arrows for key features. Timeline running left side in Ma.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">The single most important diagram in the article — the visual representation of Malta's entire geological history in one panel</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Tectonic Map</div>
+      <div class="dcard-title">Malta's Position in the Central Mediterranean Rift System</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Regional map showing: African-Eurasian plate boundary (subduction zone, ~200 km north of Malta); Sicily Channel Rift Zone; three grabens (Pantelleria, Malta, Linosa) annotated; Malta Plateau; Malta Escarpment to the east; island positions; tectonic arrows showing plate movement direction; Malta's tilting direction (NE); depth contours on submarine shelf.</span></div>
+      <div class="df"><span class="df-l">Visual Hierarchy</span><span class="df-v">Plate boundary first; graben system second; Malta's position third. Blue for sea floor, tan for land/shelf, red for fault lines, arrows for movement.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Answers: where does Malta fit in the larger Mediterranean tectonic picture? Why is there an island here at all?</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Geological Map</div>
+      <div class="dcard-title">Surface Geology of Malta and Gozo — Formation Distribution</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Island-scale map showing outcrops of all five formations (colour coded to match stratigraphic column); fault traces (Great Fault / Victoria Lines, Magħlaq Fault, South Gozo Fault); major karst features (Blue Grotto, Ghar Dalam, Azure Window site); aquifer zones; Dingli Cliffs (highest point 253 m); drowned NE coastline; Grand Harbour (drowned river valley). Both Malta and Gozo.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Answers: where does each formation outcrop? Why does northern Malta look different from southern Malta?</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Hydrogeological Cross-Section</div>
+      <div class="dcard-title">Malta's Dual Aquifer System — The Water Geometry</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">N-S or E-W cross-section through Malta showing: formation sequence with thickness; Blue Clay as impermeable barrier; Perched Aquifer floating above BC; Mean Sea Level Aquifer as Ghyben-Herzberg freshwater lens in LCL/GL; saline water below MSLA; sea level; 42 km gallery network (schematic); freshwater-saltwater interface; springs emerging where topography cuts below BC level; wells and boreholes annotated. Rainfall recharge shown schematically.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Answers: how does a limestone island with no rivers have freshwater? Where does the water come from and where is it stored?</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Timeline Infographic</div>
+      <div class="dcard-title">28 Million Years of Malta — Geological and Human Timeline</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Timeline from 28 Ma to present showing: formation deposition events; Messinian Salinity Crisis (5.96–5.33 Ma); Zanclean Flood (5.33 Ma); Malta emergence above sea level; Pleistocene glacial cycles with sea-level changes; Ghar Dalam megafauna arrival and extinction events; first human settlement (~5,000 BCE); Neolithic temples construction (3600–2500 BCE); Knights' fortifications (1530–1798); 1693 earthquake. Dual x-axis: geological time (millions of years) and human time (thousands of years BCE/CE).</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Shows the relationship between geological and human timescales — specifically the extreme recency of human history against 28 million years of rock formation</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Annotated Block Diagram</div>
+      <div class="dcard-title">Malta's Tilt — The NE-Ward Block and Its Consequences</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">3D block diagram showing: Malta as a tilted fault block (high SW / drowned NE); fault traces on top surface (Great Fault, Magħlaq Fault); cross-section through the block showing formation layers tilted accordingly; consequence map: SW cliffs vs. NE drowned coastline; Grand Harbour as drowned river valley; vertical exaggeration ~5x for clarity.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Explains the island's asymmetric geography — why the western coast is all cliffs and the eastern coast all harbours — in a single visual</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Ice Age Sea Level Diagram</div>
+      <div class="dcard-title">The Land Bridge — Pleistocene Connectivity and Island Isolation</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Two panels: (A) Glacial maximum (~20,000 BP) showing the exposed Sicily Channel shelf, land bridge connecting Sicily to Malta and beyond; depth contours; approximate shoreline at -120 m; animal migration routes. (B) Present day with sea level at +0 m; Malta isolated as island group. Includes: Ghar Dalam fossil species origins; sea level change curve inset showing glacial/interglacial cycles over 500,000 years.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Explains how dwarf elephants and hippos got to Malta — the answer involves a map that most people have never seen</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Karst Process Diagram</div>
+      <div class="dcard-title">Cave Formation — How the Blue Grotto Was Made</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Sequential cross-section showing: (1) initial limestone cliff with fractures/joints; (2) carbonic acid dissolution along joint planes creating voids; (3) sea-level rise enlarging voids by wave action; (4) roof collapse creating arch; (5) current form with submerged floor and arch. Includes: formation labels (LCL throughout); Magħlaq Fault controlling location; sea level history annotations; process labels for each mechanism (dissolution, abrasion, collapse).</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Answers: what made the Blue Grotto? The same processes that made the cave in 1824 are still operating — the arch could collapse again</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- VISUAL NARRATIVE SPINE -->
+<section class="spine-section">
+  <p class="pkg-kicker" style="text-align:center">Production Package</p>
+  <h2 class="pkg-title">Visual Narrative Spine</h2>
+  <div class="spine">
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Hero Image</span></div><div class="spine-body"><div class="spine-name">Dingli Cliffs — The Complete Sequence</div><div class="spine-desc">→ <strong>Establishes:</strong> The article's central argument in visual form — all of Malta's geology visible at once, deep time made literal</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-prose">Prose</span></div><div class="spine-body"><div class="spine-name">Opening — Standing at Dingli, Reading the Cliff</div><div class="spine-desc">→ <strong>Function:</strong> Scene-setting lead that teaches the reader how to read a cliff face before asking them to read an island</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 1</span></div><div class="spine-body"><div class="spine-name">Annotated Stratigraphic Column</div><div class="spine-desc">→ <strong>Answers:</strong> What are the five formations? The CSS column in the article body provides the scientific reference; the full production diagram expands it</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 3</span></div><div class="spine-body"><div class="spine-name">Close-Up Cross-Section with Formation Labels</div><div class="spine-desc">→ <strong>Answers:</strong> What does the stratigraphic sequence actually look like in rock — a photograph no diagram can replace</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 2</span></div><div class="spine-body"><div class="spine-name">Tectonic Map of the Mediterranean Rift System</div><div class="spine-desc">→ <strong>Answers:</strong> Where is Malta in the larger picture? Why is there an island here at all?</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-prose">Prose</span></div><div class="spine-body"><div class="spine-name">The Tectonic Setting — Africa Tilted and Lifted</div><div class="spine-desc">→ <strong>Function:</strong> Places the stratigraphic story inside the tectonic story; explains the island's asymmetry</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 1</span></div><div class="spine-body"><div class="spine-name">Quarry — Freshly Cut Stone vs. Aged Patina</div><div class="spine-desc">→ <strong>Answers:</strong> The colour-change effect — what the stone looks like when cut vs. centuries later</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-prose">Prose</span></div><div class="spine-body"><div class="spine-name">Globigerina — The Living Stone</div><div class="spine-desc">→ <strong>Function:</strong> The human-geology interface — 6,000 years of unbroken quarrying tradition, from Neolithic temples to modern construction</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Images 12–14</span></div><div class="spine-body"><div class="spine-name">Sequence: Limestone Life Cycle</div><div class="spine-desc">→ <strong>Answers:</strong> Organism → stone → building, in three images; closes the argument about the island being made from creatures</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 7</span></div><div class="spine-body"><div class="spine-name">Victoria Lines — The Fault as Military Feature</div><div class="spine-desc">→ <strong>Answers:</strong> The Great Fault made visible and its 3,000-year history as a defensive barrier</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 6</span></div><div class="spine-body"><div class="spine-name">Malta's Tilt — 3D Block Diagram</div><div class="spine-desc">→ <strong>Answers:</strong> Why is the western coast all cliffs and the eastern coast all harbours?</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 5</span></div><div class="spine-body"><div class="spine-name">Ghar Dalam Museum — Dwarf Elephant Bones</div><div class="spine-desc">→ <strong>Answers:</strong> The Pleistocene fauna made concrete — what lived on Malta before humans arrived</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 7</span></div><div class="spine-body"><div class="spine-name">Ice Age Land Bridge Map</div><div class="spine-desc">→ <strong>Answers:</strong> How did elephants get to Malta? The map that explains a fact that sounds impossible</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 4</span></div><div class="spine-body"><div class="spine-name">Dual Aquifer Cross-Section</div><div class="spine-desc">→ <strong>Answers:</strong> Where is Malta's fresh water? The Blue Clay's role as invisible but essential geological infrastructure</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 9</span></div><div class="spine-body"><div class="spine-name">Valletta Aerial — The Golden City</div><div class="spine-desc">→ <strong>Answers:</strong> The cumulative result of 6,000 years of quarrying in one overhead image</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-prose">Closing</span></div><div class="spine-body"><div class="spine-name">The Light on the Stone</div><div class="spine-desc">→ <strong>Cosmic Kicker:</strong> Returns to the cliff, the colour, the creatures — closes by dissolving the boundary between geology and identity</div></div></div>
+  </div>
+</section>
+
+<!-- SOURCE INTEGRITY -->
+<section class="src-section">
+  <div class="src-inner">
+    <span class="src-kicker">Production Appendix</span>
+    <h2 class="src-title">Source Integrity Note</h2>
+    <div class="src-cat">
+      <div class="src-cat-t">Verified Facts (Tier 1 — confirmed by multiple web sources)</div>
+      <ul>
+        <li>Five formations with ages and thicknesses: LCL (Chattian, 28–23 Ma, max 162 m), GL (Aquitanian–Langhian, 23–14 Ma, 23–207 m), BC (Langhian–Tortonian, 15–10 Ma, max 65 m), GS (Tortonian, 10–7 Ma, max 11 m), UCL (Messinian, 7–5 Ma, ~140 m). Confirmed: Wikipedia Geology of Malta; ERA.org.mt; Continental Shelf Department Malta; Bath Geological Society journal.</li>
+        <li>GL covers ~70% of island surfaces. Confirmed: ERA.org.mt; Continental Shelf Department Malta.</li>
+        <li>Malta 200 km south of African-Eurasian subduction boundary; three grabens (Pantelleria, Malta, Linosa). Confirmed: Wikipedia Geology of Malta; ScienceDirect Tectonophysics (Illies 1981); Wikipedia Seismic Risk Malta.</li>
+        <li>Victoria Lines follow the Great Fault, 12 km coast to coast, built 1875–1899, named 1897. Confirmed: Wikipedia Victoria Lines; UNESCO Tentative List entry; Culture Malta.</li>
+        <li>T.A.B. Spratt identified the Great Fault in 1843; designated Father of Maltese Geology. Confirmed: IRMCo Gozo e-learning module; Victoria Lines Wikipedia.</li>
+        <li>Globigerina Limestone designated Global Heritage Stone Resource by IUGS. Confirmed: IUGS Geoheritage site; MDPI Minerals paper (Cassar et al. 2021).</li>
+        <li>Franka and soll distinguished by SiO₂, Al₂O₃, Fe₂O₃ content. Confirmed: ResearchGate (Rothert et al., Deterioration of Globigerina Limestone).</li>
+        <li>Samuel Taylor Coleridge posted to Malta 1804 as undersecretary; description of limestone buildings. Confirmed: MDPI Minerals paper (Cassar et al. 2021) citing Blouet.</li>
+        <li>Ħaġar Qim construction 3600–3200 BCE; Globigerina Limestone for interior surfaces, Coralline for exteriors; façade orthostats up to 57 tons. Confirmed: Wikipedia Ħaġar Qim; UNESCO World Heritage listing; Google Arts and Culture Megalithic Temples.</li>
+        <li>Ġgantija temples 3600–2500 BCE; world's second-oldest freestanding religious structures after Göbekli Tepe. Confirmed: Wikipedia Ġgantija.</li>
+        <li>Palaeoloxodon falconeri (dwarf elephant, under 1 m tall); Hippopotamus melitensis (described Forsyth Major 1902). Confirmed: Wikipedia Palaeoloxodon falconeri; Ghar Dalam Wikipedia; ShowCaves.com.</li>
+        <li>Ghar Dalam deposits over 500,000 years old; Pleistocene fauna arrived via land bridge during glacial sea-level lowstands. Confirmed: Google Arts and Culture Ghar Dalam; Ancient360.eu.</li>
+        <li>1693 Sicily earthquake: M 7.4, ~60,000 dead, most powerful in Italian history. Malta: no casualties, extensive building damage including St Paul's Cathedral Mdina, Banca Giuratale. Confirmed: Wikipedia 1693 Sicily earthquake; Old Houses Malta; Seismic Risk in Malta Wikipedia.</li>
+        <li>Blue Clay impermeable, controls perched aquifer formation. Mean Sea Level Aquifer is Ghyben-Herzberg freshwater lens, 15–40 year residence time, ~42 km galleries, volume ~1 km³. Confirmed: ResearchGate aquifer studies; Teleskola.mt; Revolve.media; Hydria Virtual Museum.</li>
+        <li>Azure Window collapsed March 2017; composed of Lower Coralline Limestone; probably formed ~500 years BP; earliest photographic record 1879. Confirmed: Wikipedia Azure Window.</li>
+        <li>Blue Grotto: series of sea caves near Żurrieq; formed by intersection of karst dissolution and wave action; Lower Coralline and Globigerina Limestone. Confirmed: ResearchGate Sea Caves chapter (Furlani et al. 2019); Grokipedia Blue Grotto.</li>
+        <li>Messinian Salinity Crisis 5.96–5.33 Ma; UCL formation ended with crisis. Confirmed: Wikipedia Messinian Salinity Crisis; ResearchGate stratigraphic papers.</li>
+        <li>Highest point Malta: 253 m at Dingli/Ta' Żuta. Islands tilted NE. Confirmed: ERA.org.mt landscape article; Physical Geography of Maltese Islands (Lanfranco).</li>
+        <li>Shoulder upwarping from Pantelleria Rift tilted Malta NNE; caused drowned river valleys of Valletta's natural harbour. Confirmed: ScienceDirect Illies 1981 abstract; Graben Formation — Maltese Islands ADS entry.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Claims Requiring Expert Verification Before Publication</div>
+      <ul>
+        <li>The "cosmic kicker" claim that Malta is "still tilting" — this is supported by the general literature on rift shoulder dynamics but specific current tilt rates require verification against published GPS/geodetic studies.</li>
+        <li>Ghar Dalam Neanderthal molars (two human teeth with fused roots, 1917) — the article accurately presents this as scientifically open; full editorial process should include direct consultation with Maltese palaeontologists on current consensus.</li>
+        <li>Aquifer volume estimate of ~1 km³ — cited from a secondary source (Revolve Media / academic papers); should be verified against current Malta Water Services Corporation figures or published hydrogeological surveys.</li>
+        <li>Azure Window formation timeline (~500 years) — the article states "approximately 500 years" following Wikipedia Azure Window; should be verified against the geological literature on arch development rates.</li>
+        <li>Samuel Taylor Coleridge quote — the article paraphrases rather than directly quotes (following copyright rules); the primary source is Blouet, cited in the Cassar et al. 2021 MDPI paper, and should be checked against the original.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Scientifically Contested Claims</div>
+      <ul>
+        <li>The nature and extent of the Messinian Salinity Crisis — whether the Mediterranean fully desiccated or remained partially filled is actively debated (see Roveri et al. 2025 Annual Reviews; new chlorine isotope data from Aloisi et al. 2024 Nature Communications). The article describes the desiccation without taking a position on its completeness.</li>
+        <li>Timing of Palaeoloxodon falconeri's extinction — Wikipedia (P. falconeri article) notes "remains not known from Ghar Dalam younger than 151,200 years ago" while other sources give figures ranging from 200,000 to 500,000 years BP for the species' presence. The article uses "approximately 200,000 years ago" conservatively.</li>
+        <li>Number of Neanderthal remains at Ghar Dalam — the 1917 molars discovery and their stratigraphic context is genuinely debated in the literature; the article accurately presents this as an open question.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Voices and Perspectives to Add in Full Editorial Process</div>
+      <ul>
+        <li>Maltese geologists and conservation scientists — the article draws on published research but would benefit from direct quotes from Maltese academics such as those at the University of Malta's Earth Systems Institute or the Continental Shelf Department.</li>
+        <li>Maltese stonemasons — the quarrying tradition is 6,000 years old and still alive; first-person testimony from working quarry operators and stonemasons would give the franka sections their most authentic voice.</li>
+        <li>Water authority officials — the MSLA groundwater crisis (over-abstraction, salinisation) is noted but not developed; Malta Water Services Corporation representatives would provide current data and human stakes.</li>
+        <li>Maltese archaeologists working on the Neolithic temples — the intersection of geology and temple construction is the article's richest human-geology interface and deserves the perspective of the researchers who study it directly.</li>
+        <li>Ghar Dalam museum staff — the site contains some of the most important Pleistocene fauna evidence in the Mediterranean and has a dedicated curatorial team whose expertise would substantially enrich the fossil section.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Primary Sources and Key Bibliography</div>
+      <ul>
+        <li>Pedley, H.M., House, M.R., Waugh, B. (1976). The geology of Malta and Gozo. Proceedings of the Geologists' Association 87(3): 325–341. — Foundational modern stratigraphy.</li>
+        <li>Illies, J.H. (1981). Graben formation — the Maltese Islands — a case history. Tectonophysics 73: 151–168. — Standard reference for Malta tectonics.</li>
+        <li>Gauci, R. & Schembri, J.A. (eds, 2019). Landscapes and Landforms of the Maltese Islands. Springer. — Comprehensive geomorphology reference.</li>
+        <li>Cassar, J. et al. (2021). Geochemistry, Mineralogy and Textural Properties of the Lower Globigerina Limestone. Minerals 11(7): 740. — Franka/soll distinction; Coleridge quote.</li>
+        <li>Environment and Resources Authority Malta (ERA). Maltese Geology; Maltese Landscapes and Geomorphology. era.org.mt.</li>
+        <li>Continental Shelf Department, Malta. Geological Map. continentalshelf.gov.mt.</li>
+        <li>Wikipedia: Geology of Malta; Seismic Risk in Malta; 1693 Sicily earthquake; Victoria Lines; Ħaġar Qim; Palaeoloxodon falconeri; Azure Window; Messinian Salinity Crisis; Għar Dalam.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>National Geographic — The Bones of an Island: Malta's Deep Geology</strong><br>
+  <span style="display:block;margin-top:8px">Mode: Encyclopaedic &nbsp;·&nbsp; Register: NatGeo Classic / SciAm Hybrid &nbsp;·&nbsp; ~11,000 words &nbsp;·&nbsp; 14 photojournalism briefs &nbsp;·&nbsp; 8 diagram specifications</span>
+  <span style="display:block;margin-top:6px;font-size:10px">Research: 15+ sources across geological survey, academic, institutional, and archival domains &nbsp;·&nbsp; Oligocene to Present</span>
+</footer>
+
+<script>
+const io = new IntersectionObserver(e=>{
+  e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')});
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fi,.sidebar,.pcard,.dcard,.spine-row,.closing p,.strat-entry').forEach((el,i)=>{
+  if(el.classList.contains('pcard')||el.classList.contains('dcard')||el.classList.contains('spine-row')||el.classList.contains('strat-entry')){
+    const idx=Array.from(el.parentElement.children).indexOf(el);
+    el.style.transitionDelay=`${idx*.08}s`;
+  }
+  io.observe(el);
+});
+</script>
+</body>
+</html>

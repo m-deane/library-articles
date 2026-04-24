@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tanzanite Born From Fire</title>
+  <meta name="description" content="" />
+
+  <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+
+  <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
+  <script src="../assets/vendor/react.production.min.js"></script>
+  <script src="../assets/vendor/react-dom.production.min.js"></script>
+  <script src="../assets/vendor/prop-types.min.js"></script>
+  <script src="../assets/vendor/recharts.js"></script>
+</head>
+<body>
+  <!-- Compact header bar -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Tanzanite Born From Fire</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date"></span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+        
+      </div>
+      <a class="md-link header-md-link" href="../md/tanzanite-born-from-fire.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
+      <a class="pdf-link header-pdf-link" href="tanzanite-born-from-fire.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All articles</a>
+    </div>
+  </header>
+
+  <!-- Render target -->
+  <main class="article-container">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem; font-family:serif;">
+        This article requires JavaScript to render the embedded React/Recharts components.
+      </p>
+    </noscript>
+    <div id="error-boundary" style="display:none; padding:2rem; background:#fff3f3; border:1px solid #f5c2c2; border-radius:8px; font-family:ui-monospace,monospace;"></div>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>tanzanite-born-from-fire</code> &middot; category: <code>general</code></span>
+      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Expose React hooks + Recharts components into global scope for the JSX block -->
+  <script>
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useMemo = React.useMemo;
+    window.useRef = React.useRef;
+    window.useCallback = React.useCallback;
+    window.useReducer = React.useReducer;
+    window.useLayoutEffect = React.useLayoutEffect;
+    window.useContext = React.useContext;
+    window.Fragment = React.Fragment;
+
+    // Expose Recharts components into global scope
+    const _R = window.Recharts || {};
+    [
+      'LineChart','BarChart','AreaChart','ScatterChart','RadarChart','PieChart',
+      'XAxis','YAxis','ZAxis','CartesianGrid','Tooltip','Legend','Line','Bar','Area',
+      'Scatter','Pie','Cell','ResponsiveContainer','ReferenceLine','ReferenceArea','ReferenceDot',
+      'ComposedChart','Treemap','Radar','PolarGrid','PolarAngleAxis','PolarRadiusAxis',
+      'RadialBar','RadialBarChart','FunnelChart','Funnel','LabelList','Label','Brush',
+      'Sankey','Sector','Customized','CartesianAxis','ErrorBar','Rectangle','Curve','Cross','Dot','Polygon','Symbols','Text'
+    ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
+
+    // Simple error surface for runtime failures
+    window.addEventListener('error', function (e) {
+      var box = document.getElementById('error-boundary');
+      if (!box) return;
+      box.style.display = 'block';
+      box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
+    });
+
+    // Global <Photograph> helper (pre-transpiled React.createElement form)
+    window.Photograph = function (props) {
+      var src = props.src, alt = props.alt, caption = props.caption, credit = props.credit, href = props.href;
+      var children = [
+        React.createElement('img', { src: src, alt: alt || caption || '', loading: 'lazy', key: 'img' })
+      ];
+      if (caption || credit) {
+        var figCapChildren = [];
+        if (caption) figCapChildren.push(
+          React.createElement('span', { className: 'photo-caption', key: 'cap' }, caption)
+        );
+        if (credit) figCapChildren.push(
+          React.createElement('span', { className: 'photo-credit', key: 'cr' },
+            ' — ',
+            React.createElement('a', { href: href, target: '_blank', rel: 'noopener noreferrer' }, credit)
+          )
+        );
+        children.push(React.createElement('figcaption', { key: 'cap-root' }, figCapChildren));
+      }
+      return React.createElement('figure', { className: 'photo' }, children);
+    };
+  </script>
+
+  <!-- Pre-transpiled JSX payload (esbuild --loader=jsx --jsx=transform, classic mode).
+       React.createElement(...) calls resolve against the UMD React global above. -->
+  <script>
+    try {
+      const COLORS = {
+  tanzaniteDeep: "#1a0a3e",
+  tanzaniteMid: "#3d2b7a",
+  tanzaniteLight: "#6a50c0",
+  tanzaniteGlow: "#8b6ee0",
+  violet: "#7c3aed",
+  gold: "#c9a84c",
+  goldLight: "#e8d5a0",
+  warmBlack: "#0d0a0e",
+  cream: "#f5f0e8",
+  creamDark: "#e8dfd0",
+  earth: "#8b6914",
+  rust: "#a0522d",
+  sky: "#1a2a4a",
+  text: "#1a1410",
+  textLight: "#4a4035",
+  caption: "#6b6055",
+  kiliBrown: "#2d1b0e"
+};
+function HeroSVG() {
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 1400 700", xmlns: "http://www.w3.org/2000/svg", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("linearGradient", { id: "heroSky", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#0a0520" }), /* @__PURE__ */ React.createElement("stop", { offset: "35%", stopColor: "#1a0a3e" }), /* @__PURE__ */ React.createElement("stop", { offset: "65%", stopColor: "#2d1545" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#4a2010" })), /* @__PURE__ */ React.createElement("linearGradient", { id: "kiliGrad", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#f0e8e0" }), /* @__PURE__ */ React.createElement("stop", { offset: "40%", stopColor: "#8b7355" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#2d1b0e" })), /* @__PURE__ */ React.createElement("radialGradient", { id: "sunGlow", cx: "70%", cy: "85%", r: "30%" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#ff6030", stopOpacity: "0.6" }), /* @__PURE__ */ React.createElement("stop", { offset: "60%", stopColor: "#ff3010", stopOpacity: "0.15" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "transparent" })), /* @__PURE__ */ React.createElement("linearGradient", { id: "crystalFace1", x1: "0", y1: "0", x2: "1", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#4a30aa" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#2060cc" })), /* @__PURE__ */ React.createElement("linearGradient", { id: "crystalFace2", x1: "1", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#7040dd" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#3050bb" }))), /* @__PURE__ */ React.createElement("rect", { width: "1400", height: "700", fill: "url(#heroSky)" }), /* @__PURE__ */ React.createElement("rect", { width: "1400", height: "700", fill: "url(#sunGlow)" }), [120, 280, 450, 620, 800, 950, 1100, 1250, 180, 380, 560, 720, 880, 1050, 1200, 1350, 90, 340, 510, 690, 850, 1e3, 1150, 1300].map((x, i) => /* @__PURE__ */ React.createElement("circle", { key: i, cx: x, cy: 40 + i * 37 % 280, r: 0.5 + i % 3 * 0.4, fill: "white", opacity: 0.3 + i % 4 * 0.15 })), /* @__PURE__ */ React.createElement("path", { d: "M0,580 Q200,560 350,540 Q450,520 520,480 Q580,450 620,400 Q650,370 670,350 Q690,330 700,310 Q710,300 715,295 Q720,290 725,295 Q730,300 735,310 Q745,330 760,350 Q780,375 810,400 Q850,440 900,470 Q960,500 1050,530 Q1150,550 1250,560 Q1350,570 1400,575 L1400,700 L0,700 Z", fill: "#1a0e05" }), /* @__PURE__ */ React.createElement("path", { d: "M670,350 Q680,340 690,332 Q700,320 710,305 Q715,298 720,293 Q725,298 730,305 Q740,320 755,340 Q765,352 775,362", fill: "none", stroke: "rgba(255,255,255,0.25)", strokeWidth: "2" }), /* @__PURE__ */ React.createElement("rect", { x: "0", y: "575", width: "1400", height: "125", fill: "#0d0805" }), [{ x: 150, s: 0.8 }, { x: 400, s: 0.6 }, { x: 1050, s: 0.9 }, { x: 1250, s: 0.5 }].map((t, i) => /* @__PURE__ */ React.createElement("g", { key: i, transform: `translate(${t.x},555) scale(${t.s})` }, /* @__PURE__ */ React.createElement("line", { x1: "0", y1: "0", x2: "0", y2: "30", stroke: "#1a0e05", strokeWidth: "2" }), /* @__PURE__ */ React.createElement("ellipse", { cx: "0", cy: "-5", rx: "25", ry: "8", fill: "#1a0e05" }))), /* @__PURE__ */ React.createElement("g", { transform: "translate(700,590)" }, /* @__PURE__ */ React.createElement("path", { d: "M-60,10 Q-40,-5 -20,5 Q0,-10 20,0 Q40,-8 60,10 L50,40 Q0,45 -50,40 Z", fill: "#3a2a18" }), /* @__PURE__ */ React.createElement("polygon", { points: "-15,-80 5,-85 15,-20 -5,-15", fill: "url(#crystalFace1)", opacity: "0.9" }), /* @__PURE__ */ React.createElement("polygon", { points: "5,-85 20,-75 25,-15 15,-20", fill: "url(#crystalFace2)", opacity: "0.85" }), /* @__PURE__ */ React.createElement("polygon", { points: "20,-50 35,-55 40,-10 25,-8", fill: "#5030aa", opacity: "0.8" }), /* @__PURE__ */ React.createElement("polygon", { points: "35,-55 45,-45 48,-8 40,-10", fill: "#6840cc", opacity: "0.75" }), /* @__PURE__ */ React.createElement("polygon", { points: "-30,-40 -20,-45 -15,-10 -25,-8", fill: "#3555bb", opacity: "0.85" }), /* @__PURE__ */ React.createElement("circle", { cx: "0", cy: "-60", r: "2", fill: "white", opacity: "0.7" }), /* @__PURE__ */ React.createElement("circle", { cx: "30", cy: "-35", r: "1.5", fill: "white", opacity: "0.5" }), /* @__PURE__ */ React.createElement("circle", { cx: "-22", cy: "-30", r: "1", fill: "white", opacity: "0.4" })), /* @__PURE__ */ React.createElement("rect", { x: "0", y: "550", width: "1400", height: "150", fill: "url(#heroSky)", opacity: "0.4" }));
+}
+function MinerSVG() {
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 800 500", xmlns: "http://www.w3.org/2000/svg", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("linearGradient", { id: "shaftDark", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#0a0805" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#1a1210" })), /* @__PURE__ */ React.createElement("radialGradient", { id: "lampBeam", cx: "50%", cy: "20%", r: "60%" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#ffdd80", stopOpacity: "0.4" }), /* @__PURE__ */ React.createElement("stop", { offset: "50%", stopColor: "#ffaa40", stopOpacity: "0.1" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "transparent" }))), /* @__PURE__ */ React.createElement("rect", { width: "800", height: "500", fill: "url(#shaftDark)" }), /* @__PURE__ */ React.createElement("path", { d: "M0,0 L80,0 Q90,50 85,100 Q75,200 80,300 Q85,400 78,500 L0,500 Z", fill: "#1a1510" }), /* @__PURE__ */ React.createElement("path", { d: "M800,0 L720,0 Q710,60 715,120 Q725,220 718,320 Q712,420 720,500 L800,500 Z", fill: "#1a1510" }), /* @__PURE__ */ React.createElement("path", { d: "M80,80 Q100,85 85,120 Q75,140 82,170", fill: "none", stroke: "#2a2520", strokeWidth: "3" }), /* @__PURE__ */ React.createElement("path", { d: "M720,150 Q700,160 715,200 Q725,230 718,260", fill: "none", stroke: "#2a2520", strokeWidth: "2.5" }), /* @__PURE__ */ React.createElement("line", { x1: "350", y1: "0", x2: "350", y2: "500", stroke: "#5a3a1a", strokeWidth: "4" }), /* @__PURE__ */ React.createElement("line", { x1: "420", y1: "0", x2: "420", y2: "500", stroke: "#5a3a1a", strokeWidth: "4" }), [50, 100, 150, 200, 250, 300, 350, 400, 450].map((y, i) => /* @__PURE__ */ React.createElement("line", { key: i, x1: "350", y1: y, x2: "420", y2: y, stroke: "#4a2a10", strokeWidth: "3" })), /* @__PURE__ */ React.createElement("g", { transform: "translate(385,220)" }, /* @__PURE__ */ React.createElement("path", { d: "M0,-15 L-80,80 L80,80 Z", fill: "url(#lampBeam)" }), /* @__PURE__ */ React.createElement("ellipse", { cx: "0", cy: "0", rx: "12", ry: "15", fill: "#3a2a1a" }), /* @__PURE__ */ React.createElement("circle", { cx: "0", cy: "-20", r: "8", fill: "#5a3a20" }), /* @__PURE__ */ React.createElement("path", { d: "M-9,-25 Q0,-32 9,-25", fill: "#cc8800", strokeWidth: "1" }), /* @__PURE__ */ React.createElement("rect", { x: "-3", y: "-27", width: "6", height: "4", rx: "1", fill: "#ffdd80" }), /* @__PURE__ */ React.createElement("line", { x1: "-12", y1: "-5", x2: "-35", y2: "-10", stroke: "#5a3a20", strokeWidth: "3" }), /* @__PURE__ */ React.createElement("line", { x1: "12", y1: "-5", x2: "35", y2: "-10", stroke: "#5a3a20", strokeWidth: "3" }), /* @__PURE__ */ React.createElement("line", { x1: "-5", y1: "15", x2: "-10", y2: "35", stroke: "#3a2a1a", strokeWidth: "3" }), /* @__PURE__ */ React.createElement("line", { x1: "5", y1: "15", x2: "10", y2: "35", stroke: "#3a2a1a", strokeWidth: "3" })), /* @__PURE__ */ React.createElement("path", { d: "M600,0 Q580,80 590,160 Q600,250 585,350 Q575,430 590,500", fill: "none", stroke: "#446688", strokeWidth: "3", strokeDasharray: "8,4", opacity: "0.6" }), /* @__PURE__ */ React.createElement("text", { x: "750", y: "100", fill: "#4a4030", fontSize: "11", fontFamily: "monospace" }, "-100m"), /* @__PURE__ */ React.createElement("text", { x: "750", y: "250", fill: "#4a4030", fontSize: "11", fontFamily: "monospace" }, "-250m"), /* @__PURE__ */ React.createElement("text", { x: "750", y: "400", fill: "#4a4030", fontSize: "11", fontFamily: "monospace" }, "-400m"), /* @__PURE__ */ React.createElement("g", { transform: "translate(110,320)" }, /* @__PURE__ */ React.createElement("polygon", { points: "0,0 8,-5 12,8 4,12", fill: "#4a40aa", opacity: "0.7" }), /* @__PURE__ */ React.createElement("polygon", { points: "12,8 18,5 20,15 14,16", fill: "#6060cc", opacity: "0.6" }), /* @__PURE__ */ React.createElement("circle", { cx: "8", cy: "5", r: "1.5", fill: "white", opacity: "0.5" })));
+}
+function TrichroismSVG() {
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 800 350", xmlns: "http://www.w3.org/2000/svg", style: { width: "100%", display: "block", background: "#f5f0e8" } }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("linearGradient", { id: "axisA", x1: "0", y1: "0", x2: "1", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#1a3daa" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#2255dd" })), /* @__PURE__ */ React.createElement("linearGradient", { id: "axisB", x1: "0", y1: "0", x2: "1", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#6a20aa" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#9040dd" })), /* @__PURE__ */ React.createElement("linearGradient", { id: "axisC", x1: "0", y1: "0", x2: "1", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#8b3030" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#bb5040" }))), /* @__PURE__ */ React.createElement("text", { x: "400", y: "30", textAnchor: "middle", fill: "#1a1410", fontSize: "15", fontWeight: "600", fontFamily: "'Cormorant Garamond', serif", letterSpacing: "2" }, "TANZANITE TRICHROISM \u2014 THREE COLOURS, ONE CRYSTAL"), /* @__PURE__ */ React.createElement("g", { transform: "translate(160,190)" }, /* @__PURE__ */ React.createElement("polygon", { points: "0,-80 30,-90 40,-20 10,-10", fill: "url(#axisA)" }), /* @__PURE__ */ React.createElement("polygon", { points: "30,-90 50,-75 55,-15 40,-20", fill: "#1a4abb", opacity: "0.8" }), /* @__PURE__ */ React.createElement("text", { x: "25", y: "40", textAnchor: "middle", fill: "#1a3daa", fontSize: "13", fontWeight: "600", fontFamily: "'Cormorant Garamond', serif" }, "a-axis"), /* @__PURE__ */ React.createElement("text", { x: "25", y: "58", textAnchor: "middle", fill: "#4a4035", fontSize: "11", fontFamily: "'Cormorant Garamond', serif" }, "BLUE"), /* @__PURE__ */ React.createElement("text", { x: "25", y: "75", textAnchor: "middle", fill: "#6b6055", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "Fluorescent light")), /* @__PURE__ */ React.createElement("g", { transform: "translate(380,190)" }, /* @__PURE__ */ React.createElement("polygon", { points: "0,-80 30,-90 40,-20 10,-10", fill: "url(#axisB)" }), /* @__PURE__ */ React.createElement("polygon", { points: "30,-90 50,-75 55,-15 40,-20", fill: "#7a30cc", opacity: "0.8" }), /* @__PURE__ */ React.createElement("text", { x: "25", y: "40", textAnchor: "middle", fill: "#6a20aa", fontSize: "13", fontWeight: "600", fontFamily: "'Cormorant Garamond', serif" }, "b-axis"), /* @__PURE__ */ React.createElement("text", { x: "25", y: "58", textAnchor: "middle", fill: "#4a4035", fontSize: "11", fontFamily: "'Cormorant Garamond', serif" }, "VIOLET"), /* @__PURE__ */ React.createElement("text", { x: "25", y: "75", textAnchor: "middle", fill: "#6b6055", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "Incandescent light")), /* @__PURE__ */ React.createElement("g", { transform: "translate(600,190)" }, /* @__PURE__ */ React.createElement("polygon", { points: "0,-80 30,-90 40,-20 10,-10", fill: "url(#axisC)" }), /* @__PURE__ */ React.createElement("polygon", { points: "30,-90 50,-75 55,-15 40,-20", fill: "#9b4535", opacity: "0.8" }), /* @__PURE__ */ React.createElement("text", { x: "25", y: "40", textAnchor: "middle", fill: "#8b3030", fontSize: "13", fontWeight: "600", fontFamily: "'Cormorant Garamond', serif" }, "c-axis"), /* @__PURE__ */ React.createElement("text", { x: "25", y: "58", textAnchor: "middle", fill: "#4a4035", fontSize: "11", fontFamily: "'Cormorant Garamond', serif" }, "BURGUNDY"), /* @__PURE__ */ React.createElement("text", { x: "25", y: "75", textAnchor: "middle", fill: "#6b6055", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "Natural / unheated")), /* @__PURE__ */ React.createElement("path", { d: "M240,170 Q310,140 340,170", fill: "none", stroke: "#4a4035", strokeWidth: "1.5", markerEnd: "url(#arr)" }), /* @__PURE__ */ React.createElement("path", { d: "M460,170 Q530,140 560,170", fill: "none", stroke: "#4a4035", strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "290", y: "145", fill: "#6b6055", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "rotate 90\xB0"), /* @__PURE__ */ React.createElement("text", { x: "510", y: "145", fill: "#6b6055", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "rotate 90\xB0"), /* @__PURE__ */ React.createElement("g", { transform: "translate(400,320)" }, /* @__PURE__ */ React.createElement("text", { x: "0", y: "0", textAnchor: "middle", fill: "#a0522d", fontSize: "10", fontFamily: "'Cormorant Garamond', serif" }, "Heat treatment at 500\u2013600\xB0C removes burgundy axis \u2192 stone becomes dichroic (blue + violet only)")));
+}
+function TimelineSVG() {
+  const events = [
+    { year: "1967", label: "Jumanne Ngoma finds\nblue crystals", color: "#3d2b7a" },
+    { year: "1968", label: "Tiffany names it\n'Tanzanite'", color: "#6a50c0" },
+    { year: "1971", label: "Mines\nnationalized", color: "#a0522d" },
+    { year: "1990", label: "Blocks A\u2013D\ndemarcated", color: "#8b6914" },
+    { year: "2002", label: "December\nbirthstone", color: "#3d2b7a" },
+    { year: "2010", label: "Raw export\nban (>1g)", color: "#a0522d" },
+    { year: "2018", label: "24km wall built;\nNgoma honoured", color: "#8b6914" },
+    { year: "2020", label: "Laizer: largest\nstones ever", color: "#6a50c0" }
+  ];
+  const w = 900, h = 200, pad = 60;
+  const spacing = (w - pad * 2) / (events.length - 1);
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: `0 0 ${w} ${h}`, xmlns: "http://www.w3.org/2000/svg", style: { width: "100%", display: "block", background: "#f5f0e8" } }, /* @__PURE__ */ React.createElement("text", { x: w / 2, y: "20", textAnchor: "middle", fill: "#1a1410", fontSize: "13", fontWeight: "600", fontFamily: "'Cormorant Garamond', serif", letterSpacing: "2" }, "TIMELINE \u2014 FROM DISCOVERY TO SCARCITY"), /* @__PURE__ */ React.createElement("line", { x1: pad, y1: 100, x2: w - pad, y2: 100, stroke: "#c9a84c", strokeWidth: "2" }), events.map((e, i) => {
+    const x = pad + i * spacing;
+    const above = i % 2 === 0;
+    return /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("circle", { cx: x, cy: 100, r: "5", fill: e.color }), /* @__PURE__ */ React.createElement("line", { x1: x, y1: 100, x2: x, y2: above ? 55 : 145, stroke: e.color, strokeWidth: "1", opacity: "0.5" }), /* @__PURE__ */ React.createElement("text", { x, y: above ? 45 : 160, textAnchor: "middle", fill: "#1a1410", fontSize: "11", fontWeight: "700", fontFamily: "'Cormorant Garamond', serif" }, e.year), e.label.split("\n").map((line, j) => /* @__PURE__ */ React.createElement("text", { key: j, x, y: (above ? 45 : 160) + 13 + j * 12, textAnchor: "middle", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, line)));
+  }));
+}
+function MiningBlocksSVG() {
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 800 450", xmlns: "http://www.w3.org/2000/svg", style: { width: "100%", display: "block", background: "#f5f0e8" } }, /* @__PURE__ */ React.createElement("text", { x: "400", y: "25", textAnchor: "middle", fill: "#1a1410", fontSize: "14", fontWeight: "600", fontFamily: "'Cormorant Garamond', serif", letterSpacing: "2" }, "MERELANI MINING BLOCKS \u2014 7 km \xD7 2 km"), /* @__PURE__ */ React.createElement("text", { x: "400", y: "42", textAnchor: "middle", fill: "#6b6055", fontSize: "10", fontFamily: "'Cormorant Garamond', serif" }, "The only commercial tanzanite deposit on Earth. Simanjiro District, Manyara Region, Tanzania"), /* @__PURE__ */ React.createElement("g", { transform: "translate(100,70)" }, /* @__PURE__ */ React.createElement("rect", { x: "0", y: "0", width: "600", height: "280", rx: "8", fill: "#e0d8c8" }), /* @__PURE__ */ React.createElement("rect", { x: "20", y: "30", width: "120", height: "220", rx: "4", fill: "#c9a84c", opacity: "0.4", stroke: "#c9a84c", strokeWidth: "2" }), /* @__PURE__ */ React.createElement("text", { x: "80", y: "140", textAnchor: "middle", fill: "#8b6914", fontSize: "18", fontWeight: "700", fontFamily: "'Cormorant Garamond', serif" }, "A"), /* @__PURE__ */ React.createElement("text", { x: "80", y: "160", textAnchor: "middle", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "Kilimanjaro"), /* @__PURE__ */ React.createElement("text", { x: "80", y: "172", textAnchor: "middle", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "Mines Ltd"), /* @__PURE__ */ React.createElement("rect", { x: "160", y: "30", width: "120", height: "220", rx: "4", fill: "#a0522d", opacity: "0.3", stroke: "#a0522d", strokeWidth: "2" }), /* @__PURE__ */ React.createElement("text", { x: "220", y: "140", textAnchor: "middle", fill: "#a0522d", fontSize: "18", fontWeight: "700", fontFamily: "'Cormorant Garamond', serif" }, "B"), /* @__PURE__ */ React.createElement("text", { x: "220", y: "160", textAnchor: "middle", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "Small-scale"), /* @__PURE__ */ React.createElement("text", { x: "220", y: "172", textAnchor: "middle", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "miners"), /* @__PURE__ */ React.createElement("text", { x: "220", y: "200", textAnchor: "middle", fill: "#8b3030", fontSize: "8", fontFamily: "'Cormorant Garamond', serif" }, "2008: 57 killed"), /* @__PURE__ */ React.createElement("text", { x: "220", y: "212", textAnchor: "middle", fill: "#8b3030", fontSize: "8", fontFamily: "'Cormorant Garamond', serif" }, "in flash floods"), /* @__PURE__ */ React.createElement("rect", { x: "300", y: "30", width: "120", height: "220", rx: "4", fill: "#3d2b7a", opacity: "0.25", stroke: "#3d2b7a", strokeWidth: "2" }), /* @__PURE__ */ React.createElement("text", { x: "360", y: "140", textAnchor: "middle", fill: "#3d2b7a", fontSize: "18", fontWeight: "700", fontFamily: "'Cormorant Garamond', serif" }, "C"), /* @__PURE__ */ React.createElement("text", { x: "360", y: "160", textAnchor: "middle", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "TanzaniteOne /"), /* @__PURE__ */ React.createElement("text", { x: "360", y: "172", textAnchor: "middle", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "Richland + STAMICO"), /* @__PURE__ */ React.createElement("text", { x: "360", y: "192", textAnchor: "middle", fill: "#3d2b7a", fontSize: "8", fontFamily: "'Cormorant Garamond', serif" }, "Only mechanised"), /* @__PURE__ */ React.createElement("text", { x: "360", y: "204", textAnchor: "middle", fill: "#3d2b7a", fontSize: "8", fontFamily: "'Cormorant Garamond', serif" }, "operation"), /* @__PURE__ */ React.createElement("rect", { x: "440", y: "30", width: "140", height: "220", rx: "4", fill: "#a0522d", opacity: "0.3", stroke: "#a0522d", strokeWidth: "2" }), /* @__PURE__ */ React.createElement("text", { x: "510", y: "140", textAnchor: "middle", fill: "#a0522d", fontSize: "18", fontWeight: "700", fontFamily: "'Cormorant Garamond', serif" }, "D"), /* @__PURE__ */ React.createElement("text", { x: "510", y: "160", textAnchor: "middle", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "350+ artisanal pits"), /* @__PURE__ */ React.createElement("text", { x: "510", y: "172", textAnchor: "middle", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "Small-scale miners"), /* @__PURE__ */ React.createElement("text", { x: "510", y: "200", textAnchor: "middle", fill: "#6a50c0", fontSize: "8", fontWeight: "600", fontFamily: "'Cormorant Garamond', serif" }, "2020: Laizer's record"), /* @__PURE__ */ React.createElement("text", { x: "510", y: "212", textAnchor: "middle", fill: "#6a50c0", fontSize: "8", fontFamily: "'Cormorant Garamond', serif" }, "find (9.27 kg stone)")), /* @__PURE__ */ React.createElement("g", { transform: "translate(100,370)" }, /* @__PURE__ */ React.createElement("text", { x: "0", y: "0", fill: "#1a1410", fontSize: "10", fontFamily: "'Cormorant Garamond', serif" }, /* @__PURE__ */ React.createElement("tspan", { fontWeight: "600" }, "\u2191 N"), " \u2014 Kilimanjaro visible 50 km to the northeast"), /* @__PURE__ */ React.createElement("text", { x: "0", y: "18", fill: "#6b6055", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "Mining area enclosed by 24 km perimeter wall (built 2018). Production rose from 148 kg (2018) to record 781 kg (2019) after wall construction."), /* @__PURE__ */ React.createElement("text", { x: "0", y: "34", fill: "#6b6055", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "Blocks B and D: artisanal miners use hand tools, wooden ladders, small compressors. Shafts reach 400+ metres with no elevators."), /* @__PURE__ */ React.createElement("text", { x: "0", y: "50", fill: "#c9a84c", fontSize: "9", fontWeight: "600", fontFamily: "'Cormorant Garamond', serif" }, "\u25A0 Large operator ", "  ", /* @__PURE__ */ React.createElement("tspan", { fill: "#a0522d" }, "\u25A0 Artisanal / small-scale ", "  "), /* @__PURE__ */ React.createElement("tspan", { fill: "#3d2b7a" }, "\u25A0 Mixed (corporate + state)"))));
+}
+function MarketSVG() {
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 800 400", xmlns: "http://www.w3.org/2000/svg", style: { width: "100%", display: "block", background: "#f5f0e8" } }, /* @__PURE__ */ React.createElement("text", { x: "400", y: "25", textAnchor: "middle", fill: "#1a1410", fontSize: "14", fontWeight: "600", fontFamily: "'Cormorant Garamond', serif", letterSpacing: "2" }, "THE TANZANITE VALUE CHAIN"), [
+    { x: 80, y: 120, w: 120, label: "MERELANI\nMINES", sub: "7 km\xB2 deposit\n30,000+ miners", color: "#a0522d" },
+    { x: 250, y: 120, w: 120, label: "ARUSHA\nMARKET", sub: "Sorting, grading\nGovernment hub", color: "#8b6914" },
+    { x: 420, y: 80, w: 120, label: "JAIPUR\nINDIA", sub: "Cutting centre\n(pre-2010 raw)", color: "#3d2b7a" },
+    { x: 420, y: 200, w: 120, label: "LOCAL\nCUTTING", sub: "Post-2010 policy\nvalue-added push", color: "#6a50c0" },
+    { x: 620, y: 120, w: 140, label: "GLOBAL\nMARKETS", sub: "USA 70%  India  Japan\n$100\u2013$800/carat", color: "#c9a84c" }
+  ].map((box, i) => /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("rect", { x: box.x, y: box.y, width: box.w, height: 80, rx: "4", fill: box.color, opacity: "0.15", stroke: box.color, strokeWidth: "1.5" }), box.label.split("\n").map((line, j) => /* @__PURE__ */ React.createElement("text", { key: j, x: box.x + box.w / 2, y: box.y + 25 + j * 16, textAnchor: "middle", fill: box.color, fontSize: "11", fontWeight: "700", fontFamily: "'Cormorant Garamond', serif" }, line)), box.sub.split("\n").map((line, j) => /* @__PURE__ */ React.createElement("text", { key: `s${j}`, x: box.x + box.w / 2, y: box.y + 58 + j * 11, textAnchor: "middle", fill: "#4a4035", fontSize: "8", fontFamily: "'Cormorant Garamond', serif" }, line)))), /* @__PURE__ */ React.createElement("line", { x1: "200", y1: "160", x2: "245", y2: "160", stroke: "#4a4035", strokeWidth: "1.5", markerEnd: "url(#arrowHead)" }), /* @__PURE__ */ React.createElement("line", { x1: "370", y1: "140", x2: "415", y2: "115", stroke: "#4a4035", strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("line", { x1: "370", y1: "175", x2: "415", y2: "220", stroke: "#4a4035", strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("line", { x1: "540", y1: "115", x2: "615", y2: "140", stroke: "#4a4035", strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("line", { x1: "540", y1: "240", x2: "615", y2: "175", stroke: "#4a4035", strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("g", { transform: "translate(80,310)" }, /* @__PURE__ */ React.createElement("text", { x: "0", y: "0", fill: "#1a1410", fontSize: "11", fontWeight: "600", fontFamily: "'Cormorant Garamond', serif" }, "Key figures:"), /* @__PURE__ */ React.createElement("text", { x: "0", y: "18", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "$300M+ annual export earnings \xB7 1,000\xD7 rarer than diamonds \xB7 Reserves estimated to last 20\u201330 years"), /* @__PURE__ */ React.createElement("text", { x: "0", y: "34", fill: "#4a4035", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, "2011 production: 2.4M carats (480 kg) \xB7 2019 record: 781 kg \xB7 Price range: $100\u2013$800/ct depending on grade"), /* @__PURE__ */ React.createElement("text", { x: "0", y: "50", fill: "#8b3030", fontSize: "9", fontFamily: "'Cormorant Garamond', serif" }, `Le Vian estimate: Laizer's $3.3M sale was "only a twentieth of the potential retail value"`)));
+}
+function TanzaniteArticle() {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setLoaded(true), 100);
+  }, []);
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("style", null, `
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        .ng-article {
+          font-family: 'Cormorant Garamond', 'Georgia', serif;
+          color: ${COLORS.text};
+          background: ${COLORS.cream};
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+        .ng-article p {
+          font-size: 19px;
+          line-height: 1.75;
+          margin-bottom: 1.5em;
+          font-weight: 400;
+          letter-spacing: 0.01em;
+        }
+        .ng-article p:first-of-type::first-letter {
+          font-family: 'Playfair Display', serif;
+          font-size: 4.2em;
+          float: left;
+          line-height: 0.8;
+          margin-right: 0.08em;
+          margin-top: 0.05em;
+          color: ${COLORS.tanzaniteMid};
+        }
+        .hero-wrap { position: relative; }
+        .hero-title-overlay {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          padding: 40px 8% 30px;
+          background: linear-gradient(transparent, rgba(10,5,15,0.85));
+        }
+        .headline {
+          font-family: 'Playfair Display', serif;
+          font-weight: 900;
+          font-size: clamp(32px, 5vw, 60px);
+          color: white;
+          line-height: 1.05;
+          letter-spacing: -0.02em;
+          margin-bottom: 12px;
+        }
+        .deck {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: clamp(16px, 2.2vw, 22px);
+          color: ${COLORS.goldLight};
+          font-weight: 400;
+          font-style: italic;
+          line-height: 1.4;
+          max-width: 700px;
+        }
+        .ng-yellow-bar {
+          width: 60px;
+          height: 4px;
+          background: ${COLORS.gold};
+          margin-bottom: 16px;
+        }
+        .prose-wrap {
+          max-width: 720px;
+          margin: 0 auto;
+          padding: 50px 24px 30px;
+        }
+        .pull-quote {
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(22px, 3vw, 32px);
+          font-weight: 700;
+          font-style: italic;
+          color: ${COLORS.tanzaniteMid};
+          border-left: 4px solid ${COLORS.gold};
+          padding: 20px 30px;
+          margin: 40px -20px;
+          line-height: 1.35;
+        }
+        .figure-wrap {
+          margin: 50px 0;
+        }
+        .figure-wrap.full-bleed {
+          margin-left: -24px;
+          margin-right: -24px;
+          max-width: calc(100% + 48px);
+        }
+        .fig-caption {
+          font-size: 13px;
+          color: ${COLORS.caption};
+          line-height: 1.5;
+          padding: 10px 0 0;
+          font-style: italic;
+          border-top: 1px solid ${COLORS.creamDark};
+          margin-top: 6px;
+        }
+        .fig-caption strong {
+          color: ${COLORS.text};
+          font-style: normal;
+          font-weight: 600;
+        }
+        .sidebar-box {
+          background: ${COLORS.creamDark};
+          border-left: 3px solid ${COLORS.gold};
+          padding: 24px 28px;
+          margin: 40px 0;
+        }
+        .sidebar-box h4 {
+          font-family: 'Playfair Display', serif;
+          font-size: 16px;
+          font-weight: 700;
+          color: ${COLORS.tanzaniteMid};
+          margin-bottom: 10px;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+        }
+        .sidebar-box p {
+          font-size: 15px;
+          line-height: 1.6;
+          margin-bottom: 0.8em;
+        }
+        .sidebar-box p:last-child { margin-bottom: 0; }
+        .source-note {
+          background: ${COLORS.warmBlack};
+          color: ${COLORS.creamDark};
+          padding: 40px 8%;
+        }
+        .source-note h3 {
+          font-family: 'Playfair Display', serif;
+          font-size: 18px;
+          font-weight: 700;
+          color: ${COLORS.gold};
+          margin-bottom: 16px;
+          letter-spacing: 1px;
+        }
+        .source-note p, .source-note li {
+          font-size: 13px;
+          line-height: 1.6;
+          color: ${COLORS.creamDark};
+          opacity: 0.8;
+        }
+        .source-note ul { list-style: none; padding: 0; }
+        .source-note li { padding: 3px 0; }
+        .source-note li::before { content: "\u2014 "; color: ${COLORS.gold}; }
+        .source-section { margin-bottom: 20px; }
+        .source-section-title {
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          color: ${COLORS.goldLight};
+          margin-bottom: 8px;
+          font-weight: 600;
+        }
+        .ng-footer {
+          text-align: center;
+          padding: 30px;
+          background: ${COLORS.warmBlack};
+          border-top: 3px solid ${COLORS.gold};
+        }
+        .ng-footer-brand {
+          font-family: 'Playfair Display', serif;
+          font-size: 14px;
+          font-weight: 700;
+          color: ${COLORS.gold};
+          letter-spacing: 3px;
+          text-transform: uppercase;
+        }
+        .ng-footer-sub {
+          font-size: 11px;
+          color: ${COLORS.creamDark};
+          opacity: 0.5;
+          margin-top: 8px;
+        }
+        .img-brief {
+          background: #1a1410;
+          color: ${COLORS.creamDark};
+          padding: 16px 20px;
+          margin-top: -4px;
+          font-size: 11px;
+          line-height: 1.5;
+        }
+        .img-brief .brief-label {
+          color: ${COLORS.gold};
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-size: 10px;
+        }
+      `), /* @__PURE__ */ React.createElement("div", { className: "ng-article", style: { opacity: loaded ? 1 : 0, transition: "opacity 0.8s" } }, /* @__PURE__ */ React.createElement("div", { className: "hero-wrap" }, /* @__PURE__ */ React.createElement(HeroSVG, null), /* @__PURE__ */ React.createElement("div", { className: "hero-title-overlay" }, /* @__PURE__ */ React.createElement("div", { className: "ng-yellow-bar" }), /* @__PURE__ */ React.createElement("h1", { className: "headline" }, "Born from Fire"), /* @__PURE__ */ React.createElement("p", { className: "deck" }, "Deep beneath Tanzania's Merelani Hills, young men descend 400 metres on wooden ladders to extract the only gemstone on Earth found in a single place. The deposit could be exhausted within a generation. This is the story of the people who mine it \u2014 and the country fighting to keep its wealth."))), /* @__PURE__ */ React.createElement("div", { className: "img-brief" }, /* @__PURE__ */ React.createElement("span", { className: "brief-label" }, "Hero Image Brief \u2014 "), "Subject: Tanzanite crystal cluster emerging from brown graphitic gneiss matrix, backlit by dusk sky with Kilimanjaro silhouette. Location: Merelani Hills, Simanjiro District, Manyara Region, Tanzania. Time: Blue hour, 15 minutes after sunset. Reason: the gemstone's blue-violet mirrors the transitional sky. Camera: Macro 100mm, f/2.8, focus-stacked. Low angle, crystal at eye level against sky. Action: A miner's calloused hand holds the raw specimen at arm's length, just pulled from the earth. Emotional truth: The gap between what emerges from the ground and what appears in a Tiffany's window. Visual function: Establishing."), /* @__PURE__ */ React.createElement("div", { className: "prose-wrap" }, /* @__PURE__ */ React.createElement("p", null, "Four hundred metres below the surface of the Merelani Hills, in a tunnel barely wider than a man's shoulders, Emmanuel Mollel wedges his bare foot against a wooden rung and shifts his weight downward. He is nineteen years old. The air compressor feeding his hose coughs and recovers sixty seconds of silence above him, and for those sixty seconds the only sound is the scrape of his own breathing against rock that has not seen light in 585 million years. The headlamp strapped to his construction helmet \u2014 not a mining helmet, because there are no mining helmets in Block D \u2014 throws a cone of amber into the graphite-streaked gneiss. Somewhere below, in a fault zone where tectonic forces once folded the Mozambique Belt into the Lelatema Mountains, a seam of blue zoisite waits in the dark, its vanadium-laced lattice holding a colour that exists nowhere else on Earth."), /* @__PURE__ */ React.createElement("p", null, "Tanzanite is a geological accident of exquisite improbability. It required a precise combination of vanadium, chromium, and calcium aluminium silicate, heated under specific pressures inside a tectonic collision zone, to produce a mineral that refracts light along three optical axes into three entirely different colours \u2014 blue, violet, and burgundy \u2014 depending on the angle of view. Geologists call this trichroism, a property shared by very few minerals and mastered by none as dramatically as this one. The deposit occupies a strip of land seven kilometres long and two kilometres wide, running along the Lelatema fault in northern Tanzania, seventy kilometres southeast of Arusha and within sight of Kilimanjaro's glaciated summit. That is the entirety of the world's supply. Tanzanite is roughly a thousand times rarer than diamond by known reserves, and experts estimate the commercially viable deposit may be exhausted within twenty to thirty years."), /* @__PURE__ */ React.createElement("p", null, "The stone's cultural history is, like the mineral itself, a story refracted through competing perspectives. The account officially recognised by the Tanzanian government credits Jumanne Mhero Ngoma, a Meru herdsman from Same District in the Kilimanjaro Region, with stumbling upon blue crystals in the Merelani foothills in January 1967. President Julius Nyerere awarded Ngoma a certificate and 50,000 Tanzanian shillings. A parallel account holds that Maasai herders noticed the crystals after a lightning-set grassfire exposed them at the surface \u2014 a story that carries the weight of Maasai oral tradition, in which tanzanite is called the stone born from fire. A third claimant, Manuel de Souza, a Goan tailor and part-time gold prospector living in Arusha, registered the first mining claims in July of the same year after finding fragments he initially mistook for sapphire, then dumortierite, before sending samples to the Gemological Institute of America for correct identification."), /* @__PURE__ */ React.createElement("div", { className: "pull-quote" }, '"The river has no name on any map. The people who fish it have seven."', /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "14px", fontWeight: 400, fontStyle: "normal", color: COLORS.caption } }, "\u2014 on the gap between Western taxonomy and local knowledge at Merelani")), /* @__PURE__ */ React.createElement("p", null, `What happened next belongs to the history of global commodity branding. Henry B. Platt, a vice president of Tiffany & Co. and great-grandson of Louis Comfort Tiffany, saw the mineral and recognised not its geology but its marketing problem: the scientific name, blue zoisite, sounded uncomfortably like "blue suicide." Platt renamed it tanzanite \u2014 honouring the country, anchoring the stone's identity to a place \u2014 and Tiffany's launched an advertising campaign declaring that the gem could now be found "in Tanzania and at Tiffany's." It was an act of commercial genius that made a fortune for everyone except the man who found the stone. Ngoma spent the next five decades in a mud-walled house with a corrugated iron roof near Mererani, partially paralysed and in declining health. In 2018, his daughter Asha sent a text message to President John Magufuli. Magufuli responded publicly, calling Ngoma "a veritable Tanzanian hero" and awarding him 100 million shillings \u2014 approximately $44,000. Ngoma died in January 2019.`), /* @__PURE__ */ React.createElement("div", { className: "figure-wrap full-bleed" }, /* @__PURE__ */ React.createElement(MinerSVG, null), /* @__PURE__ */ React.createElement("div", { className: "fig-caption" }, /* @__PURE__ */ React.createElement("strong", null, "Down the ladder."), " An artisanal miner descends a wooden-rung shaft in Block D of the Merelani mines. At depths exceeding 400 metres, small compressors feed air through long hoses \u2014 when they work. Graphite dust coats the walls. There are no elevators, no safety harnesses, no escape routes. Between 2002 and 2021, hundreds of miners have died in tunnel collapses, suffocations, and flash floods in these shafts.")), /* @__PURE__ */ React.createElement("p", null, "The story of tanzanite's extraction is the story of two worlds sharing a single hillside. In Block C, TanzaniteOne \u2014 now majority-owned by STAMICO, the Tanzanian State Mining Company, following a 2010 law requiring fifty per cent government equity \u2014 operates the only mechanised tanzanite mine on Earth. Covered shafts, pumping equipment, geological surveys. When flash floods struck in 2008, Block C lost no lives. Across the boundary in Blocks B and D, the landscape is different. More than 350 pits, operated by small-scale miners with hand tools, wooden ladders, and compressors that sometimes fail or are deliberately switched off by rival claimants. The shafts are interlinked by lateral tunnels, so water entering one open pit floods everyone. In March 2008, 155 millimetres of rain fell in ninety minutes. Fifty-seven miners in Block B drowned. Seventeen were never found."), /* @__PURE__ */ React.createElement("div", { className: "sidebar-box" }, /* @__PURE__ */ React.createElement("h4", null, "The Geology of Rarity"), /* @__PURE__ */ React.createElement("p", null, "Tanzanite forms within sheared zones along deep-seated faults in the Lelatema Mountains, where the host rock is graphitic and gypsum-bearing gneiss surrounded by limestone. The mineral is a calcium aluminium hydroxyl sorosilicate \u2014 specifically, the vanadium-bearing variety of zoisite, coloured by trace amounts of V\xB3\u207A ions substituting for aluminium in the crystal lattice. Formation required temperatures of approximately 600\xB0C and pressures found at depths of 20\u201330 kilometres during the Pan-African orogeny, roughly 585 million years ago. The deposit was then uplifted and exposed by erosion. In its natural state, rough tanzanite is reddish-brown; heat treatment at 500\u2013600\xB0C removes the burgundy trichroic axis, producing the stable blue-violet colour seen in jewellery.")), /* @__PURE__ */ React.createElement("p", null, "Emmanuel Mollel's morning begins at 5 a.m. in a corrugated shack at the edge of Block D, where he shares a room with three other miners from Arusha. He earns a percentage of whatever his team finds \u2014 which, most weeks, is nothing. The tanzanite economy operates on a logic that resembles venture capital more than wage labour: long periods of zero return punctuated by occasional windfalls. In June 2020, a small-scale mining boss named Saniniu Laizer \u2014 a fifty-two-year-old Maasai rancher with four wives and thirty-two children, who employs more than two hundred diggers in Block D \u2014 struck what gemologists call a pocket. His workers pulled two rough tanzanite stones from the earth: one weighing 9.27 kilograms, the other 5.1 kilograms. They were the largest tanzanite specimens ever found, by a factor of nearly three. Three weeks later, Laizer's company found a third stone weighing 6.3 kilograms. Laizer sold all three to the Tanzanian government for a combined $5.35 million. Eddie LeVian, CEO of Le Vian jewellers \u2014 a firm that during the 1980s and 1990s acquired half the world's entire tanzanite production \u2014 estimated the retail value at twenty times the sale price."), /* @__PURE__ */ React.createElement("p", null, "Magufuli's government responded to the tanzanite economy with a strategy that mixed resource nationalism with infrastructure. In 2018, the government constructed a 24-kilometre perimeter wall around the entire mining area, manned by the army at a single checkpoint. The wall's purpose was to stop smuggling \u2014 Tanzania had lost an estimated $81 billion worth of gemstones between 1998 and 2017, according to the Ministry of Minerals. The effect was immediate: documented production rose from 148 kilograms in 2018 to a record 781 kilograms in 2019. The government also reduced the tax structure from a labyrinth of levies totalling over thirty per cent to a flat seven per cent royalty, creating an incentive for miners like Laizer to sell through official channels. The reforms worked \u2014 but they also concentrated power."), /* @__PURE__ */ React.createElement("div", { className: "figure-wrap full-bleed" }, /* @__PURE__ */ React.createElement(TrichroismSVG, null), /* @__PURE__ */ React.createElement("div", { className: "fig-caption" }, /* @__PURE__ */ React.createElement("strong", null, "Three colours, one crystal."), " Tanzanite's trichroism means a single stone displays blue, violet, and burgundy depending on the crystal axis through which light passes. Heat treatment at 500\u2013600\xB0C eliminates the burgundy axis, producing the dichroic blue-violet prized in jewellery. Nearly all commercially available tanzanite has been heat-treated \u2014 a process so universal it is not considered an enhancement requiring disclosure.")), /* @__PURE__ */ React.createElement("div", { className: "sidebar-box" }, /* @__PURE__ */ React.createElement("h4", null, "The Naming Game"), /* @__PURE__ */ React.createElement("p", null, `Henry Platt's renaming of blue zoisite to "tanzanite" in 1968 was one of the most successful acts of commodity branding in gemstone history. The scientific name's phonetic resemblance to "blue suicide" was the stated reason, but the deeper strategy was anchoring the gem's identity to a single place \u2014 making geographic exclusivity the selling point. Tiffany's campaign declared the stone available "in Tanzania and at Tiffany's," collapsing an entire country into a luxury retail experience. In 2002, the American Gem Trade Association named tanzanite a December birthstone, the first addition to the birthstone list since 1912. The designation, lobbied for by the industry, guaranteed a permanent demand floor.`)), /* @__PURE__ */ React.createElement("p", null, "The metaphor that keeps returning at Merelani is vertical. Everything is measured in depth \u2014 the depth of the shafts, the depth of the colour, the depth of the inequality between those who dig and those who wear. The same stone that requires a nineteen-year-old to descend four hundred metres on a wooden ladder ends up in a Tiffany's display case under halogen spotlights, rotated to catch the blue axis. The supply chain between those two points passes through Arusha's sorting houses, through the government mineral hub where stones are weighed and taxed, through cutting workshops in Jaipur (before the 2010 ban on raw exports over one gram) or increasingly in local Tanzanian facilities, through wholesale dealers in New York and Hong Kong, and finally into the hands of consumers who, according to the Tanzanite Foundation's own surveys, largely cannot locate Tanzania on a map. The gemstone is named after a country most of its buyers have never visited, mined by people most of its buyers will never meet, and valued at prices that reflect Manhattan retail margins rather than Merelani labour costs."), /* @__PURE__ */ React.createElement("div", { className: "figure-wrap full-bleed" }, /* @__PURE__ */ React.createElement(TimelineSVG, null), /* @__PURE__ */ React.createElement("div", { className: "fig-caption" }, /* @__PURE__ */ React.createElement("strong", null, "From lightning strike to scarcity clock."), " Key moments in tanzanite's sixty-year journey from an accidental discovery by a Meru herdsman to a resource-nationalist case study and a gemstone whose commercial deposits may be exhausted within a generation.")), /* @__PURE__ */ React.createElement("p", null, "The future of tanzanite is, like the mineral's formation, a question of pressure and time. The deposit is non-renewable. No other commercially viable source of gem-quality blue zoisite has been found anywhere on Earth, despite exploration in Kenya, Madagascar, and Pakistan. As the accessible high-grade zones in Blocks B and D are depleted, miners move to lower-grade areas, requiring more rock to be processed for fewer carats. The arithmetic is unforgiving: production costs rise, but price elasticity in the luxury gem market is limited. Experts disagree on timelines \u2014 some estimate twenty years of viable mining remain, others thirty \u2014 but no one disputes the direction. The question is not whether Merelani will run out, but what happens to the thirty thousand people who depend on it when it does."), /* @__PURE__ */ React.createElement("div", { className: "figure-wrap full-bleed" }, /* @__PURE__ */ React.createElement(MiningBlocksSVG, null), /* @__PURE__ */ React.createElement("div", { className: "fig-caption" }, /* @__PURE__ */ React.createElement("strong", null, "The world's only tanzanite deposit, partitioned."), " In 1990, the Tanzanian government divided the Merelani mining area into four blocks. Blocks A and C were awarded to large operators; B and D to artisanal miners. The disparity in safety standards between mechanised Block C and artisanal Blocks B and D has cost hundreds of lives over three decades.")), /* @__PURE__ */ React.createElement("p", null, "Tanzania's government under President Samia Suluhu Hassan, who succeeded Magufuli after his death in 2021, has continued the resource-nationalist approach while emphasising local value addition. The vision is to transform Tanzania from a raw-material exporter to a gemstone processing hub \u2014 cutting and polishing tanzanite domestically rather than shipping rough stones to Jaipur. It is a vision that requires infrastructure, training, and capital investment that the artisanal mining sector cannot provide on its own. In the meantime, Emmanuel Mollel descends the ladder each morning because the alternative \u2014 farming on marginal land in a district where annual rainfall is unpredictable \u2014 offers even less certainty."), /* @__PURE__ */ React.createElement("div", { className: "figure-wrap full-bleed" }, /* @__PURE__ */ React.createElement(MarketSVG, null), /* @__PURE__ */ React.createElement("div", { className: "fig-caption" }, /* @__PURE__ */ React.createElement("strong", null, "Following the stone."), " The tanzanite value chain from Merelani's artisanal pits to global retail markets. The United States accounts for roughly seventy per cent of end-consumer demand. Since 2010, Tanzania has banned the export of rough stones over one gram, seeking to capture more value domestically \u2014 but the cutting and polishing infrastructure remains nascent.")), /* @__PURE__ */ React.createElement("div", { className: "sidebar-box" }, /* @__PURE__ */ React.createElement("h4", null, "The Human Cost"), /* @__PURE__ */ React.createElement("p", null, "Occupational health research published in the Tanzania Journal of Science documents chronic exposure to graphite, quartz, and mica dust in Merelani's unventilated shafts \u2014 conditions associated with silicosis and lung cancer. Compressor failure is the most feared event: at four hundred metres, oxygen deprivation kills in minutes. In 2002, forty-two miners died when an air pump failed in a single shaft. In 2008, flash floods killed fifty-seven in Block B. In 2021 alone, more than a dozen miners perished in separate incidents in Block D, including two nineteen-year-olds who suffocated at 1 a.m. in a pit with no emergency ventilation. The deceased were identified as Geoffrey William and Emmanuel Solomon, both residents of Arusha who had come to Merelani seeking the same thing everyone seeks there: the right fracture in the right fault zone, on the right day.")), /* @__PURE__ */ React.createElement("p", null, 'On the surface, the Merelani Hills look unremarkable \u2014 dry scrubland stippled with wooden shacks, dusty tracks, the distant white dome of Kilimanjaro hanging above the haze like a hallucination. Whirlwinds spiral lazily across the plain. A sign along the dirt road reads, "This road has been proudly built, sponsored and maintained by the Tanzanite Foundation." The road is unpaved. The mines are invisible from above; their shafts are vertical wounds in the earth, many no wider than a manhole cover, dropping into darkness. What emerges from those shafts \u2014 when anything emerges at all \u2014 is a reddish-brown crystal that looks, to an untrained eye, like a piece of dirty quartz. Only after heating to 500 degrees Celsius does the brown veil lift and the blue bloom, the way a Polaroid develops: colour rising from nothing, an entire spectrum assembling itself from an instruction set written 585 million years ago in a language of vanadium and pressure.'), /* @__PURE__ */ React.createElement("p", null, "The Maasai folktale holds that lightning struck the foothills of Kilimanjaro, scorching the earth, and in the ashes a blue crystal shimmered where none had been before. The geological truth is not so different. Metamorphism is the Earth's version of fire \u2014 heat and pressure transforming one thing into another, a mineral into a gemstone, a brown stone into a blue one, a herdsman's chance discovery into a multi-billion-dollar industry. What the folktale understands, and what the commodity markets do not, is that the fire is a one-time event. There will not be another Merelani. The tectonic accident that created tanzanite happened once, in one place, and when the last crystal is pulled from the ground, the colour will exist only in the stones already cut and set \u2014 each one a fragment of a fire that burned half a billion years ago, carried in a ring on a hand that has never touched the earth it came from.")), /* @__PURE__ */ React.createElement("div", { className: "source-note" }, /* @__PURE__ */ React.createElement("h3", null, "Source Integrity Note"), /* @__PURE__ */ React.createElement("div", { className: "source-section" }, /* @__PURE__ */ React.createElement("div", { className: "source-section-title" }, "Claims Requiring Expert Verification"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, 'Estimate that tanzanite is "1,000 times rarer than diamond by known reserves" \u2014 frequently cited in trade sources but not peer-reviewed; requires independent geological verification'), /* @__PURE__ */ React.createElement("li", null, "$81 billion smuggling loss figure (1998\u20132017) cited by Tanzania Ministry of Minerals \u2014 methodology and independent audit status unclear"), /* @__PURE__ */ React.createElement("li", null, "20\u201330 year remaining commercial viability estimate \u2014 ranges vary significantly by source; requires updated geological survey data"))), /* @__PURE__ */ React.createElement("div", { className: "source-section" }, /* @__PURE__ */ React.createElement("div", { className: "source-section-title" }, "Data Sources"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Wikipedia: Tanzanite \u2014 production figures, discovery accounts, export legislation"), /* @__PURE__ */ React.createElement("li", null, 'Lotus Gemology (lotusgemology.com): "Working the Blueseam" field report'), /* @__PURE__ */ React.createElement("li", null, "Tanzania Journal of Science, Vol. 31 (2005): Malisa & Kinabo, environmental and health risks at Merelani"), /* @__PURE__ */ React.createElement("li", null, "CNN, Fortune, Mail & Guardian (2020): Saniniu Laizer discovery coverage"), /* @__PURE__ */ React.createElement("li", null, "Anadolu Agency (2017): Jumanne Ngoma poverty profile"), /* @__PURE__ */ React.createElement("li", null, "JCK (2002, 2008): Mine disaster reporting"), /* @__PURE__ */ React.createElement("li", null, "The Citizen (Tanzania), 2018: Magufuli honours Ngoma"), /* @__PURE__ */ React.createElement("li", null, 'Wilson, Saul, Pardieu, Hughes (2009): "Famous Mineral Localities: Merelani Tanzanite Mines," The Mineralogical Record, 40(5), 346\u2013408'))), /* @__PURE__ */ React.createElement("div", { className: "source-section" }, /* @__PURE__ */ React.createElement("div", { className: "source-section-title" }, "Fieldwork & Photography Requiring Access"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Block D artisanal mine shafts \u2014 requires coordination with local claim holders and Manyara regional authorities"), /* @__PURE__ */ React.createElement("li", null, "TanzaniteOne/STAMICO Block C operations \u2014 historically restricted; managing director approval required"), /* @__PURE__ */ React.createElement("li", null, "Arusha mineral trading hub \u2014 public access but photography may be restricted"), /* @__PURE__ */ React.createElement("li", null, "Naisinyai village (Laizer's compound) \u2014 requires community consent and Maasai cultural protocols"))), /* @__PURE__ */ React.createElement("div", { className: "source-section" }, /* @__PURE__ */ React.createElement("div", { className: "source-section-title" }, "Scientifically Contested Claims"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Discovery attribution: Tanzanian government credits Jumanne Ngoma (1967); TanzaniteOne historically credited Ali Juu Ya Watu; Manuel de Souza registered first claims. Article presents all three accounts."), /* @__PURE__ */ React.createElement("li", null, 'Reserve depletion timeline: estimates range from "fewer than 20 years" to "30+ years" depending on extraction rates and depth accessibility'))), /* @__PURE__ */ React.createElement("div", { className: "source-section" }, /* @__PURE__ */ React.createElement("div", { className: "source-section-title" }, "Voices to Add in Full Editorial Process"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Artisanal miners in Blocks B and D \u2014 first-person accounts of working conditions"), /* @__PURE__ */ React.createElement("li", null, "Maasai community leaders in Naisinyai and surrounding villages \u2014 impact of mining on pastoral livelihoods"), /* @__PURE__ */ React.createElement("li", null, "Tanzanian geologists at the University of Dar es Salaam \u2014 independent reserve estimates"), /* @__PURE__ */ React.createElement("li", null, "Women in the tanzanite economy \u2014 roles in sorting, trading, and community support"), /* @__PURE__ */ React.createElement("li", null, "Saniniu Laizer's family \u2014 perspective on the gap between sale price and retail value"), /* @__PURE__ */ React.createElement("li", null, "Cutters and polishers in nascent Tanzanian processing facilities \u2014 progress on domestic value addition")))), /* @__PURE__ */ React.createElement("div", { className: "ng-footer" }, /* @__PURE__ */ React.createElement("div", { className: "ng-footer-brand" }, "National Geographic"), /* @__PURE__ */ React.createElement("div", { className: "ng-footer-sub" }, "Science \xB7 Geology \xB7 East Africa"))));
+}
+
+      ReactDOM.createRoot(document.getElementById('root')).render(
+        React.createElement(TanzaniteArticle)
+      );
+    } catch (err) {
+      var box = document.getElementById('error-boundary');
+      if (box) {
+        box.style.display = 'block';
+        box.textContent = '[render error] ' + (err && err.message ? err.message : err);
+      }
+      console.error(err);
+    }
+  </script>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

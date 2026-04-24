@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malta Slavery</title>
+  <meta name="description" content="" />
+
+  <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+
+  <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
+  <script src="../assets/vendor/react.production.min.js"></script>
+  <script src="../assets/vendor/react-dom.production.min.js"></script>
+  <script src="../assets/vendor/prop-types.min.js"></script>
+  <script src="../assets/vendor/recharts.js"></script>
+</head>
+<body>
+  <!-- Compact header bar -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Malta Slavery</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date"></span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+        
+      </div>
+      <a class="md-link header-md-link" href="../md/malta-slavery.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
+      <a class="pdf-link header-pdf-link" href="malta-slavery.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All articles</a>
+    </div>
+  </header>
+
+  <!-- Render target -->
+  <main class="article-container">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem; font-family:serif;">
+        This article requires JavaScript to render the embedded React/Recharts components.
+      </p>
+    </noscript>
+    <div id="error-boundary" style="display:none; padding:2rem; background:#fff3f3; border:1px solid #f5c2c2; border-radius:8px; font-family:ui-monospace,monospace;"></div>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>malta-slavery</code> &middot; category: <code>general</code></span>
+      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Expose React hooks + Recharts components into global scope for the JSX block -->
+  <script>
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useMemo = React.useMemo;
+    window.useRef = React.useRef;
+    window.useCallback = React.useCallback;
+    window.useReducer = React.useReducer;
+    window.useLayoutEffect = React.useLayoutEffect;
+    window.useContext = React.useContext;
+    window.Fragment = React.Fragment;
+
+    // Expose Recharts components into global scope
+    const _R = window.Recharts || {};
+    [
+      'LineChart','BarChart','AreaChart','ScatterChart','RadarChart','PieChart',
+      'XAxis','YAxis','ZAxis','CartesianGrid','Tooltip','Legend','Line','Bar','Area',
+      'Scatter','Pie','Cell','ResponsiveContainer','ReferenceLine','ReferenceArea','ReferenceDot',
+      'ComposedChart','Treemap','Radar','PolarGrid','PolarAngleAxis','PolarRadiusAxis',
+      'RadialBar','RadialBarChart','FunnelChart','Funnel','LabelList','Label','Brush',
+      'Sankey','Sector','Customized','CartesianAxis','ErrorBar','Rectangle','Curve','Cross','Dot','Polygon','Symbols','Text'
+    ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
+
+    // Simple error surface for runtime failures
+    window.addEventListener('error', function (e) {
+      var box = document.getElementById('error-boundary');
+      if (!box) return;
+      box.style.display = 'block';
+      box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
+    });
+
+    // Global <Photograph> helper (pre-transpiled React.createElement form)
+    window.Photograph = function (props) {
+      var src = props.src, alt = props.alt, caption = props.caption, credit = props.credit, href = props.href;
+      var children = [
+        React.createElement('img', { src: src, alt: alt || caption || '', loading: 'lazy', key: 'img' })
+      ];
+      if (caption || credit) {
+        var figCapChildren = [];
+        if (caption) figCapChildren.push(
+          React.createElement('span', { className: 'photo-caption', key: 'cap' }, caption)
+        );
+        if (credit) figCapChildren.push(
+          React.createElement('span', { className: 'photo-credit', key: 'cr' },
+            ' — ',
+            React.createElement('a', { href: href, target: '_blank', rel: 'noopener noreferrer' }, credit)
+          )
+        );
+        children.push(React.createElement('figcaption', { key: 'cap-root' }, figCapChildren));
+      }
+      return React.createElement('figure', { className: 'photo' }, children);
+    };
+  </script>
+
+  <!-- Pre-transpiled JSX payload (esbuild --loader=jsx --jsx=transform, classic mode).
+       React.createElement(...) calls resolve against the UMD React global above. -->
+  <script>
+    try {
+      const C = {
+  honey: "#d4a843",
+  honeyL: "#f0dba0",
+  lime: "#d4c690",
+  stone: "#f2ece0",
+  stoneD: "#ddd4c0",
+  deep: "#1a1008",
+  mid: "#2a1a0a",
+  warm: "#3a2a18",
+  text: "#1e1a14",
+  textL: "#4a4238",
+  cap: "#7a7060",
+  blood: "#8b2020",
+  sea: "#1a3a5a",
+  seaL: "#2a5a8a",
+  shadow: "#0d0a06"
+};
+function HeroSVG() {
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 1400 620", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("linearGradient", { id: "mSky", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#d4a050" }), /* @__PURE__ */ React.createElement("stop", { offset: "40%", stopColor: "#c08030" }), /* @__PURE__ */ React.createElement("stop", { offset: "70%", stopColor: "#804020" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#1a1008" })), /* @__PURE__ */ React.createElement("linearGradient", { id: "mSea", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0%", stopColor: "#1a3a5a" }), /* @__PURE__ */ React.createElement("stop", { offset: "100%", stopColor: "#0d1a2a" }))), /* @__PURE__ */ React.createElement("rect", { width: "1400", height: "620", fill: "url(#mSky)" }), /* @__PURE__ */ React.createElement("circle", { cx: "1050", cy: "200", r: "60", fill: "#e8a030", opacity: ".6" }), /* @__PURE__ */ React.createElement("circle", { cx: "1050", cy: "200", r: "40", fill: "#f0c060", opacity: ".4" }), /* @__PURE__ */ React.createElement("rect", { x: "0", y: "380", width: "1400", height: "240", fill: "url(#mSea)" }), /* @__PURE__ */ React.createElement("ellipse", { cx: "1050", cy: "420", rx: "120", ry: "15", fill: "#c08030", opacity: ".2" }), /* @__PURE__ */ React.createElement("path", { d: "M0,350 L80,350 L80,310 L120,310 L120,290 L180,290 L180,320 L220,320 L220,280 L250,250 L260,280 L280,280 L280,310 L340,310 L340,270 L360,250 L365,230 Q370,210 375,230 L380,250 L400,270 L400,310 L480,310 L480,290 L520,290 L520,260 L540,240 L545,220 Q548,200 552,220 L555,240 L575,260 L575,310 L660,310 L660,330 L740,330 L740,300 L780,300 L780,330 L840,330 L840,310 L900,310 L900,280 L920,260 L925,240 Q928,220 932,240 L935,260 L955,280 L955,350 L1050,350 L1050,320 L1100,320 L1100,350 L1200,350 L1200,330 L1260,330 L1260,350 L1400,350 L1400,380 L0,380Z", fill: "#2a1a0a" }), /* @__PURE__ */ React.createElement("path", { d: "M0,350 L80,350 L80,380 L0,380Z", fill: "#8b7040", opacity: ".3" }), /* @__PURE__ */ React.createElement("path", { d: "M120,310 L280,310 L280,380 L120,380Z", fill: "#8b7040", opacity: ".25" }), /* @__PURE__ */ React.createElement("path", { d: "M340,310 L575,310 L575,380 L340,380Z", fill: "#8b7040", opacity: ".3" }), /* @__PURE__ */ React.createElement("path", { d: "M660,330 L840,330 L840,380 L660,380Z", fill: "#8b7040", opacity: ".25" }), /* @__PURE__ */ React.createElement("path", { d: "M900,310 L1050,350 L1050,380 L900,380Z", fill: "#8b7040", opacity: ".2" }), /* @__PURE__ */ React.createElement("path", { d: "M680,330 L700,315 L720,310 L740,315 L760,330", fill: "#3a2a18", stroke: "#2a1a0a", strokeWidth: "1" }), [400, 430, 460, 490, 520, 550].map((y, i) => /* @__PURE__ */ React.createElement("line", { key: i, x1: 200 + i * 30, y1: y, x2: 400 + i * 40, y2: y, stroke: "rgba(255,255,255,.04)", strokeWidth: "1" })), /* @__PURE__ */ React.createElement("g", { transform: "translate(500,410)" }, /* @__PURE__ */ React.createElement("path", { d: "M-60,0 Q-40,-8 0,-12 Q40,-8 60,0 Q40,5 0,6 Q-40,5 -60,0Z", fill: "#0d1520", opacity: ".6" }), /* @__PURE__ */ React.createElement("line", { x1: "0", y1: "-12", x2: "0", y2: "-40", stroke: "#0d1520", strokeWidth: "1.5", opacity: ".5" }), /* @__PURE__ */ React.createElement("path", { d: "M0,-40 Q15,-35 20,-25", fill: "none", stroke: "#0d1520", strokeWidth: "1", opacity: ".4" }), [-40, -25, -10, 10, 25, 40].map((x, i) => /* @__PURE__ */ React.createElement("line", { key: i, x1: x, y1: "0", x2: x - 8, y2: "10", stroke: "#0d1520", strokeWidth: ".8", opacity: ".3" }))));
+}
+function PopSVG() {
+  const pts = [
+    { yr: "1530", n: 200, note: "Knights arrive" },
+    { yr: "1565", n: 800, note: "Great Siege captives" },
+    { yr: "1600", n: 2e3, note: "Corsairing peak" },
+    { yr: "1635", n: 3e3, note: "600 in Valletta alone" },
+    { yr: "1700", n: 5e3, note: "Height of corso" },
+    { yr: "1749", n: 8e3, note: "Revolt plot" },
+    { yr: "1798", n: 2e3, note: "Napoleon frees slaves" }
+  ];
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 820 340", style: { width: "100%", display: "block", background: C.stone } }, /* @__PURE__ */ React.createElement("text", { x: "410", y: "24", textAnchor: "middle", fill: C.text, fontSize: "13", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif", letterSpacing: "2" }, "ESTIMATED SLAVE POPULATION IN MALTA, 1530\u20131798"), /* @__PURE__ */ React.createElement("g", { transform: "translate(80,50)" }, /* @__PURE__ */ React.createElement("line", { x1: "0", y1: "220", x2: "660", y2: "220", stroke: "#aaa", strokeWidth: "1" }), /* @__PURE__ */ React.createElement("line", { x1: "0", y1: "0", x2: "0", y2: "220", stroke: "#aaa", strokeWidth: "1" }), [0, 2e3, 4e3, 6e3, 8e3].map((v, i) => {
+    const y = 220 - v / 8500 * 220;
+    return /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("text", { x: "-8", y: y + 3, textAnchor: "end", fill: C.cap, fontSize: "8", fontFamily: "monospace" }, v === 0 ? "0" : v / 1e3 + "k"), /* @__PURE__ */ React.createElement("line", { x1: "0", y1: y, x2: "660", y2: y, stroke: "#ddd", strokeWidth: ".5" }));
+  }), /* @__PURE__ */ React.createElement("path", { d: `M${pts.map((p, i) => `${i * (660 / (pts.length - 1))},${220 - p.n / 8500 * 220}`).join(" L")} L660,220 L0,220Z`, fill: C.blood, opacity: ".12" }), /* @__PURE__ */ React.createElement("polyline", { points: pts.map((p, i) => `${i * (660 / (pts.length - 1))},${220 - p.n / 8500 * 220}`).join(" "), fill: "none", stroke: C.blood, strokeWidth: "2.5" }), pts.map((p, i) => {
+    const x = i * (660 / (pts.length - 1)), y = 220 - p.n / 8500 * 220;
+    return /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("circle", { cx: x, cy: y, r: "4", fill: C.blood }), /* @__PURE__ */ React.createElement("text", { x, y: 238, textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: "monospace" }, p.yr), /* @__PURE__ */ React.createElement("text", { x, y: y - 10, textAnchor: "middle", fill: C.blood, fontSize: "8", fontWeight: "600", fontFamily: "monospace" }, p.n.toLocaleString()), /* @__PURE__ */ React.createElement("text", { x, y: 252, textAnchor: "middle", fill: C.cap, fontSize: "7", fontFamily: "'Cormorant Garamond',serif" }, p.note));
+  })), /* @__PURE__ */ React.createElement("text", { x: "410", y: "330", textAnchor: "middle", fill: C.cap, fontSize: "9", fontStyle: "italic", fontFamily: "'Cormorant Garamond',serif" }, "Estimates from Wettinger (2002); Fontenay (2001); McDermott (2022). Figures are approximate; archival gaps significant before 1580."));
+}
+function BagnioSVG() {
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 780 440", style: { width: "100%", display: "block", background: C.stone } }, /* @__PURE__ */ React.createElement("text", { x: "390", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif", letterSpacing: "2" }, "THE SLAVES' PRISON (BAGNO) \u2014 VALLETTA"), /* @__PURE__ */ React.createElement("text", { x: "390", y: "40", textAnchor: "middle", fill: C.cap, fontSize: "10", fontFamily: "'Cormorant Garamond',serif" }, "Schematic layout after Wettinger (2002) and 1633 Valletta plan. Capacity: ~900 inmates."), /* @__PURE__ */ React.createElement("g", { transform: "translate(100,60)" }, /* @__PURE__ */ React.createElement("rect", { x: "0", y: "0", width: "500", height: "300", rx: "4", fill: "none", stroke: C.warm, strokeWidth: "3" }), /* @__PURE__ */ React.createElement("rect", { x: "120", y: "80", width: "260", height: "140", rx: "2", fill: C.honeyL, opacity: ".3", stroke: C.honey, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "250", y: "155", textAnchor: "middle", fill: C.honey, fontSize: "11", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif" }, "COURTYARD"), /* @__PURE__ */ React.createElement("text", { x: "250", y: "170", textAnchor: "middle", fill: C.cap, fontSize: "8", fontFamily: "'Cormorant Garamond',serif" }, "Market for Levantine goods"), /* @__PURE__ */ React.createElement("text", { x: "250", y: "182", textAnchor: "middle", fill: C.cap, fontSize: "8", fontFamily: "'Cormorant Garamond',serif" }, "Public access permitted"), /* @__PURE__ */ React.createElement("rect", { x: "20", y: "10", width: "460", height: "60", rx: "2", fill: C.warm, opacity: ".15" }), /* @__PURE__ */ React.createElement("text", { x: "250", y: "42", textAnchor: "middle", fill: C.textL, fontSize: "9", fontFamily: "'Cormorant Garamond',serif" }, "DORMITORY CELLS \u2014 Order's slaves + privately owned (1 scudo/month)"), /* @__PURE__ */ React.createElement("rect", { x: "20", y: "80", width: "90", height: "65", rx: "2", fill: C.seaL, opacity: ".15", stroke: C.seaL, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "65", y: "110", textAnchor: "middle", fill: C.seaL, fontSize: "8", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif" }, "Chapel of"), /* @__PURE__ */ React.createElement("text", { x: "65", y: "122", textAnchor: "middle", fill: C.seaL, fontSize: "8", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif" }, "St John Baptist"), /* @__PURE__ */ React.createElement("rect", { x: "20", y: "155", width: "90", height: "65", rx: "2", fill: "#2a6a2a", opacity: ".15", stroke: "#2a6a2a", strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "65", y: "188", textAnchor: "middle", fill: "#2a6a2a", fontSize: "8", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif" }, "MOSQUE"), /* @__PURE__ */ React.createElement("text", { x: "65", y: "200", textAnchor: "middle", fill: "#2a6a2a", fontSize: "7", fontFamily: "'Cormorant Garamond',serif" }, "Muslim prayer"), /* @__PURE__ */ React.createElement("rect", { x: "390", y: "80", width: "90", height: "65", rx: "2", fill: C.honey, opacity: ".2", stroke: C.honey, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "435", y: "112", textAnchor: "middle", fill: C.honey, fontSize: "8", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif" }, "TAVERN"), /* @__PURE__ */ React.createElement("rect", { x: "390", y: "155", width: "90", height: "65", rx: "2", fill: C.honey, opacity: ".15", stroke: C.honey, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "435", y: "182", textAnchor: "middle", fill: C.honey, fontSize: "8", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif" }, "Barber &"), /* @__PURE__ */ React.createElement("text", { x: "435", y: "194", textAnchor: "middle", fill: C.honey, fontSize: "8", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif" }, "Tailor shops"), /* @__PURE__ */ React.createElement("rect", { x: "20", y: "230", width: "460", height: "60", rx: "2", fill: C.warm, opacity: ".15" }), /* @__PURE__ */ React.createElement("text", { x: "250", y: "262", textAnchor: "middle", fill: C.textL, fontSize: "9", fontFamily: "'Cormorant Garamond',serif" }, "ADDITIONAL CELLS \u2014 free subjects + convicts also held here"), /* @__PURE__ */ React.createElement("rect", { x: "200", y: "-8", width: "40", height: "16", rx: "2", fill: C.warm }), /* @__PURE__ */ React.createElement("text", { x: "220", y: "4", textAnchor: "middle", fill: "#fff", fontSize: "6", fontWeight: "700", fontFamily: "monospace" }, "GATE"), /* @__PURE__ */ React.createElement("text", { x: "220", y: "-15", fill: C.textL, fontSize: "7", fontFamily: "'Cormorant Garamond',serif", textAnchor: "middle" }, "St Ursula Street"), /* @__PURE__ */ React.createElement("rect", { x: "200", y: "293", width: "40", height: "16", rx: "2", fill: C.warm }), /* @__PURE__ */ React.createElement("text", { x: "220", y: "305", textAnchor: "middle", fill: "#fff", fontSize: "6", fontWeight: "700", fontFamily: "monospace" }, "GATE"), /* @__PURE__ */ React.createElement("text", { x: "220", y: "320", fill: C.textL, fontSize: "7", fontFamily: "'Cormorant Garamond',serif", textAnchor: "middle" }, "East Street")), /* @__PURE__ */ React.createElement("text", { x: "390", y: "425", textAnchor: "middle", fill: C.cap, fontSize: "9", fontStyle: "italic", fontFamily: "'Cormorant Garamond',serif" }, "After Wettinger (2002, pp. 85\u201398); 1633 plan of Valletta; Zammit (2009). Running water installed 1615 under Wignacourt Aqueduct."));
+}
+function CorsoSVG() {
+  return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 820 300", style: { width: "100%", display: "block", background: C.stone } }, /* @__PURE__ */ React.createElement("text", { x: "410", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif", letterSpacing: "2" }, "THE CORSO \u2014 CORSAIRING ECONOMY OF HOSPITALLER MALTA"), [
+    { x: 40, y: 90, w: 130, h: 70, label: "CORSAIR\nRAIDS", sub: "Ottoman & Barbary\nshipping targeted", col: C.sea },
+    { x: 220, y: 60, w: 110, h: 50, label: "PLUNDER", sub: "Cargo seized", col: C.honey },
+    { x: 220, y: 130, w: 110, h: 50, label: "CAPTIVES", sub: "Crew enslaved", col: C.blood },
+    { x: 390, y: 60, w: 120, h: 50, label: "TREASURY", sub: "% to Order + taxes", col: C.honey },
+    { x: 390, y: 130, w: 120, h: 50, label: "SLAVE MARKET", sub: "Piazza San Giorgio", col: C.blood },
+    { x: 560, y: 50, w: 110, h: 40, label: "FORTIFICATIONS", sub: "", col: C.warm },
+    { x: 560, y: 100, w: 110, h: 40, label: "GALLEYS", sub: "Oar labour", col: C.sea },
+    { x: 560, y: 150, w: 110, h: 40, label: "DOMESTIC", sub: "Palace service", col: C.cap },
+    { x: 560, y: 200, w: 110, h: 40, label: "RANSOM", sub: "Income stream", col: C.honey }
+  ].map((b, i) => /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("rect", { x: b.x, y: b.y, width: b.w, height: b.h, rx: "3", fill: b.col, opacity: ".15", stroke: b.col, strokeWidth: "1.2" }), b.label.split("\n").map((l, j) => /* @__PURE__ */ React.createElement("text", { key: j, x: b.x + b.w / 2, y: b.y + 20 + j * 14, textAnchor: "middle", fill: b.col, fontSize: "9", fontWeight: "600", fontFamily: "'Cormorant Garamond',serif" }, l)), b.sub && b.sub.split("\n").map((s, j) => /* @__PURE__ */ React.createElement("text", { key: `s${j}`, x: b.x + b.w / 2, y: b.y + b.h - 6 + j * 10, textAnchor: "middle", fill: C.cap, fontSize: "7", fontFamily: "'Cormorant Garamond',serif" }, s)))), [[170, 125, 218, 85], [170, 125, 218, 155], [330, 85, 388, 85], [330, 155, 388, 155], [510, 85, 558, 70], [510, 155, 558, 120], [510, 155, 558, 170], [510, 155, 558, 220]].map(([x1, y1, x2, y2], i) => /* @__PURE__ */ React.createElement("line", { key: i, x1, y1, x2, y2, stroke: C.textL, strokeWidth: "1", opacity: ".4" })), /* @__PURE__ */ React.createElement("text", { x: "410", y: "280", textAnchor: "middle", fill: C.cap, fontSize: "9", fontStyle: "italic", fontFamily: "'Cormorant Garamond',serif" }, `Valletta described as "Christianity's biggest slave trading city in the Mediterranean" \u2014 comparable to Livorno; Muslim counterpart: Algiers`));
+}
+function App() {
+  const [ok, setOk] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setOk(true), 80);
+  }, []);
+  const SB = () => /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", margin: "36px 0", color: C.honey, fontSize: "16px", letterSpacing: "10px" } }, "\u2767");
+  const Fig = ({ children, caption }) => /* @__PURE__ */ React.createElement("div", { style: { margin: "45px -22px" } }, children, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "12px", color: C.cap, lineHeight: 1.55, padding: "10px 22px 0", fontStyle: "italic", borderTop: `1px solid ${C.stoneD}` } }, caption));
+  const Side = ({ title, children }) => /* @__PURE__ */ React.createElement("div", { style: { background: C.stoneD, borderLeft: `3px solid ${C.honey}`, padding: "22px 26px", margin: "38px 0" } }, /* @__PURE__ */ React.createElement("h4", { style: { fontFamily: "'Playfair Display',serif", fontSize: "14px", fontWeight: 700, color: C.mid, marginBottom: "10px", letterSpacing: "1px", textTransform: "uppercase" } }, title), children);
+  const sp = { fontSize: "15px", lineHeight: 1.62, marginBottom: ".7em" };
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("style", null, `
+      
+      *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+      .ng{font-family:'Cormorant Garamond','Georgia',serif;color:${C.text};background:${C.stone};overflow-x:hidden}
+      .ng p{font-size:18.5px;line-height:1.78;margin-bottom:1.35em;font-weight:400;letter-spacing:.01em}
+      .lead::first-letter{font-family:'Playfair Display',serif;font-size:4.2em;float:left;line-height:.8;margin-right:.06em;margin-top:.05em;color:${C.blood}}
+      .hw{position:relative}
+      .ho{position:absolute;bottom:0;left:0;right:0;padding:44px 7% 30px;background:linear-gradient(transparent,rgba(13,10,6,.92))}
+      .hl{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(28px,5vw,56px);color:#fff;line-height:1.05;letter-spacing:-.02em;margin-bottom:10px}
+      .dk{font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2vw,20px);color:${C.honeyL};font-style:italic;line-height:1.42;max-width:720px}
+      .yb{width:56px;height:3.5px;background:${C.honey};margin-bottom:14px}
+      .pw{max-width:710px;margin:0 auto;padding:48px 22px 20px}
+      .pq{font-family:'Playfair Display',serif;font-size:clamp(19px,2.6vw,27px);font-weight:700;font-style:italic;color:${C.warm};border-left:3.5px solid ${C.honey};padding:16px 26px;margin:36px -16px;line-height:1.35}
+      .sn{background:${C.deep};color:${C.honeyL};padding:38px 7%}
+      .sn h3{font-family:'Playfair Display',serif;font-size:16px;color:${C.honey};margin-bottom:14px;letter-spacing:1px}
+      .sn ul{list-style:none;padding:0}.sn li{padding:2.5px 0;font-size:12px;line-height:1.5;opacity:.8}.sn li::before{content:"\u2014 ";color:${C.honey}}
+      .ss{margin-bottom:18px}.st{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:${C.honey};margin-bottom:7px;font-weight:600}
+      .ft{text-align:center;padding:26px;background:${C.deep};border-top:3px solid ${C.honey}}
+    `), /* @__PURE__ */ React.createElement("div", { className: "ng", style: { opacity: ok ? 1 : 0, transition: "opacity .7s" } }, /* @__PURE__ */ React.createElement("div", { className: "hw" }, /* @__PURE__ */ React.createElement(HeroSVG, null), /* @__PURE__ */ React.createElement("div", { className: "ho" }, /* @__PURE__ */ React.createElement("div", { className: "yb" }), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "monospace", fontSize: "9px", color: C.honeyL, letterSpacing: "2px", marginBottom: "8px", textTransform: "uppercase" } }, "Mode: NatGeo Classic | Format: Standard Feature"), /* @__PURE__ */ React.createElement("h1", { className: "hl" }, "The Colour of the Walls"), /* @__PURE__ */ React.createElement("p", { className: "dk" }, "Valletta's golden fortifications were built by the hands of enslaved Muslims, Jews, and Christians. For 268 years, the Knights of St John ran one of the Mediterranean's largest slave economies. The stones remember what the plaques do not."))), /* @__PURE__ */ React.createElement("div", { className: "pw" }, /* @__PURE__ */ React.createElement("p", { className: "lead" }, "On the evening of 6 June 1749, inside a coffeehouse on Strada Fontana in Valletta, three enslaved men tried to recruit a fourth to kill the Grand Master of the Knights of St John. The coffeehouse sat in the shadow of fortifications that enslaved people had helped to build, on a street paved with globigerina limestone quarried by labourers who were somebody's property. The three conspirators \u2014 a Muslim cleric known as the papasso Ibrahim, a man called Giovanni Battista, and a Persian neophyte named Antonio de Viguier who served in the Grand Master's own guard \u2014 were part of a network of roughly 150 people, enslaved and free, who had spent months planning the most ambitious slave revolt in Malta's history. Their target date was 29 June, the feast of Saints Peter and Paul, when Grand Master Manuel Pinto da Fonseca would host a lavish banquet at the Grandmaster's Palace. The plan was to poison the food, assassinate the knights in their auberges, free the prisoners from the Slaves' Prison on St Ursula Street, seize the armouries at Fort St Elmo, and signal an Ottoman fleet waiting offshore. The man they were trying to recruit \u2014 Giacomo Cassar, a soldier of Armenian origin \u2014 refused, was assaulted, and by ten o'clock that night had informed his commanding officer. The revolt never happened. But the coffeehouse conversation, and the world it took place in, tell a story that Malta's honey-coloured walls have been slow to speak."), /* @__PURE__ */ React.createElement("p", null, "The Knights Hospitaller arrived in Malta in 1530, a gift of real estate from Emperor Charles V after they had been expelled from Rhodes by Suleiman the Magnificent. They found a sparsely fortified archipelago with a population of roughly 20,000 and no natural resources except limestone and a strategic harbour. Over the next 268 years, they transformed both. The fortification programme that produced Valletta \u2014 founded in 1566 after the Great Siege and named for Grand Master Jean de la Valette \u2014 and the concentric rings of bastions, curtain walls, and ravelins that still define the island's skyline, required a labour force that the local Maltese population alone could not provide. That workforce came, in significant part, from the institution that financed the entire enterprise: the corso, or corsairing \u2014 state-sponsored piracy against Ottoman and North African shipping that was simultaneously a holy war, a business model, and a slave supply chain."), /* @__PURE__ */ React.createElement("div", { className: "pq" }, `"Valletta would later become Christianity's biggest slave trading city in the Mediterranean \u2014 comparable to Livorno on the Christian side, and Algiers on the Muslim."`), /* @__PURE__ */ React.createElement("p", null, "The economics were circular and self-reinforcing. Corsair galleys \u2014 powered by enslaved oarsmen \u2014 raided Muslim merchant vessels and coastal settlements. The captured cargo enriched the Order's treasury. The captured people were brought to Malta, quarantined at the Lazzaretto on Manoel Island, triaged by sex, age, and physical condition to determine market value, and then distributed: the strongest males went to the galleys as rowers, others were assigned to construction, domestic service, or the Order's institutions. Those captured by the Order's own ships became state property. Those taken by licensed privateers were auctioned at the public slave market in Piazza San Giorgio \u2014 the city's main square, directly in front of the Grandmaster's Palace. Godfrey Wettinger, the Maltese historian who spent his career reconstructing this world from notarial records and chancery documents, published his comprehensive study in 2002: a 600-page work tracing slavery on the islands from approximately 1000 to 1812 that remains the foundational text."), /* @__PURE__ */ React.createElement(Fig, { caption: /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("strong", null, "The engine of empire."), " The corsairing economy that financed Hospitaller Malta. Raids on Ottoman and North African shipping produced plunder (which funded fortifications and the treasury) and captives (who were enslaved, ransomed, or sold). Valletta's slave market at Piazza San Giorgio operated in front of the Grandmaster's Palace. The system was self-reinforcing: galleys powered by enslaved oarsmen conducted the raids that captured more enslaved people.") }, /* @__PURE__ */ React.createElement(CorsoSVG, null)), /* @__PURE__ */ React.createElement("p", null, "The scale grew across three centuries. When the Knights arrived in 1530, Malta had a small existing slave population. After the Great Siege of 1565 \u2014 in which Jean de la Valette's outnumbered garrison held off an Ottoman force of perhaps 40,000 \u2014 several hundred Muslim captives were pressed into the construction of the new capital. They excavated the fortress ditch that separates Valletta from Floriana, a task that required cutting through solid limestone to a depth of eighteen metres. Slave labour also contributed to the Wignacourt Aqueduct in the early seventeenth century. By 1635, Wettinger's research shows, up to 600 slaves worked as artisans or labourers in Valletta and Senglea alone. By the mid-eighteenth century, sources report approximately 8,000 Muslim slaves living in the Maltese islands \u2014 a number that made them a significant fraction of the total population."), /* @__PURE__ */ React.createElement(Fig, { caption: /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("strong", null, "The arc of captivity."), " Estimated slave population on Malta from the Knights' arrival (1530) through the height of the corsairing economy to Napoleon's liberation in 1798. The 1749 spike coincides with the failed revolt plot. Figures are approximate \u2014 Wettinger (2002) notes significant archival gaps before 1580.") }, /* @__PURE__ */ React.createElement(PopSVG, null)), /* @__PURE__ */ React.createElement(Side, { title: "Sidebar 1: The Bagnio" }, /* @__PURE__ */ React.createElement("p", { style: sp }, `The Slaves' Prison \u2014 the Prigione degli Schiavi, commonly called the Bagno \u2014 was Valletta's principal detention compound. Built under Grand Master Hugues Loubenx de Verdalle (1581\u20131595) behind the Bastion of St Christopher, it housed approximately 900 inmates: the Order's slaves, privately owned slaves (held for a fee of one scudo per month), and even free male subjects convicted of crimes. The French traveller Jouvin de Rochefort, who visited Malta in the late seventeenth century, described it as "a huge old edifice." A 1633 plan of Valletta shows two entrances \u2014 one on St Ursula Street, another on East Street. Inside were dormitory cells, two Christian chapels (St John the Baptist and the Holy Cross), a mosque for Muslim slaves, a tavern, and shops for barbers and tailors. The courtyard functioned as a public market specialising in Levantine goods, open to the wider population. Running water arrived in 1615 when Grand Master Wignacourt's aqueduct was extended to the prison. The Bagno was, in effect, a walled city within a walled city \u2014 a microcosm of the Mediterranean's cross-cultural economy, powered by unfreedom.`)), /* @__PURE__ */ React.createElement(Fig, { caption: /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("strong", null, "A prison with a market."), " Schematic layout of the Slaves' Prison (Bagno) in Valletta, after Wettinger (2002) and the 1633 city plan. The compound held approximately 900 inmates \u2014 enslaved people of the Order, privately owned slaves, and convicted free subjects. It contained a mosque, two chapels, a tavern, shops, and a public courtyard market. The building was demolished in the 19th century; no physical trace remains.") }, /* @__PURE__ */ React.createElement(BagnioSVG, null)), /* @__PURE__ */ React.createElement(SB, null), /* @__PURE__ */ React.createElement("p", null, "The man behind the 1749 revolt was Mustafa, Pasha of Rhodes \u2014 an Ottoman official who had arrived in Malta not as a captured corsair victim but as a prisoner of war. In February 1748, Christian slaves aboard the Ottoman flagship Lupa had revolted, seized the vessel, and sailed it to Malta with 150 Ottoman crew as captives. Among them was Mustafa. France, which maintained an alliance with the Ottoman Empire, demanded his release. The Knights compromised: house arrest rather than the Bagno. It was from this position of relative privilege that Mustafa made contact with Constantinople, with the beys of Tunis, Tripoli, and Algiers, and with the enslaved population inside the Slaves' Prison. He distributed arsenic to galley slaves aboard the Order's three warships \u2014 the Capitana, San Luigi, and San Nicola \u2014 to poison the knights at sea. On land, the plan called for simultaneous assassinations at the Palace banquet, the seizure of Fort St Elmo's armouries, and a signal to an Ottoman corsair ship lurking offshore."), /* @__PURE__ */ React.createElement("p", null, "The plot unravelled because of a coffeehouse brawl. When the three conspirators assaulted Giacomo Cassar for refusing to join them, the commotion attracted the attention of the shop owner: Giuseppe Cohen, a Jewish neophyte \u2014 a convert to Christianity \u2014 who reported the conversation to Grand Master Pinto. The trials that followed were held at the Gran Corte della Castellania. One hundred and fifty people were arrested. Interrogation was conducted under torture on the rack. Thirty-five were executed between July and October 1749 \u2014 hanged, quartered, and beheaded in Floriana, paraded through the streets on mule-drawn carts. Three died in custody. Seventy-two were condemned to the galleys, eight of them branded with the letter R \u2014 for ribelli \u2014 on their foreheads. Mustafa, protected by French diplomacy, was eventually exiled to Rhodes on a French vessel. Cohen received a pension of approximately 750 scudi per year and a property on Merchants Street."), /* @__PURE__ */ React.createElement(Side, { title: "Sidebar 2: The Historiography of Silence" }, /* @__PURE__ */ React.createElement("p", { style: sp }, `Malta's relationship with its slave-owning past remains largely unresolved. There are no memorials, plaques, or interpretive programmes at Valletta's heritage sites acknowledging the role of enslaved labour in their construction. The Slaves' Prison itself was demolished in the nineteenth century; its site on St Ursula Street bears no marker. The tomb of Grand Master Raphael Cotoner in St John's Co-Cathedral includes, at its base, a sculpted figure of an African slave gazing upward at the knight \u2014 a monument that embeds the hierarchy of enslavement in the sacred architecture of the Order without comment or context. Godfrey Wettinger, who died in 2015 at the age of 85, spent decades in the archives reconstructing a history that few Maltese institutions had chosen to tell. The 2021 publication in Antiquity by Nathaniel McDermott \u2014 "Slavery, captivity and galley rowing in early modern Malta" \u2014 represents the first archaeological approach to this material, reframing captivity as a process visible in material culture: graffiti in detention spaces, artefacts aboard galley wrecks, the spatial organisation of the Bagno itself. The scholarship is closing the gap between what happened and what is remembered.`)), /* @__PURE__ */ React.createElement(SB, null), /* @__PURE__ */ React.createElement("p", null, "The distinction between the stones and the hands that laid them is, in Valletta, a distinction the city itself refuses to make visible. Every bastion, every curtain wall, every globigerina block in every church fa\xE7ade was cut, transported, and fitted by a workforce that included enslaved Muslims captured in corsair raids, enslaved Jews seized from Mediterranean shipping lanes, enslaved Christians taken as prisoners of war, Maltese freemen working for contractors, and galley slaves temporarily reassigned from the oars to the quarry. Wettinger's research clarifies the division of labour: slaves were generally assigned menial tasks \u2014 removal and carting of rubble, excavation of ditches \u2014 while skilled construction was done by employed workers. But the line between menial and skilled blurred constantly, and the physical infrastructure of extraction \u2014 the quarrying, the hauling, the earthmoving that made fortification possible \u2014 rested on unfree labour."), /* @__PURE__ */ React.createElement("p", null, "In June 1798, Napoleon's fleet appeared in the Grand Harbour. The Order surrendered after token resistance \u2014 a capitulation so swift it suggests the institution's internal decay had advanced further than its walls implied. Napoleon applied French law: liberty, equality, and the abolition of slavery. The Jews and Muslims still held in the Slaves' Prison were freed. The Bagno was eventually demolished. The corsair galleys were retired. The economy that had built Valletta \u2014 an economy of capture, coercion, and the conversion of human beings into architectural infrastructure \u2014 ended not with a revolt but with a bureaucratic decree from a general who had other islands to conquer."), /* @__PURE__ */ React.createElement("p", null, "Today the fortifications remain, golden in the morning light, photographed by thousands of tourists who cross the drawbridge into Valletta each day without knowing that the ditch beneath their feet was cut by enslaved hands. The honey-coloured globigerina limestone \u2014 the same stone that absorbed Ottoman cannonballs during the Great Siege \u2014 has a quality that builders and historians both understand: it is soft when freshly quarried and hardens with exposure to air. Time makes it stronger. Time also makes it silent. Somewhere beneath the surface of every wall in Valletta, in the mortar joints and the quarry marks and the levelling courses, there is a record that no plaque preserves \u2014 the labour of people whose names appear in notarial contracts as merchandise, who slept in a prison with a market, who worshipped in a mosque inside their jail, who planned a revolt in a coffeehouse on a street they had helped to pave, and who, when the revolt failed, were branded on the forehead with a letter that meant rebel. The walls do not speak. But they know.")), /* @__PURE__ */ React.createElement("div", { className: "sn" }, /* @__PURE__ */ React.createElement("h3", null, "Source Integrity Note"), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "st" }, "Claims Requiring Verification"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Slave population estimates (200\u21928,000) \u2014 compiled from multiple sources with acknowledged gaps; no single census exists"), /* @__PURE__ */ React.createElement("li", null, `"Christianity's biggest slave trading city" \u2014 cited in secondary sources; comparative data with Livorno incomplete`), /* @__PURE__ */ React.createElement("li", null, "Fortress ditch depth (18 m) \u2014 cited in heritage literature; engineering survey needed"), /* @__PURE__ */ React.createElement("li", null, "Role of slave labour vs. free labour in fortification construction \u2014 Wettinger distinguishes menial/skilled but boundary unclear"))), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "st" }, "Principal Sources"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Wettinger, G. (2002). Slavery in the Islands of Malta and Gozo ca. 1000\u20131812. Malta: Publishers Enterprises Group."), /* @__PURE__ */ React.createElement("li", null, "McDermott, N. (2022). Hospitaller Interactions with Servile and Enslaved Peoples. PhD thesis, Cardiff University."), /* @__PURE__ */ React.createElement("li", null, 'Antiquity (2021), Vol. 95, Issue 383: "Slavery, captivity and galley rowing in early modern Malta."'), /* @__PURE__ */ React.createElement("li", null, 'Fontenay, M. (2001). "Il mercato maltese degli schiavi." Quaderni Storici 2, Rome.'), /* @__PURE__ */ React.createElement("li", null, "Bono, S. (1999). Schiavi musulmani nell'Italia moderna. University of Perugia Press."), /* @__PURE__ */ React.createElement("li", null, 'Wikipedia: "Slavery in Malta"; "1749 Muslim slave revolt plot in Malta" (accessed April 2026).'), /* @__PURE__ */ React.createElement("li", null, `i-access.eu: "Site of Slaves' Prison" \u2014 architectural and cartographic evidence.`))), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "st" }, "Fieldwork Requiring Access"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Site of Slaves' Prison, St Ursula Street, Valletta \u2014 now commercial/residential; no visible remains"), /* @__PURE__ */ React.createElement("li", null, "National Library of Malta \u2014 Wettinger's archival sources, notarial contracts, chancery records"), /* @__PURE__ */ React.createElement("li", null, "St John's Co-Cathedral \u2014 Cotoner tomb with enslaved figure at base"), /* @__PURE__ */ React.createElement("li", null, "Gran Corte della Castellania \u2014 trial records of 1749 conspiracy"), /* @__PURE__ */ React.createElement("li", null, "Fort St Elmo / National War Museum \u2014 the armouries the conspirators planned to seize"))), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "st" }, "Contested Claims"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, `Scale of enslaved contribution to Valletta's construction \u2014 Wettinger notes slaves did "menial tasks" while construction was by "skilled workers employed by contractors," but the boundary was fluid`), /* @__PURE__ */ React.createElement("li", null, "Mustafa's precise role \u2014 some sources suggest personal ambition alongside liberation motives"), /* @__PURE__ */ React.createElement("li", null, "Cohen's credit vs. Cassar's \u2014 Cassar informed first but Cohen received the reward; Wettinger notes this discrepancy"))), /* @__PURE__ */ React.createElement("div", { className: "ss" }, /* @__PURE__ */ React.createElement("div", { className: "st" }, "Voices to Add"), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "Maltese historians continuing Wettinger's archival work"), /* @__PURE__ */ React.createElement("li", null, "Heritage Malta staff \u2014 current interpretive approach to slavery at fortification sites"), /* @__PURE__ */ React.createElement("li", null, "Muslim and Jewish community representatives \u2014 perspectives on ancestral captivity"), /* @__PURE__ */ React.createElement("li", null, "Archaeological researchers (McDermott et al.) \u2014 material evidence of captivity"), /* @__PURE__ */ React.createElement("li", null, 'North African historians \u2014 the "other side" of the corsairing economy (Algiers, Tunis, Tripoli)')))), /* @__PURE__ */ React.createElement("div", { className: "ft" }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Playfair Display',serif", fontSize: "13px", fontWeight: 700, color: C.honey, letterSpacing: "3px", textTransform: "uppercase" } }, "National Geographic"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "10px", color: C.honeyL, opacity: 0.5, marginTop: "5px" } }, "History \xB7 Mediterranean \xB7 Malta"))));
+}
+
+      ReactDOM.createRoot(document.getElementById('root')).render(
+        React.createElement(App)
+      );
+    } catch (err) {
+      var box = document.getElementById('error-boundary');
+      if (box) {
+        box.style.display = 'block';
+        box.textContent = '[render error] ' + (err && err.message ? err.message : err);
+      }
+      console.error(err);
+    }
+  </script>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

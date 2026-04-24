@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reverse Osmosis Desalination</title>
+  <meta name="description" content="" />
+
+  <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+
+  <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
+  <script src="../assets/vendor/react.production.min.js"></script>
+  <script src="../assets/vendor/react-dom.production.min.js"></script>
+  <script src="../assets/vendor/prop-types.min.js"></script>
+  <script src="../assets/vendor/recharts.js"></script>
+</head>
+<body>
+  <!-- Compact header bar -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Reverse Osmosis Desalination</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date"></span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+        
+      </div>
+      <a class="md-link header-md-link" href="../md/reverse-osmosis-desalination.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
+      <a class="pdf-link header-pdf-link" href="reverse-osmosis-desalination.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All articles</a>
+    </div>
+  </header>
+
+  <!-- Render target -->
+  <main class="article-container">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem; font-family:serif;">
+        This article requires JavaScript to render the embedded React/Recharts components.
+      </p>
+    </noscript>
+    <div id="error-boundary" style="display:none; padding:2rem; background:#fff3f3; border:1px solid #f5c2c2; border-radius:8px; font-family:ui-monospace,monospace;"></div>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>reverse-osmosis-desalination</code> &middot; category: <code>general</code></span>
+      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Expose React hooks + Recharts components into global scope for the JSX block -->
+  <script>
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useMemo = React.useMemo;
+    window.useRef = React.useRef;
+    window.useCallback = React.useCallback;
+    window.useReducer = React.useReducer;
+    window.useLayoutEffect = React.useLayoutEffect;
+    window.useContext = React.useContext;
+    window.Fragment = React.Fragment;
+
+    // Expose Recharts components into global scope
+    const _R = window.Recharts || {};
+    [
+      'LineChart','BarChart','AreaChart','ScatterChart','RadarChart','PieChart',
+      'XAxis','YAxis','ZAxis','CartesianGrid','Tooltip','Legend','Line','Bar','Area',
+      'Scatter','Pie','Cell','ResponsiveContainer','ReferenceLine','ReferenceArea','ReferenceDot',
+      'ComposedChart','Treemap','Radar','PolarGrid','PolarAngleAxis','PolarRadiusAxis',
+      'RadialBar','RadialBarChart','FunnelChart','Funnel','LabelList','Label','Brush',
+      'Sankey','Sector','Customized','CartesianAxis','ErrorBar','Rectangle','Curve','Cross','Dot','Polygon','Symbols','Text'
+    ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
+
+    // Simple error surface for runtime failures
+    window.addEventListener('error', function (e) {
+      var box = document.getElementById('error-boundary');
+      if (!box) return;
+      box.style.display = 'block';
+      box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
+    });
+
+    // Global <Photograph> helper (pre-transpiled React.createElement form)
+    window.Photograph = function (props) {
+      var src = props.src, alt = props.alt, caption = props.caption, credit = props.credit, href = props.href;
+      var children = [
+        React.createElement('img', { src: src, alt: alt || caption || '', loading: 'lazy', key: 'img' })
+      ];
+      if (caption || credit) {
+        var figCapChildren = [];
+        if (caption) figCapChildren.push(
+          React.createElement('span', { className: 'photo-caption', key: 'cap' }, caption)
+        );
+        if (credit) figCapChildren.push(
+          React.createElement('span', { className: 'photo-credit', key: 'cr' },
+            ' — ',
+            React.createElement('a', { href: href, target: '_blank', rel: 'noopener noreferrer' }, credit)
+          )
+        );
+        children.push(React.createElement('figcaption', { key: 'cap-root' }, figCapChildren));
+      }
+      return React.createElement('figure', { className: 'photo' }, children);
+    };
+  </script>
+
+  <!-- Pre-transpiled JSX payload (esbuild --loader=jsx --jsx=transform, classic mode).
+       React.createElement(...) calls resolve against the UMD React global above. -->
+  <script>
+    try {
+      import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  ReferenceLine
+} from "recharts";
+const C = {
+  yellow: "#FFCE00",
+  black: "#1a1a1a",
+  offWhite: "#FAF8F5",
+  cream: "#F2EDE4",
+  warmGray: "#8A8278",
+  darkGray: "#3D3B38",
+  sidebarBg: "#F0EBE1",
+  accent: "#C4A35A",
+  borderLight: "#E0DAD0",
+  deepBlue: "#0d2140",
+  midBlue: "#1a3a5c",
+  teal: "#1a7a8a"
+};
+const energyData = [
+  { year: "1970", kwh: 26 },
+  { year: "1980", kwh: 18 },
+  { year: "1990", kwh: 10 },
+  { year: "2000", kwh: 6.5 },
+  { year: "2010", kwh: 4 },
+  { year: "2018", kwh: 3 },
+  { year: "2025", kwh: 2.5 },
+  { year: "Theoretical\nmin", kwh: 1.1 }
+];
+const capacityData = [
+  { region: "MENA", pct: 41.8, color: "#C4853A" },
+  { region: "Asia\nPacific", pct: 19.2, color: "#3A7AC4" },
+  { region: "North\nAmerica", pct: 12.4, color: "#3AC4A0" },
+  { region: "Europe", pct: 11.1, color: "#8A7AC4" },
+  { region: "Other", pct: 15.5, color: "#888" }
+];
+const brineData = [
+  { year: "2000", freshwater: 28, brine: 42 },
+  { year: "2005", freshwater: 40, brine: 60 },
+  { year: "2010", freshwater: 55, brine: 82 },
+  { year: "2015", freshwater: 75, brine: 112 },
+  { year: "2019", freshwater: 95, brine: 142 },
+  { year: "2025e", freshwater: 130, brine: 195 }
+];
+const costData = [
+  { year: "2000", cost: 2.1 },
+  { year: "2005", cost: 1.4 },
+  { year: "2010", cost: 0.95 },
+  { year: "2015", cost: 0.72 },
+  { year: "2020", cost: 0.55 },
+  { year: "2025", cost: 0.41 }
+];
+function EnergyChart() {
+  return /* @__PURE__ */ React.createElement("div", { style: { background: C.deepBlue, borderRadius: 4, padding: "28px 20px 20px", marginBottom: 8 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, letterSpacing: 2, color: C.yellow, fontWeight: 700, marginBottom: 6, textTransform: "uppercase" } }, "Energy Consumption \xB7 kWh per m\xB3 of freshwater produced"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Serif 4',serif", fontSize: 15, color: "rgba(255,255,255,0.85)", marginBottom: 18, lineHeight: 1.5 } }, "A fifty-year compression \u2014 from industrial luxury to near-theoretical minimum"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 220 }, /* @__PURE__ */ React.createElement(AreaChart, { data: energyData, margin: { top: 10, right: 20, bottom: 10, left: 0 } }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("linearGradient", { id: "energyGrad", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "5%", stopColor: C.yellow, stopOpacity: 0.4 }), /* @__PURE__ */ React.createElement("stop", { offset: "95%", stopColor: C.yellow, stopOpacity: 0.05 }))), /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: "rgba(255,255,255,0.1)" }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "year", tick: { fill: "rgba(255,255,255,0.6)", fontSize: 11, fontFamily: "'Source Sans 3',sans-serif" }, axisLine: false, tickLine: false }), /* @__PURE__ */ React.createElement(YAxis, { tick: { fill: "rgba(255,255,255,0.6)", fontSize: 11, fontFamily: "'Source Sans 3',sans-serif" }, axisLine: false, tickLine: false }), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { background: C.midBlue, border: "none", color: "#fff", fontFamily: "'Source Sans 3',sans-serif", fontSize: 13 }, formatter: (v) => [`${v} kWh/m\xB3`] }), /* @__PURE__ */ React.createElement(ReferenceLine, { y: 1.1, stroke: C.yellow, strokeDasharray: "6 3", label: { value: "Thermodynamic limit: 1.1 kWh/m\xB3", fill: C.yellow, fontSize: 10, fontFamily: "'Source Sans 3',sans-serif" } }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "kwh", stroke: C.yellow, strokeWidth: 2.5, fill: "url(#energyGrad)", dot: { fill: C.yellow, r: 4 } }))), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 8 } }, "Source: IDA / IRENA / 2024 Roadmap on Membrane Desalination Technology"));
+}
+function CapacityChart() {
+  const colors = ["#C4853A", "#3A7AC4", "#3AC4A0", "#8A7AC4", "#888"];
+  return /* @__PURE__ */ React.createElement("div", { style: { background: C.offWhite, border: `1px solid ${C.borderLight}`, borderRadius: 4, padding: "28px 20px 20px", marginBottom: 8 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, letterSpacing: 2, color: C.accent, fontWeight: 700, marginBottom: 6, textTransform: "uppercase" } }, "Global Desalination Capacity \xB7 Share by Region"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Serif 4',serif", fontSize: 15, color: C.darkGray, marginBottom: 18, lineHeight: 1.5 } }, "MENA produces 41.8% of the world's desalinated water \u2014 a geography of existential thirst"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 200 }, /* @__PURE__ */ React.createElement(BarChart, { data: capacityData, margin: { top: 5, right: 20, bottom: 5, left: 0 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: C.borderLight }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "region", tick: { fill: C.darkGray, fontSize: 11, fontFamily: "'Source Sans 3',sans-serif" }, axisLine: false, tickLine: false }), /* @__PURE__ */ React.createElement(YAxis, { tick: { fill: C.warmGray, fontSize: 11, fontFamily: "'Source Sans 3',sans-serif" }, axisLine: false, tickLine: false, unit: "%" }), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { background: C.cream, border: `1px solid ${C.borderLight}`, color: C.black, fontFamily: "'Source Sans 3',sans-serif", fontSize: 13 }, formatter: (v) => [`${v}%`] }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "pct", radius: [3, 3, 0, 0] }, capacityData.map((entry, i) => /* @__PURE__ */ React.createElement("rect", { key: i, fill: colors[i] }))))), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 10, color: C.warmGray, marginTop: 8 } }, "Source: Nature (Jan 2024); MENA region includes Saudi Arabia, UAE, Egypt, Morocco, other Gulf states"));
+}
+function BrineChart() {
+  return /* @__PURE__ */ React.createElement("div", { style: { background: C.deepBlue, borderRadius: 4, padding: "28px 20px 20px", marginBottom: 8 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, letterSpacing: 2, color: "#ff8a65", fontWeight: 700, marginBottom: 6, textTransform: "uppercase" } }, "The Hidden Equation \xB7 Million m\xB3/day"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Serif 4',serif", fontSize: 15, color: "rgba(255,255,255,0.85)", marginBottom: 18, lineHeight: 1.5 } }, "For every cubic metre of freshwater produced, 1.5 cubic metres of hypersaline brine are discharged"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 220 }, /* @__PURE__ */ React.createElement(AreaChart, { data: brineData, margin: { top: 10, right: 20, bottom: 10, left: 0 } }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("linearGradient", { id: "freshGrad", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "5%", stopColor: "#3AC4A0", stopOpacity: 0.6 }), /* @__PURE__ */ React.createElement("stop", { offset: "95%", stopColor: "#3AC4A0", stopOpacity: 0.05 })), /* @__PURE__ */ React.createElement("linearGradient", { id: "brineGrad", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "5%", stopColor: "#ff8a65", stopOpacity: 0.6 }), /* @__PURE__ */ React.createElement("stop", { offset: "95%", stopColor: "#ff8a65", stopOpacity: 0.05 }))), /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: "rgba(255,255,255,0.1)" }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "year", tick: { fill: "rgba(255,255,255,0.6)", fontSize: 11, fontFamily: "'Source Sans 3',sans-serif" }, axisLine: false, tickLine: false }), /* @__PURE__ */ React.createElement(YAxis, { tick: { fill: "rgba(255,255,255,0.6)", fontSize: 11, fontFamily: "'Source Sans 3',sans-serif" }, axisLine: false, tickLine: false }), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { background: C.midBlue, border: "none", color: "#fff", fontFamily: "'Source Sans 3',sans-serif", fontSize: 13 }, formatter: (v, n) => [`${v} M m\xB3/day`, n === "freshwater" ? "Freshwater produced" : "Brine discharged"] }), /* @__PURE__ */ React.createElement(Legend, { wrapperStyle: { color: "rgba(255,255,255,0.7)", fontFamily: "'Source Sans 3',sans-serif", fontSize: 12 } }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "freshwater", name: "freshwater", stroke: "#3AC4A0", strokeWidth: 2, fill: "url(#freshGrad)" }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "brine", name: "brine", stroke: "#ff8a65", strokeWidth: 2, fill: "url(#brineGrad)" }))), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 8 } }, "Source: UNU-INWEH (Qadir et al., 2019); 2025e = estimate based on DesalData growth projections"));
+}
+function CostChart() {
+  return /* @__PURE__ */ React.createElement("div", { style: { background: C.offWhite, border: `1px solid ${C.borderLight}`, borderRadius: 4, padding: "28px 20px 20px", marginBottom: 8 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, letterSpacing: 2, color: C.accent, fontWeight: 700, marginBottom: 6, textTransform: "uppercase" } }, "Cost of Desalinated Water \xB7 US$ per cubic metre (SWRO)"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Serif 4',serif", fontSize: 15, color: C.darkGray, marginBottom: 18, lineHeight: 1.5 } }, "Sorek 2 (Israel, 2024) broke the $0.41/m\xB3 barrier \u2014 half the cost of a decade prior"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 200 }, /* @__PURE__ */ React.createElement(LineChart, { data: costData, margin: { top: 5, right: 20, bottom: 5, left: 0 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: C.borderLight }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "year", tick: { fill: C.darkGray, fontSize: 11, fontFamily: "'Source Sans 3',sans-serif" }, axisLine: false, tickLine: false }), /* @__PURE__ */ React.createElement(YAxis, { tick: { fill: C.warmGray, fontSize: 11, fontFamily: "'Source Sans 3',sans-serif" }, axisLine: false, tickLine: false, unit: "$" }), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { background: C.cream, border: `1px solid ${C.borderLight}`, color: C.black, fontFamily: "'Source Sans 3',sans-serif", fontSize: 13 }, formatter: (v) => [`$${v}/m\xB3`] }), /* @__PURE__ */ React.createElement(Line, { type: "monotone", dataKey: "cost", stroke: C.accent, strokeWidth: 3, dot: { fill: C.accent, r: 5 } }))), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 10, color: C.warmGray, marginTop: 8 } }, "Source: Scientific American / IDE Technologies / Global Water Intelligence"));
+}
+function DropCap({ children }) {
+  const first = children[0];
+  const rest = children.slice(1);
+  return /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Source Serif 4',serif", fontSize: 19, lineHeight: 1.75, color: C.black, margin: "0 0 24px", textAlign: "justify" } }, /* @__PURE__ */ React.createElement("span", { style: {
+    float: "left",
+    fontFamily: "'Playfair Display',serif",
+    fontSize: 82,
+    fontWeight: 900,
+    lineHeight: 0.8,
+    marginRight: 8,
+    marginTop: 10,
+    color: C.black
+  } }, first), rest);
+}
+function Sidebar({ title, children }) {
+  return /* @__PURE__ */ React.createElement("aside", { style: {
+    background: C.sidebarBg,
+    border: `1px solid ${C.borderLight}`,
+    borderLeft: `3px solid ${C.yellow}`,
+    padding: "24px 24px 20px",
+    margin: "36px 0",
+    borderRadius: "0 4px 4px 0"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: "'Source Sans 3',sans-serif",
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: 2.5,
+    textTransform: "uppercase",
+    color: C.darkGray,
+    borderBottom: `2px solid ${C.yellow}`,
+    paddingBottom: 8,
+    marginBottom: 14
+  } }, title), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 15, color: C.darkGray, lineHeight: 1.7 } }, children));
+}
+function ImgCaption({ label, text }) {
+  return /* @__PURE__ */ React.createElement("figcaption", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 12.5, color: C.darkGray, lineHeight: 1.55, marginTop: 8, paddingLeft: 12, borderLeft: `2px solid ${C.accent}` } }, /* @__PURE__ */ React.createElement("span", { style: { color: C.accent, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, fontSize: 10, marginRight: 6 } }, label), text);
+}
+function Photo({ src, alt, label, caption, style = {} }) {
+  return /* @__PURE__ */ React.createElement("figure", { style: { margin: "36px 0 28px", ...style } }, /* @__PURE__ */ React.createElement("img", { src, alt, style: { width: "100%", display: "block", borderRadius: 2, objectFit: "cover", maxHeight: 460 } }), /* @__PURE__ */ React.createElement(ImgCaption, { label, text: caption }));
+}
+function PullQuote({ children }) {
+  return /* @__PURE__ */ React.createElement("blockquote", { style: {
+    margin: "44px 0",
+    padding: "0 0 0 24px",
+    borderLeft: `3px solid ${C.yellow}`,
+    fontFamily: "'Playfair Display',serif",
+    fontStyle: "italic",
+    fontSize: 24,
+    lineHeight: 1.5,
+    color: C.black,
+    fontWeight: 400
+  } }, children);
+}
+function SceneBreak() {
+  return /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", margin: "52px 0", letterSpacing: 8, color: C.accent, fontSize: 22 } }, "\u2767");
+}
+function Para({ children, style = {} }) {
+  return /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Source Serif 4',serif", fontSize: 19, lineHeight: 1.75, color: C.black, margin: "0 0 24px", textAlign: "justify", ...style } }, children);
+}
+function SectionLabel({ children }) {
+  return /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: C.accent, marginBottom: 20, marginTop: 48 } }, children);
+}
+function ReverseOsmosisFeature() {
+  const [sourceOpen, setSourceOpen] = useState(false);
+  return /* @__PURE__ */ React.createElement("div", { style: { background: C.offWhite, minHeight: "100vh", fontFamily: "'Source Serif 4',serif" } }, /* @__PURE__ */ React.createElement("style", null, `
+        
+        * { box-sizing: border-box; }
+        body { margin: 0; }
+      `), /* @__PURE__ */ React.createElement("div", { style: { background: C.black, padding: "10px 24px", display: "flex", alignItems: "center", gap: 16 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 10, letterSpacing: 2, color: C.warmGray, textTransform: "uppercase" } }, "MODE: Scientific American Hybrid \xA0\xB7\xA0 FORMAT: Full Feature")), /* @__PURE__ */ React.createElement("div", { style: { height: 4, background: C.yellow, width: "100%" } }), /* @__PURE__ */ React.createElement("div", { style: {
+    minHeight: "88vh",
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    overflow: "hidden",
+    background: `linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.78) 100%), url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/SWRO_Desalination_Plant.jpg/1280px-SWRO_Desalination_Plant.jpg') center/cover no-repeat`
+  } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "0 0 60px", maxWidth: 860, margin: "0 auto", width: "100%", paddingLeft: 40, paddingRight: 40 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, letterSpacing: 3, color: C.yellow, fontWeight: 700, marginBottom: 20, textTransform: "uppercase" } }, "\u25C6 Full Feature \xB7 Water & Technology"), /* @__PURE__ */ React.createElement("h1", { style: {
+    fontFamily: "'Playfair Display',serif",
+    fontWeight: 900,
+    margin: "0 0 20px",
+    fontSize: "clamp(38px, 6vw, 68px)",
+    lineHeight: 1.05,
+    color: "#ffffff",
+    letterSpacing: -1
+  } }, "The Membrane at the", /* @__PURE__ */ React.createElement("br", null), "Edge of Thirst"), /* @__PURE__ */ React.createElement("p", { style: {
+    fontFamily: "'Source Serif 4',serif",
+    fontStyle: "italic",
+    fontSize: 20,
+    color: "rgba(255,255,255,0.88)",
+    margin: "0 0 32px",
+    lineHeight: 1.55,
+    maxWidth: 620
+  } }, "Reverse osmosis was supposed to solve humanity's water crisis. It has come closer than any technology in history \u2014 and in doing so, has created crises of its own."), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, color: "rgba(255,255,255,0.45)", letterSpacing: 1, textAlign: "right" } }, "A seawater reverse osmosis facility \u2014 50,000 tonnes of pressurised membrane, 55 bar of applied force, and a question that has no clean answer."))), /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 740, margin: "0 auto", padding: "64px 24px 80px" } }, /* @__PURE__ */ React.createElement(DropCap, null, "n the third floor of a building on Yale University's science hill, inside a laboratory that smells of polymer solvents and calibration fluid, a researcher holds a membrane up to fluorescent light. It is roughly the size of a coffee filter \u2014 off-white, almost translucent, thinner than a human hair. Through it, at pressures exceeding 55 bar, passes some of the most expensive water on Earth. At those pressures, a standard automobile tyre would explode. Here, in this unremarkable disc of cross-linked polyamide, the physics of global water security plays out at the molecular level."), /* @__PURE__ */ React.createElement(Para, null, "The lab belongs to Menachem Elimelech, the Sterling Professor of Chemical and Environmental Engineering at Yale \u2014 one of the most cited water scientists alive, and a man who has spent four decades trying to understand something that most engineers assumed they had already understood. In April 2023, his group published a paper in ", /* @__PURE__ */ React.createElement("em", null, "Science Advances"), " that upended the field's central assumption: the solution-diffusion model, which had described how water moves through reverse osmosis membranes since the 1960s, is, Elimelech's simulations show, fundamentally wrong. Water does not dissolve into the membrane and diffuse down a concentration gradient. It travels in clusters, driven by pressure changes through a network of nanometre-scale pores. The implications are profound. Fifty years of membrane engineering, Elimelech argues, were optimised around a faulty model. Some of the most promising research dead ends of the past two decades may not have been dead ends at all \u2014 they were simply designed for the wrong physics."), /* @__PURE__ */ React.createElement(Para, null, "This is not a story only about chemistry. It is a story about what happens when a technology that works \u2014 that genuinely works, that has turned seawater into drinking water for hundreds of millions of people across the world's most water-stressed geographies \u2014 begins to reveal the limits that no amount of engineering elegance can resolve. Reverse osmosis desalination has reduced the cost of producing freshwater from the sea by a factor of five in forty years. It has allowed Israel to produce more water than it needs in a country that once faced existential drought. It has kept the taps running in Chennai during a 2019 crisis that made international headlines when the city's reservoirs ran dry. It powers the ambitions of NEOM, Saudi Arabia's $500-billion city-in-the-desert, which plans to run a 500,000-cubic-metre-per-day desalination plant entirely on renewable energy. And it produces, as an inescapable byproduct, approximately 142 million cubic metres of hypersaline brine every single day \u2014 enough to fill 57,000 Olympic swimming pools \u2014 which is pumped back into the oceans that supplied it, with consequences that marine scientists are only beginning to measure."), /* @__PURE__ */ React.createElement(PullQuote, null, '"Some of the assumptions in the old theory simply do not make sense. We have been designing membranes for fifty years without understanding what is actually happening inside them."'), /* @__PURE__ */ React.createElement(
+    Photo,
+    {
+      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/SWRO_Desalination_Plant.jpg/1280px-SWRO_Desalination_Plant.jpg",
+      alt: "Seawater reverse osmosis desalination facility",
+      label: "Establishing",
+      caption: "A seawater reverse osmosis facility showing the pressure vessel arrays \u2014 the white cylinders stacked in racks \u2014 each containing seven or eight spiral-wound membrane modules. Commercial SWRO systems operate at 55\u201383 bar, roughly 800 times atmospheric pressure. The mathematics of scarcity made physical."
+    }
+  ), /* @__PURE__ */ React.createElement(SectionLabel, null, "I. The Physics of Pressure"), /* @__PURE__ */ React.createElement(Para, null, "To understand what Elimelech overturned, you need to understand what reverse osmosis is reversing. Osmosis \u2014 ordinary osmosis, the kind that moves water across the membranes of every living cell \u2014 is driven by concentration gradients. A dilute solution on one side of a semipermeable membrane, a concentrated solution on the other: water moves, spontaneously, toward the concentration, driven by the thermodynamic imperative to equalise. This is why plant roots draw moisture from soil, why red blood cells swell and burst in pure water. Nature runs on osmosis."), /* @__PURE__ */ React.createElement(Para, null, "Reverse osmosis runs against it. Apply sufficient pressure to the concentrated side \u2014 to seawater, at roughly 27 bar of osmotic pressure for typical ocean salinity \u2014 and you force the process into reverse. Water molecules squeeze through the membrane. Salt ions, too large and electrostatically repelled, stay behind. The result is freshwater on one side, increasingly concentrated brine on the other. The process was first demonstrated at practical scale in 1965, when a UCLA research team led by Sidney Loeb and Srinivasa Sourirajan produced the first viable cellulose acetate membrane and ran the world's first reverse osmosis desalination plant in Coalinga, California \u2014 a facility that produced just 5,000 gallons per day. Today's plants produce 500,000 cubic metres."), /* @__PURE__ */ React.createElement(Para, null, "The standard explanation for how water moves through the membrane \u2014 the solution-diffusion model \u2014 assumed that water molecules dissolved into the dense polymer matrix, separated from each other, and diffused individually along a concentration gradient through the material. For fifty years, this model was taught in textbooks and used to design membranes. Elimelech's group, using molecular dynamics simulations validated by direct experiment, found that the membrane is not as dense as the model assumes. There are pores \u2014 nanometre-scale, but pores. Water moves through them in clusters, propelled by pressure differentials within the membrane itself. The distinction matters because it changes what an engineer should optimise. If the old model was correct, making a membrane thinner would always increase flux. The new model predicts a more nuanced relationship, and suggests that certain material architectures long dismissed as impractical may, in fact, be exactly what the field needs."), /* @__PURE__ */ React.createElement(EnergyChart, null), /* @__PURE__ */ React.createElement(ImgCaption, { label: "Data", text: "The energy cost of seawater reverse osmosis has fallen more than tenfold since the 1970s, driven by better membranes, high-efficiency pumps, and pressure-exchanger energy recovery devices that now return up to 95% of rejected brine energy. The thermodynamic minimum \u2014 1.1 kWh/m\xB3 \u2014 represents a floor that physics, not engineering, imposes." }), /* @__PURE__ */ React.createElement(Sidebar, { title: "How a Spiral-Wound Membrane Module Works" }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 12px" } }, "The workhorse of commercial desalination is not a flat sheet but a spiral. Two membrane envelopes are wound around a central permeate collection tube, separated by a mesh spacer that creates the feed channel. Seawater enters one end under pressure, sweeping across the membrane surface in cross-flow \u2014 the velocity prevents salt from accumulating on the surface (a phenomenon called concentration polarisation). Water that passes through the membrane spirals inward toward the collection tube. The rejected brine exits the other end, still under pressure."), /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 12px" } }, "A standard commercial module is eight inches in diameter and forty inches long, housing roughly 37 square metres of membrane area. Industrial pressure vessels stack seven or eight such elements end-to-end. A large desalination plant may contain tens of thousands of pressure vessels arranged in parallel arrays \u2014 the white-cylinders-on-racks that define the aesthetic of every modern facility."), /* @__PURE__ */ React.createElement("p", { style: { margin: 0 } }, "Israel's Sorek plant, built by IDE Technologies, innovated by using sixteen-inch-diameter elements \u2014 twice the standard size \u2014 arranged vertically rather than horizontally. The larger format reduces the number of pressure vessels required, cutting capital costs significantly. Sorek 2, commissioned in 2024, achieved a production price of $0.41 per cubic metre \u2014 the lowest ever recorded for seawater desalination.")), /* @__PURE__ */ React.createElement(SceneBreak, null), /* @__PURE__ */ React.createElement(SectionLabel, null, "II. The Infrastructure of Necessity"), /* @__PURE__ */ React.createElement(Para, null, "Stand at the fence of the Ras Al Khair desalination complex on Saudi Arabia's eastern Gulf coast and the scale of the enterprise becomes briefly incomprehensible. The facility \u2014 located on a stretch of coast 75 kilometres northwest of Jubail \u2014 occupies an area larger than the island of Manhattan's Financial District. Its hybrid architecture combines thermal multi-stage flash distillation and reverse osmosis in parallel, producing nearly 3 million cubic metres of water per day. It also generates 2,400 megawatts of electricity. Together, the facility and its twin at Shuaiba supply the freshwater needs of Riyadh, a capital city of seven million people located 400 kilometres inland from any coastline, in one of the driest places on the planet."), /* @__PURE__ */ React.createElement(Para, null, "Saudi Arabia accounts for more than 25 percent of global desalinated water capacity, operating 30 to 32 plants across 17 coastal locations. The kingdom draws roughly 70 percent of its municipal water supply from these facilities \u2014 a figure that would have seemed a dystopian fantasy in 1970 and is now simply how the country works. The MENA region as a whole, according to a 2024 study published in ", /* @__PURE__ */ React.createElement("em", null, "Nature"), ", accounts for 41.8 percent of global operational desalination capacity, with approximately 5,000 plants producing 28.96 million cubic metres of water per day. Governments across the region are contracted to nearly double this capacity between 2024 and 2028. The $53.4 billion the region invested in desalination infrastructure between 2006 and 2024 \u2014 47.5 percent of total global spending \u2014 is projected to reach $100 billion by 2030."), /* @__PURE__ */ React.createElement(CapacityChart, null), /* @__PURE__ */ React.createElement(ImgCaption, { label: "Data", text: "MENA's dominance of global desalination capacity reflects a simple geographic reality: the region contains five of the world's most water-stressed nations, sits atop the world's largest fossil fuel reserves, and borders an ocean too salty, too warm, and too enclosed to recover easily from what we pump back into it." }), /* @__PURE__ */ React.createElement(Para, null, "The economics driving this expansion have shifted with remarkable speed. In 2000, producing a cubic metre of desalinated seawater cost approximately $2.10. By 2020, the figure had fallen to around $0.55. Projects in Saudi Arabia and the UAE in recent years have achieved prices below $0.50 per cubic metre. The drivers are well understood: better membranes with higher salt rejection and water flux, energy recovery devices (pressure exchangers) that recapture up to 95 percent of the kinetic energy in the rejected brine stream, and the replacement of energy-hungry thermal distillation with membrane-based reverse osmosis, which the International Desalination Association reports now accounts for over 90 percent of new desalination capacity contracted between 2020 and 2024. Modern seawater RO consumes between 2.5 and 4 kilowatt-hours per cubic metre. Thermal distillation consumes 5 to 12."), /* @__PURE__ */ React.createElement(
+    Photo,
+    {
+      src: "https://www.blackridgeresearch.com/blog_images/ras-al-khair-desalination-plant.jpg",
+      alt: "Ras Al Khair desalination plant Saudi Arabia",
+      label: "Scale",
+      caption: "The Ras Al Khair complex on Saudi Arabia's eastern Gulf coast \u2014 one of the largest co-generation facilities in the world, producing nearly 3 million cubic metres of water and 2,400 megawatts of electricity per day. Its existence is the answer to a political question as much as a technical one: where does a landlocked capital city of seven million get its water?"
+    }
+  ), /* @__PURE__ */ React.createElement(SectionLabel, null, "III. A City on the Edge of Dry"), /* @__PURE__ */ React.createElement(Para, null, "On 19 June 2019, the four reservoirs that supply Chennai \u2014 India's sixth-largest city, home to eleven million people on the Bay of Bengal \u2014 reached what water engineers call Day Zero. Not low. Not depleted. Zero. The taps across the city ran dry simultaneously. Chennai became the first major city of the 21st century to experience total municipal water failure, and the crisis played out with a particular cruelty: tanker trucks queued for hours at the few functioning groundwater sources; hotels and restaurants closed; IT companies \u2014 Chennai is a major technology hub \u2014 bussed their employees to facilities in other states. Water prices in the informal tanker market rose by a factor of four in a week."), /* @__PURE__ */ React.createElement(Para, null, "Chennai has no perennial river. It is entirely dependent on its four reservoirs, recharged by the northeast monsoon, and on an overexploited coastal aquifer. In 1998, when India's worst drought in 900 years triggered a national reckoning with water security, the Tamil Nadu government began planning desalination as a permanent hedge against monsoon failure. The first plant \u2014 the 100-million-litre-per-day Minjur facility, north of the city \u2014 came online in 2010. The Nemmeli plant followed. Together they provided a critical buffer during the 2019 crisis, but the crisis still happened. By 2024, when the Chennai Metropolitan Water Supply and Sewerage Board operated three plants with a combined capacity of 48 million gallons per day, those plants provided the city's only reliable supply during a severe heatwave that left the major reservoirs at 56.2 percent capacity."), /* @__PURE__ */ React.createElement(
+    Photo,
+    {
+      src: "https://ichef.bbci.co.uk/news/1024/branded_news/12FF/production/_107516765_gettyimages-1153093793.jpg",
+      alt: "Chennai water tanker trucks India",
+      label: "Consequence",
+      caption: "Chennai, June 2019: queues for tanker water during the city's total municipal supply failure. The crisis drove political pressure for rapid desalination expansion \u2014 the city has since tripled its plant capacity and is under construction on a fourth facility, the 400-million-litre-per-day Perur plant. But engineers and economists debate whether desalination alone can solve what is also a problem of governance and pipe leakage."
+    }
+  ), /* @__PURE__ */ React.createElement(Para, null, "The World Bank and environmental economists have argued, with some justification, that desalination is not Chennai's most cost-effective option \u2014 that fixing the city's leaky distribution network, aggressive rainwater harvesting, and tariff reform would deliver more water per rupee spent. This argument is correct on its own terms, and it misses the political reality. In a city where monsoon failure is now routine and aquifer depletion irreversible, desalination offers something the other interventions do not: supply that is independent of the sky. The Perur plant, with 400 million litres per day of capacity designed to serve Chennai for fifty years, is currently under construction. When it opens, it will be one of the largest desalination facilities in South Asia."), /* @__PURE__ */ React.createElement(Sidebar, { title: "The Thermodynamics of Salt Removal" }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 12px" } }, "Removing salt from seawater has a thermodynamic cost that cannot be engineered away. The minimum energy required \u2014 set by the laws of thermodynamics, not by the limitations of current technology \u2014 is approximately 1.06 to 1.1 kilowatt-hours per cubic metre of freshwater produced. This is the energy needed simply to separate salt from water at typical seawater concentrations, in an ideal system with perfect recovery and zero losses."), /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 12px" } }, "Current best-in-class SWRO systems achieve roughly 2.5 kWh/m\xB3 \u2014 about 2.3 times the theoretical minimum. The gap between actual and theoretical performance is not primarily a membrane problem. The major losses occur in the system: the energy needed to pressurise the feed, the concentration polarisation effect at the membrane surface, and the irreversibility of brine discharge. Even perfect membranes would not close the gap entirely."), /* @__PURE__ */ React.createElement("p", { style: { margin: 0 } }, "This matters because it sets a ceiling on expectations for next-generation membranes. Aquaporin-based and graphene oxide membranes offer significantly higher water flux per unit area \u2014 but as Elimelech and colleagues have shown in multiple papers, higher-permeability membranes do not automatically translate to lower energy consumption in seawater RO systems, because the energy cost is dominated by thermodynamics, not by membrane resistance.")), /* @__PURE__ */ React.createElement(PullQuote, null, '"The four reservoirs that supply Chennai reached zero simultaneously. Not low. Zero. And the taps across a city of eleven million people ran dry."'), /* @__PURE__ */ React.createElement(SceneBreak, null), /* @__PURE__ */ React.createElement(SectionLabel, null, "IV. The Brine Equation"), /* @__PURE__ */ React.createElement(Para, null, "For every cubic metre of drinking water a seawater reverse osmosis plant produces, approximately 1.5 cubic metres of brine concentrate is discharged. This is not a design flaw. It is a thermodynamic necessity. Seawater enters the plant at roughly 35 grams of dissolved salt per litre \u2014 standard ocean salinity. The membrane rejects the salt. At typical commercial recovery rates of 40 to 50 percent \u2014 meaning roughly 45 litres of freshwater extracted from every 100 litres of seawater fed into the system \u2014 the remaining 55 litres leaves the plant at a salinity of roughly 65 to 70 grams per litre. This hypersaline stream, containing not just sodium chloride but the concentrated residues of every antiscalant, coagulant, and anti-fouling chemical used in the pretreatment process, is pumped through marine outfall pipes into the receiving ocean."), /* @__PURE__ */ React.createElement(Para, null, "A 2019 study by Manzoor Qadir, assistant director of the United Nations University Institute for Water, Environment and Health, calculated that global brine production was approximately 142 million cubic metres per day \u2014 roughly 50 percent greater than the desalination industry's own previous estimates. In the Persian Gulf, where the world's densest concentration of desalination facilities discharges into an enclosed, shallow, slow-circulating sea, the consequences have become measurable at scale. The Gulf is now approximately 25 percent saltier than typical seawater, with hotspots near major discharge points running at double or triple normal salinity. It is simultaneously a receptacle for brine from desalination and for concentrated produced water from the oil and gas industry. The synergistic effect on marine ecosystems is not well understood, but it is not benign."), /* @__PURE__ */ React.createElement(BrineChart, null), /* @__PURE__ */ React.createElement(ImgCaption, { label: "Data", text: "The brine shadow of global desalination: for every million cubic metres of freshwater produced, 1.5 million cubic metres of hypersaline concentrate enters the ocean. As capacity expands toward projected 2030 levels, the discharge will approach 200 million cubic metres per day \u2014 greater than the combined daily flow of the Congo and Mississippi rivers." }), /* @__PURE__ */ React.createElement(Para, null, "A 2024 review published in ", /* @__PURE__ */ React.createElement("em", null, "Environmental Science and Technology"), " by researchers including Edo Bar-Zeev and Gilad Antler at Ben-Gurion University of the Negev found that hypersaline brine from seawater reverse osmosis facilities is characterised by salinity up to 102 percent higher than ambient seawater. This dense stream sinks, creeping across the seabed and spreading, according to modelling data cited in the study, up to several tens of kilometres from the discharge point. The effects on benthic communities \u2014 the organisms living in and on the sediment \u2014 range from morphological deformations to changes in community composition and impaired nutrient fluxes from sediment to the water column. Seagrasses, polychaetes, corals: the toll is measurable, even if the full magnitude is contested."), /* @__PURE__ */ React.createElement(Para, null, "In the Mediterranean and the Red Sea \u2014 both semi-enclosed, both warming faster than the global ocean average, both hosting multiple large desalination facilities \u2014 salinity is increasing at rates that scientists are beginning to track with systematic monitoring programs. The Red Sea, already the saltiest major body of water in the world, receives brine discharge from Saudi facilities along its eastern coast and Egyptian facilities along its western one. The Israeli and Jordanian joint facility originally planned for the Gulf of Aqaba would have added more. The proposal was eventually shelved, partly for diplomatic reasons and partly because of growing concern about what additional discharge into an already-stressed system would do."), /* @__PURE__ */ React.createElement(
+    Photo,
+    {
+      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Desalination_plant_discharge_outfall.jpg/1200px-Desalination_plant_discharge_outfall.jpg",
+      alt: "Brine discharge outfall pipe desalination",
+      label: "Consequence",
+      caption: "The outfall pipe of a coastal desalination plant: the moment where the technology's promise and its price become inseparable. The hypersaline stream \u2014 colourless, odourless, and up to twice the salinity of the surrounding ocean \u2014 sinks, spreads, and persists. In the Persian Gulf, the cumulative effect of decades of discharge has measurably altered the salinity of an enclosed sea."
+    }
+  ), /* @__PURE__ */ React.createElement(Sidebar, { title: "Brine as Resource \u2014 The Zero Liquid Discharge Ambition" }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 12px" } }, "NEOM, Saudi Arabia's $500 billion giga-project on the Red Sea coast, has proposed what the desalination industry calls zero liquid discharge: a plant design in which brine is not discharged into the ocean but further processed to extract commercially valuable minerals and metals. The dense brine from the 500,000-cubic-metre-per-day reverse osmosis facility planned for OXAGON \u2014 NEOM's manufacturing city \u2014 would feed downstream industries producing industrial salt, bromine, boron, potassium, gypsum, and magnesium. Rare metals extraction is also under study."), /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 12px" } }, "The concept is not new \u2014 brine valorisation has been an active research area for two decades \u2014 but NEOM represents the first attempt to implement it at industrial scale, with 100% renewable energy powering the entire system. The project is a partnership between ENOWA (NEOM's water subsidiary), Japan's ITOCHU, and Veolia of France."), /* @__PURE__ */ React.createElement("p", { style: { margin: 0 } }, "Elimelech's group at Yale has developed high-pressure reverse osmosis (HPRO) and low-salt-rejection reverse osmosis (LSRRO) technologies specifically designed for brine concentration and management \u2014 pushing brine toward the ultra-high salinity required for mineral extraction. Both approaches remain in active development, with commercial-scale deployment dependent on the economics of the downstream mineral markets.")), /* @__PURE__ */ React.createElement(SceneBreak, null), /* @__PURE__ */ React.createElement(SectionLabel, null, "V. The Membrane Frontier"), /* @__PURE__ */ React.createElement(Para, null, "In Kongens Lyngby, Denmark \u2014 a suburb of Copenhagen where the streets are quiet and the laboratories are not \u2014 a company called Aquaporin A/S has spent the better part of two decades asking what happens if you stop making membranes from polymer chemistry and start making them from biology. Aquaporins are proteins. They are found in the membranes of virtually every living cell, where they function as exquisitely engineered water channels \u2014 pores just wide enough to allow the passage of a single water molecule at a time, with near-perfect selectivity and near-zero energy loss. Red blood cells, which must absorb and release water rapidly as they traverse capillaries, are studded with aquaporin-1. The kidney tubules that reabsorb the roughly 180 litres of fluid filtered by the glomerulus each day use aquaporin-2. In 2003, Peter Agre of Johns Hopkins University was awarded the Nobel Prize in Chemistry for their discovery."), /* @__PURE__ */ React.createElement(Para, null, "The idea that you could incorporate these proteins into an industrial membrane \u2014 and thereby replicate the speed and selectivity that evolution refined over 400 million years \u2014 is both compelling and, as Aquaporin A/S has learned through years of difficult commercialisation, technically formidable. The company's Aquaporin Inside technology embeds aquaporin proteins into a thin-film composite membrane for forward osmosis applications. The first commercially available aquaporin-based hollow-fibre membranes were launched by the company and have been shipped to research partners worldwide. The company's 2024 annual report, however, recorded a 32 percent decline in revenue, citing unexpected changes in demand and project delays \u2014 a frank acknowledgement that the gap between laboratory promise and industrial deployment is measured not in months but in years."), /* @__PURE__ */ React.createElement(
+    Photo,
+    {
+      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Membrane_lab_NREL.jpg/1280px-Membrane_lab_NREL.jpg",
+      alt: "Membrane research laboratory",
+      label: "Process",
+      caption: "A membrane research facility. The polyamide active layer in a commercial RO membrane is less than 200 nanometres thick \u2014 roughly 400 times thinner than a human hair \u2014 and yet it is the boundary across which the entire thermodynamics of desalination plays out. Understanding what happens within that layer at the molecular level was, Elimelech argues, the field's central unsolved problem."
+    }
+  ), /* @__PURE__ */ React.createElement(Para, null, "The broader landscape of next-generation membrane research spans graphene oxide nanochannels, carbon nanotube-based pores, covalent organic framework membranes, and a range of bioinspired polymer architectures. A 2024 roadmap on membrane desalination technology published in a major journal noted that existing SWRO systems operate at 3 to 5 kWh/m\xB3, still far from the theoretical minimum of 1.1 kWh/m\xB3, and acknowledged that while aquaporin, graphene, and carbon nanotube membranes have demonstrated permeability improvements over conventional polyamide membranes in laboratory settings, the obstacles to industrial implementation remain formidable: insufficient pore density, defect-prone fabrication, limited long-term stability, and \u2014 critically \u2014 the point Elimelech has made repeatedly \u2014 that high permeability alone does not dramatically reduce energy consumption in seawater RO because the thermodynamic cost of salt removal is system-wide, not membrane-specific."), /* @__PURE__ */ React.createElement(Para, null, "In April 2024, Elimelech's lab published results in ", /* @__PURE__ */ React.createElement("em", null, "Science"), ", in collaboration with Nanjing University of Science and Technology, reporting a new durable and cost-efficient filtering membrane that could increase the number of people receiving clean, safe water \u2014 a chlorine-resistant polyester architecture that maintains performance under the chemical conditions of actual plant operation, not just laboratory purified water. The distinction matters enormously: industrial membranes degrade in the presence of chlorine, which is widely used in pretreatment to control biofouling. A membrane that survives chlorine exposure at operational concentrations can be cleaned more aggressively and last longer in the field. The economics of the plant depend as much on membrane lifetime as on membrane flux."), /* @__PURE__ */ React.createElement(CostChart, null), /* @__PURE__ */ React.createElement(ImgCaption, { label: "Data", text: "The cost trajectory of seawater reverse osmosis desalination since 2000, driven by membrane innovation, energy recovery devices, and scale. Sorek 2 (Israel, 2024) set a new benchmark at $0.41/m\xB3. The line will not continue downward indefinitely \u2014 thermodynamics, brine management, and intake infrastructure impose costs that better membranes cannot eliminate." }), /* @__PURE__ */ React.createElement(Sidebar, { title: "The Sorek Model \u2014 Israel's Water Revolution" }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 12px" } }, "Israel's desalination story is the most studied in the world, and for good reason: the country moved from existential water crisis to water surplus in under two decades, through a combination of political will, engineering innovation, and aggressive policy. The 1998 drought \u2014 the worst in 900 years for the eastern Mediterranean \u2014 triggered a government decision to build desalination plants regardless of cost. By 2018, the majority of Israel's municipal drinking water came from desalinated sources. The country now produces roughly 20 percent more water than it needs."), /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 12px" } }, "The Sorek plant, built by IDE Technologies on the Mediterranean coast 15 kilometres south of Tel Aviv, drew seawater from an intake 1.85 kilometres offshore at extremely slow velocity (0.15 metres per second) to minimise marine life entrainment. Its innovation was structural: sixteen-inch-diameter pressure vessels arranged vertically \u2014 double the standard diameter \u2014 packing more membrane area per unit of floor space and reducing capital costs substantially. The plant supplies water for roughly one-fifth of Israel's population. Sorek 2, commissioned in 2024, produces 200 million cubic metres per year at $0.41/m\xB3."), /* @__PURE__ */ React.createElement("p", { style: { margin: 0 } }, "The Israeli model is not directly transferable. Israel's relatively small geographic area, high institutional capacity, and specific coastal geology enabled a rollout that most nations cannot replicate at speed. But the engineering principles \u2014 large-format elements, low-velocity intake, energy recovery, vertical vessel architecture \u2014 are being adopted globally.")), /* @__PURE__ */ React.createElement(SceneBreak, null), /* @__PURE__ */ React.createElement(SectionLabel, null, "VI. The Sun and the Sea"), /* @__PURE__ */ React.createElement(Para, null, "On the Red Sea coast of northwestern Saudi Arabia, at a latitude where the annual direct normal irradiance exceeds 2,800 kilowatt-hours per square metre \u2014 one of the most solar-intensive sites on the planet \u2014 a city that does not yet exist is designing its water supply. NEOM, the $500-billion development backed by the Saudi sovereign wealth fund, has announced a 500,000-cubic-metre-per-day reverse osmosis desalination plant for its manufacturing district, OXAGON, to be powered by 100 percent renewable energy. The project, a partnership between ENOWA (NEOM's water and energy subsidiary), ITOCHU of Japan, and France's Veolia, is conceived not merely as a water plant but as the first node in a circular resource system: brine output feeding mineral extraction industries, renewable surplus feeding green hydrogen production, freshwater feeding a city planned for complete sustainability."), /* @__PURE__ */ React.createElement(Para, null, "This is not fantasy \u2014 the renewable energy economics are real. A study by King Abdullah University of Science and Technology (KAUST), published in ", /* @__PURE__ */ React.createElement("em", null, "Nature Communications"), " in 2022, modelled the co-optimisation of renewable energy and desalination systems for NEOM and found that co-optimised water-power systems achieve significant cost savings over independently planned approaches, with the benefits increasing as the share of non-dispatchable renewables (solar and wind) rises. The physics favour the pairing: solar power peaks in the middle of the day, desalination can absorb variable electricity without the storage challenges that make large-scale solar-plus-industry difficult in other sectors, and the Red Sea and northwestern Saudi Arabia have both exceptional solar resource and ample seawater. NEOM's wind speeds reach 11 metres per second on the coast \u2014 excellent for wind power."), /* @__PURE__ */ React.createElement(
+    Photo,
+    {
+      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Desalination_Saudi_Arabia.jpg/1280px-Desalination_Saudi_Arabia.jpg",
+      alt: "Desalination plant Saudi Arabia Red Sea coast",
+      label: "Forward",
+      caption: "The coast of the Red Sea near NEOM, Saudi Arabia's planned city at the junction of the Gulf of Aqaba and the Red Sea. The site combines the world's highest solar irradiance with the world's most advanced desalination ambitions \u2014 and discharges into one of the world's most ecologically fragile enclosed seas. The tension between these facts is the central challenge of 21st-century water engineering."
+    }
+  ), /* @__PURE__ */ React.createElement(Para, null, "The renewable energy transition and the desalination expansion are deeply entangled. Saudi Arabia entered the world's top ten renewable energy investors in 2025 for the first time, committing approximately $34 billion to clean power projects. By 2027, Saudi Arabia, the UAE, Egypt, Morocco, and Oman together are projected to add more than 75 gigawatts of solar and wind capacity. The economics of renewable-powered reverse osmosis are now competitive with fossil-fuel-powered plants in the most solar-intensive regions \u2014 a development that was not plausible ten years ago and is now the baseline assumption for new Gulf projects. The International Renewable Energy Agency estimates that solar-powered RO in the MENA region can achieve levelised costs of water below $0.50 per cubic metre."), /* @__PURE__ */ React.createElement(Para, null, "But the renewable decarbonisation of desalination does not resolve the brine problem, or the marine chemistry problem, or the fundamental question of what it means to permanently redirect enormous flows of hypersaline water into a semi-enclosed sea that is already warming and already salinating. The energy source changes. The discharge does not. And here, in the gap between what engineering can solve and what it cannot, the next generation of desalination research is working."), /* @__PURE__ */ React.createElement(SceneBreak, null), /* @__PURE__ */ React.createElement(SectionLabel, null, "VII. What the Membrane Cannot Fix"), /* @__PURE__ */ React.createElement(Para, null, "Back in the Yale laboratory, or its successor at Rice University \u2014 where Elimelech has since moved, joining the university's nascent WaTER Institute \u2014 the research agenda has shifted, quietly but significantly, from membrane performance to brine management. High-pressure reverse osmosis, the technology Elimelech pioneered for concentrating brine beyond the limits of conventional RO, operates at pressures of 80 to 120 bar \u2014 well above what standard commercial membranes tolerate. At these pressures, recovery rates can be pushed toward 70 percent, dramatically reducing the volume of brine discharged. Low-salt-rejection reverse osmosis, another Elimelech-group development, produces a lower-quality permeate that still meets industrial standards while achieving near-complete recovery \u2014 a technology specifically designed for brine management rather than potable water production."), /* @__PURE__ */ React.createElement(Para, null, "In a 2025 paper in the ", /* @__PURE__ */ React.createElement("em", null, "Proceedings of the National Academy of Sciences"), ", Elimelech co-authored work emerging from a US-Israel Blavatnik Scientific Forum on alleviating global water scarcity through desalination and water reuse \u2014 a collaboration that brought together researchers from Ben-Gurion University, Bar-Ilan University, Technion, and American universities. The forum's proceedings addressed not just membrane chemistry but the full systems challenge: energy costs, brine disposal, lithium recovery from concentrate streams, and the governance frameworks that determine whether desalination serves broad populations or exacerbates existing inequalities. The water-energy nexus runs in both directions. Every cubic metre of freshwater produced requires energy. Every unit of energy consumed in water-stressed regions competes with the cooling water that thermal power plants require."), /* @__PURE__ */ React.createElement(Para, null, "The most consequential question is not technical. It is political. Chennai reached Day Zero in 2019 not because the technology to supply it with water did not exist \u2014 it existed \u2014 but because the political decisions that would have funded the infrastructure, maintained the distribution network, priced water to discourage waste, and built institutional capacity were not made in time. The desalination plants that exist today were built in response to crisis, not in anticipation of it. The plants under construction now are still largely reactive. And the brine regulations that might govern what is discharged into the Mediterranean, the Red Sea, and the Persian Gulf remain, across most of the world, unenforced, inconsistent, or absent."), /* @__PURE__ */ React.createElement(Para, null, "Membranes improve. Costs fall. Capacity expands. The thermodynamic minimum \u2014 that 1.1 kilowatt-hours per cubic metre that physics will not permit you to go below \u2014 gets closer. But the ocean remains a finite sink, and the freshwater it yields carries a price that does not appear on any invoice, and does not appear in any government target, and will not be measured for years or decades in the benthic communities creeping under the brine plumes of the Gulf. Elimelech has spent four decades trying to understand the physics of a membrane thin enough to hold in one hand. The harder problem is the one that membrane physics cannot solve: how to decide who gets the water, who pays for the brine, and who lives downstream of both."), /* @__PURE__ */ React.createElement(
+    Photo,
+    {
+      src: "https://www.grupoppa.com/wp-content/uploads/2019/06/tomaduradeaguadesaladora.jpg",
+      alt: "Seawater intake pipe desalination plant",
+      label: "Resolution",
+      caption: "The seawater intake of the Jebel Ali desalination plant, UAE \u2014 the point where ocean and engineering meet. At this threshold, the ambitions of water security and the physics of salt separation begin. Five kilometres offshore, a different pipe returns what was not needed. The sea has no inbox for complaints."
+    }
+  ), /* @__PURE__ */ React.createElement(Para, { style: { fontStyle: "italic", fontSize: 20, lineHeight: 1.8, color: C.darkGray, marginTop: 40 } }, "In the laboratory in New Haven \u2014 or Houston now, where Elimelech has relocated \u2014 the membrane under fluorescent light is still translucent, still thin enough to tear. Water moves through it in clusters that no one observed for fifty years. It will move through ten billion more like it by 2035, driven by a pressure that is not only mechanical. The ocean is patient. The aquifer is not. And somewhere between the pore-flow model and the empty reservoir, humanity is learning what it is willing to pay for a glass of water.")), /* @__PURE__ */ React.createElement("div", { style: { background: C.cream, borderTop: `4px solid ${C.yellow}`, padding: "48px 24px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 740, margin: "0 auto" } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setSourceOpen(!sourceOpen),
+      style: {
+        background: "none",
+        border: "none",
+        cursor: "pointer",
+        padding: 0,
+        fontFamily: "'Source Sans 3',sans-serif",
+        fontSize: 11,
+        letterSpacing: 3,
+        textTransform: "uppercase",
+        color: C.darkGray,
+        fontWeight: 700,
+        display: "flex",
+        alignItems: "center",
+        gap: 10
+      }
+    },
+    /* @__PURE__ */ React.createElement("span", { style: { color: C.yellow, fontSize: 16 } }, sourceOpen ? "\u25BC" : "\u25B6"),
+    "Source Integrity Note & Editorial Production Record"
+  ), sourceOpen && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 14, color: C.darkGray, lineHeight: 1.75, marginTop: 24 } }, /* @__PURE__ */ React.createElement("p", { style: { fontWeight: 700, marginBottom: 4 } }, "MODE: Scientific American Hybrid | FORMAT: Full Feature"), /* @__PURE__ */ React.createElement("p", { style: { fontWeight: 700, marginTop: 20, marginBottom: 8, color: C.black } }, "VERIFIED FACTS (Tier 1 \u2014 confirmed by web search):"), /* @__PURE__ */ React.createElement("ul", { style: { margin: 0, paddingLeft: 20 } }, /* @__PURE__ */ React.createElement("li", null, "Menachem Elimelech: Sterling Professor of Chemical and Environmental Engineering at Yale University; 2023 paper in ", /* @__PURE__ */ React.createElement("em", null, "Science Advances"), " disproving the solution-diffusion model confirmed via Yale Engineering news and Connecticut Academy of Science profile."), /* @__PURE__ */ React.createElement("li", null, "RO energy consumption range (2.5\u20134.0 kWh/m\xB3 with pressure exchangers; theoretical minimum 1.1 kWh/m\xB3): confirmed via 2024 Roadmap on Membrane Desalination Technology and AMPAC USA technical overview."), /* @__PURE__ */ React.createElement("li", null, "Saudi Arabia: >11M m\xB3/day capacity, 25%+ global share, 30\u201332 plants \u2014 confirmed via Anadolu Agency, World Population Review, and Oliver Wyman MENA water sector analysis."), /* @__PURE__ */ React.createElement("li", null, "MENA: 41.8% of global operational desalination capacity (~5,000 plants, 28.96 M m\xB3/day): confirmed via Nature (Jan 2024) cited in Anadolu Agency."), /* @__PURE__ */ React.createElement("li", null, "Global brine production ~142 M m\xB3/day (50% more than prior estimates): Manzoor Qadir, UNU-INWEH, confirmed via UNEP and Scientific American."), /* @__PURE__ */ React.createElement("li", null, "Persian Gulf ~25% saltier than typical seawater: confirmed via Scientific American."), /* @__PURE__ */ React.createElement("li", null, "Sorek plant: 20% of Israel's municipal water demand, built by IDE Technologies, $0.58/m\xB3 original; Sorek 2 at $0.41/m\xB3: confirmed via IDE Technologies, PMI, and CPG Click Petr\xF3leo e G\xE1s."), /* @__PURE__ */ React.createElement("li", null, "Chennai Day Zero: June 2019, four reservoirs simultaneously empty: confirmed via World Bank, The Federal (India), KfW development bank."), /* @__PURE__ */ React.createElement("li", null, "NEOM 500,000 m\xB3/day renewables-powered plant: confirmed via NEOM press release and Zawya."), /* @__PURE__ */ React.createElement("li", null, "KAUST Nature Communications (2022) study on NEOM co-optimization: confirmed via Nature Communications DOI citation."), /* @__PURE__ */ React.createElement("li", null, "Aquaporin A/S (Denmark): first commercial aquaporin membranes; 2024 revenue fell 32%: confirmed via Aquaporin A/S annual report (March 2025)."), /* @__PURE__ */ React.createElement("li", null, "Peter Agre, Nobel Prize 2003 for aquaporin discovery: verified."), /* @__PURE__ */ React.createElement("li", null, 'Brine spreads up to "several tens of kilometres" on seabed: confirmed via Sirota et al., Environ. Sci. Technol. 2024, 58, 5631\u20135645.'), /* @__PURE__ */ React.createElement("li", null, "90%+ of new desalination capacity (2020\u20132024) uses membrane technology: confirmed via International Desalination Association / AMPAC USA.")), /* @__PURE__ */ React.createElement("p", { style: { fontWeight: 700, marginTop: 20, marginBottom: 8, color: C.black } }, "COMPOSITED SCENES (Tier 2 \u2014 assembled from verified elements):"), /* @__PURE__ */ React.createElement("ul", { style: { margin: 0, paddingLeft: 20 } }, /* @__PURE__ */ React.createElement("li", null, "Opening laboratory scene (Elimelech examining a membrane under fluorescent light): Elimelech's Yale lab, research focus, and the 2023 Science Advances paper are all verified. The specific act of holding a membrane to the light is a plausible editorial construction, not a witnessed event."), /* @__PURE__ */ React.createElement("li", null, `Ras Al Khair "stand at the fence" scene: plant's location, capacity, and infrastructure specifications are verified; the specific viewpoint description is editorial scene-setting.`), /* @__PURE__ */ React.createElement("li", null, "Chennai Day Zero description: the timeline of events and tanker queues are documented in verified sources; specific details about IT company bus arrangements are from verified reporting.")), /* @__PURE__ */ React.createElement("p", { style: { fontWeight: 700, marginTop: 20, marginBottom: 8, color: C.black } }, "DETAILS REQUIRING EDITORIAL VERIFICATION:"), /* @__PURE__ */ React.createElement("ul", { style: { margin: 0, paddingLeft: 20 } }, /* @__PURE__ */ React.createElement("li", null, "Elimelech's current primary institutional affiliation: sources show he moved to Rice University; Yale School of Medicine still lists him as Research Scientist. Article acknowledges the transition."), /* @__PURE__ */ React.createElement("li", null, "NEOM desalination plant construction status: original 2024 target; actual commissioning date should be verified with ENOWA before publication."), /* @__PURE__ */ React.createElement("li", null, "Specific claims about the US-Israel Blavatnik Forum 2025 PNAS paper content: confirmed by Yale Medicine publication list; full paper content should be independently reviewed.")), /* @__PURE__ */ React.createElement("p", { style: { fontWeight: 700, marginTop: 20, marginBottom: 8, color: C.black } }, "INVENTED OR UNVERIFIABLE DETAILS:"), /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 12px" } }, "None. No fabricated researchers, statistics, quotes, or institutions appear in this article."), /* @__PURE__ */ React.createElement("p", { style: { fontWeight: 700, marginTop: 20, marginBottom: 8, color: C.black } }, "VISUAL SUBSTITUTIONS (image search fallbacks):"), /* @__PURE__ */ React.createElement("ul", { style: { margin: 0, paddingLeft: 20 } }, /* @__PURE__ */ React.createElement("li", null, "Some images sourced from Wikimedia Commons as the closest editorially available match. A full production run would commission original photography at Sorek, Ras Al Khair, the Chennai Minjur plant, and Elimelech's laboratory.")), /* @__PURE__ */ React.createElement("p", { style: { fontWeight: 700, marginTop: 20, marginBottom: 8, color: C.black } }, "VOICES TO ADD IN FULL EDITORIAL PROCESS:"), /* @__PURE__ */ React.createElement("ul", { style: { margin: 0, paddingLeft: 20 } }, /* @__PURE__ */ React.createElement("li", null, "A named Tamil Nadu water engineer or CMWSSB official on the Chennai desalination programme"), /* @__PURE__ */ React.createElement("li", null, "A marine scientist from the Gulf region (Saudi Arabia, Kuwait, or UAE) working on brine ecology"), /* @__PURE__ */ React.createElement("li", null, "A community voice from North Chennai on the 2019 crisis and its aftermath"), /* @__PURE__ */ React.createElement("li", null, "A named Aquaporin A/S scientist on the commercialisation challenges of biomimetic membranes"), /* @__PURE__ */ React.createElement("li", null, "An ENOWA engineer on the NEOM zero-liquid-discharge system design")), /* @__PURE__ */ React.createElement("p", { style: { fontWeight: 700, marginTop: 20, marginBottom: 8, color: C.black } }, "SCIENTIFICALLY CONTESTED CLAIMS FLAGGED:"), /* @__PURE__ */ React.createElement("ul", { style: { margin: 0, paddingLeft: 20 } }, /* @__PURE__ */ React.createElement("li", null, "Whether higher-permeability membranes reduce SWRO energy consumption: Elimelech and colleagues argue the thermodynamic limit makes membrane permeability largely irrelevant to system energy; some researchers disagree for specific system configurations. Article presents Elimelech's position."), /* @__PURE__ */ React.createElement("li", null, "Gulf salinity increase attribution: multiple factors (desalination + oil/gas produced water + natural evaporation + climate change) contribute. Article correctly notes the multivariate nature."))))), /* @__PURE__ */ React.createElement("div", { style: { background: C.black, padding: "28px 24px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { height: 4, background: C.yellow, width: 80, margin: "0 auto 20px" } }), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, color: C.warmGray, letterSpacing: 2, textTransform: "uppercase" } }, "National Geographic\u2013Style Production Document \xB7 Scientific American Hybrid Mode \xB7 Full Feature Format")));
+}
+
+      ReactDOM.createRoot(document.getElementById('root')).render(
+        React.createElement(ReverseOsmosisFeature)
+      );
+    } catch (err) {
+      var box = document.getElementById('error-boundary');
+      if (box) {
+        box.style.display = 'block';
+        box.textContent = '[render error] ' + (err && err.message ? err.message : err);
+      }
+      console.error(err);
+    }
+  </script>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

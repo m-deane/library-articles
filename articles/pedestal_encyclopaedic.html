@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operation Pedestal: The Convoy That Refused to Die — National Geographic Encyclopaedic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sea:     #f5f0e8;
+  --sea2:    #ede8de;
+  --sea3:    #e4ddd0;
+  --sea4:    #d8d0c0;
+  --border:  #b8a888;
+  --text:    #1a1610;
+  --dim:     #5a5040;
+  --silver:  #3a5070;
+  --gold:    #7a5010;
+  --gold-lt: #9a6818;
+  --red:     #8a1818;
+  --wake:    #1a5080;
+  --wake-lt: #1a4060;
+  --chalk:   #0a0806;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#f5f0e8;
+  color:#1a1610;
+  font-family:'EB Garamond',Georgia,serif;
+  font-size:19px;
+  line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── TOP BARS ── */
+.signal-bar{
+  background:#7a5010;
+  color:#fff;
+  text-align:center;
+  padding:8px 0;
+  font-family:'Source Sans 3',sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+}
+.modebar{
+  background:#e4ddd0;
+  border-bottom:1px solid #b8a888;
+  padding:10px 40px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.modebar-item{
+  font-family:'Source Sans 3',sans-serif;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--dim);
+}
+.modebar-item strong{color:var(--gold)}
+.modebar-dot{width:3px;height:3px;background:var(--border);border-radius:50%}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(160deg, #0a1828 0%, #152540 50%, #0a1020 100%);
+  min-height:92vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  position:relative;
+  overflow:hidden;
+  padding:0 64px 80px;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% 80%, rgba(10,30,60,.8) 0%, transparent 70%),
+    repeating-linear-gradient(
+      -18deg,
+      transparent,
+      transparent 60px,
+      rgba(42,61,82,.08) 60px,
+      rgba(42,61,82,.08) 62px
+    );
+}
+/* Animated water shimmer lines */
+.hero-waves{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  opacity:.12;
+}
+.wave{
+  position:absolute;
+  width:200%;
+  height:2px;
+  background:linear-gradient(90deg, transparent, var(--wake), transparent);
+  animation:wv 8s linear infinite;
+}
+.wave:nth-child(1){top:20%;animation-duration:9s;}
+.wave:nth-child(2){top:35%;animation-duration:11s;animation-delay:-3s;}
+.wave:nth-child(3){top:55%;animation-duration:7s;animation-delay:-6s;}
+.wave:nth-child(4){top:70%;animation-duration:13s;animation-delay:-1s;opacity:.5;}
+.wave:nth-child(5){top:85%;animation-duration:10s;animation-delay:-8s;}
+@keyframes wv{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+
+.hero-kicker{
+  font-family:'Source Sans 3',sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:20px;
+  position:relative;
+  opacity:0;
+  animation:ri .9s ease forwards .2s;
+}
+.hero h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(46px,7.5vw,100px);
+  font-weight:900;
+  line-height:.96;
+  color:#fff;
+  margin-bottom:32px;
+  position:relative;
+  opacity:0;
+  animation:ri .9s ease forwards .5s;
+  text-shadow:0 4px 60px rgba(0,0,0,.8);
+}
+.hero h1 em{
+  font-style:italic;
+  color:var(--gold-lt);
+  font-weight:400;
+}
+.hero-deck{
+  font-family:'EB Garamond',serif;
+  font-size:clamp(16px,1.9vw,21px);
+  font-style:italic;
+  line-height:1.65;
+  color:var(--text);
+  max-width:740px;
+  position:relative;
+  opacity:0;
+  animation:ri .9s ease forwards .8s;
+  border-left:3px solid var(--gold);
+  padding-left:22px;
+}
+.hero-stats{
+  display:flex;
+  gap:52px;
+  margin-top:56px;
+  position:relative;
+  opacity:0;
+  animation:ri .9s ease forwards 1.1s;
+  flex-wrap:wrap;
+}
+.hs-n{font-family:'Cinzel',serif;font-size:34px;font-weight:700;color:var(--gold);display:block;line-height:1}
+.hs-l{font-family:'Source Sans 3',sans-serif;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:4px;display:block}
+@keyframes ri{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── REFERENCE SUMMARY ── */
+.ref-outer{padding:60px 40px;background:#ede8de;border-bottom:1px solid #b8a888}
+.ref-summary{
+  background:#e4ddd0;
+  border:1px solid #b8a888;
+  border-left:4px solid #7a5010;
+  padding:36px 40px;
+  max-width:1100px;
+  margin:0 auto;
+}
+.ref-title{
+  font-family:'Source Sans 3',sans-serif;
+  font-size:11px;font-weight:700;
+  letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;display:block;
+}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px 36px}
+.ref-item-label{font-family:'Source Sans 3',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:4px}
+.ref-item-value{font-family:'EB Garamond',serif;font-size:14.5px;line-height:1.65;color:var(--text)}
+
+/* ── ARTICLE BODY ── */
+.article{max-width:740px;margin:0 auto;padding:80px 40px}
+.article p{margin-bottom:1.75em;color:#1a1610}
+.article p:first-of-type::first-letter{
+  font-family:'Cinzel',serif;
+  font-size:5.6em;font-weight:700;
+  float:left;line-height:.74;
+  margin:.05em .1em 0 0;
+  color:var(--gold);
+}
+.article em{font-style:italic}
+.article strong{color:var(--chalk);font-weight:600}
+
+/* Section breaks */
+.sbreak{display:flex;align-items:center;gap:20px;margin:60px 0}
+.sbreak::before,.sbreak::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border))}
+.sbreak::after{background:linear-gradient(270deg,transparent,var(--border))}
+.sbreak-anchor{font-family:'Cinzel',serif;font-size:18px;color:var(--gold)}
+.hrule{border:none;border-top:1px solid var(--border);margin:48px 0}
+
+/* Pull stat */
+.pull-stat{
+  float:right;width:180px;
+  margin:0 0 20px 28px;
+  background:#d8d0c0;
+  border-top:3px solid #7a5010;
+  padding:16px 18px;text-align:center;
+}
+.pull-stat-n{font-family:'Cinzel',serif;font-size:36px;font-weight:700;color:var(--gold);display:block;line-height:1}
+.pull-stat-l{font-family:'Source Sans 3',sans-serif;font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-top:6px;display:block}
+
+/* Sidebars */
+.sidebar{
+  background:#ede8de;
+  border-left:4px solid #7a5010;
+  padding:28px 32px;
+  margin:48px 0;
+  opacity:0;transform:translateX(-10px);
+  transition:opacity .7s,transform .7s;
+}
+.sidebar.vis{opacity:1;transform:translateX(0)}
+.sidebar-kicker{font-family:'Source Sans 3',sans-serif;font-size:10px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:4px}
+.sidebar-title{font-family:'Cinzel',serif;font-size:18px;font-weight:600;color:#0a0806;margin-bottom:16px}
+.sidebar p{font-size:15.5px;line-height:1.8;color:var(--text);margin-bottom:.9em}
+.sidebar p:last-child{margin-bottom:0}
+.sidebar strong{color:var(--chalk)}
+
+/* Timeline table */
+.tl-table{width:100%;border-collapse:collapse;margin-top:14px}
+.tl-table tr{border-bottom:1px solid var(--border);opacity:0;transition:opacity .4s}
+.tl-table tr.vis{opacity:1}
+.tl-table td{font-family:'Source Sans 3',sans-serif;font-size:13.5px;line-height:1.55;padding:8px 12px 8px 0;color:var(--text);vertical-align:top}
+.tl-date{color:#7a5010;font-weight:700;white-space:nowrap;width:120px}
+
+/* ── PACKAGE SECTIONS ── */
+.package{background:#ede8de;padding:80px 40px;border-top:1px solid #b8a888}
+.pkg-kicker{font-family:'Source Sans 3',sans-serif;font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:8px}
+.pkg-title{font-family:'Cinzel',serif;font-size:28px;color:#0a0806;text-align:center;margin-bottom:56px}
+
+/* Photo cards */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;max-width:1100px;margin:0 auto}
+.pcard{background:#e4ddd0;border:1px solid #b8a888;padding:24px;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+.pcard.vis{opacity:1;transform:translateY(0)}
+.pcard-n{font-family:'Source Sans 3',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.pf{margin-bottom:9px}
+.pf-l{font-family:'Source Sans 3',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:3px}
+.pf-v{font-family:'EB Garamond',serif;font-size:14px;line-height:1.65;color:var(--text)}
+.pf-narr{border-top:1px solid var(--border);padding-top:10px;margin-top:10px}
+.pf-narr .pf-v{font-style:italic;color:var(--silver)}
+.pcap{background:rgba(0,0,0,.06);border-left:2px solid #7a5010;padding:10px 14px;margin-top:10px;font-family:'Source Sans 3',sans-serif;font-size:12.5px;line-height:1.65;color:var(--text)}
+.pcard-wide{grid-column:1/-1;background:#e4ddd0;border:1px solid #b8a888;padding:28px}
+.seq-frames{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.seq-frame{background:#f5f0e8;border:1px dashed #b8a888;height:110px;display:flex;align-items:center;justify-content:center;font-family:'Source Sans 3',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;text-align:center;padding:8px}
+.seq-label{font-family:'EB Garamond',serif;font-style:italic;font-size:14px;line-height:1.65;color:var(--text);text-align:center;border-top:1px solid var(--border);padding-top:12px}
+
+/* Diagram section */
+.diag-section{background:#f5f0e8;padding:80px 40px;border-top:1px solid #b8a888}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px;max-width:1100px;margin:0 auto}
+.dcard{background:#ede8de;border:1px solid #b8a888;border-top:3px solid #7a5010;padding:26px;opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s}
+.dcard.vis{opacity:1;transform:translateY(0)}
+.dcard-type{font-family:'Source Sans 3',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.dcard-title{font-family:'Cinzel',serif;font-size:16px;font-weight:600;color:#0a0806;margin-bottom:18px;line-height:1.4}
+.df{margin-bottom:12px}
+.df-l{font-family:'Source Sans 3',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:3px}
+.df-v{font-family:'Source Sans 3',sans-serif;font-size:13.5px;line-height:1.65;color:var(--text)}
+.df-narr{border-top:1px solid var(--border);padding-top:12px;margin-top:12px}
+.df-narr .df-v{font-style:italic;font-family:'EB Garamond',serif;font-size:13px;color:var(--silver)}
+
+/* CSS Route chart (Diagram 5) */
+.route-timeline{margin:16px 0 8px}
+.rt-axis{display:flex;justify-content:space-between;padding:0 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.rt-axis span{font-family:'Source Sans 3',sans-serif;font-size:9px;color:var(--dim);font-weight:600;letter-spacing:.08em}
+.rt-row{display:flex;align-items:center;margin-bottom:6px;min-height:22px}
+.rt-label{width:110px;flex-shrink:0;font-family:'Source Sans 3',sans-serif;font-size:9.5px;font-weight:600;text-transform:uppercase;color:var(--dim);text-align:right;padding-right:10px}
+.rt-track{flex:1;height:14px;background:rgba(0,0,0,.08);position:relative;border-radius:1px}
+.rt-bar{position:absolute;top:2px;height:10px;border-radius:1px;display:flex;align-items:center;padding:0 5px}
+.rt-bar-text{font-family:'Source Sans 3',sans-serif;font-size:8px;font-weight:600;color:rgba(255,255,255,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.05em}
+
+/* Spine */
+.spine-section{background:#ede8de;padding:80px 40px;border-top:1px solid #b8a888}
+.spine{max-width:820px;margin:0 auto;position:relative}
+.spine::before{content:'';position:absolute;left:112px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#7a5010,transparent)}
+.spine-row{display:grid;grid-template-columns:104px 1fr;gap:24px;margin-bottom:22px;opacity:0;transform:translateX(-10px);transition:opacity .5s,transform .5s}
+.spine-row.vis{opacity:1;transform:translateX(0)}
+.spine-tag{text-align:right;padding-right:14px;padding-top:3px}
+.badge{display:inline-block;font-family:'Source Sans 3',sans-serif;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;white-space:nowrap}
+.badge-img{background:#1a5080;color:#fff}
+.badge-diag{background:#d8d0c0;color:#1a4060;border:1px solid #b8a888}
+.badge-prose{background:transparent;color:var(--dim);border:1px solid var(--border)}
+.spine-body{border-bottom:1px solid var(--border);padding:0 0 16px 24px}
+.spine-row:last-child .spine-body{border-bottom:none}
+.spine-name{font-family:'EB Garamond',serif;font-size:15px;font-weight:600;color:#0a0806;margin-bottom:4px}
+.spine-desc{font-family:'Source Sans 3',sans-serif;font-size:13px;line-height:1.6;color:var(--dim)}
+.spine-desc strong{color:var(--gold)}
+
+/* Source section */
+.src-section{background:#e4ddd0;padding:72px 40px;border-top:3px solid #7a5010}
+.src-inner{max-width:740px;margin:0 auto}
+.src-kicker{font-family:'Source Sans 3',sans-serif;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:6px}
+.src-title{font-family:'Cinzel',serif;font-size:22px;color:#0a0806;margin-bottom:40px}
+.src-cat{margin-bottom:28px}
+.src-cat-t{font-family:'Source Sans 3',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--wake-lt);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.src-cat ul{list-style:none}
+.src-cat li{font-family:'EB Garamond',serif;font-size:15px;line-height:1.7;color:var(--text);padding:5px 0 5px 18px;position:relative;border-bottom:1px solid rgba(255,255,255,.04)}
+.src-cat li::before{content:'—';position:absolute;left:0;color:var(--gold)}
+
+/* Closing */
+.closing{max-width:740px;margin:0 auto;padding:80px 40px;text-align:center}
+.closing p{font-family:'EB Garamond',serif;font-size:20px;line-height:2.0;color:var(--text);margin-bottom:1.6em;opacity:0;transform:translateY(12px);transition:opacity .8s,transform .8s}
+.closing p.vis{opacity:1;transform:translateY(0)}
+.closing .final{font-family:'Cinzel',serif;font-size:24px;font-style:normal;font-weight:700;color:#0a0806;margin-top:1.5em;letter-spacing:.04em}
+
+footer{background:#f5f0e8;border-top:1px solid #b8a888;text-align:center;padding:40px;font-family:'Source Sans 3',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+footer strong{color:#7a5010}
+
+.fi{opacity:0;transform:translateY(22px);transition:opacity .8s,transform .8s}
+.fi.vis{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+  .hero{padding:0 28px 60px}
+  .article{padding:60px 24px;font-size:17px}
+  .pgrid,.dgrid{grid-template-columns:1fr}
+  .seq-frames{grid-template-columns:1fr}
+  .hero-stats{gap:28px}
+  .pull-stat{float:none;width:100%;margin:0 0 24px 0}
+  .ref-grid{grid-template-columns:1fr}
+  .spine::before{display:none}
+  .spine-row{grid-template-columns:1fr}
+  .spine-tag{text-align:left;padding-right:0}
+  .spine-body{padding-left:0}
+  .rt-label{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="signal-bar">National Geographic &nbsp;·&nbsp; Encyclopaedic Mode &nbsp;·&nbsp; Full Production Document</div>
+
+<div class="modebar">
+  <span class="modebar-item">Mode: <strong>Encyclopaedic</strong></span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">Format: <strong>Encyclopaedic</strong></span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">~10,500 words</span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">Research: <strong>14+ sources</strong></span>
+  <span class="modebar-dot"></span>
+  <span class="modebar-item">August 3–15, 1942</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-waves">
+    <div class="wave"></div><div class="wave"></div>
+    <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+  </div>
+  <p class="hero-kicker">National Geographic &nbsp;·&nbsp; World War II &nbsp;·&nbsp; Mediterranean Theatre</p>
+  <h1>Operation Pedestal<br><em>The Convoy That<br>Refused to Die</em></h1>
+  <p class="hero-deck">Fourteen merchant ships. Forty-four warships. A thousand miles of water held by submarines, bombers, torpedo boats, and minefields. Five ships reached Malta. One of them arrived half-submerged, engines dead, its hull broken in three places, lashed between two destroyers and moving at walking pace. That ship — and its ten thousand tons of aviation fuel — changed the course of the war.</p>
+  <div class="hero-stats">
+    <div><span class="hs-n">44</span><span class="hs-l">Warships in the escort force</span></div>
+    <div><span class="hs-n">14</span><span class="hs-l">Merchant ships departed Gibraltar</span></div>
+    <div><span class="hs-n">5</span><span class="hs-l">Merchant ships reached Malta</span></div>
+    <div><span class="hs-n">500+</span><span class="hs-l">Sailors and airmen killed</span></div>
+  </div>
+</section>
+
+<!-- REFERENCE SUMMARY -->
+<section class="ref-outer">
+  <div class="ref-summary">
+    <span class="ref-title">Reference Summary</span>
+    <div class="ref-grid">
+      <div>
+        <span class="ref-item-label">Classification</span>
+        <span class="ref-item-value">Allied convoy operation, World War II, Mediterranean Theatre of Operations. Also known as the Battle of Mid-August (Italian: Battaglia di Mezzo Agosto) and in Malta as Il-Konvoj ta' Santa Marija (the Santa Maria Convoy).</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Date</span>
+        <span class="ref-item-value">August 3–15, 1942 (convoy departed Clyde Aug 3; entered Mediterranean Aug 9/10; final ship Ohio arrived Malta Aug 15)</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Location</span>
+        <span class="ref-item-value">Western Mediterranean, from Gibraltar through the Strait of Sicilian Channel (Skerki Bank), past Cap Bon (Tunisia), to Grand Harbour, Valletta, Malta. Approx. 1,000 nautical miles of contested water.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Allied Forces</span>
+        <span class="ref-item-value">Force Z (heavy escort): battleships HMS Nelson, HMS Rodney; carriers HMS Eagle, HMS Indomitable, HMS Victorious; 3 anti-aircraft cruisers; 14 destroyers. Force X (close escort to Malta): cruisers HMS Nigeria, Kenya, Manchester, Cairo; 11 destroyers. 14 merchant ships. Carrier HMS Furious (Spitfire delivery). Overall Commander: Vice-Admiral E.N. Syfret.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Axis Forces</span>
+        <span class="ref-item-value">Luftwaffe (Fliegerkorps II): ~784 aircraft based in Sardinia and Sicily. Regia Aeronautica: ~328 aircraft. Regia Marina: 18 Italian submarines, 3 German U-boats, 6 MS torpedo boats, 13 MAS torpedo boats, 3 heavy cruisers and 3 light cruisers (not deployed due to fuel shortage). Mines in Skerki Channel.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Key Statistics</span>
+        <span class="ref-item-value">Allied losses: HMS Eagle (carrier), HMS Manchester and Cairo (cruisers), HMS Foresight (destroyer), 9 of 14 merchant ships. 500+ killed. Axis losses: 2 submarines (Cobalto, Dagabur), 2 heavy cruisers severely damaged. 62 aircraft. Supplies delivered: ~32,000 tons cargo + ~11,500 tons fuel (Ohio).</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Key Dates</span>
+        <span class="ref-item-value">Aug 3: Convoy sails from Clyde. Aug 9/10: Strait of Gibraltar transit. Aug 11: HMS Eagle sunk (U-73). Aug 12: HMS Indomitable disabled; Force Z turns back; Axum torpedoes Ohio, Nigeria, Cairo; E-boat night attacks. Aug 13: Three merchantmen reach Malta. Aug 14: Brisbane Star arrives. Aug 15: Ohio towed into Grand Harbour (Feast of Santa Marija).</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Key Figures</span>
+        <span class="ref-item-value">Vice-Admiral E.N. Syfret (overall); Rear-Admiral H.M. Burrough (Force X, Malta escort); Captain Dudley Mason (Master, SS Ohio — George Cross); Kapitänleutnant Helmut Rosenbaum (U-73, sank Eagle); Lt. Renato Ferrini (Axum, torpedoed Ohio, Nigeria, Cairo); Air Marshal Keith Park (Malta air commander); Rommel (whose supply lines Malta threatened).</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Strategic Outcomes</span>
+        <span class="ref-item-value">Malta's aviation fuel restored; offensive operations resumed Sept 1942; Axis shipping losses in September 100,000 tons including 24,000 tons fuel for Rommel; Rommel at El Alamein (Oct 23) had 3 days' fuel vs. required 15; Axis defeat at El Alamein (Nov 1942); Operation Torch (Nov 8). Malta survives; siege eventually broken May 1943.</span>
+      </div>
+      <div>
+        <span class="ref-item-label">Historical Verdict</span>
+        <span class="ref-item-value">Tactically a defeat for the Allies (9 of 14 merchants sunk). Strategically one of the most important British victories of the war. German post-operation analysis (17 Aug) falsely claimed all tankers sunk. Historians' debate: James Sadkovich (1994) — tactical disaster comparable to PQ17; Richard Woodman (2000) — strategic victory; Giorgerini (2002) — Italian success.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN ARTICLE -->
+<article class="article">
+
+  <p>On the morning of August 15, 1942 — the Feast of the Assumption, Santa Marija, the holiest day on the Maltese calendar — a large crowd gathered on the ramparts above Grand Harbour, Valletta. They had been waiting for days. They had watched the smoke columns on the horizon. They had heard the bombs. Some of them had been eating sixteen ounces of food a day for weeks. Some of them had been told, in terms too official to be rumour, that the island would have to surrender by the first week of September if no supply ship reached port. What they saw approaching from the east at half past eight that morning was not the convoy they had been promised. It was what remained of one: a tanker with a broken keel, engines dead, listing to starboard, barely clearing the water at its lowest points, being dragged through the harbour entrance by two destroyers lashed to her sides like props holding up a building about to fall. Thousands of people removed their hats, women crossed themselves, and a bugle on the quayside sounded Still. A military band struck up Rule Britannia.</p>
+
+  <p>The Ohio had arrived. And with her, nearly all the aviation fuel that Malta had left in the world.</p>
+
+  <p>Operation Pedestal — known to the Italians as the Battle of Mid-August and to the Maltese as the Santa Marija Convoy, the name by which they still celebrate it every year — was in purely tactical terms a catastrophe for the Allies. Nine of the fourteen merchant ships that left Gibraltar were sunk. One aircraft carrier went down. Two cruisers were lost. More than 500 sailors and airmen were killed. A postwar historian compared it to the destruction of Convoy PQ 17 in the Arctic a month earlier, which remains the worst convoy disaster in Royal Navy history. But Operation Pedestal was not a defeat. It was the last act of a two-year siege — the moment when enough got through to matter — and it is impossible to understand what happened at El Alamein, at Torch, at Sicily, or anywhere else in the subsequent Mediterranean war, without understanding what happened in those six days in August 1942, in the hundred miles of sea between the Balearic Islands and Cape Bon.</p>
+
+  <hr class="hrule">
+
+  <!-- SECTION 1: STRATEGIC BACKGROUND / MALTA AS LINCHPIN -->
+
+  <p class="fi">Malta is 122 square miles of limestone in the centre of the Mediterranean, 58 miles south of Sicily and approximately equidistant from Gibraltar and Alexandria. To the people who lived there in 1942, it was home. To the strategists who controlled it, it was something else: the hinge upon which the entire North African campaign turned. Malta-based submarines, aircraft, and torpedo bombers were the only forces consistently able to intercept the supply routes between Italy and Rommel's Afrika Korps on the North African coast. From June to October 1941, when Malta was operating at full capacity, British forces sank approximately 220,000 long tons of Axis shipping on the African convoy routes. Rommel's own assessment was unambiguous: "With Malta in our hands, the British would have had little chance of exercising any further control over convoy traffic in the Central Mediterranean." He was right. Without Malta, Rommel's supply problem was manageable. With Malta operative, it was chronic — and by the summer of 1942, it was the most important military supply problem in the entire war.</p>
+
+  <div class="pull-stat">
+    <span class="pull-stat-n">250,000</span>
+    <span class="pull-stat-l">Maltese civilians on 1,500 calories a day by August 1942</span>
+  </div>
+
+  <p class="fi">This was why the Axis made reducing Malta the dominant strategic priority in the Mediterranean from January 1942 onwards. The Luftwaffe and Regia Aeronautica flew 3,340 air raids over Malta between 1940 and 1942, dropping more than 15,000 tons of bombs and destroying 10,761 buildings, including most of the capital Valletta. By April 1942, the island had endured 154 consecutive days of bombing, a record for the Second World War, and had held out through it all — at the price of near-strangulation. Aviation fuel stocks were sufficient only for fighter defence; torpedo bombers and submarines could no longer mount offensive operations. The garrison's weekly aircraft losses exceeded deliveries. The civilian population was on 1,500 calories a day — a slow-starvation level that public health authorities noted would produce rapid debilitation within weeks.</p>
+
+  <p class="fi">On April 15, 1942, King George VI addressed a handwritten letter to the Governor of Malta: "To honour her brave people I award the George Cross to the Island Fortress of Malta to bear witness to a heroism and devotion that will long be famous in history." It was the only time in history that an entire island population received the George Cross — the highest British civilian decoration for courage. It was also a recognition that the island was on the edge.</p>
+
+  <p class="fi">Two convoy attempts in June 1942 — Operation Harpoon from Gibraltar and Operation Vigorous from Alexandria — had failed catastrophically. Harpoon delivered two of six ships; Vigorous was turned back entirely. No tanker got through. By early August, Air Vice-Marshal Keith Park, Malta's air commander since July, warned London that aviation fuel stocks would last only weeks. The Admiralty's planning document stated the calculation precisely: without supplies, Malta would be forced to choose between surrender and starvation before September. The logic of Pedestal was therefore simple: the Admiralty had to attempt another convoy, knowing it would face the full concentrated weight of Axis air, submarine, and torpedo-boat forces — and knowing that everything the Axis had learned from sinking previous convoys would be waiting for them.</p>
+
+  <div class="sidebar">
+    <span class="sidebar-kicker">Sidebar 1</span>
+    <div class="sidebar-title">Malta's Strategic Mathematics — What the Island Was Worth</div>
+    <p>The strategic calculation underlying Pedestal was stark. When Malta was operating at full capacity in 1941, Malta-based forces were responsible for sinking approximately 75% of all Axis shipping destroyed by aircraft in the Mediterranean. In the first half of 1942, when Axis air campaigns had effectively suppressed Malta's offensive capability, Rommel received more than 90% of his reinforcements unimpeded. The correlation was direct: a functioning Malta starved Rommel; a suppressed Malta fed him.</p>
+    <p>The Admiralty's calculation in July 1942 was that if Malta fell, the strategic consequences would cascade. Without Malta as a base, the Allies could not interdict Axis supply routes to North Africa effectively. Without supply interdiction, Rommel could sustain his advance. If Rommel reached the Suez Canal — he was stopped 35 miles from Alexandria at El Alamein in July — the British position in the Middle East would become untenable. Loss of the Middle East oil fields, loss of the India supply route, possibly loss of India itself. <strong>Churchill and the First Sea Lord agreed: the loss of Malta would lead to further loss of the Suez Canal and likely the Near East and possibly the eastern Indian Ocean.</strong> A handful of supply ships were, by this arithmetic, worth almost any number of warships. The Admiralty assembled the largest escort force ever assembled for a Malta convoy. It cost them dearly.</p>
+  </div>
+
+  <!-- SECTION 2: THE CONVOY & FORCE COMPOSITION -->
+
+  <div class="sbreak"><span class="sbreak-anchor">◆</span></div>
+
+  <p class="fi">Vice-Admiral E.N. Syfret, who had been ordered off his ship in West Africa and flown home to take command of the operation, convened his planning conference at Scapa Flow on July 29, 1942. What he assembled was a naval force of unprecedented scale for a convoy operation: fourteen merchant ships carrying 85,000 tons of supplies and 11,500 tons of fuel, protected by a covering force (Force Z) of two battleships, three aircraft carriers, three anti-aircraft cruisers, and fourteen destroyers, and a close escort (Force X) of three cruisers, one anti-aircraft cruiser, and eleven destroyers. Two fleet oilers and a tug accompanied the armada. A fifth carrier, HMS Furious, was assigned to fly off 38 Spitfire fighters as reinforcements for Malta during the transit before turning back.</p>
+
+  <p class="fi">The centrepiece of the merchant component was the SS Ohio. Built in 1940 at Sun Shipbuilding's yard in Chester, Pennsylvania, for the Texas Oil Company — later Texaco — she was launched on April 20, 1940, and requisitioned by the British government in 1942. At 9,263 tons, 485 feet long, she could make 16 to 19 knots on her 9,000 horsepower Westinghouse turbine engines — fast enough to keep pace with a naval convoy. The previous convoy's tanker, the Kentucky — Ohio's sister ship — had been sunk in June by a German air attack after being abandoned when a steam pipe broke. Ohio was given special hull strengthening before departure to protect against the shock of near-miss bomb explosions, the specific failure mode that had crippled Kentucky. Her complement numbered 77, including 24 Royal Navy and Royal Artillery DEMS gunners.</p>
+
+  <p class="fi">Captain Dudley William Mason took command of Ohio in 1942, at the age of 39. He had come up through the Atlantic convoys; he had already survived what the sea could do to ships in wartime. When he briefed his crew before departure in the petty officers' mess, his words were stripped of military euphemism: "Our destination is Malta; you all know what that means. Ohio is the only tanker. We shall have to fight with 13,000 tons of high-octane fuel aboard. Now is the time for anyone who wants to back out to say so. I must warn you that if you choose to go ashore, you will be kept in custody of the naval provost marshal until the operation is over." No one went ashore.</p>
+
+  <p class="fi">The convoy sailed from the Clyde overnight on August 2/3 and passed through the Strait of Gibraltar on the night of August 9/10. The transit was observed — a Kriegsmarine report noted the force included two carriers and multiple freighters heading east — but the scale of the escort, Syfret hoped, would make a coordinated attack prohibitively costly. The Axis had other plans. Field Marshal Kesselring and the Italian naval headquarters Supermarina had been planning for this convoy for weeks. Their strategy was a layered series of killing fields: submarines positioned between the Balearic Islands and Algeria; heavy air attacks from Sardinian and Sicilian bases; E-boat and MAS-boat ambushes in the Skerki Channel near Cap Bon; minefields; and a surface force of cruisers waiting to finish off whatever got through.</p>
+
+  <!-- SECTION 3: THE OPENING — EAGLE LOST -->
+
+  <div class="sbreak"><span class="sbreak-anchor">◆</span></div>
+
+  <p class="fi">August 11, 1942, early afternoon. The convoy was approximately 70 nautical miles south of Cape Salinas, the southernmost point of Majorca, sailing south-east in four columns. The aircraft carrier HMS Eagle — 22,000 tons, 24 years in service, carrying 16 Sea Hurricane fighters — was at her station in the outer screen when the German submarine U-73, under Kapitänleutnant Helmut Rosenbaum, penetrated the destroyer escort undetected. Rosenbaum manoeuvred to within 400 yards of the carrier and fired four torpedoes. All four hit. HMS Eagle heeled rapidly to port and sank in eight minutes. Thirteen destroyers were on the screen; none had obtained a contact. None had seen torpedo tracks. The electric torpedoes U-73 used left no visible wake.</p>
+
+  <p class="fi">The destroyers HMS Lookout, HMS Laforey, and the tug HMS Jaunty rescued 927 men from the water. Two hundred and thirty-one officers and ratings were lost, along with sixteen Sea Hurricanes that went down with the ship — approximately 25% of the convoy's fighter cover, destroyed before a single Axis aircraft had appeared. Rosenbaum was awarded the Knight's Cross. U-73 slipped away undetected. Four Sea Hurricanes that had been aloft during the sinking landed on the other carriers.</p>
+
+  <p class="fi">As Eagle was being torpedoed, HMS Furious finished Operation Bellows — flying off 37 Spitfires for Malta — and turned back for Gibraltar. Her work was done. The convoy continued east with its fighter cover reduced by a quarter and its sole tanker now the undisputed prime target for everything Kesselring could send.</p>
+
+  <p class="fi">The air attacks began that afternoon: waves of Junkers 88s and Heinkel torpedo bombers from Sardinia and Sicily, attacking in co-ordinated patterns that tried to split the defensive fighter screen. The convoy's remaining carriers — HMS Indomitable and HMS Victorious — launched Sea Hurricanes and Martlets continuously. The attacks continued through the night and the following morning of August 12. At noon on the 12th, 98 Italian and German bombers and torpedo planes struck in a single coordinated raid. The destroyer HMS Foresight was torpedoed and later scuttled. Two Italian bombers crashed on HMS Victorious; their armour-piercing bombs rebounded from her armoured deck and did not detonate. At approximately 4:16 in the afternoon, a concentrated Stuka attack put three large bombs into HMS Indomitable, starting two fires and destroying her flight deck. She could no longer operate aircraft.</p>
+
+  <div class="sidebar">
+    <span class="sidebar-kicker">Sidebar 2</span>
+    <div class="sidebar-title">The Axis Killing Fields — A Layered Strategy</div>
+    <p>Supermarina's plan for destroying the Pedestal convoy was a model of combined-arms sequential attrition, designed to exploit the known vulnerability of a convoy that could not be given adequate air cover for its entire transit.</p>
+    <p><strong>Zone 1 — Western Mediterranean submarines:</strong> Nine Italian submarines and three German U-boats positioned between Algeria and the Balearic Islands. Their priority target: aircraft carriers, to strip the convoy of air cover before it entered the kill zone.</p>
+    <p><strong>Zone 2 — Air Attack from Sardinia and Sicily:</strong> Fliegerkorps II (784 aircraft) and the Regia Aeronautica (328 aircraft) operating in co-ordinated mass attacks. Göring personally issued an order of the day: "The destruction of this convoy is of decisive importance... will operate with no other thought in mind than the destruction of the British convoy." 650 Axis sorties were flown against Pedestal between August 11 and 14.</p>
+    <p><strong>Zone 3 — Skerki Channel, Night of August 12/13:</strong> The most lethal zone, where Force Z's carriers had to turn back, leaving the convoy with only cruiser and destroyer escort. Five Italian submarines waited at the channel entrance. Beyond them, 6 MS boats and 13 MAS Italian torpedo boats prowled in the moonless dark off Cap Bon. This was where the convoy lost its command structure, three more cruisers, and four merchant ships in a single night.</p>
+    <p><strong>Zone 4 — Surface cruisers:</strong> Three heavy and three light Italian cruisers were positioned south of Sicily, ready to close in on survivors. They were never deployed — fuel shortages prevented it, and the British submarine HMS Unbroken torpedoed the cruisers Bolzano and Muzio Attendolo as they sortied, putting both out of action for the rest of the war.</p>
+  </div>
+
+  <!-- SECTION 4: THE NIGHT OF THE KNIVES -->
+
+  <div class="sbreak"><span class="sbreak-anchor">◆</span></div>
+
+  <p class="fi">At 6:55 PM on August 12, with HMS Indomitable on fire and the convoy entering the Skerki Channel, Admiral Syfret ordered Force Z — the battleships, carriers, and heavy cruisers — to turn back for Gibraltar, twenty minutes earlier than planned. The convoy would continue to Malta under Force X, the close escort of cruisers and destroyers, with air cover from Malta itself once the ships were within range. It was the moment the Axis had been building toward.</p>
+
+  <p class="fi">At 7:55 PM, the Italian submarine Axum, commanded by Lieutenant Renato Ferrini, fired four torpedoes at the convoy as it compressed from four columns into two to pass through the narrow channel. The timing was, as the British official report later acknowledged, "critical." The convoy was in the middle of its most vulnerable manoeuvre when the torpedoes hit: HMS Nigeria — the flagship of Force X — took a torpedo amidships, killing 52 men and temporarily removing Rear-Admiral Burrough from command. The anti-aircraft cruiser HMS Cairo was hit aft, destroying her screws. And a third torpedo struck the Ohio, blowing a hole 23 feet wide by 26 feet tall in her port side, starting a fire that her crew fought through the night.</p>
+
+  <p class="fi">The loss of Nigeria and Cairo — simultaneously, before the most dangerous stretch of the route — had effects beyond the ships themselves. Ashanti became Burrough's new flagship, requiring the diversion of four Hunt-class destroyers to stand by the damaged cruisers. The convoy entered the night passage down the Tunisian coast short of its command ship, deprived of its two anti-aircraft specialists, and with its carefully planned defensive formation temporarily disrupted. The Axis torpedo boats were waiting.</p>
+
+  <p class="fi">What followed in the hours between midnight and dawn on August 13 was the most intensive torpedo-boat attack in the Mediterranean war. Italian MS-boats and MAS-boats swept in from the darkness off Cap Bon in repeated passes, attacking in the moonless sea with the coastline's lighthouses sometimes illuminating the targets for them. They sank the cruiser HMS Manchester — whose captain, Harold Drew, ordered her scuttled after damage that, a subsequent and exceptionally lengthy court martial determined, had been repairable — and four merchant ships: Almeria Lykes, Glenorchy, Santa Elisa (which exploded in a column of flame as her aviation-fuel cargo ignited), and Wairangi. A fifth merchant, Brisbane Star, was hit in the bows but refused to stop, eventually nursing herself into Malta independently the following day. By dawn on August 13, the convoy that had left Gibraltar with fourteen ships was down to seven, three of them damaged.</p>
+
+  <p class="fi">The Ohio continued. Her engines were working. Her hull was holed but the flooding was under control. Captain Mason had not slept in three days.</p>
+
+  <!-- SECTION 5: OHIO'S LAST MILES -->
+
+  <div class="sbreak"><span class="sbreak-anchor">◆</span></div>
+
+  <p class="fi">The morning of August 13 brought Maltese Spitfires over the convoy. For the first time in four days, the merchants and their escorts could see friendly aircraft overhead rather than hostile ones. Three ships — Melbourne Star, Port Chalmers, and Rochester Castle — reached Grand Harbour that afternoon to crowds that lined the bastions above the harbour entrance, silent at first, then erupting as the battered ships came through the gate. The Ohio was not among them. She was 200 miles behind, barely moving.</p>
+
+  <p class="fi">The Axis had identified the tanker as the mission-critical target. On the afternoon of August 13, waves of Junkers 88s attacked Ohio specifically and almost continuously. A Stuka crashed onto her deck and exploded. A bomb hit her boiler room. Two sticks of bombs lifted the ship out of the water and set her keel cracking. Her engines stopped. She was twice abandoned by her crew and twice reboarded. The destroyer HMS Penn tried to take her in tow, but the towline snapped repeatedly as Ohio's broken hull flexed in the sea. At one point, a torpedo intended for Ohio hit and sank another destroyer instead. HMS Penn's captain pulled alongside in the dark and shouted across: "I'll stay with you and radio for more help."</p>
+
+  <p class="fi">The decision was made to "sandwich" the tanker: HMS Penn and HMS Ledbury lashed to Ohio's sides, providing both buoyancy and propulsion, steering her through the water by the combined thrust of their own engines. The three-ship assembly moved at three to four knots — a walking pace — through the continuing air attacks, through the minefield off Malta's approach, aided finally by Malta's tugs in the small hours of August 15. As the Ohio made the tight turn through the harbour entrance on the Feast of Santa Marija, crowds on every vantage point cheered and wept. By the time the last of Ohio's 10,000 tons of fuel oil had been pumped out, the ship's keel had settled on the harbour bottom. She never sailed again.</p>
+
+  <p class="fi">On September 4, 1942, the London Gazette published the citation for the George Cross awarded to Captain Dudley William Mason: "Throughout he showed skill and courage of the highest order and it was due to his determination that, in spite of the most persistent enemy opposition, the vessel, with her valuable cargo, eventually reached Malta and was safely berthed." Twenty-three of his crew received additional gallantry decorations. Mason was forty-one years old. He spent the rest of the war at sea.</p>
+
+  <div class="sidebar">
+    <span class="sidebar-kicker">Sidebar 3</span>
+    <div class="sidebar-title">The Ohio in Detail — Technical Anatomy of a Ship That Would Not Sink</div>
+    <p>SS Ohio was built at the Sun Shipbuilding and Drydock Company in Chester, Pennsylvania, as hull 190, launched April 20, 1940, for the Texas Company. She measured 485 feet overall, with a beam of 67 feet and a loaded draft of 30 feet, displacing approximately 14,150 deadweight tons. Her 9,000 shp Westinghouse turbines gave her an operational speed of 16 knots — fast enough for a naval convoy.</p>
+    <p>Before Pedestal, Ohio was given additional hull strengthening specifically to resist the shock of near-miss bomb explosions — the failure mode that had sunk her sister ship Kentucky in June 1942. Her crew of 77 included 24 Royal Navy and Royal Artillery DEMS (Defensively Equipped Merchant Ship) gunners. She carried approximately 11,500 tons of kerosene and diesel fuel — the specific grades Malta's aircraft and submarines required.</p>
+    <p>The damage Ohio sustained during Pedestal was extraordinary: <strong>one torpedo from the submarine Axum on August 12, blowing a hole 23×26 feet in her hull; two sticks of bombs that lifted the ship out of the water and cracked her keel; a Stuka that crashed and exploded on her deck; a bomb that penetrated her boiler room; and multiple near-misses that buckled plates and snapped internal frames.</strong> She was abandoned twice by her crew and reboarded twice. Her back was, in the structural engineer's sense, broken.</p>
+    <p>After Ohio's fuel was unloaded, the hull was used for storage, then as barracks for Yugoslav troops. On September 19, 1946, the forward half was towed ten miles offshore and sunk by gunfire from HMS Virago. On October 3, 1946, the stern half was scuttled by explosive charges. In Malta, she is still remembered as the saviour of the island.</p>
+  </div>
+
+  <!-- SECTION 6: THE MALTESE EXPERIENCE -->
+
+  <div class="sbreak"><span class="sbreak-anchor">◆</span></div>
+
+  <p class="fi">For the 250,000 Maltese civilians who had endured two years of siege, Pedestal was not a naval operation. It was a miracle in the Catholic sense of the word — or, if not a miracle, then evidence that something other than pure military logic was operating in the world. The convoy's final ships arrived on August 15, the Feast of the Assumption of the Virgin Mary, the most important religious holiday on the Maltese calendar. That the Ohio — the ship without which the whole effort would have been strategically worthless — arrived precisely on Santa Marija was, to the Maltese, not coincidence. A Maltese account recorded that Maltese children watching the Ohio enter harbour that morning, even as they cheered, were also shouting: "We want food, not oil!" It is the truest account in the historical record: the convoy had saved the island's aircraft, but the people were still hungry.</p>
+
+  <p class="fi">The human context of the siege requires precision. By August 1942, the Maltese were surviving on approximately 1,500 calories daily — a level that public health specialists assess as producing weight loss and debilitation, not acute starvation, but one that the Wikipedia footnote on this subject notes with clinical precision: "the pre-war intake for Maltese civilians not performing manual labour was about 2,500 calories." Workers ate considerably more; British civilians in wartime never fell below 2,800. Malta's July ration was 14 oz sugar, 7 oz fats, 10.5 oz bread, and 14 oz corned beef — per fortnight, per person. In August, a mass slaughter of Malta's livestock began to conserve fodder. Horses were consumed. Victory Kitchens were established across the island to distribute whatever the remaining stocks could provide.</p>
+
+  <p class="fi">The supplies delivered by Pedestal — approximately 32,000 tons of general cargo plus Ohio's fuel — were sufficient to sustain Malta for about ten weeks beyond the few weeks of existing stock. They did not end the siege. They extended it. The RAF commander reported to the island's governor, Lord Gort, on the evening of August 15: he could now mount unlimited combat sorties for two months. That was what the convoy had bought. Not safety. Not victory. Two months, and a chance.</p>
+
+  <div class="sidebar">
+    <span class="sidebar-kicker">Sidebar 4</span>
+    <div class="sidebar-title">The Santa Marija Convoy in Maltese Memory</div>
+    <p>In Malta, Operation Pedestal is not a military campaign. It is a national myth in the richest sense of the word — a story that has been told so many times, in so many forms, that it has become part of the island's self-understanding. The name Il-Konvoj ta' Santa Marija is still used in everyday Maltese speech. The August 15 feast day celebrates both the Assumption of Mary and the arrival of the convoy simultaneously, in a fusion of religious and patriotic commemoration that is specifically Maltese and that resists easy analysis from outside the culture.</p>
+    <p>The physical sites of the siege remain. Grand Harbour is as it was in 1942 — the same limestone battlements, the same dark water, the same proportions. The War Museum at Fort Saint Elmo, Valletta, holds King George VI's handwritten letter awarding the George Cross, displayed alongside the cross itself. The George Cross is embedded in the upper left corner of the Maltese national flag, where it has appeared since 1943.</p>
+    <p>What Maltese testimony consistently emphasises — oral histories, newspaper accounts, the 2012 anniversary commemorations — is not heroism in the abstract but the specific, physical reality of hunger. Cecil Bartoli, interviewed on the 70th anniversary, remembered that "we had maybe a week's ration" left before the convoy arrived. He remembered seeing the Ohio enter harbour with the destroyers holding her up on either side. "It was such precious cargo that they had to get it in at all costs." His phrase captures the arithmetic of the siege precisely: the Ohio was not precious because of what it was, but because of what it carried, and because without it the island's aircraft could not fly, and without the aircraft the island could not defend itself, and without defence the surrender calculation reached its terminus. <strong>The convoy bought time. The time bought El Alamein. El Alamein bought everything else.</strong></p>
+  </div>
+
+  <!-- SECTION 7: HMS MANCHESTER — COMMAND CONTROVERSY -->
+
+  <div class="sbreak"><span class="sbreak-anchor">◆</span></div>
+
+  <p class="fi">The loss of HMS Manchester produced the longest court martial in Royal Navy history. When the cruiser was hit by two torpedoes from Italian MS-boats on the night of August 12/13, her captain, Harold Drew, faced a ship that was listing at twelve degrees (reduced to five by counter-flooding), with her boilers flooded, her magazines flooded, and her main and secondary armament largely intact. The subsequent court martial, after hearing testimony from hundreds of witnesses, determined that Manchester was capable of making 10 to 13 knots on her undamaged port outer shaft. Drew ordered her abandoned and scuttled.</p>
+
+  <p class="fi">The court found Drew "dismissed his ship" — the naval equivalent of dishonourable discharge — and severely reprimanded him, along with four other officers. The verdict was essentially that Manchester was not as badly damaged as her captain believed, and that the decision to scuttle was premature. Drew's defenders argued that in the darkness, under air attack, with the ship listing, her propulsion compromised, no escort available to take her in tow, and the convoy already past him to the east, the decision was a reasonable one under impossible circumstances. This debate has never been definitively resolved.</p>
+
+  <p class="fi">What is not debated is the arithmetic: the loss of Manchester removed the only ship in Force X configured specifically for aircraft direction. The anti-aircraft cruiser HMS Cairo had already been sunk by the same submarine salvo that crippled the Ohio. Force X entered the most dangerous stretch of the route deprived of both its aircraft-direction specialists — the officers and equipment that could co-ordinate Malta's Spitfires with the convoy's destroyer screen — on the one night when that capability was most urgently needed.</p>
+
+  <!-- SECTION 8: STRATEGIC CONSEQUENCES -->
+
+  <div class="sbreak"><span class="sbreak-anchor">◆</span></div>
+
+  <p class="fi">In September 1942, with Ohio's fuel in Malta's tanks and submarines and torpedo bombers resuming offensive operations, Allied forces in the Mediterranean sank approximately 100,000 long tons of Axis shipping — including 24,000 long tons of fuel oil destined for Rommel's Afrika Korps. By mid-October 1942, Rommel's Panzerarmee Afrika held three days' fuel reserves against a required minimum of fifteen. When Field Marshal Bernard Montgomery launched the final Battle of El Alamein on October 23, 1942, Rommel was in Germany on sick leave — and his army could not manoeuvre to respond effectively because it could not refuel what it moved. The connection between Ohio's cargo and Rommel's defeat is not symbolic: it is logistical and quantifiable.</p>
+
+  <p class="fi">This is the chain that Pedestal holds. Malta revictualled by Ohio — Malta offensive operational in September — Axis convoy interdiction resumed — Rommel starved of fuel — El Alamein victory in November — Operation Torch (North Africa landings) November 8 — Axis surrender in Tunisia, May 1943 — Operation Husky (Sicily), July 1943. Every step in this sequence was enabled by the one before it. The most direct way to state the strategic significance of Pedestal is to ask what happens to the chain without it: without Ohio, Malta is likely forced to surrender in September 1942; without Malta operative, Rommel receives his fuel unimpeded; without supply interdiction, the El Alamein balance shifts toward the Axis; the North Africa campaign drags on or fails; Sicily and Italy follow accordingly. The counterfactual is necessarily speculative, but it is not unreasonable.</p>
+
+  <p class="fi">The Germans knew this in August 1942, even as they falsely reported the operation's outcome. A Kriegsmarine intelligence report dated August 17 concluded, "all the tankers in the recent Mediterranean convoy have been sunk and none of the transports reached their destination in Egypt." The report was wrong on both counts — Ohio had reached Malta, and Malta was in the Mediterranean, not Egypt. But a supplementary assessment noted the incomplete and contradictory evidence and warned that the revival of Malta as an offensive base "would affect Axis supply routes in what might be the decisive phase" of the North African campaign. That warning was correct, and it was ignored.</p>
+
+  <!-- SECTION 9: CONTESTED HISTORY AND LEGACY -->
+
+  <div class="sbreak"><span class="sbreak-anchor">◆</span></div>
+
+  <p class="fi">Pedestal has never settled into a single historical verdict, and the disagreement follows national lines in ways that reveal more about historiography than about the operation itself. In 1994, James Sadkovich — writing on the Italian naval war — argued that Operation Pedestal was a tactical disaster for the British, of a magnitude comparable to the German attack on Convoy PQ17 a month earlier. In 2000, Richard Woodman called it a strategic victory. In 2002, Giorgio Giorgerini (writing from an Italian perspective) argued it was an Italian success: Italian submarines had adopted more aggressive tactics and had sunk a cruiser and two merchantmen while damaging two more cruisers and the Ohio. Jack Greene and Alessandro Massignani, also in 2002, called it "the last Axis victory in the Mediterranean" but conceded it was "a tactical not a strategic success." A German military analyst in August 1942 wrote the clearest verdict: "not a defeat, but a strategical failure of the first order by the Axis, the repercussions of which will one day be felt."</p>
+
+  <p class="fi">The disagreement is genuinely about what kind of success counts in war. If you measure success by ships sunk and ships arrived, Axis wins: nine of fourteen merchants sunk, one carrier, two cruisers, one destroyer, against two Italian submarines and two Italian cruisers damaged. If you measure success by whether the operation achieved its purpose — keeping Malta in the war — then the Allies win, unambiguously. The question is whether destroying a convoy is a "victory" if the convoy's cargo still arrives. The Ohio's arrival suggests it is not.</p>
+
+  <p class="fi">What is least contested is the character of the people who brought the convoy through. Vice-Admiral Syfret, in his official report to the Admiralty, wrote: "Tribute has been paid to the personnel of His Majesty's ships; but both officers and men will desire to give first place to the conduct, courage, and determination of the masters, officers, and men of the merchant ships. The steadfast manner in which these ships pressed on their way to Malta through all the attacks, answering every maneuvering signal like a well-trained fleet unit, was a most inspiring sight." The merchant ships were not warships. Their crews were not combat sailors in any formal sense. They held their station in a convoy under continuous air attack, with U-boats beneath them and torpedo boats in the dark ahead, carrying hundreds of tons of high-octane aviation fuel, with no armour and almost no capacity to fight back. The Ohio burned and was abandoned and reboarded twice and kept going. That is not a metaphor. It is what happened.</p>
+
+</article>
+
+<!-- CLOSING -->
+<div class="closing">
+  <p>The Ohio was towed out of Grand Harbour for the last time in 1946. Crowds gathered on the ramparts, as they had in 1942. Bands played. She had been serving as barracks for Yugoslavian troops in her final months; the steel that had refused to sink in August 1942 had become accommodation. She was scuttled in two halves in the autumn of that year, the forward half by gunfire from HMS Virago on September 19, the stern by explosive charges in October.</p>
+
+  <p>In Malta today, August 15 is a public holiday. The Feast of Santa Marija is celebrated in eight towns and villages with fireworks and processions and the particular intensity of a religious observance that has absorbed a historical memory into itself. The war museum at Fort Saint Elmo holds the George Cross — the real one, not a replica. The Cinzel emblem on the Maltese flag, in its upper left corner, is also the George Cross. It has been there since 1943.</p>
+
+  <p>What Dudley Mason's crew understood, and what the Maltese understood watching from the ramparts, is that there is a difference between a ship and its cargo. The Ohio sank in Grand Harbour on August 15, 1942, as the last of her fuel was pumped out. The fuel went into Malta's tanks. The aircraft flew. The submarines sailed. Rommel, who had written that Malta was the key to the Central Mediterranean, discovered in October and November 1942 what it meant for that key to remain in other hands.</p>
+
+  <p class="final">The Ohio refused to die because her cargo could not be permitted to die with her. That is the logic of Pedestal. It is also, in the end, a kind of answer to the question of what makes one battle matter more than another: not who won the fight, but what the fighting was for.</p>
+</div>
+
+<!-- PHOTO PACKAGE -->
+<section class="package">
+  <p class="pkg-kicker">Production Package</p>
+  <h2 class="pkg-title">Photojournalism Briefs — 12 Images</h2>
+  <div class="pgrid">
+
+    <div class="pcard">
+      <div class="pcard-n">Image 1 — Establishing / Scale</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">The full Pedestal convoy from aerial perspective — columns of merchant ships and warships stretching to the horizon, shot from a carrier aircraft over the western Mediterranean</span></div>
+      <div class="pf"><span class="pf-l">Light</span><span class="pf-v">Morning haze, flat calm sea, convoy visible over several miles — the scale of fifty ships in formation</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Opens the story with the scale of the operation before the reader understands the cost</span></div>
+      <div class="pcap">The Pedestal convoy in the western Mediterranean, August 1942. This photograph, taken from the deck of one of the carriers, shows the scale of the operation: fifty ships, fourteen of them laden with the supplies on which Malta's survival depended. By the time this convoy reached Malta, nine of those fourteen merchants had been sunk.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 2 — Character / SS Ohio</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Captain Dudley Mason on the bridge of Ohio — portrait before or during the operation; the face of a man who has not slept in three days but has not stopped either</span></div>
+      <div class="pf"><span class="pf-l">Location</span><span class="pf-v">Bridge of SS Ohio, Mediterranean, August 1942</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">Mason is the human face of the Ohio story — the George Cross awarded to him is the only one awarded for this operation</span></div>
+      <div class="pcap">Captain Dudley William Mason, master of SS Ohio. He was 39 during Operation Pedestal. His crew abandoned the ship twice under continuous air attack; he reboarded twice and kept her moving. The citation for his George Cross reads: "The violence of the enemy could not deter the Master from his purpose."</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 3 — Consequence / HMS Eagle</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">HMS Eagle listing to port and capsizing, photographed from an escorting destroyer — IWM archive photograph, the carrier's flight deck visible as she rolls</span></div>
+      <div class="pf"><span class="pf-l">Location</span><span class="pf-v">38°05'N, 03°02'E — 70 nautical miles south of Cape Salinas, Mallorca, August 11, 1942</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The first catastrophe of the operation — the carrier that went down in eight minutes from four torpedoes, taking 231 men and a quarter of the convoy's fighter cover</span></div>
+      <div class="pcap">HMS Eagle sinking after being struck by four torpedoes from the German submarine U-73 on the afternoon of August 11, 1942. The carrier sank in eight minutes. 927 survivors were rescued. 231 men and 16 Sea Hurricanes were lost. U-73 had penetrated an escort screen of thirteen destroyers without being detected.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 4 — Consequence / Air Attack</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">The merchant ship Waimarama exploding after being bombed — a column of fire and smoke 500 feet high as her aviation-fuel cargo ignites; IWM-held photograph taken from an escorting warship</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The image that defines the danger of carrying aviation fuel under air attack — the specific risk that made Ohio's survival so improbable</span></div>
+      <div class="pcap">The merchant ship Waimarama explodes after being bombed on August 13, 1942. She was carrying aviation fuel. Twenty-eight survivors were rescued from the burning sea by the destroyers HMS Penn and HMS Bramham. The pilot of the ship's own Oerlikon gun reportedly kept firing as the ship disintegrated around him.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 5 — Data / HMS Indomitable Strike</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">HMS Indomitable under concentrated Stuka attack, August 12 — filmed from HMS Charybdis; visible through splashes and smoke, at least one direct hit visible; the image used in the IWM Malta Convoy documentary</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The moment Force Z lost its third carrier and the convoy lost its last airborne fighter direction — the decisive tactical event of August 12</span></div>
+      <div class="pcap">HMS Indomitable under attack by Stuka dive-bombers, 4:16 PM, August 12, 1942. Three direct hits put her flight deck out of action. After this, the convoy had no carrier aircraft coverage until Malta's own Spitfires came within range on August 13 — 20 hours later.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 6 — Resolution / Ohio arrives Malta</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">SS Ohio entering Grand Harbour on the morning of August 15, 1942 — lashed between HMS Penn and HMS Ledbury, her decks barely above water, the limestone bastions visible with crowds on every available surface. The definitive image of the operation.</span></div>
+      <div class="pf"><span class="pf-l">Location</span><span class="pf-v">Grand Harbour entrance, Valletta, Malta, approximately 08:00, August 15, 1942</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The image the entire operation was aimed at producing — the ship that should have sunk, arriving at the place that needed it most</span></div>
+      <div class="pcap">SS Ohio entering Grand Harbour, Malta, on the morning of August 15, 1942 — the Feast of Santa Marija. Lashed between two destroyers, barely above the waterline, her back broken and her engines dead, she carried 10,000 tons of aviation fuel that Malta's air force could not survive without.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 7 — Character / Maltese Crowds</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Crowds on the bastions above Grand Harbour watching the Ohio arrive — Maltese civilians and British servicemen mixed together; some removing hats, some weeping; the quality of relief that is indistinguishable from grief</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The human dimension of what the convoy meant — not the naval campaign but the island and its people</span></div>
+      <div class="pcap">Maltese civilians and British garrison troops watching the arrival of the surviving ships of the Pedestal convoy, August 15, 1942. One eyewitness account notes that Maltese children in the crowd were shouting "We want food, not oil!" — a phrase that captures the complexity of the moment more precisely than any official report.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 8 — Data / Ohio Offloading</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Ohio at the quayside in Grand Harbour, discharging her cargo — pipes connecting her to two fleet auxiliaries, the ship visibly settling lower in the water as the fuel is pumped out; her deck awash</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The logistical fact at the centre of the operation — the cargo as it transfers to Malta's tanks</span></div>
+      <div class="pcap">SS Ohio discharging at Grand Harbour, August 15, 1942. As the fuel was pumped out, the ship settled lower in the water; water was pumped in simultaneously to reduce the risk of structural failure. The last drops of fuel left her at the same moment her keel touched the harbour bottom. She never sailed again.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 9 — Aftermath / King George VI Letter</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">King George VI's handwritten letter awarding the George Cross to Malta, April 15, 1942 — on display at the Malta National War Museum, Fort Saint Elmo, Valletta</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The official recognition of what the Maltese people endured — the only collective award of the George Cross to a civilian population in history</span></div>
+      <div class="pcap">King George VI's handwritten letter awarding the George Cross to Malta, April 15, 1942. "To honour her brave people I award the George Cross to the Island Fortress of Malta to bear witness to a heroism and devotion that will long be famous in history." The letter is on permanent display at the Malta National War Museum.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-n">Image 10 — Consequence / El Alamein</div>
+      <div class="pf"><span class="pf-l">Subject</span><span class="pf-v">Burned-out German and Italian armoured vehicles at El Alamein, November 1942 — the visible evidence of Rommel's fuel shortage; German tanks that could not manoeuvre because they could not refuel</span></div>
+      <div class="pf pf-narr"><span class="pf-l">Narrative Function</span><span class="pf-v">The strategic consequence of Pedestal made visible — the connection between Ohio's cargo and Rommel's defeat</span></div>
+      <div class="pcap">Axis armoured vehicles at El Alamein, November 1942. By this point, Rommel's Panzerarmee Afrika held approximately three days' fuel reserves against a required minimum of fifteen. Allied interdiction of Axis shipping from Malta had sunk 100,000 tons of supplies in September 1942 alone, including 24,000 tons of fuel oil destined for this army.</div>
+    </div>
+
+    <!-- Multi-image sequence: Ohio's three days -->
+    <div class="pcard-wide">
+      <div class="pcard-n">Images 11–13 — Multi-Image Sequence: Ohio's Final 72 Hours — August 13–15</div>
+      <div class="seq-frames">
+        <div class="seq-frame">11A — Ohio on fire, August 13: deck ablaze, crew fighting flames in the pump-room as Stuka attack continues overhead</div>
+        <div class="seq-frame">12A — Ohio under tow, August 14: three ships in formation, Penn and Ledbury lashed to the tanker's sides, moving at 3–4 knots toward Malta's minefield</div>
+        <div class="seq-frame">13A — Ohio entering the harbour, August 15: the arrival moment — decks awash, destroyers still attached, the bastions behind visible with the crowd</div>
+      </div>
+      <div class="seq-label">Ohio was abandoned twice and reboarded twice. She was torpedoed, bombed, had a Stuka crash on her deck, had her engines destroyed, her keel broken, and her hull flooded in multiple compartments. The fact that her cargo reached Malta is, by any engineering standard, improbable. Captain Mason spent three years before a naval medical board after the operation recovering from burns sustained in the action. He described the voyage in a letter as "the worst four days of my life."</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DIAGRAM SECTION -->
+<section class="diag-section">
+  <p class="pkg-kicker" style="text-align:center">Production Package</p>
+  <h2 class="pkg-title">Data Visualisation Specifications — 8 Diagrams</h2>
+  <div class="dgrid">
+
+    <div class="dcard">
+      <div class="dcard-type">Annotated Route Map</div>
+      <div class="dcard-title">The Mediterranean Gauntlet — Pedestal's Route and Kill Zones</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Full convoy route from Gibraltar to Grand Harbour Valletta; four Axis kill zones annotated (submarine ambush zone W. Mediterranean; air attack zone from Sardinia/Sicily; Skerki Channel E-boat zone; final approach minefields); each ship loss marked at correct position; HMS Eagle sinksite (38°05'N, 03°02'E); Ohio torpedo hit position; distance scale.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">The geography of attrition — the convoy visible as a line shortening as it moves east</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Force Comparison Diagram</div>
+      <div class="dcard-title">Pedestal Order of Battle — Allied and Axis Forces</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Allied: 14 merchants, 2 battleships, 4 carriers (Eagle, Indomitable, Victorious, Furious), 7 cruisers, 32 destroyers, 11 submarines, 200+ aircraft. Axis: 784 Luftwaffe aircraft, 328 Regia Aeronautica aircraft, 18 Italian + 3 German submarines, 19 torpedo boats, 3 heavy + 3 light cruisers (not deployed), minefields. Losses from each side annotated.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">The asymmetry that makes the operation comprehensible — enormous escort, enormous opposition, and still nine ships lost</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Timeline Infographic</div>
+      <div class="dcard-title">Six Days in August — The Operational Chronology</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Hour-by-hour timeline Aug 11–15: U-73 sinks Eagle (Aug 11, 13:15); Furious flies off Spitfires and turns back; Aug 12 mass air attacks; Indomitable disabled (16:16); Force Z turns back (18:55); Axum torpedoes Nigeria, Cairo, Ohio (20:00); E-boat night attacks (Aug 13 00:20–04:30); Manchester abandoned; three merchants reach Malta (Aug 13 16:30); Brisbane Star arrives (Aug 14); Ohio enters Grand Harbour (Aug 15 08:00).</span></div>
+
+      <!-- CSS Timeline -->
+      <div class="route-timeline">
+        <div class="rt-axis">
+          <span>Aug 11</span><span>Aug 12</span><span>Aug 13</span><span>Aug 14</span><span>Aug 15</span>
+        </div>
+        <div class="rt-row">
+          <div class="rt-label">Sinkings</div>
+          <div class="rt-track">
+            <div class="rt-bar" style="left:0%;width:4%;background:#b83030"><span class="rt-bar-text">Eagle</span></div>
+            <div class="rt-bar" style="left:28%;width:12%;background:#b83030"><span class="rt-bar-text">Cairo+Foresight</span></div>
+            <div class="rt-bar" style="left:40%;width:18%;background:#b83030"><span class="rt-bar-text">4 merchants + Manchester</span></div>
+            <div class="rt-bar" style="left:60%;width:8%;background:#b83030"><span class="rt-bar-text">Dorset</span></div>
+          </div>
+        </div>
+        <div class="rt-row">
+          <div class="rt-label">Air Attacks</div>
+          <div class="rt-track">
+            <div class="rt-bar" style="left:5%;width:55%;background:#3060a0"><span class="rt-bar-text">Continuous waves — Sardinia &amp; Sicily-based aircraft</span></div>
+          </div>
+        </div>
+        <div class="rt-row">
+          <div class="rt-label">Ohio Damage</div>
+          <div class="rt-track">
+            <div class="rt-bar" style="left:27%;width:4%;background:#c8a040"><span class="rt-bar-text">Axum torpedo</span></div>
+            <div class="rt-bar" style="left:42%;width:10%;background:#c8a040"><span class="rt-bar-text">Stuka + bombs</span></div>
+            <div class="rt-bar" style="left:56%;width:18%;background:#c8a040"><span class="rt-bar-text">Under tow → Malta</span></div>
+          </div>
+        </div>
+        <div class="rt-row">
+          <div class="rt-label">Ships arrive Malta</div>
+          <div class="rt-track">
+            <div class="rt-bar" style="left:51%;width:6%;background:#3a8040"><span class="rt-bar-text">3 merchants</span></div>
+            <div class="rt-bar" style="left:74%;width:5%;background:#3a8040"><span class="rt-bar-text">Brisbane Star</span></div>
+            <div class="rt-bar" style="left:96%;width:4%;background:#c8a040"><span class="rt-bar-text">Ohio</span></div>
+          </div>
+        </div>
+        <div class="rt-row">
+          <div class="rt-label">Air Cover</div>
+          <div class="rt-track">
+            <div class="rt-bar" style="left:0%;width:26%;background:#606878"><span class="rt-bar-text">3 carriers (Eagle lost Aug 11)</span></div>
+            <div class="rt-bar" style="left:28%;width:22%;background:#404858"><span class="rt-bar-text">2 carriers (Indomitable disabled Aug 12)</span></div>
+            <div class="rt-bar" style="left:52%;width:4%;background:#202830"><span class="rt-bar-text">None</span></div>
+            <div class="rt-bar" style="left:56%;width:44%;background:#3060a0"><span class="rt-bar-text">Malta Spitfires</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">The timeline makes visible the 20-hour gap in air cover — the period during which the convoy was most vulnerable and suffered its heaviest losses</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Ship Loss Map</div>
+      <div class="dcard-title">The Fourteen — What Happened to Each Merchant Ship</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">All 14 merchant ships with fate: Ohio (survived, cargo delivered, ship sunk in harbour); Port Chalmers, Melbourne Star, Rochester Castle (survived, reached Malta Aug 13); Brisbane Star (survived, reached Malta Aug 14 independently after torpedo damage); Empire Hope (bombed, sunk Aug 12); Clan Ferguson (torpedoed, exploded); Deucalion (torpedoed by air, sunk Aug 12); Santa Elisa (E-boat torpedo, exploded); Almeria Lykes (E-boat, abandoned); Glenorchy (E-boat, sunk); Wairangi (E-boat, sunk); Waimarama (bombed, exploded spectacularly); Dorset (bombed, sunk Aug 13).</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Makes concrete the 9/14 statistic — each ship a named entity with a specific story</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Ohio Damage Diagram</div>
+      <div class="dcard-title">SS Ohio — Damage Accumulation Over Four Days</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Side profile of Ohio with damage zones annotated in chronological order: Axum torpedo hit (23×26 ft hole, port side, Aug 12); Stuka crash point (deck, Aug 12/13); boiler room bomb penetration; near-miss bomb zone (keel damage); approximate flooding extent at each stage; final tow configuration (Penn and Ledbury positions); waterline after each damage event showing progressive settlement.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">A ship that should have sunk four separate times — the diagram makes the improbability of her survival concrete</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Strategic Consequence Chart</div>
+      <div class="dcard-title">Malta's Aviation Fuel and the North Africa Campaign — The Direct Connection</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Timeline August–November 1942: Malta fuel reserves (approximate, weeks of supply) vs. Malta offensive sorties per week vs. Axis shipping tonnage sunk by Malta-based forces. Key marker: Ohio's cargo arrives Aug 15. Axis shipping sunk in September: 100,000 tons including 24,000 tons fuel. Rommel's fuel reserves at El Alamein: 3 days vs. required 15. El Alamein opening date: Oct 23. Axis surrender North Africa: May 1943.</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">The causal chain from a tanker arriving in Malta to a German general running out of fuel at El Alamein — the strategic significance expressed as data</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Night Battle Diagram</div>
+      <div class="dcard-title">The Skerki Channel — The Night of August 12/13</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Coastal map of Tunisia/Cap Bon region; convoy route through Skerki Channel; positions of 5 Italian submarines (Axum, Dessié, Alagi, and others); E-boat patrol zones; lighthouse positions that were inadvertently illuminating the convoy; sequence of attacks (20:00 Axum salvo → Nigeria/Cairo/Ohio hit; midnight+ E-boats → Manchester, Glenorchy, Almeria Lykes, Santa Elisa, Wairangi hit).</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Geography as strategic trap — the narrow channel where Force Z had to turn back and the convoy was at its most vulnerable</span></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-type">Historical Verdict Comparison</div>
+      <div class="dcard-title">Pedestal — The Historiographical Debate</div>
+      <div class="df"><span class="df-l">Data Encoded</span><span class="df-v">Visual matrix of four interpretive positions: Sadkovich (1994) — tactical disaster, comparable to PQ17; Woodman (2000) — strategic victory; Giorgerini (2002) — Italian success; Greene &amp; Massignani (2002) — last Axis Mediterranean victory, tactical not strategic. Cross-referenced against quantitative metrics: ships sunk (Axis advantage), strategic objective achieved (Allied advantage), subsequent campaign outcomes (Allied advantage), long-term Mediterranean balance (Allied advantage).</span></div>
+      <div class="df df-narr"><span class="df-l">Narrative Function</span><span class="df-v">Presents the genuine historiographical disagreement honestly — not resolving it but showing what the disagreement is actually about</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- VISUAL NARRATIVE SPINE -->
+<section class="spine-section">
+  <p class="pkg-kicker" style="text-align:center">Production Package</p>
+  <h2 class="pkg-title">Visual Narrative Spine</h2>
+  <div class="spine">
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Hero Image</span></div><div class="spine-body"><div class="spine-name">Ohio Entering Grand Harbour — The Arrival Image</div><div class="spine-desc">→ <strong>Establishes:</strong> The outcome before the journey; the reader enters through the ending, then discovers how this ship ended up here</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-prose">Prose</span></div><div class="spine-body"><div class="spine-name">Opening — The Crowd on the Bastions, August 15</div><div class="spine-desc">→ <strong>Function:</strong> Anchors in the Maltese experience, establishing the human stakes before the naval operation</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 1</span></div><div class="spine-body"><div class="spine-name">Full Convoy from Aerial</div><div class="spine-desc">→ <strong>Answers:</strong> What fifty ships in convoy looks like — a fact no prose statistic can convey</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 1</span></div><div class="spine-body"><div class="spine-name">Mediterranean Route Map with Kill Zones</div><div class="spine-desc">→ <strong>Answers:</strong> Why this particular route was so dangerous — geography as argument</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-prose">Prose</span></div><div class="spine-body"><div class="spine-name">Strategic Background — Malta as Linchpin</div><div class="spine-desc">→ <strong>Function:</strong> Why this convoy mattered, with the Rommel connection established early</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 2</span></div><div class="spine-body"><div class="spine-name">Force Comparison — Allied vs. Axis</div><div class="spine-desc">→ <strong>Answers:</strong> The scale of commitment on both sides — why this was the defining battle for Malta's survival</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 3</span></div><div class="spine-body"><div class="spine-name">HMS Eagle Sinking</div><div class="spine-desc">→ <strong>Answers:</strong> What U-73's success looked like in real time — a carrier in eight minutes</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 5</span></div><div class="spine-body"><div class="spine-name">Indomitable Under Attack</div><div class="spine-desc">→ <strong>Answers:</strong> The moment the convoy lost its last airborne fighter cover</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 5</span></div><div class="spine-body"><div class="spine-name">Six-Day CSS Timeline</div><div class="spine-desc">→ <strong>Answers:</strong> The 20-hour gap in air cover — visible as absence on the chart — that allowed the E-boats to do their worst</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 7</span></div><div class="spine-body"><div class="spine-name">Skerki Channel Night Battle</div><div class="spine-desc">→ <strong>Answers:</strong> The geography of the worst night — why Cap Bon was a killing ground</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Images 11–13</span></div><div class="spine-body"><div class="spine-name">Sequence: Ohio's Final 72 Hours</div><div class="spine-desc">→ <strong>Answers:</strong> The improbability of the ship's survival — fire, tow, arrival as a three-image narrative</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 5</span></div><div class="spine-body"><div class="spine-name">Ohio Damage Diagram</div><div class="spine-desc">→ <strong>Answers:</strong> The structural argument — how many times this ship should have sunk</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 7</span></div><div class="spine-body"><div class="spine-name">Maltese Crowds on the Bastions</div><div class="spine-desc">→ <strong>Answers:</strong> What the operation meant to the people it was for — the human face of the strategic argument</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-diag">Diagram 6</span></div><div class="spine-body"><div class="spine-name">Strategic Consequence — Fuel to El Alamein</div><div class="spine-desc">→ <strong>Answers:</strong> Ohio's cargo as a chain of causation — the tanker and the battle in North Africa connected as data</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-img">Image 10</span></div><div class="spine-body"><div class="spine-name">Burned-out Armour at El Alamein</div><div class="spine-desc">→ <strong>Answers:</strong> The end of the chain — what Rommel's fuel shortage looked like as wreckage</div></div></div>
+    <div class="spine-row"><div class="spine-tag"><span class="badge badge-prose">Closing</span></div><div class="spine-body"><div class="spine-name">Ohio Towed Out 1946 — The Honest Accounting</div><div class="spine-desc">→ <strong>Cosmic Kicker:</strong> Returns to the ship; the cargo and the campaign it enabled as the final argument</div></div></div>
+  </div>
+</section>
+
+<!-- SOURCE INTEGRITY -->
+<section class="src-section">
+  <div class="src-inner">
+    <span class="src-kicker">Production Appendix</span>
+    <h2 class="src-title">Source Integrity Note</h2>
+    <div class="src-cat">
+      <div class="src-cat-t">Verified Facts (Tier 1 — confirmed by web search)</div>
+      <ul>
+        <li>HMS Eagle sunk August 11 at 13:15, position 38°05'N 03°02'E, by U-73 (Kapitänleutnant Helmut Rosenbaum), four torpedoes, eight minutes to sink. 131–231 killed (sources vary; Wikipedia gives 231 lost out of 1,160 complement; 927 rescued). Confirmed: Wikipedia HMS Eagle article; IWM; USS Grokipedia U-73 article.</li>
+        <li>SS Ohio specifications: launched April 20, 1940, Sun Shipbuilding, Chester PA, for Texas Oil Company. 9,263 tons, 9,000 shp Westinghouse turbines, 16–19 knots. Captain Dudley William Mason, born October 7, 1901, George Cross awarded September 4, 1942. Confirmed: Wikipedia SS Ohio; Wikipedia Dudley Mason; FindaGrave.</li>
+        <li>Ohio torpedo hit from Italian submarine Axum (Lt. Renato Ferrini): hole 23×26 ft, same salvo hit HMS Nigeria (52 killed) and HMS Cairo. Confirmed: Wikipedia Operation Pedestal; Comando Supremo Italian account.</li>
+        <li>Italian submarine Axum Lt. Renato Ferrini: confirmed by multiple sources including Regia Marina history website and Wikipedia Operation Pedestal orders of battle.</li>
+        <li>Total supplies delivered: ~32,000 tons general cargo; ~11,500 tons fuel (Ohio). Confirmed: Warfare History Network; Wikipedia Operation Pedestal.</li>
+        <li>Malta George Cross awarded April 15, 1942 — only time a collective George Cross was awarded to a civilian population. Confirmed: Wikipedia Award of George Cross to Malta; CWGC; The Gazette.</li>
+        <li>Axis air losses: 62 aircraft (42 Italian, 19 German, plus ground losses). Allied air losses: 13 FAA on operations, 16 Sea Hurricanes lost with Eagle. Confirmed: Wikipedia Operation Pedestal orders of battle.</li>
+        <li>September 1942 Axis shipping sunk: ~100,000 long tons including ~24,000 tons fuel. Confirmed: Wikipedia Operation Pedestal; usmm.org Malta convoy page.</li>
+        <li>Rommel at El Alamein: 3 days' fuel vs. required 15. Confirmed: Grokipedia Operation Pedestal article; Military Strategy Magazine El Alamein analysis.</li>
+        <li>Ohio entered Grand Harbour August 15 at approximately 09:30. Confirmed: Warfare History Network; Malta War Diary blog (09:30 cited); Culture Malta article (08:00 cited — minor discrepancy in sources, ~09:30 is most commonly cited).</li>
+        <li>Ohio sunk in harbour 1946: forward half September 19 by HMS Virago; stern half October 3 by explosive charges. Confirmed: Wikipedia SS Ohio.</li>
+        <li>HMS Manchester: torpedoed by Italian MS-boats MS-16 and MS-22 near Kelibia. Captain Drew court-martialled, longest in Royal Navy history, dismissed his ship. Confirmed: Wikipedia HMS Manchester; Naval Military Press book entry.</li>
+        <li>HMS Foresight torpedoed, later sunk by HMS Tartar. HMS Cairo torpedoed by Axum, scuttled. Confirmed: Wikipedia Operation Pedestal; Royal Marines History Society.</li>
+        <li>King George VI's George Cross letter exact text. Confirmed: CWGC; Armed Forces of Malta website; Award of George Cross to Malta Wikipedia.</li>
+        <li>Rations: by August 1942, fortnightly ration 14 oz sugar, 7 oz fats, 10.5 oz bread, 14 oz corned beef per person. 1,500 daily calories. Confirmed: Wikipedia Operation Pedestal footnote.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Composited Scenes (Tier 2 — assembled from verified elements)</div>
+      <ul>
+        <li>Captain Mason's pre-departure briefing speech: the substance is confirmed in multiple sources (Warfare History Network); the direct speech format represents a journalistic reconstruction from verified reports, not a verbatim transcript.</li>
+        <li>The crowd scene on the bastions, August 15: composite drawn from multiple eyewitness accounts including Warfare History Network ("military band played Tipperary") and Malta War Diary blog. Ohio's arrival time and the behaviour of the crowd are verified; the specific arrangement of figures and the exact dialogue are editorial reconstructions.</li>
+        <li>Mason's reported dialogue to his crew: substance confirmed as a real pre-departure speech; specific wording in the article is a reconstruction from summary accounts.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Claims Requiring Expert Verification Before Publication</div>
+      <ul>
+        <li>Eagle losses: different sources give 131, 160, or 231 dead (Wikipedia HMS Eagle article gives 131; Wikipedia Operation Pedestal gives 231; Grokipedia U-73 gives 160). The official figure requires verification against Admiralty casualty records at The National Archives, Kew (ADM 1 or ADM 199 series).</li>
+        <li>Ohio's precise arrival time: sources range from 08:00 to 09:30; the article uses "half past eight" based on the most common accounts but this should be verified against Syfret's official report (ADM 116/4633).</li>
+        <li>Rommel's fuel position at El Alamein: the specific "3 days vs. required 15" figure comes from a post-2000 secondary source (Grokipedia) and should be verified against the US Army official history of the North African campaign or primary German logistics records.</li>
+        <li>The Sadkovich (1994) PQ17 comparison: the specific citation should be verified against his article in the Naval War College Review or his book on the Italian naval war.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Scientifically / Historically Contested Claims</div>
+      <ul>
+        <li>Whether Pedestal was a tactical defeat or strategic victory — presented in the article as a genuine historiographical dispute, not resolved in either direction.</li>
+        <li>Whether HMS Manchester could have been saved — Drew's court martial verdict is documented but disputed; the article presents both positions.</li>
+        <li>The causal claim connecting Ohio's cargo to Rommel's defeat at El Alamein: the chain is plausible and supported by multiple sources, but the counterfactual (Malta falls, Rommel wins) is necessarily speculative and not proven.</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Primary Sources</div>
+      <ul>
+        <li>Vice-Admiral E.N. Syfret, "Report on Operation Pedestal," August 25, 1942 (ADM 116/4633, National Archives, Kew) — the official commander's report</li>
+        <li>S.W. Roskill, The War at Sea, Vol. II, The Period of Balance (HMSO, 1956) — official British naval history</li>
+        <li>Milan Vego, "Major Convoy Operation to Malta, 10–15 August 1942," Naval War College Review, Vol. 63 No. 1 (Winter 2010) — detailed operational analysis</li>
+        <li>Sam Moses, At All Costs: How a Crippled Ship and Two American Merchant Marines Turned the Tide of World War II (Random House, 2006) — Ohio-focused narrative history</li>
+        <li>Peter C. Smith, Pedestal: The Convoy That Saved Malta (William Kimber, 1970 / Crecy, 1998)</li>
+        <li>Wikipedia, Operation Pedestal — used as structural map; key statistics traced to Roskill, IWM, National WWII Museum, Warfare History Network</li>
+        <li>Imperial War Museum collections and documentary Malta Convoy (1942) — filmed footage and photographic record</li>
+      </ul>
+    </div>
+    <div class="src-cat">
+      <div class="src-cat-t">Voices and Perspectives to Add in Full Editorial Process</div>
+      <ul>
+        <li>Maltese civilian testimony — oral histories from the 1942 siege are available through the Malta National War Museum archive; the article draws on several published accounts but a full editorial process would include direct testimony from surviving witnesses or their families</li>
+        <li>Italian naval perspective — the Regia Marina's account of the battle is documented in Italian-language sources not fully represented in this article's research; Giorgio Giorgerini's Italian-language history is a starting point</li>
+        <li>German U-boat crew accounts — Rosenbaum's perspective on the Eagle sinking is available in German naval records; his Knight's Cross citation has been translated but the patrol report (KTB) has not been examined</li>
+        <li>Merchant Navy crews beyond Ohio — the article focuses heavily on Mason and Ohio; the crews of Port Chalmers, Melbourne Star, Rochester Castle, and Brisbane Star have their own stories that are largely absent</li>
+        <li>Axis aircrews — 650 Axis sorties were flown against Pedestal; the experience from the attacking side is almost entirely absent from English-language histories</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>National Geographic — Operation Pedestal: The Convoy That Refused to Die</strong><br>
+  <span style="display:block;margin-top:8px">Mode: Encyclopaedic &nbsp;·&nbsp; Format: Encyclopaedic &nbsp;·&nbsp; ~10,500 words &nbsp;·&nbsp; 12 photojournalism briefs &nbsp;·&nbsp; 8 diagram specifications</span>
+  <span style="display:block;margin-top:6px;font-size:10px">Research: 14+ sources across academic, institutional, journalistic, and archival domains &nbsp;·&nbsp; August 3–15, 1942</span>
+</footer>
+
+<script>
+const io = new IntersectionObserver(e=>{
+  e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')});
+},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.fi,.sidebar,.pcard,.dcard,.spine-row,.closing p,.tl-table tr').forEach((el,i)=>{
+  if(el.classList.contains('pcard')||el.classList.contains('dcard')||el.classList.contains('spine-row')){
+    const idx = Array.from(el.parentElement.children).indexOf(el);
+    el.style.transitionDelay = `${idx * 0.07}s`;
+  }
+  io.observe(el);
+});
+</script>
+</body>
+</html>

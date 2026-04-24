@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>European Refining Margins Economist</title>
+  <meta name="description" content="" />
+
+  <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+
+  <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
+  <script src="../assets/vendor/react.production.min.js"></script>
+  <script src="../assets/vendor/react-dom.production.min.js"></script>
+  <script src="../assets/vendor/prop-types.min.js"></script>
+  <script src="../assets/vendor/recharts.js"></script>
+</head>
+<body>
+  <!-- Compact header bar -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">European Refining Margins Economist</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date"></span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+        
+      </div>
+      <a class="md-link header-md-link" href="../md/european-refining-margins-economist.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
+      <a class="pdf-link header-pdf-link" href="european-refining-margins-economist.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All articles</a>
+    </div>
+  </header>
+
+  <!-- Render target -->
+  <main class="article-container">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem; font-family:serif;">
+        This article requires JavaScript to render the embedded React/Recharts components.
+      </p>
+    </noscript>
+    <div id="error-boundary" style="display:none; padding:2rem; background:#fff3f3; border:1px solid #f5c2c2; border-radius:8px; font-family:ui-monospace,monospace;"></div>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>european-refining-margins-economist</code> &middot; category: <code>general</code></span>
+      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Expose React hooks + Recharts components into global scope for the JSX block -->
+  <script>
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useMemo = React.useMemo;
+    window.useRef = React.useRef;
+    window.useCallback = React.useCallback;
+    window.useReducer = React.useReducer;
+    window.useLayoutEffect = React.useLayoutEffect;
+    window.useContext = React.useContext;
+    window.Fragment = React.Fragment;
+
+    // Expose Recharts components into global scope
+    const _R = window.Recharts || {};
+    [
+      'LineChart','BarChart','AreaChart','ScatterChart','RadarChart','PieChart',
+      'XAxis','YAxis','ZAxis','CartesianGrid','Tooltip','Legend','Line','Bar','Area',
+      'Scatter','Pie','Cell','ResponsiveContainer','ReferenceLine','ReferenceArea','ReferenceDot',
+      'ComposedChart','Treemap','Radar','PolarGrid','PolarAngleAxis','PolarRadiusAxis',
+      'RadialBar','RadialBarChart','FunnelChart','Funnel','LabelList','Label','Brush',
+      'Sankey','Sector','Customized','CartesianAxis','ErrorBar','Rectangle','Curve','Cross','Dot','Polygon','Symbols','Text'
+    ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
+
+    // Simple error surface for runtime failures
+    window.addEventListener('error', function (e) {
+      var box = document.getElementById('error-boundary');
+      if (!box) return;
+      box.style.display = 'block';
+      box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
+    });
+
+    // Global <Photograph> helper (pre-transpiled React.createElement form)
+    window.Photograph = function (props) {
+      var src = props.src, alt = props.alt, caption = props.caption, credit = props.credit, href = props.href;
+      var children = [
+        React.createElement('img', { src: src, alt: alt || caption || '', loading: 'lazy', key: 'img' })
+      ];
+      if (caption || credit) {
+        var figCapChildren = [];
+        if (caption) figCapChildren.push(
+          React.createElement('span', { className: 'photo-caption', key: 'cap' }, caption)
+        );
+        if (credit) figCapChildren.push(
+          React.createElement('span', { className: 'photo-credit', key: 'cr' },
+            ' — ',
+            React.createElement('a', { href: href, target: '_blank', rel: 'noopener noreferrer' }, credit)
+          )
+        );
+        children.push(React.createElement('figcaption', { key: 'cap-root' }, figCapChildren));
+      }
+      return React.createElement('figure', { className: 'photo' }, children);
+    };
+  </script>
+
+  <!-- Pre-transpiled JSX payload (esbuild --loader=jsx --jsx=transform, classic mode).
+       React.createElement(...) calls resolve against the UMD React global above. -->
+  <script>
+    try {
+      const COLORS = {
+  economistRed: "#E3120B",
+  black: "#1a1a1a",
+  offWhite: "#FAF8F5",
+  navy: "#1F2937",
+  warmGray: "#8A8278",
+  darkGray: "#3D3B38",
+  cream: "#F2EDE4",
+  sidebarBg: "#F0EBE1",
+  borderLight: "#E0DAD0",
+  chartRed: "#E3120B",
+  chartNavy: "#1F2937",
+  chartGray: "#9CA3AF",
+  chartBlue: "#3B82F6",
+  chartTeal: "#0D9488",
+  chartAmber: "#D97706"
+};
+const FONTS = {
+  headline: "'Playfair Display', Georgia, serif",
+  body: "'Source Serif 4', Georgia, serif",
+  sans: "'Source Sans 3', 'Helvetica Neue', sans-serif"
+};
+const dieselCrackData = [
+  { period: "Q1 22", crack: 28 },
+  { period: "Q2 22", crack: 45 },
+  { period: "Q3 22", crack: 52 },
+  { period: "Q4 22", crack: 38 },
+  { period: "Q1 23", crack: 30 },
+  { period: "Q2 23", crack: 22 },
+  { period: "Q3 23", crack: 20 },
+  { period: "Q4 23", crack: 25 },
+  { period: "Q1 24", crack: 24 },
+  { period: "Q2 24", crack: 22 },
+  { period: "Q3 24", crack: 16 },
+  { period: "Q4 24", crack: 18 },
+  { period: "Q1 25", crack: 20 },
+  { period: "Q2 25", crack: 19 },
+  { period: "Q3 25", crack: 31 },
+  { period: "Q4 25", crack: 22 },
+  { period: "Q1 26", crack: 17 },
+  { period: "Mar 26*", crack: 34 }
+];
+const closureData = [
+  { period: "2007-09\n(Financial\ncrisis)", capacity: 473 },
+  { period: "2019-21\n(Covid)", capacity: 656 },
+  { period: "2025\n(Current\nwave)", capacity: 400 },
+  { period: "2029-30\n(Forecast)", capacity: 1e3 }
+];
+const crudeSourceData = [
+  { year: "2021", russia: 25.8, us: 8.4, kazakhstan: 7.9, norway: 9.1, other: 48.8 },
+  { year: "2023", russia: 4.5, us: 12, kazakhstan: 10.5, norway: 11, other: 62 },
+  { year: "2025", russia: 2.2, us: 14.6, kazakhstan: 12.8, norway: 12.8, other: 57.6 }
+];
+const marginComparisonData = [
+  { region: "NW Europe", ulsd2024: 25.5, ulsd2026f: 16.3 },
+  { region: "US Gulf Coast", ulsd2024: 24, ulsd2026f: 20.2 },
+  { region: "Singapore", ulsd2024: 22, ulsd2026f: 17.2 }
+];
+const euCapacityData = [
+  { year: "2000", capacity: 16.2 },
+  { year: "2005", capacity: 15.8 },
+  { year: "2010", capacity: 15.4 },
+  { year: "2015", capacity: 14.8 },
+  { year: "2020", capacity: 14.3 },
+  { year: "2025", capacity: 13.6 },
+  { year: "2030f", capacity: 12.1 }
+];
+const Sidebar = ({ title, children }) => /* @__PURE__ */ React.createElement("div", { style: {
+  background: COLORS.sidebarBg,
+  border: `1px solid ${COLORS.borderLight}`,
+  padding: "28px 32px",
+  margin: "36px 0",
+  borderRadius: "2px"
+} }, /* @__PURE__ */ React.createElement("div", { style: {
+  fontFamily: FONTS.sans,
+  fontSize: "11px",
+  fontWeight: 700,
+  letterSpacing: "2px",
+  textTransform: "uppercase",
+  color: COLORS.darkGray,
+  marginBottom: "6px",
+  paddingBottom: "8px",
+  borderBottom: `2px solid ${COLORS.economistRed}`,
+  display: "inline-block"
+} }, title), /* @__PURE__ */ React.createElement("div", { style: {
+  fontFamily: FONTS.sans,
+  fontSize: "15px",
+  lineHeight: 1.65,
+  color: COLORS.darkGray,
+  marginTop: "14px"
+} }, children));
+const ChartCaption = ({ children, source }) => /* @__PURE__ */ React.createElement("div", { style: { marginTop: "8px", marginBottom: "36px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: FONTS.sans, fontSize: "13px", color: COLORS.darkGray, lineHeight: 1.5 } }, children), source && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: FONTS.sans, fontSize: "11px", color: COLORS.warmGray, marginTop: "4px" } }, "Source: ", source));
+const ChartTitle = ({ children }) => /* @__PURE__ */ React.createElement("div", { style: { fontFamily: FONTS.sans, fontSize: "16px", fontWeight: 700, color: COLORS.black, marginBottom: "4px" } }, children);
+const ChartSubtitle = ({ children }) => /* @__PURE__ */ React.createElement("div", { style: { fontFamily: FONTS.sans, fontSize: "13px", color: COLORS.warmGray, marginBottom: "16px" } }, children);
+function EuropeanRefiningArticle() {
+  const P = ({ children, first, last }) => /* @__PURE__ */ React.createElement("p", { style: {
+    fontFamily: FONTS.body,
+    fontSize: first ? "18px" : "17px",
+    lineHeight: 1.75,
+    color: COLORS.black,
+    marginBottom: "20px",
+    ...last ? { fontStyle: "italic", fontSize: "18px" } : {}
+  }, dangerouslySetInnerHTML: { __html: children } });
+  return /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.offWhite, minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("style", null, `
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .recharts-cartesian-axis-tick-value { font-family: 'Source Sans 3', sans-serif !important; font-size: 12px !important; }
+        .recharts-legend-item-text { font-family: 'Source Sans 3', sans-serif !important; font-size: 12px !important; }
+      `), /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: FONTS.sans,
+    fontSize: "11px",
+    fontWeight: 600,
+    letterSpacing: "2px",
+    textTransform: "uppercase",
+    color: COLORS.warmGray,
+    textAlign: "center",
+    padding: "14px 0 10px"
+  } }, "MODE: The Economist \xA0|\xA0 FORMAT: Economist Briefing"), /* @__PURE__ */ React.createElement("div", { style: { height: "4px", background: COLORS.economistRed, width: "100%" } }), /* @__PURE__ */ React.createElement("div", { style: {
+    background: COLORS.navy,
+    padding: "80px 24px 64px",
+    textAlign: "center"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: FONTS.sans,
+    fontSize: "11px",
+    fontWeight: 700,
+    letterSpacing: "3px",
+    textTransform: "uppercase",
+    color: COLORS.economistRed,
+    marginBottom: "24px"
+  } }, "\u25C6 Briefing"), /* @__PURE__ */ React.createElement("h1", { style: {
+    fontFamily: FONTS.headline,
+    fontWeight: 900,
+    fontSize: "clamp(34px, 5.5vw, 60px)",
+    color: "#FFFFFF",
+    lineHeight: 1.1,
+    maxWidth: "720px",
+    margin: "0 auto 20px"
+  } }, "The Cracking Point"), /* @__PURE__ */ React.createElement("p", { style: {
+    fontFamily: FONTS.body,
+    fontStyle: "italic",
+    fontSize: "clamp(16px, 2.5vw, 20px)",
+    color: "rgba(255,255,255,0.85)",
+    maxWidth: "600px",
+    margin: "0 auto",
+    lineHeight: 1.5
+  } }, "Europe's refining sector is being squeezed from every direction. The question is no longer whether it will shrink, but how fast \u2014 and what replaces it.")), /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "680px", margin: "0 auto", padding: "48px 24px 80px" } }, /* @__PURE__ */ React.createElement(P, { first: true }, "Grangemouth, on the Firth of Forth, refined its last barrel of crude oil in April 2025. The plant had been running for seventy years. Petroineos, its owner, said it was losing roughly $500,000 a day. Across the North Sea and up the Rhine, Shell shut down crude processing at its Wesseling plant the same month. BP is carving a third off its Gelsenkirchen refinery. In England, the Prax Lindsey Oil Refinery entered administration and failed to find a buyer. Gunvor mothballed its upgrading unit in Rotterdam. Together, these closures removed more than 400,000 barrels per day of European refining capacity in a single year \u2014 around 3% of the continent's total. They will not be the last."), /* @__PURE__ */ React.createElement(P, null, "Europe's refining sector is caught in a structural vice. On one side, demand for its products is falling: western European gasoil consumption peaked in 2017 and has been eroding since, accelerated by electric-vehicle adoption. On the other, competition is intensifying from mega-refineries in the Middle East, West Africa, and Asia that were built in the past three years \u2014 Kuwait's 615,000 b/d Al-Zour, Nigeria's 650,000 b/d Dangote, Oman's 230,000 b/d Duqm, and China's 400,000 b/d Yulong. These facilities are newer, larger, and cheaper to operate. S&P Global Commodity Insights forecasts that close to 1m b/d of European capacity could be shuttered by 2029\u201330 \u2014 more than double the closures after the financial crisis and well above the 656,000 b/d lost during Covid."), /* @__PURE__ */ React.createElement("div", { style: { margin: "40px 0 8px" } }, /* @__PURE__ */ React.createElement(ChartTitle, null, "Waves of closure"), /* @__PURE__ */ React.createElement(ChartSubtitle, null, "European refinery capacity closures by period, thousand b/d"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 260 }, /* @__PURE__ */ React.createElement(BarChart, { data: closureData, margin: { top: 5, right: 10, left: -10, bottom: 5 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: COLORS.borderLight }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "period", tick: { fill: COLORS.darkGray, fontSize: 11, fontFamily: FONTS.sans }, interval: 0 }), /* @__PURE__ */ React.createElement(YAxis, { tick: { fill: COLORS.darkGray, fontSize: 12, fontFamily: FONTS.sans } }), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { fontFamily: FONTS.sans, fontSize: 13 }, formatter: (v) => `${v} kb/d` }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "capacity", radius: [2, 2, 0, 0] }, closureData.map((entry, i) => /* @__PURE__ */ React.createElement(Cell, { key: i, fill: i === 3 ? COLORS.economistRed : COLORS.chartNavy })))))), /* @__PURE__ */ React.createElement(ChartCaption, { source: "S&P Global Commodity Insights; Argus Media; author compilation. 2029-30 figure is a forecast." }, "The coming wave of closures (red) dwarfs previous episodes. The IEA has warned that 1\u20131.5m b/d of European capacity is at risk by 2030."), /* @__PURE__ */ React.createElement(P, null, "The economics are brutally clear. Northwest Europe's ultra-low-sulphur diesel (ULSD) crack spread \u2014 the gap between the price of diesel and the crude oil used to make it, and the best single indicator of refining profitability \u2014 declined from $42/b in 2022 to roughly $25/b in 2024. S&P Global Commodity Insights forecast a further fall to $16.27/b by 2026 \u2014 a 36% decline. By contrast, US Gulf Coast diesel cracks were expected to drop only 16% over the same period. European refiners, in other words, are losing ground not just in absolute terms but relative to every other refining centre in the world."), /* @__PURE__ */ React.createElement(P, null, "The reasons for this asymmetry are structural, not cyclical. European refineries are old \u2014 many were built before 1970 \u2014 and spread across inland sites that add transport costs. Their operating expenses have risen as the EU's emissions trading system imposes carbon costs of \u20AC70\u201380 per tonne of CO\u2082. The continent's shift to a sweeter, lighter crude slate after the loss of Russian Urals has been a poor fit for refineries designed to crack medium-sour barrels. As OPIS noted in July 2025, European refiners consumed 3.06m b/d of sweet crude versus just 0.26m b/d of heavy crude \u2014 a ratio that limits diesel yield and forces higher naphtha output into a market where petrochemical demand for naphtha is itself contracting."), /* @__PURE__ */ React.createElement("div", { style: { margin: "40px 0 8px" } }, /* @__PURE__ */ React.createElement(ChartTitle, null, "The diesel squeeze"), /* @__PURE__ */ React.createElement(ChartSubtitle, null, "Northwest Europe ULSD crack spread, $/barrel (quarterly average)"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 300 }, /* @__PURE__ */ React.createElement(AreaChart, { data: dieselCrackData, margin: { top: 5, right: 10, left: -10, bottom: 5 } }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("linearGradient", { id: "crackGrad", x1: "0", y1: "0", x2: "0", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "5%", stopColor: COLORS.economistRed, stopOpacity: 0.15 }), /* @__PURE__ */ React.createElement("stop", { offset: "95%", stopColor: COLORS.economistRed, stopOpacity: 0 }))), /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: COLORS.borderLight }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "period", tick: { fill: COLORS.darkGray, fontSize: 10, fontFamily: FONTS.sans }, interval: 2 }), /* @__PURE__ */ React.createElement(YAxis, { tick: { fill: COLORS.darkGray, fontSize: 12, fontFamily: FONTS.sans }, domain: [0, 60], unit: "$" }), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { fontFamily: FONTS.sans, fontSize: 13 }, formatter: (v) => `$${v}/b` }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "crack", stroke: COLORS.economistRed, strokeWidth: 2.5, fill: "url(#crackGrad)", dot: { fill: COLORS.economistRed, r: 3 } })))), /* @__PURE__ */ React.createElement(ChartCaption, { source: "OPIS; Argus Media; IEA; OPEC. Values are approximate quarterly averages. *March 2026 spike reflects Hormuz disruption." }, "The post-invasion spike of 2022 was a windfall, not a trend. Diesel cracks have since declined toward levels that render many European refineries unviable \u2014 except when geopolitical shocks temporarily widen them."), /* @__PURE__ */ React.createElement("blockquote", { style: {
+    fontFamily: FONTS.headline,
+    fontStyle: "italic",
+    fontSize: "22px",
+    lineHeight: 1.45,
+    color: COLORS.black,
+    borderLeft: `3px solid ${COLORS.economistRed}`,
+    paddingLeft: "24px",
+    margin: "40px 0"
+  } }, `The refinery is "currently not competitive," said the head of BP's Gelsenkirchen plant \u2014 a verdict that applies to much of European refining.`), /* @__PURE__ */ React.createElement(P, null, "The loss of Russian Urals crude was, in its way, as consequential for refining as the loss of Russian pipeline gas was for European heating. Before the invasion, Russia supplied roughly 26% of EU crude imports. Urals is a medium-sour grade \u2014 relatively dense and sulphurous \u2014 that European refineries had been optimised to process over decades. It arrived cheaply by pipeline or short Baltic tanker voyage. Replacing it required a wholesale restructuring of procurement. By 2025, Russia's share of EU crude imports had fallen to 2.2%, with only Hungary and Slovakia still receiving Druzhba pipeline flows under sanctions exemptions. The United States, Kazakhstan, and Norway each rose to supply 12\u201315% of EU imports. But as a study published in ", /* @__PURE__ */ React.createElement("em", null, "Nature Communications"), " demonstrated, crude oil types are not easily substitutable: switching from medium-sour to light-sweet crude reduces diesel output, raises refining costs, and produces a product slate mismatched to European demand."), /* @__PURE__ */ React.createElement("div", { style: { margin: "40px 0 8px" } }, /* @__PURE__ */ React.createElement(ChartTitle, null, "The great reshuffle"), /* @__PURE__ */ React.createElement(ChartSubtitle, null, "EU crude oil imports by source, % share"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 300 }, /* @__PURE__ */ React.createElement(BarChart, { data: crudeSourceData, margin: { top: 5, right: 10, left: -10, bottom: 5 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: COLORS.borderLight }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "year", tick: { fill: COLORS.darkGray, fontSize: 12, fontFamily: FONTS.sans } }), /* @__PURE__ */ React.createElement(YAxis, { tick: { fill: COLORS.darkGray, fontSize: 12, fontFamily: FONTS.sans }, domain: [0, 100], unit: "%" }), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { fontFamily: FONTS.sans, fontSize: 13 }, formatter: (v) => `${v}%` }), /* @__PURE__ */ React.createElement(Legend, null), /* @__PURE__ */ React.createElement(Bar, { dataKey: "russia", name: "Russia", stackId: "a", fill: COLORS.economistRed }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "us", name: "United States", stackId: "a", fill: COLORS.chartBlue }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "kazakhstan", name: "Kazakhstan", stackId: "a", fill: COLORS.chartTeal }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "norway", name: "Norway", stackId: "a", fill: COLORS.chartNavy }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "other", name: "Other", stackId: "a", fill: COLORS.chartGray, radius: [2, 2, 0, 0] })))), /* @__PURE__ */ React.createElement(ChartCaption, { source: "European Council; Eurostat; Visual Capitalist. Russia's 2025 share reflects Druzhba pipeline exemptions only." }, "Russia's share of EU crude imports collapsed from 26% to 2% in four years. The United States, Kazakhstan, and Norway have filled the gap \u2014 but the crude they supply is lighter and sweeter, a poor fit for refineries built for Urals."), /* @__PURE__ */ React.createElement(Sidebar, { title: "The Dangote effect" }, `Nigeria's 650,000 b/d Dangote refinery, which began ramping up in 2024, has reshaped Atlantic basin trade flows in ways that directly pressure European refiners. West Africa was historically one of Europe's largest export markets for gasoline; Nigeria alone imported vast quantities of European petrol. As Dangote ramps toward full capacity, those flows are reversing. Nigerian gasoline imports have dropped to eight-year lows. Worse for Europe, Dangote is now exporting competitively priced jet fuel to the US Gulf Coast \u2014 a market that European refiners had considered a reliable outlet. Argus Media noted that coastal European refineries built to maximise gasoline output are now "under intense pressure" as their traditional West African outlet disappears. Any refinery unable to desulphurise all its gasoline to the EU's 10 ppm standard will face existential difficulty, since high-sulphur gasoline has almost no remaining market.`), /* @__PURE__ */ React.createElement(P, null, "Then came the Hormuz crisis. The closure of the strait in March 2026 and the Iranian drone strike on Saudi Aramco's 550,000 b/d Ras Tanura refinery created a temporary but violent reversal of the margin trend. European diesel cracks surged nearly 25% in a single day, reaching $33.76/b \u2014 their highest since November. Over 3m b/d of Gulf refining capacity was taken offline. For the remaining European refineries with flexible capacity, this was a classic margin windfall: the ability to import alternative crude and convert it into scarce diesel and jet fuel, capturing widening crack spreads. Analysts at Rystad Energy forecast that very high diesel cracks in Europe would persist through most of 2026, supported by reduced Middle Eastern supply."), /* @__PURE__ */ React.createElement(P, null, 'But this is a tactical reprieve, not a structural recovery. The Hormuz premium depends on a specific, high-impact event. As Gulf capacity restarts \u2014 and it will, eventually \u2014 the underlying dynamics reassert themselves. Wood Mackenzie projected that European refining margins would be lower in 2026 before rising marginally through 2027, but warned that "increasing exposure to the cost of emissions means European refiners will face pressure on their margins in the long term." Commodity Insights forecast utilisation rates dropping from 84% in 2024 to 81% by 2027.'), /* @__PURE__ */ React.createElement("div", { style: { margin: "40px 0 8px" } }, /* @__PURE__ */ React.createElement(ChartTitle, null, "Falling behind"), /* @__PURE__ */ React.createElement(ChartSubtitle, null, "ULSD crack spread by region, $/barrel"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 260 }, /* @__PURE__ */ React.createElement(BarChart, { data: marginComparisonData, margin: { top: 5, right: 10, left: -10, bottom: 5 }, barGap: 4 }, /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: COLORS.borderLight }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "region", tick: { fill: COLORS.darkGray, fontSize: 12, fontFamily: FONTS.sans } }), /* @__PURE__ */ React.createElement(YAxis, { tick: { fill: COLORS.darkGray, fontSize: 12, fontFamily: FONTS.sans }, domain: [0, 30], unit: "$" }), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { fontFamily: FONTS.sans, fontSize: 13 }, formatter: (v) => `$${v}/b` }), /* @__PURE__ */ React.createElement(Legend, null), /* @__PURE__ */ React.createElement(Bar, { dataKey: "ulsd2024", name: "2024 actual", fill: COLORS.chartNavy, radius: [2, 2, 0, 0], barSize: 32 }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "ulsd2026f", name: "2026 forecast", fill: COLORS.economistRed, radius: [2, 2, 0, 0], barSize: 32 })))), /* @__PURE__ */ React.createElement(ChartCaption, { source: "S&P Global Commodity Insights forecasts. 2026 figures exclude Hormuz crisis spike." }, "Northwest Europe faces the steepest margin decline of any major refining centre. The 36% drop from 2024 to 2026 compares with 16% on the US Gulf Coast \u2014 a widening competitive gap."), /* @__PURE__ */ React.createElement("div", { style: { margin: "40px 0 8px" } }, /* @__PURE__ */ React.createElement(ChartTitle, null, "The long decline"), /* @__PURE__ */ React.createElement(ChartSubtitle, null, "European refining capacity, million b/d"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 260 }, /* @__PURE__ */ React.createElement(LineChart, { data: euCapacityData, margin: { top: 5, right: 10, left: -10, bottom: 5 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: COLORS.borderLight }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "year", tick: { fill: COLORS.darkGray, fontSize: 12, fontFamily: FONTS.sans } }), /* @__PURE__ */ React.createElement(YAxis, { tick: { fill: COLORS.darkGray, fontSize: 12, fontFamily: FONTS.sans }, domain: [11, 17] }), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { fontFamily: FONTS.sans, fontSize: 13 }, formatter: (v) => `${v}m b/d` }), /* @__PURE__ */ React.createElement(Line, { type: "monotone", dataKey: "capacity", stroke: COLORS.economistRed, strokeWidth: 2.5, dot: { fill: COLORS.economistRed, r: 4 } })))), /* @__PURE__ */ React.createElement(ChartCaption, { source: "IEA; Hydrocarbon Engineering; S&P Global. 2030 figure is a forecast based on announced closures and IEA risk assessment." }, "Europe has lost roughly 2.6m b/d of refining capacity since 2000. By 2030, the IEA estimates that a further 1\u20131.5m b/d could be at risk, taking the continent's total to levels not seen since the 1960s."), /* @__PURE__ */ React.createElement(Sidebar, { title: "Who survives" }, "The European refineries likely to endure are those that combine three qualities: coastal location (for cheap crude access and product export), high complexity (the ability to crack heavy feedstocks into diesel and jet fuel rather than producing excess naphtha), and integration with petrochemicals (which provides a longer-term demand anchor as transport fuels decline). The survivors are already visible: Shell's Pernis in Rotterdam, TotalEnergies' Antwerp complex, Repsol's integrated Spanish sites, and a cluster of Mediterranean refineries with access to Algerian and Libyan crude. The casualties will be inland, simple, and small. Around 73 operational refineries remain in Europe; within a decade, that number may fall below 50."), /* @__PURE__ */ React.createElement(P, null, "The deeper question is whether a managed contraction of European refining is an acceptable outcome \u2014 or a strategic vulnerability. The continent still consumes roughly 14m b/d of oil products. As domestic refining capacity shrinks, product imports rise, and with them exposure to precisely the kind of supply disruption the Hormuz crisis illustrates. Grangemouth's closure alone removed 13% of Britain's refining capacity. The UK now imports a larger share of its transport fuels than at any point in its modern history. Every barrel of diesel that is no longer refined in Rotterdam or Gelsenkirchen must arrive by ship \u2014 from the US Gulf, from India, from the Middle East."), /* @__PURE__ */ React.createElement(P, null, "Europe's refiners have two to three turnaround cycles \u2014 roughly five to seven years \u2014 to decide their fate. Those that can pivot to biofuels, sustainable aviation fuel, or integrated petrochemicals may find a viable second act. Several are trying: Eni has converted Livorno into a biorefinery; TotalEnergies has transformed La M\xE8de and Grandpuits in France. But falling biofuels margins have blunted appetite for green investment, and BP has already postponed SAF production at its Spanish refinery. For the rest, the choice is between managed closure and slow decline. The former at least preserves some value; the latter destroys it."), /* @__PURE__ */ React.createElement(P, { last: true }, "European refining is not dying \u2014 it is being hollowed out. The continent will retain a core of complex, coastal, well-integrated facilities that can compete on margins and serve residual demand. Everything else is being squeezed between cheap American feedstock, efficient Asian capacity, and a domestic market that shrinks a little every year as electric vehicles and heat pumps erode the petrol and diesel pool. The Hormuz windfall has masked the trend; it has not reversed it. Policymakers who mistake a temporary margin spike for structural health will find, a few years hence, that the capacity they assumed would be there has quietly gone. Europe is not short of refineries today. It will be short of them sooner than it thinks."), /* @__PURE__ */ React.createElement("div", { style: {
+    background: COLORS.cream,
+    padding: "32px",
+    marginTop: "56px",
+    borderRadius: "2px",
+    border: `1px solid ${COLORS.borderLight}`
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: FONTS.sans,
+    fontSize: "12px",
+    fontWeight: 700,
+    letterSpacing: "2px",
+    textTransform: "uppercase",
+    color: COLORS.darkGray,
+    marginBottom: "18px",
+    paddingBottom: "8px",
+    borderBottom: `2px solid ${COLORS.economistRed}`,
+    display: "inline-block"
+  } }, "Source Integrity Note"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: FONTS.sans, fontSize: "13px", lineHeight: 1.7, color: COLORS.darkGray } }, /* @__PURE__ */ React.createElement("p", { style: { marginBottom: "14px" } }, /* @__PURE__ */ React.createElement("strong", null, "Factual Integrity Disclosure")), /* @__PURE__ */ React.createElement("p", { style: { marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("strong", null, "Verified facts (Tier 1):"), " Grangemouth closure April 2025, 150,000 b/d, losing ~$500,000/day \u2014 Argus Media, Petroineos statements. Shell Wesseling shutdown April 2025, 147,000 b/d \u2014 S&P Global, Kpler. BP Gelsenkirchen reduction by one-third from 257,000 b/d \u2014 Argus Media, BP statements. Prax Lindsey administration \u2014 Hydrocarbon Engineering. Combined 2025 closures ~400,000 b/d (~3% of European total) \u2014 Argus Media. NW Europe ULSD crack from $42/b (2022) to $25.45/b (2024), forecast $16.27/b (2026) \u2014 S&P Global Commodity Insights. 36% decline vs 16% USGC \u2014 S&P Global. July 2025 diesel cracks averaged $31.05/b \u2014 OPIS. European crude slate: 3.06m b/d sweet, 0.26m b/d heavy (April 2025) \u2014 IEA via OPIS. Russia's share of EU crude: 25.8% (2021) to 2.2% (2025) \u2014 European Council/Eurostat. US, Kazakhstan, Norway each 12\u201315% (2025) \u2014 European Council. Dangote 650,000 b/d, Al-Zour 615,000 b/d, Duqm 230,000 b/d \u2014 EIA, S&P Global. 1m b/d forecast closures 2029-30 \u2014 S&P Global Commodity Insights. 473,000 b/d (financial crisis), 656,000 b/d (Covid closures) \u2014 S&P Global. ~73 operational European refineries \u2014 Hydrocarbon Engineering. Utilisation 84% (2024) falling to 81% (2027) \u2014 S&P Global Commodity Insights. Diesel cracks surged 25% on Hormuz crisis, hit $33.76/b \u2014 Hydrocarbon Processing. Ras Tanura 550,000 b/d shutdown \u2014 industry sources via Hydrocarbon Processing. EU ETS carbon cost \u20AC70\u201380/tCO\u2082 \u2014 ECFR. Nature Communications study on crude substitutability \u2014 published August 2024. Druzhba exemptions (Hungary/Slovakia) \u2014 Kpler, CREA."), /* @__PURE__ */ React.createElement("p", { style: { marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("strong", null, "Composited elements (Tier 2):"), " Chart data points for diesel cracks are approximate quarterly averages compiled from OPIS, Argus, and OPEC reporting. European capacity trajectory is assembled from multiple IEA and industry sources and rounded. Crude sourcing percentages for 2023 are interpolated from the 2021\u20132025 trajectory."), /* @__PURE__ */ React.createElement("p", { style: { marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("strong", null, "Details requiring verification:"), " The 2030 capacity forecast of ~12.1m b/d is an author estimate based on the IEA's 1\u20131.5m b/d at-risk assessment applied to the 2025 base. Exact quarterly crack-spread averages vary by source and methodology."), /* @__PURE__ */ React.createElement("p", null, /* @__PURE__ */ React.createElement("strong", null, "Invented or unverifiable details:"), " None. All claims are sourced from web search results."))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginTop: "56px", paddingTop: "32px" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "60px", height: "4px", background: COLORS.economistRed, margin: "0 auto 20px" } }), /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: FONTS.sans,
+    fontSize: "11px",
+    letterSpacing: "2px",
+    textTransform: "uppercase",
+    color: COLORS.warmGray
+  } }, "Economist-Style Production Document"))));
+}
+
+      ReactDOM.createRoot(document.getElementById('root')).render(
+        React.createElement(EuropeanRefiningArticle)
+      );
+    } catch (err) {
+      var box = document.getElementById('error-boundary');
+      if (box) {
+        box.style.display = 'block';
+        box.textContent = '[render error] ' + (err && err.message ? err.message : err);
+      }
+      console.error(err);
+    }
+  </script>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
