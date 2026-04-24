@@ -1385,38 +1385,94 @@ def convert_slug(slug: str) -> str:
         return generic_text_extraction(src)
 
 
+_ARTICLE_DATA_RE = re.compile(
+    r"const\s+ARTICLE_DATA\s*=\s*(\{[\s\S]*?\})\s*;", re.MULTILINE
+)
+
+
+def _extract_article_data(jsx_src: str) -> dict:
+    """Pull title/subtitle/category/style/date/tags from the JSX's ARTICLE_DATA.
+
+    Simple field-by-field regex on the object literal body — good enough for the
+    string/array value shapes we use. Returns an empty dict if ARTICLE_DATA is
+    missing so the caller can fall back to a minimal header.
+    """
+    m = _ARTICLE_DATA_RE.search(jsx_src)
+    if not m:
+        return {}
+    body = m.group(1)
+    out: dict = {}
+    for key in ("title", "subtitle", "category", "style", "date"):
+        km = re.search(rf'\b{key}\s*:\s*"((?:[^"\\]|\\.)*)"', body)
+        if km:
+            out[key] = km.group(1).replace('\\"', '"').replace("\\\\", "\\")
+    tm = re.search(r'\btags\s*:\s*\[([^\]]*)\]', body)
+    if tm:
+        out["tags"] = re.findall(r'"((?:[^"\\]|\\.)*)"', tm.group(1))
+    return out
+
+
+def _build_initial_header(slug: str) -> str:
+    """Write a proper YAML frontmatter + title block for a new md mirror.
+
+    Reads ARTICLE_DATA from the sibling JSX so title/date/tags/category/style
+    flow through to the Streamlit reader on first generation.
+    """
+    jsx_path = JSX_DIR / f"{slug}.jsx"
+    data: dict = {}
+    if jsx_path.exists():
+        data = _extract_article_data(jsx_path.read_text(encoding="utf-8"))
+
+    title = data.get("title") or slug
+    subtitle = data.get("subtitle", "")
+    date = data.get("date", "")
+    tags = data.get("tags", [])
+    category = data.get("category", "general")
+    style = data.get("style", "")
+    jsx_space_url = (
+        f"https://helwyr55-library-articles.static.hf.space/articles/{slug}.html"
+    )
+
+    def _q(v: str) -> str:
+        return '"' + v.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+    fm_lines = [
+        "---",
+        f"title: {_q(title)}",
+        f"subtitle: {_q(subtitle)}",
+        f'date: "{date}"',
+        "tags: [" + ", ".join(tags) + "]",
+        f'read_time: ""',
+        f"category: {_q(category)}",
+        f"style: {_q(style)}",
+        f"jsx_space_url: {_q(jsx_space_url)}",
+        "---",
+    ]
+    return (
+        "\n".join(fm_lines)
+        + f"\n\n# {title}\n\n"
+        + f"**[📑 View Full Article on the JSX Space →]({jsx_space_url})**\n"
+    )
+
+
 def _update_md(slug: str, new_body: str) -> tuple[int, int]:
     md_path = MD_DIR / f"{slug}.md"
     MD_DIR.mkdir(parents=True, exist_ok=True)
     if md_path.exists():
         existing = md_path.read_text(encoding="utf-8")
-        # Keep everything up to and including the "View Full Article" line + one
-        # blank line; discard the rest.
         m = re.search(
             r"(\*\*\[📑 View Full (?:Article|Interactive).+?\)\*\*\n)", existing
         )
         if m:
             header = existing[: m.end()]
         else:
-            # Missing marker — rebuild a minimal header so the file stays usable.
             sys.stderr.write(
-                f"[warn] {md_path}: no View-Full marker; regenerating minimal header\n"
+                f"[warn] {md_path}: no View-Full marker; regenerating header "
+                f"from JSX ARTICLE_DATA\n"
             )
-            header = (
-                f"# {slug}\n\n"
-                f"**[📑 View Full Article on the JSX Space →]"
-                f"(https://helwyr55-library-articles.static.hf.space/articles/"
-                f"{slug}.html)**\n"
-            )
+            header = _build_initial_header(slug)
     else:
-        # First-time generation (e.g. CI without the sibling library/ checkout).
-        # Build a minimal header so the extractor has somewhere to anchor.
-        header = (
-            f"# {slug}\n\n"
-            f"**[📑 View Full Article on the JSX Space →]"
-            f"(https://helwyr55-library-articles.static.hf.space/articles/"
-            f"{slug}.html)**\n"
-        )
+        header = _build_initial_header(slug)
     new_content = header.rstrip() + "\n\n---\n\n" + new_body.rstrip() + "\n"
     md_path.write_text(new_content, encoding="utf-8")
     return len(new_content), new_content.count("\n")
