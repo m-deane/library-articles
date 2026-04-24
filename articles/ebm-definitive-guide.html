@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ebm Definitive Guide</title>
-  <meta name="description" content="" />
+  <title>The Glass-Box That Rivals the Black Box</title>
+  <meta name="description" content="As accurate as gradient boosting, as interpretable as linear regression. Microsoft Research&#x27;s EBM makes the case that you don&#x27;t need SHAP if the model explains itself." />
 
   <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
@@ -34,12 +34,12 @@
         &larr; Library
       </a>
       <div class="header-meta">
-        <span class="header-title">Ebm Definitive Guide</span>
+        <span class="header-title">The Glass-Box That Rivals the Black Box</span>
         <span class="header-sep">&middot;</span>
-        <span class="header-date"></span>
+        <span class="header-date">2026-04-19</span>
         <span class="header-sep">&middot;</span>
         <span class="header-read"></span>
-        
+        <span class="style-badge" style="background:#5d403715; color:#5d4037; border:1px solid #5d403755;">Encyclopaedic</span>
       </div>
       <a class="md-link header-md-link" href="../md/ebm-definitive-guide.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
       <a class="pdf-link header-pdf-link" href="ebm-definitive-guide.pdf" download title="Download this article as PDF">📑 PDF</a>
@@ -60,7 +60,7 @@
 
   <footer class="article-footer">
     <div class="footer-inner">
-      <span>slug: <code>ebm-definitive-guide</code> &middot; category: <code>general</code></span>
+      <span>slug: <code>ebm-definitive-guide</code> &middot; category: <code>machine-learning</code></span>
       <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
     </div>
   </footer>
@@ -123,7 +123,16 @@
        React.createElement(...) calls resolve against the UMD React global above. -->
   <script>
     try {
-      const C = { bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#059669", accentLight: "#D1FAE5", accentDark: "#064E3B", text: "#1E293B", muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9", warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF", green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316", tipBg: "#F0FDF4", indigo: "#6366F1", violet: "#8B5CF6", sky: "#0EA5E9", amber: "#D97706" };
+      const ARTICLE_DATA = {
+  title: "The Glass-Box That Rivals the Black Box",
+  subtitle: "As accurate as gradient boosting, as interpretable as linear regression. Microsoft Research's EBM makes the case that you don't need SHAP if the model explains itself.",
+  category: "machine-learning",
+  style: "encyclopaedic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["ebm", "interpretable-ml", "glassbox"]
+};
+const C = { bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#059669", accentLight: "#D1FAE5", accentDark: "#064E3B", text: "#1E293B", muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9", warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF", green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316", tipBg: "#F0FDF4", indigo: "#6366F1", violet: "#8B5CF6", sky: "#0EA5E9", amber: "#D97706" };
 const F = { h: "'Newsreader',Georgia,serif", b: "'Inter',-apple-system,sans-serif", m: "'JetBrains Mono','Fira Code',monospace" };
 const GAMDiag = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 180", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("rect", { width: "760", height: "180", fill: "#fff", rx: "8", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontFamily: F.b, fontWeight: "700" }, "GAM \u2192 GA\xB2M \u2192 EBM: The Interpretability Lineage"), [{ x: 30, w: 210, t: "GAM (1986)", f: "g(E[y]) = \u03B2\u2080 + \u03A3 f\u1D62(x\u1D62)", d: "Additive univariate\nshape functions only", c: C.light }, { x: 275, w: 210, t: "GA\xB2M (2013)", f: "+ \u03A3 f\u1D62\u2C7C(x\u1D62, x\u2C7C)", d: "Add pairwise\ninteractions (FAST)", c: C.sky }, { x: 520, w: 210, t: "EBM (2019)", f: "+ bagging + cyclic\nboosting + DP", d: "Modern ML training\nGlass-box accuracy", c: C.accent }].map((p, i) => /* @__PURE__ */ React.createElement("g", { key: i }, i > 0 && /* @__PURE__ */ React.createElement("text", { x: p.x - 18, y: "100", fill: C.accent, fontSize: "18", textAnchor: "middle" }, "\u2192"), /* @__PURE__ */ React.createElement("rect", { x: p.x, y: "38", width: p.w, height: "120", rx: "6", fill: p.c, opacity: "0.1", stroke: p.c, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: p.x + p.w / 2, y: "58", textAnchor: "middle", fill: p.c, fontSize: "11", fontFamily: F.b, fontWeight: "700" }, p.t), /* @__PURE__ */ React.createElement("text", { x: p.x + p.w / 2, y: "78", textAnchor: "middle", fill: C.accent, fontSize: "9", fontFamily: F.m }, p.f), p.d.split("\n").map((ln, li) => /* @__PURE__ */ React.createElement("text", { key: li, x: p.x + p.w / 2, y: 100 + li * 15, textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, ln)))), /* @__PURE__ */ React.createElement("text", { x: "380", y: "172", textAnchor: "middle", fill: C.light, fontSize: "8", fontFamily: F.b }, "Hastie & Tibshirani \u2192 Lou, Caruana et al. KDD 2012/2013 \u2192 Nori, Jenkins, Koch, Caruana 2019"));
 const TrainDiag = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 190", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("rect", { width: "760", height: "190", fill: "#fff", rx: "8", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontFamily: F.b, fontWeight: "700" }, "Round-Robin Cyclic Training: One Feature at a Time"), [{ x: 40, l: "x\u2081", c: C.indigo }, { x: 140, l: "x\u2082", c: C.violet }, { x: 240, l: "x\u2083", c: C.sky }, { x: 340, l: "...", c: C.light }, { x: 440, l: "x\u2099", c: C.amber }, { x: 540, l: "x\u2081", c: C.indigo }, { x: 640, l: "x\u2082", c: C.violet }].map((s, i) => /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("rect", { x: s.x, y: "40", width: "70", height: "70", rx: "6", fill: s.c, opacity: "0.15", stroke: s.c, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: s.x + 35, y: "68", textAnchor: "middle", fill: s.c, fontSize: "16", fontFamily: F.m, fontWeight: "700" }, s.l), /* @__PURE__ */ React.createElement("text", { x: s.x + 35, y: "90", textAnchor: "middle", fill: C.muted, fontSize: "7", fontFamily: F.m }, "small tree"), i < 6 && /* @__PURE__ */ React.createElement("text", { x: s.x + 88, y: "75", fill: C.border, fontSize: "14" }, "\u2192"))), /* @__PURE__ */ React.createElement("rect", { x: "40", y: "125", width: "670", height: "28", rx: "4", fill: C.accentLight }), /* @__PURE__ */ React.createElement("text", { x: "375", y: "144", textAnchor: "middle", fill: C.accentDark, fontSize: "9", fontFamily: F.b }, "Iteration 1 \u2192 Iteration 2 \u2192 ... \u2192 Iteration 5000 \xB7 LR=0.01 \xB7 Order doesn't matter"), /* @__PURE__ */ React.createElement("text", { x: "380", y: "182", textAnchor: "middle", fill: C.light, fontSize: "8", fontFamily: F.b }, "Each feature's shape function builds up incrementally. The result is a lookup table: binned value \u2192 contribution."));

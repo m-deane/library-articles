@@ -259,159 +259,208 @@
     "pdf_url": "articles/forty-classic-crude-oil-trades-chapter-notes.pdf"
   },
   {
-    "slug": "ts-feature-engineering-guide",
-    "title": "Ts Feature Engineering Guide",
-    "subtitle": "",
-    "date": "",
-    "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
-    "component": "Article",
-    "url": "articles/ts-feature-engineering-guide.html",
-    "pdf_url": "articles/ts-feature-engineering-guide.pdf"
-  },
-  {
-    "slug": "stochastic-dp-encyclopaedic-article",
-    "title": "Stochastic Dp Encyclopaedic Article",
-    "subtitle": "",
-    "date": "",
-    "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
-    "component": "SDPArticle",
-    "url": "articles/stochastic-dp-encyclopaedic-article.html",
-    "pdf_url": "articles/stochastic-dp-encyclopaedic-article.pdf"
-  },
-  {
-    "slug": "splitwise-python-article",
-    "title": "Splitwise Python Article",
-    "subtitle": "",
-    "date": "",
-    "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
-    "component": "Article",
-    "url": "articles/splitwise-python-article.html",
-    "pdf_url": "articles/splitwise-python-article.pdf"
-  },
-  {
-    "slug": "shapash-timeseries-technical-article",
-    "title": "Shapash Timeseries Technical Article",
-    "subtitle": "",
-    "date": "",
-    "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
-    "component": "ShapashTSArticle",
-    "url": "articles/shapash-timeseries-technical-article.html",
-    "pdf_url": "articles/shapash-timeseries-technical-article.pdf"
-  },
-  {
-    "slug": "safe-ts-article",
-    "title": "Safe Ts Article",
-    "subtitle": "",
-    "date": "",
-    "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
-    "component": "App",
-    "url": "articles/safe-ts-article.html",
-    "pdf_url": "articles/safe-ts-article.pdf"
-  },
-  {
-    "slug": "rag-2026-definitive-guide",
-    "title": "Rag 2026 Definitive Guide",
-    "subtitle": "",
-    "date": "",
-    "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
-    "component": "Article",
-    "url": "articles/rag-2026-definitive-guide.html",
-    "pdf_url": "articles/rag-2026-definitive-guide.pdf"
-  },
-  {
-    "slug": "probabilistic-forecasting-guide",
-    "title": "Probabilistic Forecasting Guide",
-    "subtitle": "",
-    "date": "",
-    "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
-    "component": "Article",
-    "url": "articles/probabilistic-forecasting-guide.html",
-    "pdf_url": "articles/probabilistic-forecasting-guide.pdf"
-  },
-  {
     "slug": "pfi-definitive-guide",
-    "title": "Pfi Definitive Guide",
-    "subtitle": "",
-    "date": "",
+    "title": "What Happens When You Shuffle a Feature? The Definitive Guide to PFI",
+    "subtitle": "The simplest, most widely used, and most misunderstood tool in the ML interpretability toolkit. When it works, when it misleads, and what to use instead.",
+    "date": "2026-04-19",
     "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
+    "category": "machine-learning",
+    "style": "encyclopaedic",
+    "tags": [
+      "permutation-importance",
+      "feature-importance",
+      "interpretability"
+    ],
     "component": "Article",
     "url": "articles/pfi-definitive-guide.html",
     "pdf_url": "articles/pfi-definitive-guide.pdf"
   },
   {
-    "slug": "feature-selection-ts-deep-dive",
-    "title": "Feature Selection Ts Deep Dive",
-    "subtitle": "",
-    "date": "",
+    "slug": "catboost-guide",
+    "title": "The Theoretically Principled Member of the Gradient Boosting Trinity",
+    "subtitle": "Ordered boosting eliminates prediction shift. Ordered target statistics handle categoricals without leakage. Symmetric trees regularise and accelerate.",
+    "date": "2026-04-19",
     "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
+    "category": "machine-learning",
+    "style": "technical-ds",
+    "tags": [
+      "catboost",
+      "gradient-boosting",
+      "tabular-ml"
+    ],
+    "component": "Article",
+    "url": "articles/catboost-guide.html",
+    "pdf_url": "articles/catboost-guide.pdf"
+  },
+  {
+    "slug": "feature-selection-ts-deep-dive",
+    "title": "The Practitioner's Deep Dive: Time Series Feature Selection in Practice",
+    "subtitle": "Mechanics, intuition, diagnostics, and honest limits of 47 methods \u2014 with worked examples, inline plots, and how to tell genuine importance from statistical noise.",
+    "date": "2026-04-19",
+    "read_time": "",
+    "category": "time-series",
+    "style": "technical-ds",
+    "tags": [
+      "feature-selection",
+      "time-series",
+      "feature-engineering"
+    ],
     "component": "App",
     "url": "articles/feature-selection-ts-deep-dive.html",
     "pdf_url": "articles/feature-selection-ts-deep-dive.pdf"
   },
   {
     "slug": "ebm-definitive-guide",
-    "title": "Ebm Definitive Guide",
-    "subtitle": "",
-    "date": "",
+    "title": "The Glass-Box That Rivals the Black Box",
+    "subtitle": "As accurate as gradient boosting, as interpretable as linear regression. Microsoft Research's EBM makes the case that you don't need SHAP if the model explains itself.",
+    "date": "2026-04-19",
     "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
+    "category": "machine-learning",
+    "style": "encyclopaedic",
+    "tags": [
+      "ebm",
+      "interpretable-ml",
+      "glassbox"
+    ],
     "component": "Article",
     "url": "articles/ebm-definitive-guide.html",
     "pdf_url": "articles/ebm-definitive-guide.pdf"
   },
   {
-    "slug": "conformal-prediction-guide",
-    "title": "Conformal Prediction Guide",
-    "subtitle": "",
-    "date": "",
+    "slug": "stochastic-dp-encyclopaedic-article",
+    "title": "The Equation That Decides: A Deep Dive into Stochastic Dynamic Programming",
+    "subtitle": "In 1953, a RAND mathematician wrote an equation that became the heart of sequential decision-making \u2014 from inventory warehouses to AlphaGo. Seven decades later, the world is still learning how to solve it.",
+    "date": "2026-04-19",
     "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
+    "category": "statistics",
+    "style": "encyclopaedic",
+    "tags": [
+      "dynamic-programming",
+      "optimization",
+      "reinforcement-learning"
+    ],
+    "component": "SDPArticle",
+    "url": "articles/stochastic-dp-encyclopaedic-article.html",
+    "pdf_url": "articles/stochastic-dp-encyclopaedic-article.pdf"
+  },
+  {
+    "slug": "ts-feature-engineering-guide",
+    "title": "The Bridge Between Time Series and Tabular ML: A Systematic Guide to Feature Engineering",
+    "subtitle": "Lags, rolling statistics, Fourier transforms, calendar features, and the leakage traps that invalidate everything.",
+    "date": "2026-04-19",
+    "read_time": "",
+    "category": "time-series",
+    "style": "technical-ds",
+    "tags": [
+      "time-series",
+      "feature-engineering",
+      "forecasting"
+    ],
+    "component": "Article",
+    "url": "articles/ts-feature-engineering-guide.html",
+    "pdf_url": "articles/ts-feature-engineering-guide.pdf"
+  },
+  {
+    "slug": "splitwise-python-article",
+    "title": "Splitwise in Python: The Complete Practitioner's Guide",
+    "subtitle": "From OAuth handshakes to debt-minimisation graphs \u2014 everything a data engineer needs to wire Python into Splitwise's REST API.",
+    "date": "2026-04-19",
+    "read_time": "",
+    "category": "python",
+    "style": "applied-project",
+    "tags": [
+      "python",
+      "api",
+      "splitwise"
+    ],
+    "component": "Article",
+    "url": "articles/splitwise-python-article.html",
+    "pdf_url": "articles/splitwise-python-article.pdf"
+  },
+  {
+    "slug": "safe-ts-article",
+    "title": "SAFE: Surrogate-Assisted Feature Extraction for Time Series",
+    "subtitle": "Extracting monotonic, piecewise-constant feature transformations from black-box time series models using ALE profiles and surrogate trees.",
+    "date": "2026-04-19",
+    "read_time": "",
+    "category": "time-series",
+    "style": "technical-ds",
+    "tags": [
+      "time-series",
+      "interpretability",
+      "surrogate-models"
+    ],
+    "component": "App",
+    "url": "articles/safe-ts-article.html",
+    "pdf_url": "articles/safe-ts-article.pdf"
+  },
+  {
+    "slug": "rag-2026-definitive-guide",
+    "title": "RAG in 2026: Still Essential, No Longer Default",
+    "subtitle": "Long-context models can swallow 2 million tokens. Agents can search, verify, and reason in real time. Fine-tuning bakes knowledge into weights.",
+    "date": "2026-04-19",
+    "read_time": "",
+    "category": "nlp",
+    "style": "encyclopaedic",
+    "tags": [
+      "rag",
+      "llm",
+      "retrieval",
+      "generative-ai"
+    ],
+    "component": "Article",
+    "url": "articles/rag-2026-definitive-guide.html",
+    "pdf_url": "articles/rag-2026-definitive-guide.pdf"
+  },
+  {
+    "slug": "conformal-prediction-guide",
+    "title": "Guaranteed Prediction Intervals for Any Model: The Definitive Guide",
+    "subtitle": "Distribution-free, finite-sample coverage guarantees. No Gaussianity. No Bayesian priors. Works with any model.",
+    "date": "2026-04-19",
+    "read_time": "",
+    "category": "statistics",
+    "style": "technical-ds",
+    "tags": [
+      "conformal-prediction",
+      "uncertainty",
+      "calibration"
+    ],
     "component": "Article",
     "url": "articles/conformal-prediction-guide.html",
     "pdf_url": "articles/conformal-prediction-guide.pdf"
   },
   {
-    "slug": "catboost-guide",
-    "title": "Catboost Guide",
-    "subtitle": "",
-    "date": "",
+    "slug": "shapash-timeseries-technical-article",
+    "title": "Explaining Time Series Forecasts with Shapash: A Practitioner's Guide",
+    "subtitle": "How to use MAIF's explainability library to make lag features, rolling statistics, and calendar effects interpretable to business stakeholders \u2014 from feature engineering to production deployment.",
+    "date": "2026-04-19",
     "read_time": "",
-    "category": "general",
-    "style": "",
-    "tags": [],
+    "category": "time-series",
+    "style": "technical-ds",
+    "tags": [
+      "shapash",
+      "interpretability",
+      "time-series"
+    ],
+    "component": "ShapashTSArticle",
+    "url": "articles/shapash-timeseries-technical-article.html",
+    "pdf_url": "articles/shapash-timeseries-technical-article.pdf"
+  },
+  {
+    "slug": "probabilistic-forecasting-guide",
+    "title": "Beyond Point Forecasts: Prediction Intervals That Actually Work",
+    "subtitle": "Quantile regression for adaptiveness. Conformal prediction for guarantees. CQR for both. MAPIE for production.",
+    "date": "2026-04-19",
+    "read_time": "",
+    "category": "time-series",
+    "style": "technical-ds",
+    "tags": [
+      "probabilistic-forecasting",
+      "time-series",
+      "uncertainty"
+    ],
     "component": "Article",
-    "url": "articles/catboost-guide.html",
-    "pdf_url": "articles/catboost-guide.pdf"
+    "url": "articles/probabilistic-forecasting-guide.html",
+    "pdf_url": "articles/probabilistic-forecasting-guide.pdf"
   }
 ]

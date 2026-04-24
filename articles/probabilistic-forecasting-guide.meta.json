@@ -1,12 +1,16 @@
 {
   "slug": "probabilistic-forecasting-guide",
-  "title": "Probabilistic Forecasting Guide",
-  "subtitle": "",
-  "date": "",
+  "title": "Beyond Point Forecasts: Prediction Intervals That Actually Work",
+  "subtitle": "Quantile regression for adaptiveness. Conformal prediction for guarantees. CQR for both. MAPIE for production.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "time-series",
+  "style": "technical-ds",
+  "tags": [
+    "probabilistic-forecasting",
+    "time-series",
+    "uncertainty"
+  ],
   "component": "Article",
   "url": "articles/probabilistic-forecasting-guide.html",
   "pdf_url": "articles/probabilistic-forecasting-guide.pdf"

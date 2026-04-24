@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catboost Guide</title>
-  <meta name="description" content="" />
+  <title>The Theoretically Principled Member of the Gradient Boosting Trinity</title>
+  <meta name="description" content="Ordered boosting eliminates prediction shift. Ordered target statistics handle categoricals without leakage. Symmetric trees regularise and accelerate." />
 
   <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
@@ -34,12 +34,12 @@
         &larr; Library
       </a>
       <div class="header-meta">
-        <span class="header-title">Catboost Guide</span>
+        <span class="header-title">The Theoretically Principled Member of the Gradient Boosting Trinity</span>
         <span class="header-sep">&middot;</span>
-        <span class="header-date"></span>
+        <span class="header-date">2026-04-19</span>
         <span class="header-sep">&middot;</span>
         <span class="header-read"></span>
-        
+        <span class="style-badge" style="background:#7c4dff15; color:#7c4dff; border:1px solid #7c4dff55;">Technical DS</span>
       </div>
       <a class="md-link header-md-link" href="../md/catboost-guide.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
       <a class="pdf-link header-pdf-link" href="catboost-guide.pdf" download title="Download this article as PDF">📑 PDF</a>
@@ -60,7 +60,7 @@
 
   <footer class="article-footer">
     <div class="footer-inner">
-      <span>slug: <code>catboost-guide</code> &middot; category: <code>general</code></span>
+      <span>slug: <code>catboost-guide</code> &middot; category: <code>machine-learning</code></span>
       <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
     </div>
   </footer>
@@ -123,7 +123,16 @@
        React.createElement(...) calls resolve against the UMD React global above. -->
   <script>
     try {
-      const C = { bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#EA580C", accentLight: "#FFF7ED", accentDark: "#7C2D12", text: "#1E293B", muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9", warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF", green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316", tipBg: "#F0FDF4", indigo: "#6366F1", violet: "#8B5CF6", sky: "#0EA5E9", amber: "#D97706", teal: "#0F766E" };
+      const ARTICLE_DATA = {
+  title: "The Theoretically Principled Member of the Gradient Boosting Trinity",
+  subtitle: "Ordered boosting eliminates prediction shift. Ordered target statistics handle categoricals without leakage. Symmetric trees regularise and accelerate.",
+  category: "machine-learning",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["catboost", "gradient-boosting", "tabular-ml"]
+};
+const C = { bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#EA580C", accentLight: "#FFF7ED", accentDark: "#7C2D12", text: "#1E293B", muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9", warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF", green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316", tipBg: "#F0FDF4", indigo: "#6366F1", violet: "#8B5CF6", sky: "#0EA5E9", amber: "#D97706", teal: "#0F766E" };
 const F = { h: "'Newsreader',Georgia,serif", b: "'Inter',-apple-system,sans-serif", m: "'JetBrains Mono','Fira Code',monospace" };
 const PredShiftDiag = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 175", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("rect", { width: "760", height: "175", fill: "#fff", rx: "8", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontFamily: F.b, fontWeight: "700" }, "The Prediction Shift Problem: Why Standard Boosting Is Biased"), /* @__PURE__ */ React.createElement("rect", { x: "30", y: "42", width: "335", height: "105", rx: "6", fill: C.codeBg, stroke: C.red, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "197", y: "62", textAnchor: "middle", fill: C.red, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, "Standard Gradient Boosting"), /* @__PURE__ */ React.createElement("text", { x: "197", y: "82", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "Trees built on SAME data used for residuals"), /* @__PURE__ */ React.createElement("text", { x: "197", y: "98", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "\u2192 Conditional label leakage"), /* @__PURE__ */ React.createElement("text", { x: "197", y: "114", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "\u2192 Shifted gradients \u2192 overfitting bias"), /* @__PURE__ */ React.createElement("text", { x: "197", y: "132", textAnchor: "middle", fill: C.red, fontSize: "8", fontFamily: F.b }, "Especially on small/medium datasets"), /* @__PURE__ */ React.createElement("rect", { x: "395", y: "42", width: "335", height: "105", rx: "6", fill: C.accentLight, stroke: C.green, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "562", y: "62", textAnchor: "middle", fill: C.green, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, "CatBoost Ordered Boosting"), /* @__PURE__ */ React.createElement("text", { x: "562", y: "82", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "Each sample's residual uses only PRECEDING samples"), /* @__PURE__ */ React.createElement("text", { x: "562", y: "98", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "\u2192 No look-ahead bias (like online learning)"), /* @__PURE__ */ React.createElement("text", { x: "562", y: "114", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "\u2192 Theoretically unbiased gradients"), /* @__PURE__ */ React.createElement("text", { x: "562", y: "132", textAnchor: "middle", fill: C.green, fontSize: "8", fontFamily: F.b }, "Random permutations for robustness"), /* @__PURE__ */ React.createElement("text", { x: "380", y: "166", textAnchor: "middle", fill: C.light, fontSize: "8", fontFamily: F.b }, "Prokhorenkova et al. NeurIPS 2018 \u2014 the first to formally identify and solve prediction shift."));
 const SymTreeDiag = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 185", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("rect", { width: "760", height: "185", fill: "#fff", rx: "8", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontFamily: F.b, fontWeight: "700" }, "Symmetric (Oblivious) Trees vs. Standard Trees"), /* @__PURE__ */ React.createElement("rect", { x: "30", y: "42", width: "335", height: "115", rx: "6", fill: C.accentLight, stroke: C.accent, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "197", y: "62", textAnchor: "middle", fill: C.accent, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, "Symmetric Tree (CatBoost)"), /* @__PURE__ */ React.createElement("text", { x: "197", y: "82", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "Same split feature + threshold at every node per level"), /* @__PURE__ */ React.createElement("text", { x: "197", y: "100", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "\u2192 Balanced, regular structure"), /* @__PURE__ */ React.createElement("text", { x: "197", y: "118", textAnchor: "middle", fill: C.green, fontSize: "9", fontFamily: F.b }, "\u2713 Faster inference (branchless, vectorised)"), /* @__PURE__ */ React.createElement("text", { x: "197", y: "134", textAnchor: "middle", fill: C.green, fontSize: "9", fontFamily: F.b }, "\u2713 Better regularisation, less overfitting"), /* @__PURE__ */ React.createElement("text", { x: "197", y: "148", textAnchor: "middle", fill: C.red, fontSize: "8", fontFamily: F.b }, "\u2212 Less expressive per tree (compensated by more trees)"), /* @__PURE__ */ React.createElement("rect", { x: "395", y: "42", width: "335", height: "115", rx: "6", fill: C.codeBg, stroke: C.sky, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "562", y: "62", textAnchor: "middle", fill: C.sky, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, "Standard Tree (XGB/LGBM)"), /* @__PURE__ */ React.createElement("text", { x: "562", y: "82", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "Different splits at each node"), /* @__PURE__ */ React.createElement("text", { x: "562", y: "100", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "\u2192 Asymmetric, irregular structure"), /* @__PURE__ */ React.createElement("text", { x: "562", y: "118", textAnchor: "middle", fill: C.sky, fontSize: "9", fontFamily: F.b }, "\u2713 More expressive per tree"), /* @__PURE__ */ React.createElement("text", { x: "562", y: "134", textAnchor: "middle", fill: C.red, fontSize: "9", fontFamily: F.b }, "\u2212 Slower inference (branch prediction misses)"), /* @__PURE__ */ React.createElement("text", { x: "562", y: "148", textAnchor: "middle", fill: C.red, fontSize: "8", fontFamily: F.b }, "\u2212 More prone to overfitting without tuning"), /* @__PURE__ */ React.createElement("text", { x: "380", y: "178", textAnchor: "middle", fill: C.light, fontSize: "8", fontFamily: F.b }, "CatBoost's default depth=6 \u2192 64 leaves per symmetric tree. Branchless evaluation is GPU-friendly."));

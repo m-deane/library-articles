@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pfi Definitive Guide</title>
-  <meta name="description" content="" />
+  <title>What Happens When You Shuffle a Feature? The Definitive Guide to PFI</title>
+  <meta name="description" content="The simplest, most widely used, and most misunderstood tool in the ML interpretability toolkit. When it works, when it misleads, and what to use instead." />
 
   <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
@@ -34,12 +34,12 @@
         &larr; Library
       </a>
       <div class="header-meta">
-        <span class="header-title">Pfi Definitive Guide</span>
+        <span class="header-title">What Happens When You Shuffle a Feature? The Definitive Guide to PFI</span>
         <span class="header-sep">&middot;</span>
-        <span class="header-date"></span>
+        <span class="header-date">2026-04-19</span>
         <span class="header-sep">&middot;</span>
         <span class="header-read"></span>
-        
+        <span class="style-badge" style="background:#5d403715; color:#5d4037; border:1px solid #5d403755;">Encyclopaedic</span>
       </div>
       <a class="md-link header-md-link" href="../md/pfi-definitive-guide.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
       <a class="pdf-link header-pdf-link" href="pfi-definitive-guide.pdf" download title="Download this article as PDF">📑 PDF</a>
@@ -60,7 +60,7 @@
 
   <footer class="article-footer">
     <div class="footer-inner">
-      <span>slug: <code>pfi-definitive-guide</code> &middot; category: <code>general</code></span>
+      <span>slug: <code>pfi-definitive-guide</code> &middot; category: <code>machine-learning</code></span>
       <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
     </div>
   </footer>
@@ -123,7 +123,16 @@
        React.createElement(...) calls resolve against the UMD React global above. -->
   <script>
     try {
-      const C = { bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#7C3AED", accentLight: "#EDE9FE", accentDark: "#4C1D95", text: "#1E293B", muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9", warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF", green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316", tipBg: "#F0FDF4", indigo: "#6366F1", violet: "#8B5CF6", sky: "#0EA5E9", amber: "#D97706", teal: "#0F766E" };
+      const ARTICLE_DATA = {
+  title: "What Happens When You Shuffle a Feature? The Definitive Guide to PFI",
+  subtitle: "The simplest, most widely used, and most misunderstood tool in the ML interpretability toolkit. When it works, when it misleads, and what to use instead.",
+  category: "machine-learning",
+  style: "encyclopaedic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["permutation-importance", "feature-importance", "interpretability"]
+};
+const C = { bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#7C3AED", accentLight: "#EDE9FE", accentDark: "#4C1D95", text: "#1E293B", muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9", warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF", green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316", tipBg: "#F0FDF4", indigo: "#6366F1", violet: "#8B5CF6", sky: "#0EA5E9", amber: "#D97706", teal: "#0F766E" };
 const F = { h: "'Newsreader',Georgia,serif", b: "'Inter',-apple-system,sans-serif", m: "'JetBrains Mono','Fira Code',monospace" };
 const AlgoDiag = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 190", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("rect", { width: "760", height: "190", fill: "#fff", rx: "8", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontFamily: F.b, fontWeight: "700" }, "Permutation Feature Importance: The Core Algorithm"), [{ x: 15, w: 130, l: "Baseline\nScore", sub: "L(y, f(X))", c: C.accent, icon: "\u{1F4CA}" }, { x: 160, w: 130, l: "Shuffle\nFeature j", sub: "X\u2C7C \u2192 random\npermutation", c: C.amber, icon: "\u{1F500}" }, { x: 305, w: 130, l: "Re-evaluate\nModel", sub: "L(y, f(X\u0303\u2C7C))", c: C.sky, icon: "\u2699\uFE0F" }, { x: 450, w: 130, l: "Measure\nDrop", sub: "\u0394L = L\u0303 \u2212 L", c: C.red, icon: "\u{1F4C9}" }, { x: 595, w: 145, l: "Repeat\nn_repeats \xD7 n_features", sub: "mean + std\nper feature", c: C.green, icon: "\u{1F501}" }].map((b, i) => /* @__PURE__ */ React.createElement("g", { key: i }, i > 0 && /* @__PURE__ */ React.createElement("text", { x: b.x - 10, y: "95", fill: C.border, fontSize: "14" }, "\u2192"), /* @__PURE__ */ React.createElement("rect", { x: b.x, y: "38", width: b.w, height: "120", rx: "6", fill: b.c, opacity: "0.1", stroke: b.c, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: b.x + b.w / 2, y: "58", textAnchor: "middle", fontSize: "16" }, b.icon), b.l.split("\n").map((ln, li) => /* @__PURE__ */ React.createElement("text", { key: `l${li}`, x: b.x + b.w / 2, y: 76 + li * 14, textAnchor: "middle", fill: b.c, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, ln)), b.sub.split("\n").map((ln, li) => /* @__PURE__ */ React.createElement("text", { key: `s${li}`, x: b.x + b.w / 2, y: 108 + li * 12, textAnchor: "middle", fill: C.muted, fontSize: "8", fontFamily: F.m }, ln)))), /* @__PURE__ */ React.createElement("text", { x: "380", y: "180", textAnchor: "middle", fill: C.light, fontSize: "8", fontFamily: F.b }, "PFI(j) = L(y, f(X\u0303\u2C7C)) \u2212 L(y, f(X)). Larger drop = more important feature. No retraining needed."));
 const CollinDiag = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 190", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("rect", { width: "760", height: "190", fill: "#fff", rx: "8", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontFamily: F.b, fontWeight: "700" }, "The Multicollinearity Problem: Why PFI Can Mislead"), /* @__PURE__ */ React.createElement("rect", { x: "30", y: "40", width: "220", height: "125", rx: "6", fill: C.codeBg, stroke: C.accent, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "140", y: "58", textAnchor: "middle", fill: C.accent, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, "Independent Features"), /* @__PURE__ */ React.createElement("text", { x: "140", y: "78", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.m }, "Shuffle height \u2192 big drop"), /* @__PURE__ */ React.createElement("text", { x: "140", y: "94", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.m }, "Shuffle weight \u2192 big drop"), /* @__PURE__ */ React.createElement("text", { x: "140", y: "118", textAnchor: "middle", fill: C.green, fontSize: "9", fontFamily: F.b }, "\u2713 Both show as important"), /* @__PURE__ */ React.createElement("text", { x: "140", y: "140", textAnchor: "middle", fill: C.muted, fontSize: "8", fontFamily: F.b }, "Each carries unique info"), /* @__PURE__ */ React.createElement("rect", { x: "270", y: "40", width: "220", height: "125", rx: "6", fill: C.warnBg, stroke: C.warn, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "58", textAnchor: "middle", fill: C.warn, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, "Correlated Features (r=0.95)"), /* @__PURE__ */ React.createElement("text", { x: "380", y: "78", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.m }, "Shuffle height \u2192 small drop"), /* @__PURE__ */ React.createElement("text", { x: "380", y: "94", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.m }, "Shuffle weight \u2192 small drop"), /* @__PURE__ */ React.createElement("text", { x: "380", y: "118", textAnchor: "middle", fill: C.red, fontSize: "9", fontFamily: F.b }, "\u2717 Both show as UNimportant"), /* @__PURE__ */ React.createElement("text", { x: "380", y: "140", textAnchor: "middle", fill: C.muted, fontSize: "8", fontFamily: F.b }, "Each has a backup \u2192 model barely notices"), /* @__PURE__ */ React.createElement("rect", { x: "510", y: "40", width: "220", height: "125", rx: "6", fill: C.accentLight, stroke: C.green, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "620", y: "58", textAnchor: "middle", fill: C.green, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, "Solutions"), /* @__PURE__ */ React.createElement("text", { x: "620", y: "78", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "1. Grouped PFI"), /* @__PURE__ */ React.createElement("text", { x: "620", y: "94", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "2. Conditional PFI (Strobl)"), /* @__PURE__ */ React.createElement("text", { x: "620", y: "110", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "3. Drop-column importance"), /* @__PURE__ */ React.createElement("text", { x: "620", y: "126", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "4. Cluster + select representative"), /* @__PURE__ */ React.createElement("text", { x: "620", y: "142", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "5. VIF check before computing PFI"));

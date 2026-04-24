@@ -1,3 +1,22 @@
+/* --- YAML frontmatter --- */
+/*
+title: "Splitwise in Python: The Complete Practitioner's Guide"
+subtitle: "From OAuth handshakes to debt-minimisation graphs — everything a data engineer needs to wire Python into Splitwise's REST API."
+category: "python"
+style: "applied-project"
+date: "2026-04-19"
+tags: [python, api, splitwise]
+*/
+
+const ARTICLE_DATA = {
+  title: "Splitwise in Python: The Complete Practitioner's Guide",
+  subtitle: "From OAuth handshakes to debt-minimisation graphs — everything a data engineer needs to wire Python into Splitwise's REST API.",
+  category: "python",
+  style: "applied-project",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["python", "api", "splitwise"],
+};
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Libre+Franklin:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap');

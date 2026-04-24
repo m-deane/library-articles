@@ -1,12 +1,16 @@
 {
   "slug": "ebm-definitive-guide",
-  "title": "Ebm Definitive Guide",
-  "subtitle": "",
-  "date": "",
+  "title": "The Glass-Box That Rivals the Black Box",
+  "subtitle": "As accurate as gradient boosting, as interpretable as linear regression. Microsoft Research's EBM makes the case that you don't need SHAP if the model explains itself.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "machine-learning",
+  "style": "encyclopaedic",
+  "tags": [
+    "ebm",
+    "interpretable-ml",
+    "glassbox"
+  ],
   "component": "Article",
   "url": "articles/ebm-definitive-guide.html",
   "pdf_url": "articles/ebm-definitive-guide.pdf"

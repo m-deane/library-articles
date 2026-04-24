@@ -1,3 +1,23 @@
+/* --- YAML frontmatter --- */
+/*
+title: "Guaranteed Prediction Intervals for Any Model: The Definitive Guide"
+subtitle: "Distribution-free, finite-sample coverage guarantees. No Gaussianity. No Bayesian priors. Works with any model."
+category: "statistics"
+style: "technical-ds"
+date: "2026-04-19"
+tags: [conformal-prediction, uncertainty, calibration]
+*/
+
+const ARTICLE_DATA = {
+  title: "Guaranteed Prediction Intervals for Any Model: The Definitive Guide",
+  subtitle: "Distribution-free, finite-sample coverage guarantees. No Gaussianity. No Bayesian priors. Works with any model.",
+  category: "statistics",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["conformal-prediction", "uncertainty", "calibration"],
+};
+
 const C={bg:"#FAFBFC",card:"#FFFFFF",border:"#E2E8F0",accent:"#0F766E",accentLight:"#CCFBF1",accentDark:"#064E3B",text:"#1E293B",muted:"#64748B",light:"#94A3B8",code:"#1E1E2E",codeBg:"#F1F5F9",warn:"#F59E0B",warnBg:"#FFFBEB",info:"#3B82F6",infoBg:"#EFF6FF",green:"#10B981",red:"#EF4444",purple:"#7C3AED",orange:"#F97316",tipBg:"#F0FDF4",indigo:"#6366F1",violet:"#8B5CF6",sky:"#0EA5E9",amber:"#D97706"};
 const F={h:"'Newsreader',Georgia,serif",b:"'Inter',-apple-system,sans-serif",m:"'JetBrains Mono','Fira Code',monospace"};
 const GuaranteeDiag=()=>(<svg viewBox="0 0 760 175" style={{width:"100%",display:"block"}}><rect width="760" height="175" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/><text x="380" y="22" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">The Conformal Prediction Guarantee</text><rect x="80" y="48" width="600" height="70" rx="8" fill={C.accentLight} stroke={C.accent} strokeWidth="2"/><text x="380" y="75" textAnchor="middle" fill={C.accent} fontSize="16" fontFamily={F.m} fontWeight="700">P(Y_new ∈ C(X_new)) ≥ 1 − α</text><text x="380" y="100" textAnchor="middle" fill={C.accentDark} fontSize="11" fontFamily={F.b}>For ANY distribution · ANY model · FINITE samples · Only requires exchangeability</text><text x="380" y="140" textAnchor="middle" fill={C.text} fontSize="10" fontFamily={F.b}>No Gaussianity. No correct model specification. No asymptotics. No Bayesian priors.</text><text x="380" y="165" textAnchor="middle" fill={C.light} fontSize="8" fontFamily={F.b}>Vovk, Gammerman, Shafer (2005) · Romano, Patterson, Candès NeurIPS 2019 · Barber et al. Annals of Statistics 2021</text></svg>);

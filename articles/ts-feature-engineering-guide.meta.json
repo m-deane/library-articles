@@ -1,12 +1,16 @@
 {
   "slug": "ts-feature-engineering-guide",
-  "title": "Ts Feature Engineering Guide",
-  "subtitle": "",
-  "date": "",
+  "title": "The Bridge Between Time Series and Tabular ML: A Systematic Guide to Feature Engineering",
+  "subtitle": "Lags, rolling statistics, Fourier transforms, calendar features, and the leakage traps that invalidate everything.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "time-series",
+  "style": "technical-ds",
+  "tags": [
+    "time-series",
+    "feature-engineering",
+    "forecasting"
+  ],
   "component": "Article",
   "url": "articles/ts-feature-engineering-guide.html",
   "pdf_url": "articles/ts-feature-engineering-guide.pdf"

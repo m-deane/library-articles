@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shapash Timeseries Technical Article</title>
-  <meta name="description" content="" />
+  <title>Explaining Time Series Forecasts with Shapash: A Practitioner&#x27;s Guide</title>
+  <meta name="description" content="How to use MAIF&#x27;s explainability library to make lag features, rolling statistics, and calendar effects interpretable to business stakeholders — from feature engineering to production deployment." />
 
   <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
@@ -34,12 +34,12 @@
         &larr; Library
       </a>
       <div class="header-meta">
-        <span class="header-title">Shapash Timeseries Technical Article</span>
+        <span class="header-title">Explaining Time Series Forecasts with Shapash: A Practitioner&#x27;s Guide</span>
         <span class="header-sep">&middot;</span>
-        <span class="header-date"></span>
+        <span class="header-date">2026-04-19</span>
         <span class="header-sep">&middot;</span>
         <span class="header-read"></span>
-        
+        <span class="style-badge" style="background:#7c4dff15; color:#7c4dff; border:1px solid #7c4dff55;">Technical DS</span>
       </div>
       <a class="md-link header-md-link" href="../md/shapash-timeseries-technical-article.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
       <a class="pdf-link header-pdf-link" href="shapash-timeseries-technical-article.pdf" download title="Download this article as PDF">📑 PDF</a>
@@ -60,7 +60,7 @@
 
   <footer class="article-footer">
     <div class="footer-inner">
-      <span>slug: <code>shapash-timeseries-technical-article</code> &middot; category: <code>general</code></span>
+      <span>slug: <code>shapash-timeseries-technical-article</code> &middot; category: <code>time-series</code></span>
       <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
     </div>
   </footer>
@@ -123,7 +123,16 @@
        React.createElement(...) calls resolve against the UMD React global above. -->
   <script>
     try {
-      const C = {
+      const ARTICLE_DATA = {
+  title: "Explaining Time Series Forecasts with Shapash: A Practitioner's Guide",
+  subtitle: "How to use MAIF's explainability library to make lag features, rolling statistics, and calendar effects interpretable to business stakeholders \u2014 from feature engineering to production deployment.",
+  category: "time-series",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["shapash", "interpretability", "time-series"]
+};
+const C = {
   bg: "#FAFBFC",
   card: "#FFFFFF",
   border: "#E2E8F0",

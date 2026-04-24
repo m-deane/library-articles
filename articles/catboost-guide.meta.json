@@ -1,12 +1,16 @@
 {
   "slug": "catboost-guide",
-  "title": "Catboost Guide",
-  "subtitle": "",
-  "date": "",
+  "title": "The Theoretically Principled Member of the Gradient Boosting Trinity",
+  "subtitle": "Ordered boosting eliminates prediction shift. Ordered target statistics handle categoricals without leakage. Symmetric trees regularise and accelerate.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "machine-learning",
+  "style": "technical-ds",
+  "tags": [
+    "catboost",
+    "gradient-boosting",
+    "tabular-ml"
+  ],
   "component": "Article",
   "url": "articles/catboost-guide.html",
   "pdf_url": "articles/catboost-guide.pdf"

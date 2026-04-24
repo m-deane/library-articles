@@ -1,3 +1,23 @@
+/* --- YAML frontmatter --- */
+/*
+title: "The Bridge Between Time Series and Tabular ML: A Systematic Guide to Feature Engineering"
+subtitle: "Lags, rolling statistics, Fourier transforms, calendar features, and the leakage traps that invalidate everything."
+category: "time-series"
+style: "technical-ds"
+date: "2026-04-19"
+tags: [time-series, feature-engineering, forecasting]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Bridge Between Time Series and Tabular ML: A Systematic Guide to Feature Engineering",
+  subtitle: "Lags, rolling statistics, Fourier transforms, calendar features, and the leakage traps that invalidate everything.",
+  category: "time-series",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["time-series", "feature-engineering", "forecasting"],
+};
+
 const C={bg:"#FAFBFC",card:"#FFFFFF",border:"#E2E8F0",accent:"#0284C7",accentLight:"#E0F2FE",accentDark:"#0C4A6E",text:"#1E293B",muted:"#64748B",light:"#94A3B8",code:"#1E1E2E",codeBg:"#F1F5F9",warn:"#F59E0B",warnBg:"#FFFBEB",info:"#3B82F6",infoBg:"#EFF6FF",green:"#10B981",red:"#EF4444",purple:"#7C3AED",orange:"#F97316",tipBg:"#F0FDF4",indigo:"#6366F1",violet:"#8B5CF6",sky:"#0EA5E9",amber:"#D97706",teal:"#0F766E"};
 const F={h:"'Newsreader',Georgia,serif",b:"'Inter',-apple-system,sans-serif",m:"'JetBrains Mono','Fira Code',monospace"};
 const TransformDiag=()=>(<svg viewBox="0 0 760 180" style={{width:"100%",display:"block"}}><rect width="760" height="180" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/><text x="380" y="22" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">The Core Transformation: Time Series → Tabular</text><rect x="25" y="40" width="170" height="110" rx="6" fill={C.codeBg}/><text x="110" y="58" textAnchor="middle" fill={C.text} fontSize="10" fontFamily={F.m} fontWeight="600">Raw Time Series</text>{["2024-01-01 | 210","2024-01-02 | 215","2024-01-03 | 208","2024-01-04 | 220","..."].map((r,i)=>(<text key={i} x="35" y={76+i*13} fill={i===4?C.muted:C.text} fontSize="8" fontFamily={F.m}>{r}</text>))}<text x="225" y="95" fill={C.accent} fontSize="20" fontWeight="700">→</text><rect x="250" y="40" width="480" height="110" rx="6" fill={C.codeBg}/><text x="490" y="58" textAnchor="middle" fill={C.text} fontSize="10" fontFamily={F.m} fontWeight="600">Tabular Features (each row = 1 forecast origin)</text><text x="260" y="76" fill={C.muted} fontSize="7" fontFamily={F.m}>lag_1  lag_7  roll_7d  month  dow  fourier  temp  diff  target</text>{[["215","195","205","Jan","Mon","0.78","2.1","+5","220"],["208","190","202","Jan","Tue","0.97","1.8","-7","218"]].map((row,r)=>(<text key={r} x="260" y={92+r*14} fill={C.text} fontSize="7" fontFamily={F.m}>{row.join("   ")}</text>))}<text x="490" y="130" textAnchor="middle" fill={C.accent} fontSize="9" fontFamily={F.b} fontWeight="600">Any tabular model can now forecast: XGBoost, LightGBM, EBM, RF</text><text x="380" y="170" textAnchor="middle" fill={C.light} fontSize="8" fontFamily={F.b}>The feature engineering IS the time series intelligence. The model just learns tabular patterns.</text></svg>);

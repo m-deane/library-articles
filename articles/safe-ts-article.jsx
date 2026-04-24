@@ -1,3 +1,22 @@
+/* --- YAML frontmatter --- */
+/*
+title: "SAFE: Surrogate-Assisted Feature Extraction for Time Series"
+subtitle: "Extracting monotonic, piecewise-constant feature transformations from black-box time series models using ALE profiles and surrogate trees."
+category: "time-series"
+style: "technical-ds"
+date: "2026-04-19"
+tags: [time-series, interpretability, surrogate-models]
+*/
+
+const ARTICLE_DATA = {
+  title: "SAFE: Surrogate-Assisted Feature Extraction for Time Series",
+  subtitle: "Extracting monotonic, piecewise-constant feature transformations from black-box time series models using ALE profiles and surrogate trees.",
+  category: "time-series",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["time-series", "interpretability", "surrogate-models"],
+};
 
 // ── Theme ──────────────────────────────────────────────────────────────────
 const T = {

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Conformal Prediction Guide</title>
-  <meta name="description" content="" />
+  <title>Guaranteed Prediction Intervals for Any Model: The Definitive Guide</title>
+  <meta name="description" content="Distribution-free, finite-sample coverage guarantees. No Gaussianity. No Bayesian priors. Works with any model." />
 
   <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
@@ -34,12 +34,12 @@
         &larr; Library
       </a>
       <div class="header-meta">
-        <span class="header-title">Conformal Prediction Guide</span>
+        <span class="header-title">Guaranteed Prediction Intervals for Any Model: The Definitive Guide</span>
         <span class="header-sep">&middot;</span>
-        <span class="header-date"></span>
+        <span class="header-date">2026-04-19</span>
         <span class="header-sep">&middot;</span>
         <span class="header-read"></span>
-        
+        <span class="style-badge" style="background:#7c4dff15; color:#7c4dff; border:1px solid #7c4dff55;">Technical DS</span>
       </div>
       <a class="md-link header-md-link" href="../md/conformal-prediction-guide.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
       <a class="pdf-link header-pdf-link" href="conformal-prediction-guide.pdf" download title="Download this article as PDF">📑 PDF</a>
@@ -60,7 +60,7 @@
 
   <footer class="article-footer">
     <div class="footer-inner">
-      <span>slug: <code>conformal-prediction-guide</code> &middot; category: <code>general</code></span>
+      <span>slug: <code>conformal-prediction-guide</code> &middot; category: <code>statistics</code></span>
       <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
     </div>
   </footer>
@@ -123,7 +123,16 @@
        React.createElement(...) calls resolve against the UMD React global above. -->
   <script>
     try {
-      const C = { bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#0F766E", accentLight: "#CCFBF1", accentDark: "#064E3B", text: "#1E293B", muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9", warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF", green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316", tipBg: "#F0FDF4", indigo: "#6366F1", violet: "#8B5CF6", sky: "#0EA5E9", amber: "#D97706" };
+      const ARTICLE_DATA = {
+  title: "Guaranteed Prediction Intervals for Any Model: The Definitive Guide",
+  subtitle: "Distribution-free, finite-sample coverage guarantees. No Gaussianity. No Bayesian priors. Works with any model.",
+  category: "statistics",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["conformal-prediction", "uncertainty", "calibration"]
+};
+const C = { bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#0F766E", accentLight: "#CCFBF1", accentDark: "#064E3B", text: "#1E293B", muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9", warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF", green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316", tipBg: "#F0FDF4", indigo: "#6366F1", violet: "#8B5CF6", sky: "#0EA5E9", amber: "#D97706" };
 const F = { h: "'Newsreader',Georgia,serif", b: "'Inter',-apple-system,sans-serif", m: "'JetBrains Mono','Fira Code',monospace" };
 const GuaranteeDiag = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 175", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("rect", { width: "760", height: "175", fill: "#fff", rx: "8", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontFamily: F.b, fontWeight: "700" }, "The Conformal Prediction Guarantee"), /* @__PURE__ */ React.createElement("rect", { x: "80", y: "48", width: "600", height: "70", rx: "8", fill: C.accentLight, stroke: C.accent, strokeWidth: "2" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "75", textAnchor: "middle", fill: C.accent, fontSize: "16", fontFamily: F.m, fontWeight: "700" }, "P(Y_new \u2208 C(X_new)) \u2265 1 \u2212 \u03B1"), /* @__PURE__ */ React.createElement("text", { x: "380", y: "100", textAnchor: "middle", fill: C.accentDark, fontSize: "11", fontFamily: F.b }, "For ANY distribution \xB7 ANY model \xB7 FINITE samples \xB7 Only requires exchangeability"), /* @__PURE__ */ React.createElement("text", { x: "380", y: "140", textAnchor: "middle", fill: C.text, fontSize: "10", fontFamily: F.b }, "No Gaussianity. No correct model specification. No asymptotics. No Bayesian priors."), /* @__PURE__ */ React.createElement("text", { x: "380", y: "165", textAnchor: "middle", fill: C.light, fontSize: "8", fontFamily: F.b }, "Vovk, Gammerman, Shafer (2005) \xB7 Romano, Patterson, Cand\xE8s NeurIPS 2019 \xB7 Barber et al. Annals of Statistics 2021"));
 const SplitCPDiag = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 185", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("rect", { width: "760", height: "185", fill: "#fff", rx: "8", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontFamily: F.b, fontWeight: "700" }, "Split Conformal Prediction: 5 Steps to Guaranteed Intervals"), [{ x: 15, w: 135, t: "1. Split", d: "Train set +\nCalibration set", c: C.accent }, { x: 163, w: 135, t: "2. Train", d: "Fit model on\ntrain only", c: C.sky }, { x: 311, w: 135, t: "3. Score", d: "Compute |y \u2212 \u0177|\non calibration", c: C.violet }, { x: 459, w: 135, t: "4. Quantile", d: "q = \u2308(1-\u03B1)(n+1)\u2309/n\nof scores", c: C.green }, { x: 607, w: 135, t: "5. Predict", d: "\u0177 \xB1 q\n= valid PI", c: C.amber }].map((s, i) => /* @__PURE__ */ React.createElement("g", { key: i }, i > 0 && /* @__PURE__ */ React.createElement("text", { x: s.x - 8, y: "100", fill: C.border, fontSize: "12" }, "\u2192"), /* @__PURE__ */ React.createElement("rect", { x: s.x, y: "42", width: s.w, height: "105", rx: "6", fill: s.c, opacity: "0.1", stroke: s.c, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: s.x + s.w / 2, y: "62", textAnchor: "middle", fill: s.c, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, s.t), s.d.split("\n").map((ln, li) => /* @__PURE__ */ React.createElement("text", { key: li, x: s.x + s.w / 2, y: 85 + li * 15, textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.m }, ln)))), /* @__PURE__ */ React.createElement("text", { x: "380", y: "170", textAnchor: "middle", fill: C.accent, fontSize: "9", fontFamily: F.b, fontWeight: "700" }, "Coverage guarantee: P(Y \u2208 [\u0177\u2212q, \u0177+q]) \u2265 1\u2212\u03B1"));

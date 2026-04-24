@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Probabilistic Forecasting Guide</title>
-  <meta name="description" content="" />
+  <title>Beyond Point Forecasts: Prediction Intervals That Actually Work</title>
+  <meta name="description" content="Quantile regression for adaptiveness. Conformal prediction for guarantees. CQR for both. MAPIE for production." />
 
   <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
@@ -34,12 +34,12 @@
         &larr; Library
       </a>
       <div class="header-meta">
-        <span class="header-title">Probabilistic Forecasting Guide</span>
+        <span class="header-title">Beyond Point Forecasts: Prediction Intervals That Actually Work</span>
         <span class="header-sep">&middot;</span>
-        <span class="header-date"></span>
+        <span class="header-date">2026-04-19</span>
         <span class="header-sep">&middot;</span>
         <span class="header-read"></span>
-        
+        <span class="style-badge" style="background:#7c4dff15; color:#7c4dff; border:1px solid #7c4dff55;">Technical DS</span>
       </div>
       <a class="md-link header-md-link" href="../md/probabilistic-forecasting-guide.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
       <a class="pdf-link header-pdf-link" href="probabilistic-forecasting-guide.pdf" download title="Download this article as PDF">📑 PDF</a>
@@ -60,7 +60,7 @@
 
   <footer class="article-footer">
     <div class="footer-inner">
-      <span>slug: <code>probabilistic-forecasting-guide</code> &middot; category: <code>general</code></span>
+      <span>slug: <code>probabilistic-forecasting-guide</code> &middot; category: <code>time-series</code></span>
       <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
     </div>
   </footer>
@@ -123,7 +123,16 @@
        React.createElement(...) calls resolve against the UMD React global above. -->
   <script>
     try {
-      const C = { bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#D97706", accentLight: "#FEF3C7", accentDark: "#78350F", text: "#1E293B", muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9", warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF", green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316", tipBg: "#F0FDF4", indigo: "#6366F1", violet: "#8B5CF6", sky: "#0EA5E9", amber: "#D97706", teal: "#0F766E" };
+      const ARTICLE_DATA = {
+  title: "Beyond Point Forecasts: Prediction Intervals That Actually Work",
+  subtitle: "Quantile regression for adaptiveness. Conformal prediction for guarantees. CQR for both. MAPIE for production.",
+  category: "time-series",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["probabilistic-forecasting", "time-series", "uncertainty"]
+};
+const C = { bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#D97706", accentLight: "#FEF3C7", accentDark: "#78350F", text: "#1E293B", muted: "#64748B", light: "#94A3B8", code: "#1E1E2E", codeBg: "#F1F5F9", warn: "#F59E0B", warnBg: "#FFFBEB", info: "#3B82F6", infoBg: "#EFF6FF", green: "#10B981", red: "#EF4444", purple: "#7C3AED", orange: "#F97316", tipBg: "#F0FDF4", indigo: "#6366F1", violet: "#8B5CF6", sky: "#0EA5E9", amber: "#D97706", teal: "#0F766E" };
 const F = { h: "'Newsreader',Georgia,serif", b: "'Inter',-apple-system,sans-serif", m: "'JetBrains Mono','Fira Code',monospace" };
 const WhyPIDiag = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 175", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("rect", { width: "760", height: "175", fill: "#fff", rx: "8", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontFamily: F.b, fontWeight: "700" }, "Point Forecast vs. Probabilistic Forecast"), /* @__PURE__ */ React.createElement("rect", { x: "30", y: "40", width: "335", height: "110", rx: "6", fill: C.codeBg, stroke: C.red, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "197", y: "60", textAnchor: "middle", fill: C.red, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, "Point Forecast"), /* @__PURE__ */ React.createElement("text", { x: "197", y: "80", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, '"Demand will be 215 units"'), /* @__PURE__ */ React.createElement("text", { x: "197", y: "98", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "Wrong half the time. No confidence level."), /* @__PURE__ */ React.createElement("text", { x: "197", y: "116", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "How much safety stock? No way to know."), /* @__PURE__ */ React.createElement("text", { x: "197", y: "136", textAnchor: "middle", fill: C.red, fontSize: "8", fontFamily: F.b }, "Overstock or stockout \u2014 pick one."), /* @__PURE__ */ React.createElement("rect", { x: "395", y: "40", width: "335", height: "110", rx: "6", fill: C.accentLight, stroke: C.green, strokeWidth: "1.5" }), /* @__PURE__ */ React.createElement("text", { x: "562", y: "60", textAnchor: "middle", fill: C.green, fontSize: "10", fontFamily: F.b, fontWeight: "700" }, "Probabilistic Forecast"), /* @__PURE__ */ React.createElement("text", { x: "562", y: "80", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, '"Demand: 215 [195, 238] at 90% coverage"'), /* @__PURE__ */ React.createElement("text", { x: "562", y: "98", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "Interval width quantifies uncertainty."), /* @__PURE__ */ React.createElement("text", { x: "562", y: "116", textAnchor: "middle", fill: C.text, fontSize: "9", fontFamily: F.b }, "Safety stock = upper bound \u2212 point forecast."), /* @__PURE__ */ React.createElement("text", { x: "562", y: "136", textAnchor: "middle", fill: C.green, fontSize: "8", fontFamily: F.b }, "Optimal ordering with known risk level."), /* @__PURE__ */ React.createElement("text", { x: "380", y: "168", textAnchor: "middle", fill: C.light, fontSize: "8", fontFamily: F.b }, "The decision-maker needs BOTH the forecast AND its uncertainty."));
 const MethodsLandscape = () => /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 760 200", style: { width: "100%", display: "block" } }, /* @__PURE__ */ React.createElement("rect", { width: "760", height: "200", fill: "#fff", rx: "8", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "380", y: "22", textAnchor: "middle", fill: C.text, fontSize: "13", fontFamily: F.b, fontWeight: "700" }, "Probabilistic Forecasting Methods Landscape"), /* @__PURE__ */ React.createElement("line", { x1: "60", y1: "180", x2: "720", y2: "180", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("line", { x1: "60", y1: "180", x2: "60", y2: "40", stroke: C.border, strokeWidth: "1" }), /* @__PURE__ */ React.createElement("text", { x: "390", y: "196", textAnchor: "middle", fill: C.light, fontSize: "8", fontFamily: F.b }, "Coverage Guarantee Strength \u2192"), /* @__PURE__ */ React.createElement("text", { x: "28", y: "112", textAnchor: "middle", fill: C.light, fontSize: "8", fontFamily: F.b, transform: "rotate(-90,28,112)" }, "Adaptiveness \u2192"), [{ n: "Bootstrap", x: 150, y: 140, r: 14, c: C.light }, { n: "Bayesian", x: 200, y: 90, r: 15, c: C.violet }, { n: "Quantile\nRegression", x: 300, y: 80, r: 17, c: C.sky }, { n: "NGBoost", x: 350, y: 100, r: 13, c: C.teal }, { n: "Split\nConformal", x: 480, y: 130, r: 16, c: C.accent }, { n: "CQR", x: 560, y: 65, r: 20, c: C.green }, { n: "CV+/JK+", x: 520, y: 105, r: 14, c: C.indigo }, { n: "MAPIE", x: 620, y: 85, r: 16, c: C.amber }, { n: "DeepAR", x: 260, y: 110, r: 12, c: C.orange }].map((d, i) => /* @__PURE__ */ React.createElement("g", { key: i }, /* @__PURE__ */ React.createElement("circle", { cx: d.x, cy: d.y, r: d.r, fill: d.c, opacity: "0.4", stroke: d.c, strokeWidth: "1.5" }), d.n.split("\n").map((ln, li) => /* @__PURE__ */ React.createElement("text", { key: li, x: d.x, y: d.y + d.r + 11 + li * 10, textAnchor: "middle", fill: C.text, fontSize: "7", fontFamily: F.b, fontWeight: "600" }, ln)))));

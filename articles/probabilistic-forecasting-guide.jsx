@@ -1,3 +1,23 @@
+/* --- YAML frontmatter --- */
+/*
+title: "Beyond Point Forecasts: Prediction Intervals That Actually Work"
+subtitle: "Quantile regression for adaptiveness. Conformal prediction for guarantees. CQR for both. MAPIE for production."
+category: "time-series"
+style: "technical-ds"
+date: "2026-04-19"
+tags: [probabilistic-forecasting, time-series, uncertainty]
+*/
+
+const ARTICLE_DATA = {
+  title: "Beyond Point Forecasts: Prediction Intervals That Actually Work",
+  subtitle: "Quantile regression for adaptiveness. Conformal prediction for guarantees. CQR for both. MAPIE for production.",
+  category: "time-series",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["probabilistic-forecasting", "time-series", "uncertainty"],
+};
+
 const C={bg:"#FAFBFC",card:"#FFFFFF",border:"#E2E8F0",accent:"#D97706",accentLight:"#FEF3C7",accentDark:"#78350F",text:"#1E293B",muted:"#64748B",light:"#94A3B8",code:"#1E1E2E",codeBg:"#F1F5F9",warn:"#F59E0B",warnBg:"#FFFBEB",info:"#3B82F6",infoBg:"#EFF6FF",green:"#10B981",red:"#EF4444",purple:"#7C3AED",orange:"#F97316",tipBg:"#F0FDF4",indigo:"#6366F1",violet:"#8B5CF6",sky:"#0EA5E9",amber:"#D97706",teal:"#0F766E"};
 const F={h:"'Newsreader',Georgia,serif",b:"'Inter',-apple-system,sans-serif",m:"'JetBrains Mono','Fira Code',monospace"};
 const WhyPIDiag=()=>(<svg viewBox="0 0 760 175" style={{width:"100%",display:"block"}}><rect width="760" height="175" fill="#fff" rx="8" stroke={C.border} strokeWidth="1"/><text x="380" y="22" textAnchor="middle" fill={C.text} fontSize="13" fontFamily={F.b} fontWeight="700">Point Forecast vs. Probabilistic Forecast</text><rect x="30" y="40" width="335" height="110" rx="6" fill={C.codeBg} stroke={C.red} strokeWidth="1.5"/><text x="197" y="60" textAnchor="middle" fill={C.red} fontSize="10" fontFamily={F.b} fontWeight="700">Point Forecast</text><text x="197" y="80" textAnchor="middle" fill={C.text} fontSize="9" fontFamily={F.b}>"Demand will be 215 units"</text><text x="197" y="98" textAnchor="middle" fill={C.text} fontSize="9" fontFamily={F.b}>Wrong half the time. No confidence level.</text><text x="197" y="116" textAnchor="middle" fill={C.text} fontSize="9" fontFamily={F.b}>How much safety stock? No way to know.</text><text x="197" y="136" textAnchor="middle" fill={C.red} fontSize="8" fontFamily={F.b}>Overstock or stockout — pick one.</text><rect x="395" y="40" width="335" height="110" rx="6" fill={C.accentLight} stroke={C.green} strokeWidth="1.5"/><text x="562" y="60" textAnchor="middle" fill={C.green} fontSize="10" fontFamily={F.b} fontWeight="700">Probabilistic Forecast</text><text x="562" y="80" textAnchor="middle" fill={C.text} fontSize="9" fontFamily={F.b}>"Demand: 215 [195, 238] at 90% coverage"</text><text x="562" y="98" textAnchor="middle" fill={C.text} fontSize="9" fontFamily={F.b}>Interval width quantifies uncertainty.</text><text x="562" y="116" textAnchor="middle" fill={C.text} fontSize="9" fontFamily={F.b}>Safety stock = upper bound − point forecast.</text><text x="562" y="136" textAnchor="middle" fill={C.green} fontSize="8" fontFamily={F.b}>Optimal ordering with known risk level.</text><text x="380" y="168" textAnchor="middle" fill={C.light} fontSize="8" fontFamily={F.b}>The decision-maker needs BOTH the forecast AND its uncertainty.</text></svg>);

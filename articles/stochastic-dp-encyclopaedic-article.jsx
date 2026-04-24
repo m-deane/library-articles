@@ -1,3 +1,22 @@
+/* --- YAML frontmatter --- */
+/*
+title: "The Equation That Decides: A Deep Dive into Stochastic Dynamic Programming"
+subtitle: "In 1953, a RAND mathematician wrote an equation that became the heart of sequential decision-making — from inventory warehouses to AlphaGo. Seven decades later, the world is still learning how to solve it."
+category: "statistics"
+style: "encyclopaedic"
+date: "2026-04-19"
+tags: [dynamic-programming, optimization, reinforcement-learning]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Equation That Decides: A Deep Dive into Stochastic Dynamic Programming",
+  subtitle: "In 1953, a RAND mathematician wrote an equation that became the heart of sequential decision-making — from inventory warehouses to AlphaGo. Seven decades later, the world is still learning how to solve it.",
+  category: "statistics",
+  style: "encyclopaedic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["dynamic-programming", "optimization", "reinforcement-learning"],
+};
 
 const C = {
   y: "#FFCE00", bk: "#1a1a1a", ow: "#FAF8F5", cr: "#F2EDE4", wg: "#8A8278",

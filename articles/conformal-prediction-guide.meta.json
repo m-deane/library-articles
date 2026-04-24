@@ -1,12 +1,16 @@
 {
   "slug": "conformal-prediction-guide",
-  "title": "Conformal Prediction Guide",
-  "subtitle": "",
-  "date": "",
+  "title": "Guaranteed Prediction Intervals for Any Model: The Definitive Guide",
+  "subtitle": "Distribution-free, finite-sample coverage guarantees. No Gaussianity. No Bayesian priors. Works with any model.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "statistics",
+  "style": "technical-ds",
+  "tags": [
+    "conformal-prediction",
+    "uncertainty",
+    "calibration"
+  ],
   "component": "Article",
   "url": "articles/conformal-prediction-guide.html",
   "pdf_url": "articles/conformal-prediction-guide.pdf"

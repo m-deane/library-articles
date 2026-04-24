@@ -1,12 +1,16 @@
 {
   "slug": "safe-ts-article",
-  "title": "Safe Ts Article",
-  "subtitle": "",
-  "date": "",
+  "title": "SAFE: Surrogate-Assisted Feature Extraction for Time Series",
+  "subtitle": "Extracting monotonic, piecewise-constant feature transformations from black-box time series models using ALE profiles and surrogate trees.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "time-series",
+  "style": "technical-ds",
+  "tags": [
+    "time-series",
+    "interpretability",
+    "surrogate-models"
+  ],
   "component": "App",
   "url": "articles/safe-ts-article.html",
   "pdf_url": "articles/safe-ts-article.pdf"

@@ -1,12 +1,16 @@
 {
   "slug": "splitwise-python-article",
-  "title": "Splitwise Python Article",
-  "subtitle": "",
-  "date": "",
+  "title": "Splitwise in Python: The Complete Practitioner's Guide",
+  "subtitle": "From OAuth handshakes to debt-minimisation graphs \u2014 everything a data engineer needs to wire Python into Splitwise's REST API.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "python",
+  "style": "applied-project",
+  "tags": [
+    "python",
+    "api",
+    "splitwise"
+  ],
   "component": "Article",
   "url": "articles/splitwise-python-article.html",
   "pdf_url": "articles/splitwise-python-article.pdf"

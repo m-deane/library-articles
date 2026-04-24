@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Feature Selection Ts Deep Dive</title>
-  <meta name="description" content="" />
+  <title>The Practitioner&#x27;s Deep Dive: Time Series Feature Selection in Practice</title>
+  <meta name="description" content="Mechanics, intuition, diagnostics, and honest limits of 47 methods — with worked examples, inline plots, and how to tell genuine importance from statistical noise." />
 
   <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
@@ -34,12 +34,12 @@
         &larr; Library
       </a>
       <div class="header-meta">
-        <span class="header-title">Feature Selection Ts Deep Dive</span>
+        <span class="header-title">The Practitioner&#x27;s Deep Dive: Time Series Feature Selection in Practice</span>
         <span class="header-sep">&middot;</span>
-        <span class="header-date"></span>
+        <span class="header-date">2026-04-19</span>
         <span class="header-sep">&middot;</span>
         <span class="header-read"></span>
-        
+        <span class="style-badge" style="background:#7c4dff15; color:#7c4dff; border:1px solid #7c4dff55;">Technical DS</span>
       </div>
       <a class="md-link header-md-link" href="../md/feature-selection-ts-deep-dive.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
       <a class="pdf-link header-pdf-link" href="feature-selection-ts-deep-dive.pdf" download title="Download this article as PDF">📑 PDF</a>
@@ -60,7 +60,7 @@
 
   <footer class="article-footer">
     <div class="footer-inner">
-      <span>slug: <code>feature-selection-ts-deep-dive</code> &middot; category: <code>general</code></span>
+      <span>slug: <code>feature-selection-ts-deep-dive</code> &middot; category: <code>time-series</code></span>
       <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
     </div>
   </footer>
@@ -123,7 +123,16 @@
        React.createElement(...) calls resolve against the UMD React global above. -->
   <script>
     try {
-      const S = `
+      const ARTICLE_DATA = {
+  title: "The Practitioner's Deep Dive: Time Series Feature Selection in Practice",
+  subtitle: "Mechanics, intuition, diagnostics, and honest limits of 47 methods \u2014 with worked examples, inline plots, and how to tell genuine importance from statistical noise.",
+  category: "time-series",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["feature-selection", "time-series", "feature-engineering"]
+};
+const S = `
 
 :root{--bg:#08090d;--sf:#0f1117;--sf2:#171b24;--sf3:#1e2330;--bd:#242836;--bd2:#2e3447;--gold:#d4a843;--teal:#3ec9a7;--blue:#4d9de0;--coral:#e05c5c;--green:#52b788;--amber:#f4a261;--violet:#9b72cf;--tx:#dde1f0;--txm:#8892a8;--txd:#444c5e;--cbg:#05060a;}
 *{box-sizing:border-box;margin:0;padding:0;}

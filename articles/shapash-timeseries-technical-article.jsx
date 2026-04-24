@@ -1,3 +1,22 @@
+/* --- YAML frontmatter --- */
+/*
+title: "Explaining Time Series Forecasts with Shapash: A Practitioner's Guide"
+subtitle: "How to use MAIF's explainability library to make lag features, rolling statistics, and calendar effects interpretable to business stakeholders — from feature engineering to production deployment."
+category: "time-series"
+style: "technical-ds"
+date: "2026-04-19"
+tags: [shapash, interpretability, time-series]
+*/
+
+const ARTICLE_DATA = {
+  title: "Explaining Time Series Forecasts with Shapash: A Practitioner's Guide",
+  subtitle: "How to use MAIF's explainability library to make lag features, rolling statistics, and calendar effects interpretable to business stakeholders — from feature engineering to production deployment.",
+  category: "time-series",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["shapash", "interpretability", "time-series"],
+};
 
 const C = {
   bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#0F766E",

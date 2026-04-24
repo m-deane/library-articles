@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Safe Ts Article</title>
-  <meta name="description" content="" />
+  <title>SAFE: Surrogate-Assisted Feature Extraction for Time Series</title>
+  <meta name="description" content="Extracting monotonic, piecewise-constant feature transformations from black-box time series models using ALE profiles and surrogate trees." />
 
   <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
@@ -34,12 +34,12 @@
         &larr; Library
       </a>
       <div class="header-meta">
-        <span class="header-title">Safe Ts Article</span>
+        <span class="header-title">SAFE: Surrogate-Assisted Feature Extraction for Time Series</span>
         <span class="header-sep">&middot;</span>
-        <span class="header-date"></span>
+        <span class="header-date">2026-04-19</span>
         <span class="header-sep">&middot;</span>
         <span class="header-read"></span>
-        
+        <span class="style-badge" style="background:#7c4dff15; color:#7c4dff; border:1px solid #7c4dff55;">Technical DS</span>
       </div>
       <a class="md-link header-md-link" href="../md/safe-ts-article.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
       <a class="pdf-link header-pdf-link" href="safe-ts-article.pdf" download title="Download this article as PDF">📑 PDF</a>
@@ -60,7 +60,7 @@
 
   <footer class="article-footer">
     <div class="footer-inner">
-      <span>slug: <code>safe-ts-article</code> &middot; category: <code>general</code></span>
+      <span>slug: <code>safe-ts-article</code> &middot; category: <code>time-series</code></span>
       <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
     </div>
   </footer>
@@ -123,7 +123,16 @@
        React.createElement(...) calls resolve against the UMD React global above. -->
   <script>
     try {
-      const T = {
+      const ARTICLE_DATA = {
+  title: "SAFE: Surrogate-Assisted Feature Extraction for Time Series",
+  subtitle: "Extracting monotonic, piecewise-constant feature transformations from black-box time series models using ALE profiles and surrogate trees.",
+  category: "time-series",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["time-series", "interpretability", "surrogate-models"]
+};
+const T = {
   bg: "#080c12",
   surface: "#0f1520",
   surfaceAlt: "#141c2a",

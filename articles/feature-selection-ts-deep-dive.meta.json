@@ -1,12 +1,16 @@
 {
   "slug": "feature-selection-ts-deep-dive",
-  "title": "Feature Selection Ts Deep Dive",
-  "subtitle": "",
-  "date": "",
+  "title": "The Practitioner's Deep Dive: Time Series Feature Selection in Practice",
+  "subtitle": "Mechanics, intuition, diagnostics, and honest limits of 47 methods \u2014 with worked examples, inline plots, and how to tell genuine importance from statistical noise.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "time-series",
+  "style": "technical-ds",
+  "tags": [
+    "feature-selection",
+    "time-series",
+    "feature-engineering"
+  ],
   "component": "App",
   "url": "articles/feature-selection-ts-deep-dive.html",
   "pdf_url": "articles/feature-selection-ts-deep-dive.pdf"

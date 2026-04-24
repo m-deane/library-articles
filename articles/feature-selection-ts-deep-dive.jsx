@@ -1,3 +1,22 @@
+/* --- YAML frontmatter --- */
+/*
+title: "The Practitioner's Deep Dive: Time Series Feature Selection in Practice"
+subtitle: "Mechanics, intuition, diagnostics, and honest limits of 47 methods — with worked examples, inline plots, and how to tell genuine importance from statistical noise."
+category: "time-series"
+style: "technical-ds"
+date: "2026-04-19"
+tags: [feature-selection, time-series, feature-engineering]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Practitioner's Deep Dive: Time Series Feature Selection in Practice",
+  subtitle: "Mechanics, intuition, diagnostics, and honest limits of 47 methods — with worked examples, inline plots, and how to tell genuine importance from statistical noise.",
+  category: "time-series",
+  style: "technical-ds",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["feature-selection", "time-series", "feature-engineering"],
+};
 
 const S = `
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');

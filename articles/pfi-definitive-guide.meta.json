@@ -1,12 +1,16 @@
 {
   "slug": "pfi-definitive-guide",
-  "title": "Pfi Definitive Guide",
-  "subtitle": "",
-  "date": "",
+  "title": "What Happens When You Shuffle a Feature? The Definitive Guide to PFI",
+  "subtitle": "The simplest, most widely used, and most misunderstood tool in the ML interpretability toolkit. When it works, when it misleads, and what to use instead.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "machine-learning",
+  "style": "encyclopaedic",
+  "tags": [
+    "permutation-importance",
+    "feature-importance",
+    "interpretability"
+  ],
   "component": "Article",
   "url": "articles/pfi-definitive-guide.html",
   "pdf_url": "articles/pfi-definitive-guide.pdf"
