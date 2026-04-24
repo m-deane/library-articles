@@ -95,6 +95,7 @@ SLUGS = [
     "the-doers-and-the-knowers",
     "xlendi-wreck",
     "obsidian-and-claude-code",
+    "obsidian-complete-guide-with-claude-code",
 ]
 
 

@@ -1,0 +1,19 @@
+{
+  "slug": "obsidian-complete-guide-with-claude-code",
+  "title": "Obsidian, Feature by Feature, with Claude Code",
+  "subtitle": "A reference book for every major Obsidian surface \u2014 vault, properties, links, plugins, sync, MCP \u2014 and how each one wires into a Claude Code agent on the same disk.",
+  "date": "2026-04-24",
+  "read_time": "",
+  "category": "data-engineering",
+  "style": "encyclopaedic",
+  "tags": [
+    "obsidian",
+    "claude-code",
+    "reference",
+    "mcp",
+    "workflow"
+  ],
+  "component": "ObsidianCompleteGuideWithClaudeCode",
+  "url": "articles/obsidian-complete-guide-with-claude-code.html",
+  "pdf_url": "articles/obsidian-complete-guide-with-claude-code.pdf"
+}
