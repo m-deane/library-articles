@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Last Barrels — Plain Reader</title>
+  <meta name="description" content="Europe&#x27;s refineries once turned the continent into an industrial powerhouse. Now, caught between cheap American crude, efficient Asian mega-plants, and a future that runs on electricity, they face a reckoning decades in the making." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">The Last Barrels</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-19</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/european-refining-encyclopaedic.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/european-refining-encyclopaedic.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <p><strong>Subject:</strong> European oil refining industry — structure, economics, geopolitics, and future outlook</p>
+<p><strong>Key statistics:</strong> ~73 operational refineries in Europe (excl. Russia); ~13.6m b/d total capacity (2025); ~400,000 b/d closed in 2025 alone; 1–1.5m b/d at risk by 2030 (IEA); NW Europe ULSD crack $16.27/b forecast 2026; Russia's crude share: 25.8% (2021) → 2.2% (2025); 435m tonnes EU crude imports 2025 (€212bn); EU ETS carbon price €70–80/tCO₂</p>
+<p><strong>Geographic scope:</strong> Northwest Europe (ARA corridor, UK, Germany); Mediterranean (Italy, Spain, France); global competitors (Nigeria, Kuwait, Oman, China, Mexico, India)</p>
+<p><strong>Key dates:</strong> 1902 — Shell's first Pernis refinery; 1964 — Druzhba pipeline operational; 1980 — European capacity peak ~20m b/d; Dec 2022 — EU Russian seaborne crude embargo; April 2025 — Grangemouth, Wesseling closures; Feb 2026 — Strait of Hormuz closure</p>
+<p><strong>Key figures:</strong> Arno Appel (BP Gelsenkirchen); Amber Russell (BP head of refining); Aliko Dangote; Tom O'Malley (former Petroplus CEO); Alan Gelder (Wood Mackenzie)</p>
+<p><strong>Status:</strong> Structural contraction; managed decline of simpler/inland plants; conversion to biofuels/terminals; surviving complex coastal plants expected to persist through 2030s</p>
+<p><strong>Primary sources:</strong> S&amp;P Global Commodity Insights; Argus Media; IEA; OPIS; Kpler; European Council/Eurostat; Hydrocarbon Engineering; Wood Mackenzie; Rystad Energy</p>
+<p><strong>Invented or unverifiable details:</strong> None of substance. Atmospheric details in the Grangemouth opening (the wind, the morning light) are literary conventions applied to a verified location and event.</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>european-refining-encyclopaedic</code> &middot; category: <code>energy</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,12 +1,18 @@
 {
   "slug": "european-refining-margins-economist",
-  "title": "European Refining Margins Economist",
-  "subtitle": "",
-  "date": "",
+  "title": "The Cracking Point",
+  "subtitle": "Europe's refining sector is being squeezed from every direction. The question is no longer whether it will shrink, but how fast \u2014 and what replaces it.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "energy",
+  "style": "economist",
+  "tags": [
+    "refining",
+    "europe",
+    "margins",
+    "closures",
+    "dangote"
+  ],
   "component": "EuropeanRefiningArticle",
   "url": "articles/european-refining-margins-economist.html",
   "pdf_url": "articles/european-refining-margins-economist.pdf"

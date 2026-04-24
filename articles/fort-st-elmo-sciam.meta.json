@@ -1,12 +1,18 @@
 {
   "slug": "fort-st-elmo-sciam",
-  "title": "Fort St Elmo Sciam",
-  "subtitle": "",
-  "date": "",
+  "title": "The Gun Platform Above the Sea",
+  "subtitle": "The materials science of Miocene limestone, the fire-control geometry of a raised gun platform, and the ballistic accident that killed the Mediterranean's greatest corsair \u2014 examined through petrography, military engineering, and 450 years of weathering data.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "archaeology",
+  "style": "natgeo-sciam-hybrid",
+  "tags": [
+    "malta",
+    "fort-st-elmo",
+    "great-siege",
+    "globigerina-limestone",
+    "fortifications"
+  ],
   "component": "App",
   "url": "articles/fort-st-elmo-sciam.html",
   "pdf_url": "articles/fort-st-elmo-sciam.pdf"

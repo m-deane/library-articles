@@ -1,9 +1,22 @@
-import { useState } from "react";
-import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, ReferenceLine, Legend,
-  BarChart, Bar
-} from "recharts";
+/* --- YAML frontmatter --- */
+/*
+title: "Fourteen Minutes at the Edge of the World"
+subtitle: "At 110 metres beneath Xlendi Bay, a Phoenician ship has been waiting 2,700 years to be found. The technical divers who reach it have about fourteen minutes before the ocean demands they leave."
+category: "archaeology"
+style: "natgeo-classic"
+date: "2026-04-19"
+tags: [malta, xlendi, phoenician, shipwreck, technical-diving]
+*/
+
+const ARTICLE_DATA = {
+  title: "Fourteen Minutes at the Edge of the World",
+  subtitle: "At 110 metres beneath Xlendi Bay, a Phoenician ship has been waiting 2,700 years to be found. The technical divers who reach it have about fourteen minutes before the ocean demands they leave.",
+  category: "archaeology",
+  style: "natgeo-classic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["malta", "xlendi", "phoenician", "shipwreck", "technical-diving"],
+};
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 const C = {
@@ -443,7 +456,7 @@ function WreckComparison() {
 
 // ─── HELPER COMPONENTS ────────────────────────────────────────────────────────
 
-function DropCap({ letter, rest }) {
+function DC({ letter, rest }) {
   return (
     <p style={{ fontFamily: F.body, fontSize: "1.18rem", lineHeight: 1.78, color: C.black,
                 marginBottom: "1.4em", marginTop: 0 }}>
@@ -483,7 +496,7 @@ function SceneBreak() {
   );
 }
 
-function Sidebar({ title, children }) {
+function SB({ title, children }) {
   return (
     <aside style={{ background: C.cream, border: `1px solid ${C.borderLight}`,
                     borderRadius: 3, padding: "24px 28px 20px", margin: "2.4em 0" }}>
@@ -499,7 +512,7 @@ function Sidebar({ title, children }) {
   );
 }
 
-function ImgCaption({ label, text }) {
+function Cap({ label, text }) {
   return (
     <div style={{ fontFamily: F.sans, fontSize: 11.5, color: C.warmGray, marginTop: 8,
                   marginBottom: 24, lineHeight: 1.55, borderLeft: `2px solid ${C.accent}`,
@@ -590,7 +603,7 @@ export default function XlendiWreck() {
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "56px 24px 80px" }}>
 
         {/* THREAD 1: DESCENT */}
-        <DropCap letter="T" rest={`he mooring line descends into blue and then, somewhere below twenty metres, into something that is not quite blue anymore. The transition is gradual and then it is sudden: a diver on closed-circuit rebreather equipment passes through a thermocline — the invisible boundary where warm surface water ends and cold Mediterranean depth begins — and the light changes quality. It does not merely dim. It shifts register, from the warm photosynthetic light of the shallows to something older and more absolute, a blue so dense it has mass.`} />
+        <DC letter="T" rest={`he mooring line descends into blue and then, somewhere below twenty metres, into something that is not quite blue anymore. The transition is gradual and then it is sudden: a diver on closed-circuit rebreather equipment passes through a thermocline — the invisible boundary where warm surface water ends and cold Mediterranean depth begins — and the light changes quality. It does not merely dim. It shifts register, from the warm photosynthetic light of the shallows to something older and more absolute, a blue so dense it has mass.`} />
 
         <Para>At forty metres the diver checks the heads-up display on the rebreather: partial pressure of oxygen steady at 1.3 atmospheres, held there automatically by the unit's solenoid valve as the surrounding pressure climbs. The diluent in the breathing loop is trimix — helium, oxygen, and nitrogen blended to keep the equivalent narcotic depth manageable, to prevent the nitrogen narcosis that would otherwise begin folding itself into a diver's cognition around this depth on compressed air: the euphoria, the slowed processing, the underwater equivalent of three fast drinks. The helium in the mix carries its own cost — a bone-deep chill as it conducts heat from the body six times faster than air — but the drysuit handles that, and the mind stays clear.</Para>
 
@@ -604,7 +617,7 @@ export default function XlendiWreck() {
 
         {/* DEPTH PROFILE */}
         <DepthProfile />
-        <ImgCaption
+        <Cap
           label="Data"
           text="The dive profile for a CCR trimix descent to the Xlendi wreck at 110m: eight minutes of descent, approximately fourteen minutes on the seabed, and around 2.5 hours of staged decompression stops during the ascent — a total of roughly three hours in the water for fourteen minutes of archaeology."
         />
@@ -624,14 +637,14 @@ export default function XlendiWreck() {
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Amphora_-_MAN.jpg/800px-Amphora_-_MAN.jpg"
           alt="Ancient Phoenician amphora"
         />
-        <ImgCaption
+        <Cap
           label="Character"
           text="A Phoenician-period storage amphora. The Xlendi cargo included approximately 50 amphorae from multiple production sites across the central Mediterranean — Malta/Gozo, North Tunisia, and western Sicily — each one a data point in the trade network of the 7th century BC. | Source: Wikimedia Commons (public domain)"
         />
 
         {/* PHOENICIAN MAP */}
         <PhoenicianMap />
-        <ImgCaption
+        <Cap
           label="Data"
           text="The Phoenician trade network of the 7th century BC, showing the routes that connected the Levantine homeland to Malta, North Africa, Sicily, Sardinia, and Iberia. The Xlendi cargo's petrographic analysis traces its amphorae to three distinct production zones — evidence that the ship had already visited multiple ports before it sank."
         />
@@ -652,17 +665,17 @@ export default function XlendiWreck() {
         <Para>The methodological innovations were as significant as the archaeological discoveries. A rigid grid system was deployed over the wreck to allow systematic recording; a hydraulic-powered submersible pump was lowered to the seabed to act as a dredge for sediment removal; mirrorless cameras with powerful lights were used to capture thousands of images daily that were processed into three-dimensional photogrammetric models of the excavation's progress — allowing archaeologists on the surface to study the site in detail between dives. Artefacts were transported to the surface in a custom-made cage attached to powerful lifting bags. The entire system was a kind of prosthesis for human attention: the divers spent fourteen minutes doing what only human hands and human judgement could do, while technology did everything else.</Para>
 
         {/* SIDEBAR 1: THE 110M DIVE */}
-        <Sidebar title="The 110-Metre Dive — What CCR Trimix Makes Possible">
+        <SB title="The 110-Metre Dive — What CCR Trimix Makes Possible">
           <p style={{ marginBottom: "1em" }}>A closed-circuit rebreather (CCR) dive to 110 metres is one of the most physiologically demanding activities a human being can routinely undertake. Understanding why requires understanding what the body does under pressure.</p>
           <p style={{ marginBottom: "1em" }}>At 110 metres, the ambient pressure is 11 bar — eleven times the pressure at the surface. Every gas a diver breathes is at 11 times its normal partial pressure. On ordinary compressed air, this would mean catastrophic nitrogen narcosis (the "rapture of the deep") and lethal oxygen toxicity within minutes. Trimix — a blend of helium, oxygen, and nitrogen — solves both problems: helium replaces the narcotic nitrogen in the breathing mix, keeping the equivalent narcotic depth manageable; the oxygen percentage is kept low enough to prevent toxicity at depth.</p>
           <p style={{ marginBottom: "1em" }}>The rebreather adds a further layer of control. Unlike open-circuit scuba, which delivers gas at a fixed mixture regardless of depth, a CCR maintains a constant partial pressure of oxygen — typically 1.3 ATA — by automatically adjusting the oxygen fraction as depth changes. The diver breathes a gas that is continuously optimised for their current depth. Carbon dioxide is scrubbed from exhaled gas by a chemical absorbent canister; oxygen is replenished from a small cylinder; the rest of the gas is recycled. This is why there are no bubbles, and why a CCR diver can stay underwater for hours — their gas supply is consumed only by metabolic oxygen use, not by breathing volume.</p>
           <p style={{ marginBottom: "1em" }}>The decompression obligation is the governing constraint. At 110 metres for fourteen minutes, a diver's body tissues — bone, fat, nerve, blood — have absorbed helium and nitrogen at high pressure. Ascending too quickly means those gases can form bubbles in the bloodstream, causing decompression sickness (the bends) — potentially fatal. The ascent must be staged: deep stops at 80m and 50m to begin off-gassing; gas switches at 21m (to 50/50 nitrox to accelerate nitrogen washout) and 6m (to pure oxygen for maximum off-gassing efficiency); extended stops at 9m and 3m. The total ascent time from 110 metres after fourteen minutes of bottom time: approximately two and a half hours.</p>
           <p>High-Pressure Nervous Syndrome (HPNS) — a neurological condition characterised by tremors, dizziness, and cognitive impairment caused by helium under high pressure — becomes clinically significant at depths below 150 metres. At 110 metres, divers may experience sub-threshold precursor effects, particularly if descending rapidly. The Xlendi team managed this by controlling descent rate, typically aiming for no more than 15 to 18 metres per minute. Three to four bailout cylinders containing independent gas supplies are carried in case of rebreather failure at depth — because at 110 metres, the rebreather is the only thing standing between the diver and the ocean.</p>
-        </Sidebar>
+        </SB>
 
         {/* WATER COLUMN */}
         <WaterColumn />
-        <ImgCaption
+        <Cap
           label="Data"
           text="The water column at Xlendi Bay, from the sun-warmed surface to the dark seabed at 110 metres. Each zone presents different physiological challenges; the wreck sits in near-total darkness under 11 bar of pressure, at a temperature of approximately 14°C — conditions that have preserved its cargo for 2,700 years and that demand extraordinary equipment from anyone who goes to meet it."
         />
@@ -679,12 +692,12 @@ export default function XlendiWreck() {
         <Para>And then there is the tooth. In 2021, the final season of excavation, a diver's fingers working through the lower sediment of the wreck found a human lower right first molar, buried in the dark at 110 metres. It belonged to a young person — the minimal wear and the large pulp chamber suggested adolescence or early adulthood. Prof. Gambin described the implications as "huge": carbon dating and DNA analysis might, in principle, reveal something about the people on board this ship — their geographic origin, their relationship to modern Maltese genetics, their age and health. It is the first human remain recovered from the site. Somewhere in a laboratory, in collaboration with international specialists, this tooth is being read for everything a tooth can say about a life that ended 2,700 years ago in a body of water that has no memory of it.</Para>
 
         {/* SIDEBAR 2: PHOENICIAN TRADE NETWORK */}
-        <Sidebar title="The Phoenician Trade Network — 7th Century BC">
+        <SB title="The Phoenician Trade Network — 7th Century BC">
           <p style={{ marginBottom: "1em" }}>The Phoenicians of the 7th century BC were the dominant maritime trading civilisation of the Mediterranean world — the people who first connected the Atlantic coast of Iberia to the coasts of the Levant and North Africa in a single economic network. Based in the city-states of Tyre, Sidon, and Byblos on the coast of modern Lebanon, they founded colonies across the Mediterranean basin: at Carthage in North Africa (traditionally c. 814 BC), at Motya in Sicily, Sulky in Sardinia, Gadir at the mouth of the Atlantic, and on Malta and Gozo, where Ras il-Wardija — the very headland beneath which the Xlendi wreck lies — is the site of a known Phoenician-Punic sanctuary dedicated to the goddess Astarte.</p>
           <p style={{ marginBottom: "1em" }}>Their ships were typically twelve to twenty metres long, with a rounded hull optimised for cargo capacity rather than speed. They were built using the mortise-and-tenon technique: planks fitted together by carefully cut wooden tongues and slots, the hull assembled from the outside in, producing a vessel of remarkable strength without iron fastenings. The Xlendi excavation found evidence of this technique in wooden fragments recovered from the lower sediment in 2020 — six hull planks in situ, with a mortise-and-tenon joint visible in the cross-section of the timber.</p>
           <p style={{ marginBottom: "1em" }}>The Phoenician cargo economy was organised around amphorae — the standardised ceramic containers of the ancient world, shaped for stacking in ships' holds, for sealing with pitch or resin, for the transport of oil, wine, salt fish, grain, and pitch itself. Their shapes and clay fabrics are fingerprints of origin: a trained ceramic typologist like Jean-Christophe Sourisseau can read a broken amphora sherd the way a forensic scientist reads a tissue sample, identifying the clay source and production technique to within a region, sometimes to within a single workshop.</p>
           <p>The Xlendi amphorae told Sourisseau a story of a ship that had been to at least three distinct production zones before it sank. The heterogeneity of the cargo argues against a simple two-port trading voyage; it suggests a ship working a circuit — loading and trading, picking up and dropping off, accumulating a hold full of goods from multiple suppliers, each one a connection in a network that stretched, in the 7th century BC, from the British Isles to Mesopotamia.</p>
-        </Sidebar>
+        </SB>
 
         {/* THREAD 1: THE DEEPWATER PARK */}
         <Para>In August 2023, Malta inaugurated the world's first deepwater archaeological park. The protected zone covers 67,000 square metres of seabed around the Xlendi site, encompassing not only the Phoenician wreck but also a second ancient site — the Tower Wreck, a third-century BC vessel at 105 metres depth, its cargo of Punic amphorae scattered across the sandy seabed near the seventeenth-century coastal watchtower that guards the entrance to Xlendi Bay. Heritage Malta declared the area an Archaeological Zone at Sea in 2020; Malta ratified the UNESCO Convention on the Protection of the Underwater Cultural Heritage in 2021; the park itself opened to technical divers in the summer of 2023.</Para>
@@ -695,7 +708,7 @@ export default function XlendiWreck() {
 
         {/* WRECK COMPARISON */}
         <WreckComparison />
-        <ImgCaption
+        <Cap
           label="Data"
           text="The Xlendi wreck compared to the two best-known ancient Mediterranean shipwrecks by depth. The Uluburun and Cape Gelidonya sites were excavated by recreational-depth divers using conventional scuba — a methodology impossible at Xlendi. The world's first sub-100m archaeological excavation by divers was completed here between 2018 and 2021."
         />
@@ -710,12 +723,12 @@ export default function XlendiWreck() {
         <Para>The diver begins to ascend. At 110 metres, the mooring line appears in the beam of the dive light, rising toward a surface that is two and a half hours away. The decompression clock starts. The ocean begins its slow, insistent demand for the body to give back what it took.</Para>
 
         {/* SIDEBAR 3: WHO OWNS THE PAST */}
-        <Sidebar title="Who Owns the Past? — Heritage, Access, and the Law of the Deep">
+        <SB title="Who Owns the Past? — Heritage, Access, and the Law of the Deep">
           <p style={{ marginBottom: "1em" }}>The legal and ethical framework governing underwater cultural heritage has been evolving for decades, driven in part by two contradictory realities: that the sea contains an extraordinary density of the human past, and that human access to that past — beyond roughly fifty metres — was essentially impossible until the last twenty years of technical diving development.</p>
           <p style={{ marginBottom: "1em" }}>The UNESCO Convention on the Protection of the Underwater Cultural Heritage (2001) establishes the core principle: underwater cultural heritage should be preserved in situ wherever possible, with in situ preservation preferred over excavation, and commercial exploitation strictly prohibited. Malta ratified the convention in 2021, having already incorporated its core principles into domestic heritage legislation in 2019. The Xlendi site is now an Archaeological Zone at Sea under Maltese law, with defined buffer zones, regulated access procedures, and mandatory monitoring by Heritage Malta's Underwater Cultural Heritage Unit.</p>
           <p style={{ marginBottom: "1em" }}>The tension the convention tries to navigate is between protection and access. A site that is legally protected but effectively invisible — that no one can visit, that produces no public engagement, that exists only in academic publications — is a site that lacks the constituency needed to ensure its long-term survival. The Xlendi Deepwater Archaeological Park tries to resolve this tension by creating a managed access regime: technical divers can visit through licensed dive centres, under protocols that include mandatory briefings, prohibited zones around the active archaeological site, and regular monitoring to check for disturbance.</p>
           <p>The deeper question is one that the archaeology itself forces: who has a claim on a ship that sank in Phoenician waters, off a Maltese island, carrying goods from Tunisia and Sicily, built by craftsmen whose descendants are distributed across the entire Mediterranean? The 2001 UNESCO Convention sidesteps sovereignty disputes by emphasising the heritage of humanity over the heritage of states. The tooth in the lower sediment of the Xlendi wreck, currently undergoing DNA analysis, may eventually speak to whether the Phoenicians who passed through this water 2,700 years ago left any trace in the genetics of the people now charged with protecting their memory. In the meantime, the site belongs to the sea — and, through the protocols of the park, to anyone qualified to go down and look.</p>
-        </Sidebar>
+        </SB>
 
         <Para>Forty metres. The light begins to recover. The cold is still absolute — fourteen degrees at the thermocline, dropping lower as the diver hangs in the water column doing nothing more than breathing and waiting for the mathematics of dissolved gas to run their course. The decompression computer ticks down. Fifteen minutes at nine metres. A gas switch to pure oxygen at six metres. The final three-metre stop.</Para>
 

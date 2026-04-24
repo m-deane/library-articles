@@ -1,12 +1,17 @@
 {
   "slug": "autonomy-centred-coaching",
-  "title": "Autonomy Centred Coaching",
-  "subtitle": "",
-  "date": "",
+  "title": "The Freedom to Change",
+  "subtitle": "For seven decades, psychotherapy assumed that the expert in the room was the therapist. A quiet revolution \u2014 grounded in rigorous science \u2014 has been dismantling that idea one session at a time.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "neuroscience",
+  "style": "natgeo-classic",
+  "tags": [
+    "self-determination-theory",
+    "psychotherapy",
+    "motivational-interviewing",
+    "autonomy"
+  ],
   "component": "AutonomyCentredCoaching",
   "url": "articles/autonomy-centred-coaching.html",
   "pdf_url": "articles/autonomy-centred-coaching.pdf"

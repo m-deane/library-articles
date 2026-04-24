@@ -1,12 +1,18 @@
 {
   "slug": "fort_st_elmo_ng",
-  "title": "Fort_St_Elmo_Ng",
-  "subtitle": "",
-  "date": "",
+  "title": "The Cavalier That Broke an Empire",
+  "subtitle": "For thirty-one days in 1565, the raised gun platform at the heart of Fort St Elmo held back the most powerful armada Islam had ever sent westward \u2014 and changed the course of Mediterranean history forever.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "history",
+  "style": "natgeo-classic",
+  "tags": [
+    "malta",
+    "fort-st-elmo",
+    "knights-of-st-john",
+    "ottoman",
+    "siege"
+  ],
   "component": "App",
   "url": "articles/fort_st_elmo_ng.html",
   "pdf_url": "articles/fort_st_elmo_ng.pdf"

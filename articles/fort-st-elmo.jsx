@@ -1,4 +1,22 @@
-import { useState, useEffect } from "react";
+/* --- YAML frontmatter --- */
+/*
+title: "The Gun Platform Above the Sea"
+subtitle: "At the tip of the Sciberras Peninsula, the cavalier of Fort St Elmo rises above the star fort that held off 40,000 Ottoman troops for twenty-eight days in 1565 — and killed the greatest corsair of the sixteenth century."
+category: "history"
+style: "natgeo-classic"
+date: "2026-04-19"
+tags: [malta, fort-st-elmo, great-siege, dragut, cavalier]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Gun Platform Above the Sea",
+  subtitle: "At the tip of the Sciberras Peninsula, the cavalier of Fort St Elmo rises above the star fort that held off 40,000 Ottoman troops for twenty-eight days in 1565 — and killed the greatest corsair of the sixteenth century.",
+  category: "history",
+  style: "natgeo-classic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["malta", "fort-st-elmo", "great-siege", "dragut", "cavalier"],
+};
 
 /*
 MODE: NatGeo Classic | FORMAT: Standard Feature
@@ -213,9 +231,9 @@ export default function App(){
   const [ok,setOk]=useState(false);
   useEffect(()=>{setTimeout(()=>setOk(true),80)},[]);
 
-  const SB=()=><div style={{textAlign:"center",margin:"36px 0",color:C.honey,fontSize:"16px",letterSpacing:"10px"}}>❧</div>;
+  const Flr=()=><div style={{textAlign:"center",margin:"36px 0",color:C.honey,fontSize:"16px",letterSpacing:"10px"}}>❧</div>;
   const Fig=({children,caption})=>(<div style={{margin:"45px -22px"}}>{children}<div style={{fontSize:"12px",color:C.cap,lineHeight:1.55,padding:"10px 22px 0",fontStyle:"italic",borderTop:`1px solid ${C.stoneD}`}}>{caption}</div></div>);
-  const Side=({title,children})=>(<div style={{background:C.stoneD,borderLeft:`3px solid ${C.honey}`,padding:"22px 26px",margin:"38px 0"}}><h4 style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",fontWeight:700,color:C.warm,marginBottom:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</h4>{children}</div>);
+  const SB=({title,children})=>(<div style={{background:C.stoneD,borderLeft:`3px solid ${C.honey}`,padding:"22px 26px",margin:"38px 0"}}><h4 style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",fontWeight:700,color:C.warm,marginBottom:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</h4>{children}</div>);
   const sp={fontSize:"15px",lineHeight:1.62,marginBottom:".7em"};
 
   return(<>
@@ -264,23 +282,23 @@ export default function App(){
 
         <div className="pq">"If the child cost us so dear, what will the parent cost?"<br/><span style={{fontSize:"13px",fontWeight:400,fontStyle:"normal",color:C.cap}}>— Mustafa Pasha, surveying the Ottoman dead after the fall of Fort St Elmo, 23 June 1565. The "parent" was Fort St Angelo, across the harbour.</span></div>
 
-        <Side title="Sidebar: The 28 Days">
+        <SB title="SB: The 28 Days">
           <p style={sp}>The initial garrison of Fort St Elmo numbered approximately 150 knights and 600 soldiers, the majority Spanish, along with sixty armed galley slaves. Reinforcements crossed the Grand Harbour by boat from Birgu at night — a crossing of roughly 800 metres under sporadic Ottoman fire. The bombardment from Mount Sciberras, which overlooked the fort, was devastating: thirty-six or more guns firing downward into a position that could not be defiladed. Francisco Balbi di Correggio, a Spanish soldier who survived the Great Siege and published his account in 1568, recorded that the Ottoman engineers had expected the fort to fall in three to five days. It held for twenty-eight. The ravelin — hastily built in the months before the siege and described by some historians as little more than earth and fascines — fell first, on approximately 10 June. The main fort followed on 23 June. No defending knights survived. Nine Maltese soldiers escaped by swimming across to Fort St Angelo. The Ottoman losses at St Elmo alone were staggering: estimates range from 6,000 to 8,000 dead, including Dragut and several other senior commanders.</p>
-        </Side>
+        </SB>
 
         <Fig caption={<><strong>Twenty-eight days.</strong> The siege timeline from the Ottoman fleet's arrival on 18 May to the relief force's landing on 8 September. The Fort St Elmo phase — 18 May to 23 June — was expected to last three days. It consumed a month, roughly 8,000 Ottoman lives, and the career of Dragut. The delay allowed Birgu and Senglea to prepare for the next phase and bought time for the Gran Soccorso from Sicily.</>}><SiegeSVG/></Fig>
 
-        <SB/>
+        <Flr/>
 
         <p>After the siege, Grand Master Jean de la Valette — who at seventy years old had commanded the defence from Fort St Angelo and personally led counterattacks — decided to build a new city on the Sciberras Peninsula itself, denying any future attacker the high ground that had made Fort St Elmo so vulnerable to Ottoman batteries. Construction began in 1566. Pope Pius IV sent his military architect, Francesco Laparelli, to design the fortifications. Laparelli's critical report on the ruined Fort St Elmo, prepared immediately after the siege, is one of the few documentary sources for the original 1552 configuration — because he then proceeded to rebuild it, incorporating the remains into the new city walls. The cavalier was reconstructed. Over the following centuries, the fort was modified repeatedly: the Vendôme Bastion was added in 1614, the Carafa Enceinte encircled the entire foreshore in 1687, and British engineers in the nineteenth century added musketry parapets and converted the polverista to an armoury. Very few elements of the present structure can be securely dated to 1565.</p>
 
         <p>The fort's twentieth-century life was no less violent than its sixteenth. On 11 June 1940, Fort St Elmo suffered the first aerial bombardment of Malta in the Second World War — the opening salvo of a campaign that would deliver 3,340 air raids and approximately 15,000 tons of bombs on the island between 1940 and 1943, earning Malta's population the George Cross. The cavalier, with its vaulted bombproof interior, served once again as a shelter — a function its sixteenth-century builders would have recognised instantly. In 2015, a €15.5 million restoration project, implemented by the Grand Harbour Regeneration Corporation in collaboration with Heritage Malta and funded eighty-five per cent by the European Regional Development Fund, transformed the fort into a museum. Archaeological excavations during the restoration uncovered elements of the original pre-1565 fort — an important find, given that most of the original structure had been buried by centuries of modification. The cavalier's vaulted interior now houses an immersive heritage show: projectors throw computer-generated seas and explosions onto the curved walls while holographic actors deliver the historical narrative.</p>
 
-        <Side title="Sidebar: Globigerina Limestone">
+        <SB title="SB: Globigerina Limestone">
           <p style={sp}>The building material of Fort St Elmo — and virtually every historic structure on Malta — is globigerina limestone, a Miocene-age marine sedimentary rock composed largely of the fossilised shells of foraminifera (genus Globigerina). It occurs in three geological formations across the Maltese islands: Lower, Middle, and Upper Globigerina Limestone. The Lower formation, the most widely quarried, is soft enough when freshly cut to be shaped with hand tools — a property that allowed the rapid construction of the 1552 fort in six months. Upon exposure to air, the calcium carbonate matrix hardens through a process of desiccation and recrystallisation, producing the characteristic honey-gold surface that gives Valletta its visual identity. During the Great Siege, this property had an unintended defensive benefit: the stone's relative softness absorbed some of the kinetic energy of cannonballs, reducing fragmentation compared to harder masonry. The fragment that killed Dragut was an exception — struck at an angle that produced shrapnel rather than absorption.</p>
-        </Side>
+        </SB>
 
-        <SB/>
+        <Flr/>
 
         <p>The cavalier of Fort St Elmo has, across nearly five centuries, served as a gun platform, a bombproof shelter, a barracks, a storage facility, an armoury, a film set — parts of the 1978 film Midnight Express were shot in Lower St Elmo — and now a museum with holographic projections. Each incarnation has altered the physical fabric, layering modification upon modification until the 1552 original exists only as a footprint beneath subsequent construction and a few laconic entries in the Order's records. Matteo Perez d'Aleccio's painted frescoes of the siege, executed in the Grandmaster's Palace in Valletta in the 1570s, offer the most vivid visual record of the fort as it appeared during the battle — but they are artistic representations, not engineering drawings, and their accuracy is debated.</p>
 

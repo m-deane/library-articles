@@ -1,4 +1,22 @@
-import { useState, useEffect } from "react";
+/* --- YAML frontmatter --- */
+/*
+title: "The Colour of the Walls"
+subtitle: "Valletta's golden fortifications were built by the hands of enslaved Muslims, Jews, and Christians. For 268 years, the Knights of St John ran one of the Mediterranean's largest slave economies. The stones remember what the plaques do not."
+category: "history"
+style: "natgeo-classic"
+date: "2026-04-19"
+tags: [malta, slavery, knights-of-st-john, valletta, mediterranean]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Colour of the Walls",
+  subtitle: "Valletta's golden fortifications were built by the hands of enslaved Muslims, Jews, and Christians. For 268 years, the Knights of St John ran one of the Mediterranean's largest slave economies. The stones remember what the plaques do not.",
+  category: "history",
+  style: "natgeo-classic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["malta", "slavery", "knights-of-st-john", "valletta", "mediterranean"],
+};
 
 /*
 MODE: NatGeo Classic | FORMAT: Standard Feature
@@ -195,9 +213,9 @@ export default function App(){
   const [ok,setOk]=useState(false);
   useEffect(()=>{setTimeout(()=>setOk(true),80)},[]);
 
-  const SB=()=><div style={{textAlign:"center",margin:"36px 0",color:C.honey,fontSize:"16px",letterSpacing:"10px"}}>❧</div>;
+  const Flr=()=><div style={{textAlign:"center",margin:"36px 0",color:C.honey,fontSize:"16px",letterSpacing:"10px"}}>❧</div>;
   const Fig=({children,caption})=>(<div style={{margin:"45px -22px"}}>{children}<div style={{fontSize:"12px",color:C.cap,lineHeight:1.55,padding:"10px 22px 0",fontStyle:"italic",borderTop:`1px solid ${C.stoneD}`}}>{caption}</div></div>);
-  const Side=({title,children})=>(<div style={{background:C.stoneD,borderLeft:`3px solid ${C.honey}`,padding:"22px 26px",margin:"38px 0"}}><h4 style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",fontWeight:700,color:C.mid,marginBottom:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</h4>{children}</div>);
+  const SB=({title,children})=>(<div style={{background:C.stoneD,borderLeft:`3px solid ${C.honey}`,padding:"22px 26px",margin:"38px 0"}}><h4 style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",fontWeight:700,color:C.mid,marginBottom:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</h4>{children}</div>);
   const sp={fontSize:"15px",lineHeight:1.62,marginBottom:".7em"};
 
   return(<>
@@ -250,23 +268,23 @@ export default function App(){
 
         <Fig caption={<><strong>The arc of captivity.</strong> Estimated slave population on Malta from the Knights' arrival (1530) through the height of the corsairing economy to Napoleon's liberation in 1798. The 1749 spike coincides with the failed revolt plot. Figures are approximate — Wettinger (2002) notes significant archival gaps before 1580.</>}><PopSVG/></Fig>
 
-        <Side title="Sidebar 1: The Bagnio">
+        <SB title="SB 1: The Bagnio">
           <p style={sp}>The Slaves' Prison — the Prigione degli Schiavi, commonly called the Bagno — was Valletta's principal detention compound. Built under Grand Master Hugues Loubenx de Verdalle (1581–1595) behind the Bastion of St Christopher, it housed approximately 900 inmates: the Order's slaves, privately owned slaves (held for a fee of one scudo per month), and even free male subjects convicted of crimes. The French traveller Jouvin de Rochefort, who visited Malta in the late seventeenth century, described it as "a huge old edifice." A 1633 plan of Valletta shows two entrances — one on St Ursula Street, another on East Street. Inside were dormitory cells, two Christian chapels (St John the Baptist and the Holy Cross), a mosque for Muslim slaves, a tavern, and shops for barbers and tailors. The courtyard functioned as a public market specialising in Levantine goods, open to the wider population. Running water arrived in 1615 when Grand Master Wignacourt's aqueduct was extended to the prison. The Bagno was, in effect, a walled city within a walled city — a microcosm of the Mediterranean's cross-cultural economy, powered by unfreedom.</p>
-        </Side>
+        </SB>
 
         <Fig caption={<><strong>A prison with a market.</strong> Schematic layout of the Slaves' Prison (Bagno) in Valletta, after Wettinger (2002) and the 1633 city plan. The compound held approximately 900 inmates — enslaved people of the Order, privately owned slaves, and convicted free subjects. It contained a mosque, two chapels, a tavern, shops, and a public courtyard market. The building was demolished in the 19th century; no physical trace remains.</>}><BagnioSVG/></Fig>
 
-        <SB/>
+        <Flr/>
 
         <p>The man behind the 1749 revolt was Mustafa, Pasha of Rhodes — an Ottoman official who had arrived in Malta not as a captured corsair victim but as a prisoner of war. In February 1748, Christian slaves aboard the Ottoman flagship Lupa had revolted, seized the vessel, and sailed it to Malta with 150 Ottoman crew as captives. Among them was Mustafa. France, which maintained an alliance with the Ottoman Empire, demanded his release. The Knights compromised: house arrest rather than the Bagno. It was from this position of relative privilege that Mustafa made contact with Constantinople, with the beys of Tunis, Tripoli, and Algiers, and with the enslaved population inside the Slaves' Prison. He distributed arsenic to galley slaves aboard the Order's three warships — the Capitana, San Luigi, and San Nicola — to poison the knights at sea. On land, the plan called for simultaneous assassinations at the Palace banquet, the seizure of Fort St Elmo's armouries, and a signal to an Ottoman corsair ship lurking offshore.</p>
 
         <p>The plot unravelled because of a coffeehouse brawl. When the three conspirators assaulted Giacomo Cassar for refusing to join them, the commotion attracted the attention of the shop owner: Giuseppe Cohen, a Jewish neophyte — a convert to Christianity — who reported the conversation to Grand Master Pinto. The trials that followed were held at the Gran Corte della Castellania. One hundred and fifty people were arrested. Interrogation was conducted under torture on the rack. Thirty-five were executed between July and October 1749 — hanged, quartered, and beheaded in Floriana, paraded through the streets on mule-drawn carts. Three died in custody. Seventy-two were condemned to the galleys, eight of them branded with the letter R — for ribelli — on their foreheads. Mustafa, protected by French diplomacy, was eventually exiled to Rhodes on a French vessel. Cohen received a pension of approximately 750 scudi per year and a property on Merchants Street.</p>
 
-        <Side title="Sidebar 2: The Historiography of Silence">
+        <SB title="SB 2: The Historiography of Silence">
           <p style={sp}>Malta's relationship with its slave-owning past remains largely unresolved. There are no memorials, plaques, or interpretive programmes at Valletta's heritage sites acknowledging the role of enslaved labour in their construction. The Slaves' Prison itself was demolished in the nineteenth century; its site on St Ursula Street bears no marker. The tomb of Grand Master Raphael Cotoner in St John's Co-Cathedral includes, at its base, a sculpted figure of an African slave gazing upward at the knight — a monument that embeds the hierarchy of enslavement in the sacred architecture of the Order without comment or context. Godfrey Wettinger, who died in 2015 at the age of 85, spent decades in the archives reconstructing a history that few Maltese institutions had chosen to tell. The 2021 publication in Antiquity by Nathaniel McDermott — "Slavery, captivity and galley rowing in early modern Malta" — represents the first archaeological approach to this material, reframing captivity as a process visible in material culture: graffiti in detention spaces, artefacts aboard galley wrecks, the spatial organisation of the Bagno itself. The scholarship is closing the gap between what happened and what is remembered.</p>
-        </Side>
+        </SB>
 
-        <SB/>
+        <Flr/>
 
         <p>The distinction between the stones and the hands that laid them is, in Valletta, a distinction the city itself refuses to make visible. Every bastion, every curtain wall, every globigerina block in every church façade was cut, transported, and fitted by a workforce that included enslaved Muslims captured in corsair raids, enslaved Jews seized from Mediterranean shipping lanes, enslaved Christians taken as prisoners of war, Maltese freemen working for contractors, and galley slaves temporarily reassigned from the oars to the quarry. Wettinger's research clarifies the division of labour: slaves were generally assigned menial tasks — removal and carting of rubble, excavation of ditches — while skilled construction was done by employed workers. But the line between menial and skilled blurred constantly, and the physical infrastructure of extraction — the quarrying, the hauling, the earthmoving that made fortification possible — rested on unfree labour.</p>
 

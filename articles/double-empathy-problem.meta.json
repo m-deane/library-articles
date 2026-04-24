@@ -1,12 +1,18 @@
 {
   "slug": "double-empathy-problem",
-  "title": "Double Empathy Problem",
-  "subtitle": "",
-  "date": "",
+  "title": "The Gap Between Worlds",
+  "subtitle": "For decades, autism research pointed to a single source of the social difficulty between autistic and non-autistic people: the autistic person's deficit. A sociologist who is also autistic, working in the shadow of his son's diagnosis, proposed something different \u2014 and the data has been following him ever since.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "neuroscience",
+  "style": "natgeo-sciam-hybrid",
+  "tags": [
+    "autism",
+    "double-empathy",
+    "milton",
+    "neurodiversity",
+    "theory-of-mind"
+  ],
   "component": "DoubleEmpathyProblem",
   "url": "articles/double-empathy-problem.html",
   "pdf_url": "articles/double-empathy-problem.pdf"

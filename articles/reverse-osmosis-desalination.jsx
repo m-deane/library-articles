@@ -1,9 +1,22 @@
-import { useState } from "react";
-import {
-  LineChart, Line, AreaChart, Area, BarChart, Bar,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-  ResponsiveContainer, ReferenceLine
-} from "recharts";
+/* --- YAML frontmatter --- */
+/*
+title: "The Membrane at the Edge of Thirst"
+subtitle: "Reverse osmosis was supposed to solve humanity's water crisis. It has come closer than any technology in history — and in doing so, has created crises of its own."
+category: "science-nature"
+style: "natgeo-classic"
+date: "2026-04-19"
+tags: [desalination, reverse-osmosis, water, membranes, brine]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Membrane at the Edge of Thirst",
+  subtitle: "Reverse osmosis was supposed to solve humanity's water crisis. It has come closer than any technology in history — and in doing so, has created crises of its own.",
+  category: "science-nature",
+  style: "natgeo-classic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["desalination", "reverse-osmosis", "water", "membranes", "brine"],
+};
 
 // ─────────────────────────────────────────────
 // DESIGN TOKENS
@@ -193,7 +206,7 @@ function CostChart() {
 // ─────────────────────────────────────────────
 // HELPER COMPONENTS
 // ─────────────────────────────────────────────
-function DropCap({ children }) {
+function DC({ children }) {
   const first = children[0];
   const rest = children.slice(1);
   return (
@@ -207,7 +220,7 @@ function DropCap({ children }) {
   );
 }
 
-function Sidebar({ title, children }) {
+function SB({ title, children }) {
   return (
     <aside style={{
       background: C.sidebarBg, border: `1px solid ${C.borderLight}`,
@@ -226,7 +239,7 @@ function Sidebar({ title, children }) {
   );
 }
 
-function ImgCaption({ label, text }) {
+function Cap({ label, text }) {
   return (
     <figcaption style={{ fontFamily:"'Source Sans 3',sans-serif", fontSize: 12.5, color: C.darkGray, lineHeight: 1.55, marginTop: 8, paddingLeft: 12, borderLeft: `2px solid ${C.accent}` }}>
       <span style={{ color: C.accent, fontWeight: 700, textTransform:"uppercase", letterSpacing: 1, fontSize: 10, marginRight: 6 }}>{label}</span>
@@ -239,7 +252,7 @@ function Photo({ src, alt, label, caption, style = {} }) {
   return (
     <figure style={{ margin: "36px 0 28px", ...style }}>
       <img src={src} alt={alt} style={{ width:"100%", display:"block", borderRadius: 2, objectFit:"cover", maxHeight: 460 }} />
-      <ImgCaption label={label} text={caption} />
+      <Cap label={label} text={caption} />
     </figure>
   );
 }
@@ -337,9 +350,9 @@ export default function ReverseOsmosisFeature() {
       <div style={{ maxWidth: 740, margin: "0 auto", padding: "64px 24px 80px" }}>
 
         {/* LEAD */}
-        <DropCap>
+        <DC>
           n the third floor of a building on Yale University's science hill, inside a laboratory that smells of polymer solvents and calibration fluid, a researcher holds a membrane up to fluorescent light. It is roughly the size of a coffee filter — off-white, almost translucent, thinner than a human hair. Through it, at pressures exceeding 55 bar, passes some of the most expensive water on Earth. At those pressures, a standard automobile tyre would explode. Here, in this unremarkable disc of cross-linked polyamide, the physics of global water security plays out at the molecular level.
-        </DropCap>
+        </DC>
 
         <Para>
           The lab belongs to Menachem Elimelech, the Sterling Professor of Chemical and Environmental Engineering at Yale — one of the most cited water scientists alive, and a man who has spent four decades trying to understand something that most engineers assumed they had already understood. In April 2023, his group published a paper in <em>Science Advances</em> that upended the field's central assumption: the solution-diffusion model, which had described how water moves through reverse osmosis membranes since the 1960s, is, Elimelech's simulations show, fundamentally wrong. Water does not dissolve into the membrane and diffuse down a concentration gradient. It travels in clusters, driven by pressure changes through a network of nanometre-scale pores. The implications are profound. Fifty years of membrane engineering, Elimelech argues, were optimised around a faulty model. Some of the most promising research dead ends of the past two decades may not have been dead ends at all — they were simply designed for the wrong physics.
@@ -376,13 +389,13 @@ export default function ReverseOsmosisFeature() {
         </Para>
 
         <EnergyChart />
-        <ImgCaption label="Data" text="The energy cost of seawater reverse osmosis has fallen more than tenfold since the 1970s, driven by better membranes, high-efficiency pumps, and pressure-exchanger energy recovery devices that now return up to 95% of rejected brine energy. The thermodynamic minimum — 1.1 kWh/m³ — represents a floor that physics, not engineering, imposes." />
+        <Cap label="Data" text="The energy cost of seawater reverse osmosis has fallen more than tenfold since the 1970s, driven by better membranes, high-efficiency pumps, and pressure-exchanger energy recovery devices that now return up to 95% of rejected brine energy. The thermodynamic minimum — 1.1 kWh/m³ — represents a floor that physics, not engineering, imposes." />
 
-        <Sidebar title="How a Spiral-Wound Membrane Module Works">
+        <SB title="How a Spiral-Wound Membrane Module Works">
           <p style={{ margin:"0 0 12px" }}>The workhorse of commercial desalination is not a flat sheet but a spiral. Two membrane envelopes are wound around a central permeate collection tube, separated by a mesh spacer that creates the feed channel. Seawater enters one end under pressure, sweeping across the membrane surface in cross-flow — the velocity prevents salt from accumulating on the surface (a phenomenon called concentration polarisation). Water that passes through the membrane spirals inward toward the collection tube. The rejected brine exits the other end, still under pressure.</p>
           <p style={{ margin:"0 0 12px" }}>A standard commercial module is eight inches in diameter and forty inches long, housing roughly 37 square metres of membrane area. Industrial pressure vessels stack seven or eight such elements end-to-end. A large desalination plant may contain tens of thousands of pressure vessels arranged in parallel arrays — the white-cylinders-on-racks that define the aesthetic of every modern facility.</p>
           <p style={{ margin: 0 }}>Israel's Sorek plant, built by IDE Technologies, innovated by using sixteen-inch-diameter elements — twice the standard size — arranged vertically rather than horizontally. The larger format reduces the number of pressure vessels required, cutting capital costs significantly. Sorek 2, commissioned in 2024, achieved a production price of $0.41 per cubic metre — the lowest ever recorded for seawater desalination.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -398,7 +411,7 @@ export default function ReverseOsmosisFeature() {
 
         {/* Capacity distribution chart */}
         <CapacityChart />
-        <ImgCaption label="Data" text="MENA's dominance of global desalination capacity reflects a simple geographic reality: the region contains five of the world's most water-stressed nations, sits atop the world's largest fossil fuel reserves, and borders an ocean too salty, too warm, and too enclosed to recover easily from what we pump back into it." />
+        <Cap label="Data" text="MENA's dominance of global desalination capacity reflects a simple geographic reality: the region contains five of the world's most water-stressed nations, sits atop the world's largest fossil fuel reserves, and borders an ocean too salty, too warm, and too enclosed to recover easily from what we pump back into it." />
 
         <Para>
           The economics driving this expansion have shifted with remarkable speed. In 2000, producing a cubic metre of desalinated seawater cost approximately $2.10. By 2020, the figure had fallen to around $0.55. Projects in Saudi Arabia and the UAE in recent years have achieved prices below $0.50 per cubic metre. The drivers are well understood: better membranes with higher salt rejection and water flux, energy recovery devices (pressure exchangers) that recapture up to 95 percent of the kinetic energy in the rejected brine stream, and the replacement of energy-hungry thermal distillation with membrane-based reverse osmosis, which the International Desalination Association reports now accounts for over 90 percent of new desalination capacity contracted between 2020 and 2024. Modern seawater RO consumes between 2.5 and 4 kilowatt-hours per cubic metre. Thermal distillation consumes 5 to 12.
@@ -434,11 +447,11 @@ export default function ReverseOsmosisFeature() {
           The World Bank and environmental economists have argued, with some justification, that desalination is not Chennai's most cost-effective option — that fixing the city's leaky distribution network, aggressive rainwater harvesting, and tariff reform would deliver more water per rupee spent. This argument is correct on its own terms, and it misses the political reality. In a city where monsoon failure is now routine and aquifer depletion irreversible, desalination offers something the other interventions do not: supply that is independent of the sky. The Perur plant, with 400 million litres per day of capacity designed to serve Chennai for fifty years, is currently under construction. When it opens, it will be one of the largest desalination facilities in South Asia.
         </Para>
 
-        <Sidebar title="The Thermodynamics of Salt Removal">
+        <SB title="The Thermodynamics of Salt Removal">
           <p style={{ margin:"0 0 12px" }}>Removing salt from seawater has a thermodynamic cost that cannot be engineered away. The minimum energy required — set by the laws of thermodynamics, not by the limitations of current technology — is approximately 1.06 to 1.1 kilowatt-hours per cubic metre of freshwater produced. This is the energy needed simply to separate salt from water at typical seawater concentrations, in an ideal system with perfect recovery and zero losses.</p>
           <p style={{ margin:"0 0 12px" }}>Current best-in-class SWRO systems achieve roughly 2.5 kWh/m³ — about 2.3 times the theoretical minimum. The gap between actual and theoretical performance is not primarily a membrane problem. The major losses occur in the system: the energy needed to pressurise the feed, the concentration polarisation effect at the membrane surface, and the irreversibility of brine discharge. Even perfect membranes would not close the gap entirely.</p>
           <p style={{ margin: 0 }}>This matters because it sets a ceiling on expectations for next-generation membranes. Aquaporin-based and graphene oxide membranes offer significantly higher water flux per unit area — but as Elimelech and colleagues have shown in multiple papers, higher-permeability membranes do not automatically translate to lower energy consumption in seawater RO systems, because the energy cost is dominated by thermodynamics, not by membrane resistance.</p>
-        </Sidebar>
+        </SB>
 
         <PullQuote>
           "The four reservoirs that supply Chennai reached zero simultaneously. Not low. Zero. And the taps across a city of eleven million people ran dry."
@@ -457,7 +470,7 @@ export default function ReverseOsmosisFeature() {
         </Para>
 
         <BrineChart />
-        <ImgCaption label="Data" text="The brine shadow of global desalination: for every million cubic metres of freshwater produced, 1.5 million cubic metres of hypersaline concentrate enters the ocean. As capacity expands toward projected 2030 levels, the discharge will approach 200 million cubic metres per day — greater than the combined daily flow of the Congo and Mississippi rivers." />
+        <Cap label="Data" text="The brine shadow of global desalination: for every million cubic metres of freshwater produced, 1.5 million cubic metres of hypersaline concentrate enters the ocean. As capacity expands toward projected 2030 levels, the discharge will approach 200 million cubic metres per day — greater than the combined daily flow of the Congo and Mississippi rivers." />
 
         <Para>
           A 2024 review published in <em>Environmental Science and Technology</em> by researchers including Edo Bar-Zeev and Gilad Antler at Ben-Gurion University of the Negev found that hypersaline brine from seawater reverse osmosis facilities is characterised by salinity up to 102 percent higher than ambient seawater. This dense stream sinks, creeping across the seabed and spreading, according to modelling data cited in the study, up to several tens of kilometres from the discharge point. The effects on benthic communities — the organisms living in and on the sediment — range from morphological deformations to changes in community composition and impaired nutrient fluxes from sediment to the water column. Seagrasses, polychaetes, corals: the toll is measurable, even if the full magnitude is contested.
@@ -475,11 +488,11 @@ export default function ReverseOsmosisFeature() {
           caption="The outfall pipe of a coastal desalination plant: the moment where the technology's promise and its price become inseparable. The hypersaline stream — colourless, odourless, and up to twice the salinity of the surrounding ocean — sinks, spreads, and persists. In the Persian Gulf, the cumulative effect of decades of discharge has measurably altered the salinity of an enclosed sea."
         />
 
-        <Sidebar title="Brine as Resource — The Zero Liquid Discharge Ambition">
+        <SB title="Brine as Resource — The Zero Liquid Discharge Ambition">
           <p style={{ margin:"0 0 12px" }}>NEOM, Saudi Arabia's $500 billion giga-project on the Red Sea coast, has proposed what the desalination industry calls zero liquid discharge: a plant design in which brine is not discharged into the ocean but further processed to extract commercially valuable minerals and metals. The dense brine from the 500,000-cubic-metre-per-day reverse osmosis facility planned for OXAGON — NEOM's manufacturing city — would feed downstream industries producing industrial salt, bromine, boron, potassium, gypsum, and magnesium. Rare metals extraction is also under study.</p>
           <p style={{ margin:"0 0 12px" }}>The concept is not new — brine valorisation has been an active research area for two decades — but NEOM represents the first attempt to implement it at industrial scale, with 100% renewable energy powering the entire system. The project is a partnership between ENOWA (NEOM's water subsidiary), Japan's ITOCHU, and Veolia of France.</p>
           <p style={{ margin: 0 }}>Elimelech's group at Yale has developed high-pressure reverse osmosis (HPRO) and low-salt-rejection reverse osmosis (LSRRO) technologies specifically designed for brine concentration and management — pushing brine toward the ultra-high salinity required for mineral extraction. Both approaches remain in active development, with commercial-scale deployment dependent on the economics of the downstream mineral markets.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -510,13 +523,13 @@ export default function ReverseOsmosisFeature() {
         </Para>
 
         <CostChart />
-        <ImgCaption label="Data" text="The cost trajectory of seawater reverse osmosis desalination since 2000, driven by membrane innovation, energy recovery devices, and scale. Sorek 2 (Israel, 2024) set a new benchmark at $0.41/m³. The line will not continue downward indefinitely — thermodynamics, brine management, and intake infrastructure impose costs that better membranes cannot eliminate." />
+        <Cap label="Data" text="The cost trajectory of seawater reverse osmosis desalination since 2000, driven by membrane innovation, energy recovery devices, and scale. Sorek 2 (Israel, 2024) set a new benchmark at $0.41/m³. The line will not continue downward indefinitely — thermodynamics, brine management, and intake infrastructure impose costs that better membranes cannot eliminate." />
 
-        <Sidebar title="The Sorek Model — Israel's Water Revolution">
+        <SB title="The Sorek Model — Israel's Water Revolution">
           <p style={{ margin:"0 0 12px" }}>Israel's desalination story is the most studied in the world, and for good reason: the country moved from existential water crisis to water surplus in under two decades, through a combination of political will, engineering innovation, and aggressive policy. The 1998 drought — the worst in 900 years for the eastern Mediterranean — triggered a government decision to build desalination plants regardless of cost. By 2018, the majority of Israel's municipal drinking water came from desalinated sources. The country now produces roughly 20 percent more water than it needs.</p>
           <p style={{ margin:"0 0 12px" }}>The Sorek plant, built by IDE Technologies on the Mediterranean coast 15 kilometres south of Tel Aviv, drew seawater from an intake 1.85 kilometres offshore at extremely slow velocity (0.15 metres per second) to minimise marine life entrainment. Its innovation was structural: sixteen-inch-diameter pressure vessels arranged vertically — double the standard diameter — packing more membrane area per unit of floor space and reducing capital costs substantially. The plant supplies water for roughly one-fifth of Israel's population. Sorek 2, commissioned in 2024, produces 200 million cubic metres per year at $0.41/m³.</p>
           <p style={{ margin: 0 }}>The Israeli model is not directly transferable. Israel's relatively small geographic area, high institutional capacity, and specific coastal geology enabled a rollout that most nations cannot replicate at speed. But the engineering principles — large-format elements, low-velocity intake, energy recovery, vertical vessel architecture — are being adopted globally.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 

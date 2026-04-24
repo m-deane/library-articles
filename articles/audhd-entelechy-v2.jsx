@@ -1,8 +1,22 @@
-import { useState } from "react";
-import {
-  LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, Legend, ResponsiveContainer, ReferenceLine, AreaChart, Area, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis
-} from "recharts";
+/* --- YAML frontmatter --- */
+/*
+title: "The Engine That Cannot Be Redirected"
+subtitle: "Inside the neuroscience of why AuDHD individuals carry an almost ungovernable drive toward autonomy — and what Aristotle's concept of entelechy reveals about a brain pursuing its own fulfilment."
+category: "neuroscience"
+style: "natgeo-sciam-hybrid"
+date: "2026-04-19"
+tags: [audhd, autism, adhd, self-determination-theory, monotropism]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Engine That Cannot Be Redirected",
+  subtitle: "Inside the neuroscience of why AuDHD individuals carry an almost ungovernable drive toward autonomy — and what Aristotle's concept of entelechy reveals about a brain pursuing its own fulfilment.",
+  category: "neuroscience",
+  style: "natgeo-sciam-hybrid",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["audhd", "autism", "adhd", "self-determination-theory", "monotropism"],
+};
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 const C = {
@@ -256,7 +270,7 @@ function StrengthsRadar() {
 }
 
 // ─── HELPER COMPONENTS ───────────────────────────────────────────────────────
-function DropCap({ letter, rest }) {
+function DC({ letter, rest }) {
   return (
     <p style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 19, lineHeight: 1.75, color: C.black, marginBottom: "1.6em" }}>
       <span style={{ float: "left", fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 900, fontSize: 72, lineHeight: 0.82, marginRight: 10, marginTop: 8, color: C.black }}>{letter}</span>
@@ -265,7 +279,7 @@ function DropCap({ letter, rest }) {
   );
 }
 
-function Sidebar({ title, children }) {
+function SB({ title, children }) {
   return (
     <aside style={{ background: C.sidebarBg, border: `1px solid ${C.borderLight}`, borderRadius: 2, padding: "20px 24px", margin: "32px 0" }}>
       <div style={{ fontFamily: "'Source Sans 3', sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: C.darkGray, borderBottom: `2px solid ${C.natgeoYellow}`, paddingBottom: 8, marginBottom: 14 }}>{title}</div>
@@ -274,7 +288,7 @@ function Sidebar({ title, children }) {
   );
 }
 
-function ImgCaption({ label, text }) {
+function Cap({ label, text }) {
   return (
     <div style={{ borderTop: `2px solid ${C.accent}`, paddingTop: 8, marginTop: 8 }}>
       <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: C.accent, marginRight: 8 }}>{label}</span>
@@ -344,7 +358,7 @@ export default function AuDHDEntelechyFull() {
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "56px 24px 80px" }}>
 
         {/* ─── PART I: THE PHENOMENON ─── */}
-        <DropCap letter="T" rest="here is a moment, familiar to nearly every AuDHD adult who can describe it, when the rest of the world simply ceases to exist. Not metaphorically. Phenomenologically. The deadline that was six hours away. The unanswered messages accumulating on a phone somewhere nearby. The body's muted signals — hunger, fatigue, the slow cooling of coffee to room temperature — all of it drops below the threshold of perception. What remains is the problem: a code architecture, a musical phrase, a taxonomic puzzle, a historical injustice — burning with the clarity of a focused laser in an otherwise darkened room. The experience is so total, so qualitatively different from ordinary concentration, that those who have it consistently struggle to explain it to those who have not. Some call it a superpower. Many call it frightening. Researchers have begun to call it something far more precise: a measurable consequence of a dopaminergic and attentional architecture that diverges from the neurotypical norm in ways that are only now becoming legible to neuroscience." />
+        <DC letter="T" rest="here is a moment, familiar to nearly every AuDHD adult who can describe it, when the rest of the world simply ceases to exist. Not metaphorically. Phenomenologically. The deadline that was six hours away. The unanswered messages accumulating on a phone somewhere nearby. The body's muted signals — hunger, fatigue, the slow cooling of coffee to room temperature — all of it drops below the threshold of perception. What remains is the problem: a code architecture, a musical phrase, a taxonomic puzzle, a historical injustice — burning with the clarity of a focused laser in an otherwise darkened room. The experience is so total, so qualitatively different from ordinary concentration, that those who have it consistently struggle to explain it to those who have not. Some call it a superpower. Many call it frightening. Researchers have begun to call it something far more precise: a measurable consequence of a dopaminergic and attentional architecture that diverges from the neurotypical norm in ways that are only now becoming legible to neuroscience." />
 
         <Prose>
           Autistic ADHD — the term "AuDHD" describes the co-occurrence of autism spectrum conditions and attention deficit hyperactivity disorder in the same individual — affects a population whose true prevalence has been dramatically underestimated for decades. A 2025 analysis of 1.9 million U.S. insurance claims found that only 1.7 percent of adults with ADHD carried a formal co-existing autism diagnosis. Yet a separate 2025 longitudinal study of 165 adults with ADHD found that roughly 45 percent showed significant autistic traits. The gap between these numbers is not statistical noise. It is the silhouette of a diagnostic blind spot so large that millions of people have spent their lives trying to understand, contain, or pathologise a neurological profile that no single clinical category adequately describes — a profile that until 2013 could not even formally exist, because the DSM explicitly prohibited dual diagnoses of autism and ADHD in the same individual.
@@ -365,7 +379,7 @@ export default function AuDHDEntelechyFull() {
         {/* Image 1 */}
         <div style={{ margin: "40px 0" }}>
           <img src="https://stockcake.com/i/focused-creative-work_808543_977503" alt="Person absorbed in focused creative work" style={{ width: "100%", borderRadius: 2, display: "block" }} onError={e => { e.target.style.display='none'; }} />
-          <ImgCaption label="Character" text="The monotropic attention tunnel is not a disruption of normal attention — it is an intensification of it. Within the tunnel, researchers find perception, working memory, and executive function operating near-optimally. What the clinical literature frames as dysfunction is often, from the inside, the experience of a nervous system finally doing what it is built to do." />
+          <Cap label="Character" text="The monotropic attention tunnel is not a disruption of normal attention — it is an intensification of it. Within the tunnel, researchers find perception, working memory, and executive function operating near-optimally. What the clinical literature frames as dysfunction is often, from the inside, the experience of a nervous system finally doing what it is built to do." />
         </div>
 
         <SceneBreak />
@@ -385,13 +399,13 @@ export default function AuDHDEntelechyFull() {
 
         <div style={{ margin: "40px 0" }}><DopaminePathway /></div>
 
-        <Sidebar title="Self-Determination Theory and ADHD: Why Internal Motives Are the Mechanism">
+        <SB title="Self-Determination Theory and ADHD: Why Internal Motives Are the Mechanism">
           Self-Determination Theory (SDT), developed by Richard Ryan and Edward Deci at the University of Rochester, proposes that human motivation exists on a continuum from controlled to autonomous. At the controlled end, behaviour is driven by external pressure, reward, or punishment — what SDT terms "external regulation" and "introjected regulation." At the autonomous end, behaviour is driven by intrinsic interest, personally meaningful values, or integrated self-identity.
           <br /><br />
           In their 2022 review in the <em>Journal of Attention Disorders</em>, Morsink and colleagues at KU Leuven argued that classical ADHD theories — which focus almost exclusively on dopamine reward circuits and external reinforcement schedules — neglect internal motives entirely. Their core finding: ADHD individuals are not globally undermotivated; they show a highly specific profile in which controlled motivation styles (external, introjected regulation) are extremely inefficient, while intrinsic motivation — when accessible — is not merely intact but potentially amplified. A 2022 paper in <em>Psychological Review</em> by Champ and colleagues extended this to propose that ADHD symptomatology may itself be partly understood as acute autonomy frustration: a nervous system whose fundamental orientation toward self-generated activity is chronically blocked by environments designed for externally regulated motivation. Their framework, grounded in SDT, reframes the ADHD brain not as broken but as a self-determination system operating in conditions of systematic need thwarting.
           <br /><br />
           The ADAPT (Autonomy, Design, Awareness, Psychoeducation, and Training Integration for Sustainable Change) framework, piloted in a 2025 randomised feasibility study in the NHS by McCormick and colleagues, operationalised these insights into an 11-session intervention for ADHD adults. Compared to a waitlist control, ADAPT participants showed clinically meaningful improvements in health-related quality of life, self-reflection, and identity formation. The study excluded individuals with co-occurring autism — an exclusion the authors acknowledged as a significant limitation. Given that the mechanism is autonomy support, and that AuDHD individuals show the most pronounced autonomy-orientation in the entire literature, the therapeutic implications for the AuDHD population are arguably stronger, not weaker, than for ADHD alone.
-        </Sidebar>
+        </SB>
 
         <div style={{ margin: "40px 0" }}><MotivationChart /></div>
 
@@ -410,13 +424,13 @@ export default function AuDHDEntelechyFull() {
           A 2024 empirical study by Dwyer, Williams, Lawson, and Rivera, published in <em>Autism in Adulthood</em>, investigated the relationship between hyperfocus and inattention across a sample of 492 adults divided into autism-only, ADHD-only, AuDHD, and comparison groups. The finding contradicts the clinical assumption that hyperfocus and inattention are opposite ends of a spectrum: in all neurodivergent groups, hyperfocus and inattention were both elevated, and were positively correlated. The same attentional system that enables total immersion in an interest is the system that produces apparent inattention to everything outside it. They are not competing features of different conditions — they are the same attentional architecture viewed from different angles. In the AuDHD group, both were most extreme simultaneously.
         </Prose>
 
-        <Sidebar title="The Monotropism Questionnaire: Who Scores Highest">
+        <SB title="The Monotropism Questionnaire: Who Scores Highest">
           In 2023, Garau and colleagues published the development and validation of the Monotropism Questionnaire (MQ) — the first psychometric instrument designed to measure monotropic attentional style across autistic and non-autistic populations. Covering 47 items spanning attentional tunnelling, interest intensity, transition difficulty, and the phenomenology of flow states, the MQ fills a significant measurement gap in the neurodiversity research landscape.
           <br /><br />
           The finding most directly relevant to this article: the highest monotropism scores were not found in the autism-only group. They were found in participants who identified as both autistic and ADHD — the AuDHD group. This is not the result one would predict if AuDHD were simply the additive combination of autism's deep focus and ADHD's distractibility. It suggests instead that monotropic attentional style is intensified rather than diluted by the co-occurrence. One plausible mechanism: ADHD's attentional instability may amplify the urgency with which the monotropic system locks onto a viable interest once it finds one, producing more extreme tunnel states than either condition produces alone.
           <br /><br />
           Fergus Murray — autistic researcher and son of monotropism's founder, Dinah Murray — proposed in a 2023 preprint that monotropism may function as a trans-diagnostic framework capable of explaining attentional variability across both autism and ADHD within a single unified model. If this hypothesis is confirmed, it would dissolve the clinical fiction that AuDHD is two conditions coexisting, replacing it with a single attentional account in which the co-occurrence produces an intensification of the same underlying processing style.
-        </Sidebar>
+        </SB>
 
         {/* ─── PART IV: NEUROANATOMY — AUDHD AS DISTINCT PHENOTYPE ─── */}
         <SceneBreak />
@@ -464,7 +478,7 @@ export default function AuDHDEntelechyFull() {
         {/* Image 2: writing/absorbing work */}
         <div style={{ margin: "40px 0" }}>
           <img src="https://stockcake.com/i/focused-creative-work_808543_977503" alt="Person absorbed in writing, focused" style={{ width: "100%", borderRadius: 2, display: "block" }} onError={e => { e.target.style.display='none'; }} />
-          <ImgCaption label="Consequence" text="For AuDHD women and gender-diverse individuals, the cost of decades of masking is not abstract. It is neurological: sustained suppression of natural attentional and processing tendencies, maintained against the grain of the interest-based nervous system, depletes the very reserves that make recovery from burnout possible. Craddock (2024) found that diagnosis — when it finally came — enabled participants to 'overcome epistemic injustice' and access a standpoint from which they could begin to understand and advocate for their own neurological needs." />
+          <Cap label="Consequence" text="For AuDHD women and gender-diverse individuals, the cost of decades of masking is not abstract. It is neurological: sustained suppression of natural attentional and processing tendencies, maintained against the grain of the interest-based nervous system, depletes the very reserves that make recovery from burnout possible. Craddock (2024) found that diagnosis — when it finally came — enabled participants to 'overcome epistemic injustice' and access a standpoint from which they could begin to understand and advocate for their own neurological needs." />
         </div>
 
         <Prose>
@@ -473,13 +487,13 @@ export default function AuDHDEntelechyFull() {
 
         <div style={{ margin: "40px 0" }}><BurnoutCycleChart /></div>
 
-        <Sidebar title="The Burnout-Autonomy Paradox: Why Rest Isn't Enough">
+        <SB title="The Burnout-Autonomy Paradox: Why Rest Isn't Enough">
           Autistic burnout — distinct from occupational burnout and from major depressive disorder, as Mantzalas and colleagues confirmed in their 2024 validation study in <em>Autism Research</em> — is characterised by three core features: chronic exhaustion beyond ordinary tiredness, reduced functioning in areas previously manageable, and increased perceptual and sensory sensitivity. In AuDHD, the burnout profile is particularly complex because the ADHD dimension contributes its own version of cognitive exhaustion from sustained demand-compliance, while the autistic dimension contributes the additional burden of masking.
           <br /><br />
           What the clinical literature consistently finds — and what the neuroscience of the autonomy drive predicts — is that standard recovery advice ("rest more," "reduce commitments") is necessary but insufficient. The specific protective factor that enables genuine recovery in autistic burnout is autonomy-restoration: access to interest-led activity, reduction in masking demands, and predictable, self-paced engagement. Arnold and colleagues (2023) identified special interests as actively re-energising — not merely pleasant, but neurologically restorative in a way that undirected rest is not. The mechanism is coherent with what we know about the monotropic architecture: the interest-tunnel is not simply a preference; it is the attentional mode in which this nervous system achieves homeostatic regulation. Blocking it depletes; accessing it restores.
           <br /><br />
           This has direct clinical implications. Interventions designed for AuDHD burnout that do not explicitly restore autonomy and interest-access are, at the neurological level, treating the symptom without addressing the cause. The burnout trajectory's recovery phase is not governed by amount of rest, but by the degree to which the interest-based nervous system is given permission to do what it is built to do.
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -508,7 +522,7 @@ export default function AuDHDEntelechyFull() {
             e.target.onerror = null;
             e.target.src = "https://burst.shopifycdn.com/photos/window-sunlight.jpg";
           }} />
-          <ImgCaption label="Resolution" text="The moment when conditions align — when interest meets adequate autonomy, when the attention tunnel is permitted rather than suppressed — is not a metaphor for AuDHD flourishing. It has a precise neurological signature: optimal catecholamine tone, DMN suppressed, task-positive network engaged by intrinsic salience rather than commanded by external pressure. This is what entelechy looks like in practice: a structure finally given the conditions to become what it is built to be." />
+          <Cap label="Resolution" text="The moment when conditions align — when interest meets adequate autonomy, when the attention tunnel is permitted rather than suppressed — is not a metaphor for AuDHD flourishing. It has a precise neurological signature: optimal catecholamine tone, DMN suppressed, task-positive network engaged by intrinsic salience rather than commanded by external pressure. This is what entelechy looks like in practice: a structure finally given the conditions to become what it is built to be." />
         </div>
 
         <SceneBreak />

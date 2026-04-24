@@ -1,9 +1,22 @@
+/* --- YAML frontmatter --- */
+/*
+title: "The Gap Between Worlds"
+subtitle: "For decades, autism research pointed to a single source of the social difficulty between autistic and non-autistic people: the autistic person's deficit. A sociologist who is also autistic, working in the shadow of his son's diagnosis, proposed something different — and the data has been following him ever since."
+category: "neuroscience"
+style: "natgeo-sciam-hybrid"
+date: "2026-04-19"
+tags: [autism, double-empathy, milton, neurodiversity, theory-of-mind]
+*/
 
-import { useState } from "react";
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, LineChart, Line, Legend
-} from "recharts";
+const ARTICLE_DATA = {
+  title: "The Gap Between Worlds",
+  subtitle: "For decades, autism research pointed to a single source of the social difficulty between autistic and non-autistic people: the autistic person's deficit. A sociologist who is also autistic, working in the shadow of his son's diagnosis, proposed something different — and the data has been following him ever since.",
+  category: "neuroscience",
+  style: "natgeo-sciam-hybrid",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["autism", "double-empathy", "milton", "neurodiversity", "theory-of-mind"],
+};
 
 const C = {
   natgeoYellow: "#FFCE00",
@@ -119,19 +132,19 @@ const MaskingCosts = () => {
 };
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
-const DropCap = ({ letter, rest }) => (
+const DC = ({ letter, rest }) => (
   <p style={{ fontFamily: "'Source Serif 4',serif", fontSize: 20, lineHeight: 1.75, color: C.black, marginBottom: "1.5em", marginTop: 0 }}>
     <span style={{ float: "left", fontSize: 72, lineHeight: 0.82, fontFamily: "'Playfair Display',serif", fontWeight: 900, marginRight: 8, marginTop: 6, color: C.black }}>{letter}</span>
     {rest}
   </p>
 );
-const Sidebar = ({ title, children }) => (
+const SB = ({ title, children }) => (
   <div style={{ background: C.sidebarBg, border: `1px solid ${C.borderLight}`, borderRadius: 2, padding: "28px 28px 24px", margin: "36px 0", clear: "both" }}>
     <div style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: C.black, borderBottom: `2px solid ${C.natgeoYellow}`, paddingBottom: 6, marginBottom: 14 }}>{title}</div>
     <div style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 15, lineHeight: 1.7, color: C.darkGray }}>{children}</div>
   </div>
 );
-const ImgCaption = ({ label, text }) => (
+const Cap = ({ label, text }) => (
   <div style={{ marginTop: 10, marginBottom: 32 }}>
     <span style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: C.accent, marginRight: 8 }}>{label}</span>
     <span style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 13, color: "#6B6560", lineHeight: 1.5 }}>{text}</span>
@@ -211,7 +224,7 @@ export default function DoubleEmpathyProblem() {
       {/* Body */}
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "64px 32px 80px" }}>
 
-        <DropCap letter="D" rest="amian Milton was thirty-six years old and working as a lecturer in sociology when he was diagnosed with Asperger's syndrome. By that point, his son had already been diagnosed as autistic for four years — since 2005, when the boy was two — and Milton had spent those years moving through the autism research literature with the intensity of a man trying to understand his own family, and increasingly his own mind." />
+        <DC letter="D" rest="amian Milton was thirty-six years old and working as a lecturer in sociology when he was diagnosed with Asperger's syndrome. By that point, his son had already been diagnosed as autistic for four years — since 2005, when the boy was two — and Milton had spent those years moving through the autism research literature with the intensity of a man trying to understand his own family, and increasingly his own mind." />
 
         <Para>What he found disturbed him. The literature on autism, as it had accumulated across the preceding four decades, was constructed almost entirely from the outside looking in. The dominant theoretical framework — Simon Baron-Cohen's "theory of mind" hypothesis, developed in the 1980s at Cambridge — proposed that autistic people lack the cognitive capacity to attribute mental states to others: to infer what someone else believes, intends, or feels. This "mindblindness," the theory held, explained the social difficulties of autism. The autistic person could not model another's mind; the result was social incomprehension.</Para>
 
@@ -228,7 +241,7 @@ export default function DoubleEmpathyProblem() {
             style={{ width: "100%", borderRadius: 2, maxHeight: 400, objectFit: "cover" }}
             onError={e => { e.target.style.display = 'none'; }} />
         </div>
-        <ImgCaption label="◆ Establishing" text="Autistic adults in social connection. A central prediction of the double empathy problem — that autistic people communicate effectively with other autistic people, with difficulties arising specifically at the cross-neurotype interface — was confirmed empirically by Catherine Crompton and Sue Fletcher-Watson at the University of Edinburgh in 2020." />
+        <Cap label="◆ Establishing" text="Autistic adults in social connection. A central prediction of the double empathy problem — that autistic people communicate effectively with other autistic people, with difficulties arising specifically at the cross-neurotype interface — was confirmed empirically by Catherine Crompton and Sue Fletcher-Watson at the University of Edinburgh in 2020." />
 
         <SceneBreak />
 
@@ -248,12 +261,12 @@ export default function DoubleEmpathyProblem() {
         <BidirectionalGap />
         <DiagramCaption title="Two Models of the Social Gap: Traditional vs. Double Empathy">The traditional model assigns all social competence and empathic capacity to the neurotypical party; deficits are located entirely within the autistic person. The double empathy model redistributes the gap: autistic social skill and empathy are substantially higher than the traditional model acknowledged, while neurotypical empathy for autistic expression is substantially lower than was assumed. The resulting picture is of two parties with genuine comprehension difficulties for each other — a structural problem, not an individual deficit. Source: Schematic; adapted from Milton (2012) and Sasson et al. (2017).</DiagramCaption>
 
-        <Sidebar title="The Theory of Mind Hypothesis: What It Got Right and Wrong">
+        <SB title="The Theory of Mind Hypothesis: What It Got Right and Wrong">
           <p style={{ marginBottom: 10 }}>Baron-Cohen, Leslie, and Frith's 1985 paper on "theory of mind" in autism — demonstrating that autistic children performed significantly worse on tasks requiring them to attribute false beliefs to others — was one of the most influential findings in developmental psychology of the 20th century. It gave autism research a clean mechanism, a testable prediction, and a research programme. The Sally-Anne false belief task became a standard diagnostic tool.</p>
           <p style={{ marginBottom: 10 }}>What the framework got right: autistic people do often struggle to predict and interpret the behaviour of non-autistic people, and this has real consequences for social navigation in a world designed predominantly for and by neurotypical social conventions. What the framework missed: the tests were designed by non-autistic researchers using non-autistic social scenarios, and assessed autistic comprehension of non-autistic minds exclusively. When Sheppard and colleagues at the University of Nottingham reversed the direction in 2016, asking how well non-autistic people could read autistic mental states, the performance gap was similarly large — but in the opposite direction. Both groups struggled to read each other.</p>
           <p>The double empathy problem does not deny that autistic cognition differs from neurotypical cognition. Milton's argument is that difference does not equal deficit — and that locating the entire communicative problem within the autistic person was both scientifically incomplete and ethically consequential, because it led to therapies designed to eliminate autistic social behaviour rather than bridge the gap.</p>
           <p style={{ marginTop: 10, fontSize: 13, color: C.warmGray }}>Sources: Baron-Cohen, S., Leslie, A.M., &amp; Frith, U. (1985). Does the autistic child have a theory of mind? <em>Cognition</em>, 21(1), 37–46. Sheppard et al. (2016). <em>Journal of Autism and Developmental Disorders</em>, 46(4), 1247–1254.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -291,16 +304,16 @@ export default function DoubleEmpathyProblem() {
             </svg>
           </div>
         </div>
-        <ImgCaption label="◆ Consequence" text="Schematic of the masking dynamic: an authentic autistic inner expression suppressed beneath a performed neurotypical surface. The double empathy framework reframes masking not as a choice but as the predictable consequence of a social world in which one neurotype's communicative style was set as the universal norm — and deviation from it was treated as pathology to be corrected." />
+        <Cap label="◆ Consequence" text="Schematic of the masking dynamic: an authentic autistic inner expression suppressed beneath a performed neurotypical surface. The double empathy framework reframes masking not as a choice but as the predictable consequence of a social world in which one neurotype's communicative style was set as the universal norm — and deviation from it was treated as pathology to be corrected." />
 
         <MaskingCosts />
         <DiagramCaption title="The Masking Trajectory: Cost to Wellbeing Over Time">Schematic of how sustained cross-neurotype masking accumulates across developmental stages, with masking load rising through adolescence and early adulthood until the burnout phase, where mental health and autistic identity coherence reach their lowest points. A post-diagnosis trajectory and potential recovery are shown. The double empathy problem provides the theoretical explanation for why masking is so common and so costly: autistic people are asked to bridge the entire communicative gap unilaterally. Source: Schematic; masking-burnout association confirmed in Journal of Autism and Developmental Disorders (2019) and Crompton et al. (2020).</DiagramCaption>
 
-        <Sidebar title="The Participatory Turn: Autistic People as Researchers">
+        <SB title="The Participatory Turn: Autistic People as Researchers">
           <p style={{ marginBottom: 10 }}>One of the deepest structural implications of the double empathy problem is methodological: if non-autistic researchers have systematically misread autistic social behaviour because they were interpreting it through neurotypical frames, the solution is to change who is doing the interpreting. Milton chairs the Participatory Autism Research Collective (PARC), which he founded with the goal of ensuring autistic people are involved as co-researchers — not just research subjects — in every phase of the scientific process.</p>
           <p style={{ marginBottom: 10 }}>This is not simply an equity argument, though it is that too. It is an epistemological argument: that the knowledge produced by autism research has been systematically distorted by the absence of autistic perspectives at the point of research design, question formulation, data interpretation, and dissemination. Crompton and Fletcher-Watson's information transfer studies were themselves examples of participatory research — designed with autistic people's input, asked questions that autistic community members had identified as meaningful, and produced findings that made sense to the communities they were about.</p>
           <p style={{ fontSize: 13, color: C.warmGray }}>Sources: Milton (2012); University of Kent profile; Crompton et al. (2020). For PARC, see: participatoryautismresearch.wordpress.com.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 

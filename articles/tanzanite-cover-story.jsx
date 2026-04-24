@@ -1,4 +1,22 @@
-import { useState, useEffect } from "react";
+/* --- YAML frontmatter --- */
+/*
+title: "Born from Fire"
+subtitle: "The crystallography, tectonic genesis, and contested economics of the world's only tanzanite deposit — a 585-million-year-old mineralogical accident occupying 14 km² of northern Tanzania."
+category: "science-nature"
+style: "natgeo-sciam-hybrid"
+date: "2026-04-19"
+tags: [tanzanite, zoisite, crystallography, tanzania, merelani]
+*/
+
+const ARTICLE_DATA = {
+  title: "Born from Fire",
+  subtitle: "The crystallography, tectonic genesis, and contested economics of the world's only tanzanite deposit — a 585-million-year-old mineralogical accident occupying 14 km² of northern Tanzania.",
+  category: "science-nature",
+  style: "natgeo-sciam-hybrid",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["tanzanite", "zoisite", "crystallography", "tanzania", "merelani"],
+};
 
 /*
 MODE: Scientific American Hybrid | FORMAT: Full Feature
@@ -278,7 +296,7 @@ export default function App(){
   useEffect(()=>{setTimeout(()=>setOk(true),80)},[]);
 
   // Scene break ornament
-  const SB=()=><div style={{textAlign:"center",margin:"36px 0",color:C.gold,fontSize:"18px",letterSpacing:"12px"}}>◆ ◆ ◆</div>;
+  const Flr=()=><div style={{textAlign:"center",margin:"36px 0",color:C.gold,fontSize:"18px",letterSpacing:"12px"}}>◆ ◆ ◆</div>;
   // Figure wrapper
   const Fig=({children,caption})=>(
     <div style={{margin:"48px -22px"}}>
@@ -286,8 +304,8 @@ export default function App(){
       <div style={{fontSize:"12.5px",color:C.cap,lineHeight:1.55,padding:"10px 22px 0",fontStyle:"italic",borderTop:`1px solid ${C.creamD}`}}>{caption}</div>
     </div>
   );
-  // Sidebar
-  const Side=({title,children})=><div style={{background:C.creamD,borderLeft:`3px solid ${C.gold}`,padding:"24px 28px",margin:"40px 0"}}><h4 style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",fontWeight:700,color:C.mid,marginBottom:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</h4>{children}</div>;
+  // SB
+  const SB=({title,children})=><div style={{background:C.creamD,borderLeft:`3px solid ${C.gold}`,padding:"24px 28px",margin:"40px 0"}}><h4 style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",fontWeight:700,color:C.mid,marginBottom:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</h4>{children}</div>;
 
   return(<>
     <style>{`
@@ -354,13 +372,13 @@ export default function App(){
 
         <Fig caption={<><strong>Inside the lattice.</strong> The orthorhombic unit cell of zoisite (space group Pnma), showing M1,2 and M3 octahedral sites where V³⁺ substitutes for Al³⁺. Structural refinement by Bačík et al. (2023) found M1,2 slightly overbonded (BVS = 3.03 vu). The sorosilicate Si₂O₇ groups — paired tetrahedra linked by a bridging oxygen — distinguish zoisite from nesosilicates. Small V content (typically &lt;0.5 wt% V₂O₃) limits precise V-site determination even with SHELXL refinement and LA-ICP-MS.</>}><CrystalSVG/></Fig>
 
-        <Side title="Sidebar 1: The Chromophore Mechanism">
+        <SB title="SB 1: The Chromophore Mechanism">
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:".7em"}}>Tanzanite's colour arises from ligand-field splitting in which V³⁺ ions (d² electron configuration) occupy the distorted octahedral coordination environment of the M1,2 sites in the zoisite structure. Peter Bačík and colleagues at Comenius University, Bratislava, published a structural refinement in Mineralogical Magazine (2023) combining electron microprobe analysis, laser ablation inductively coupled plasma mass spectrometry (LA-ICP-MS), and SHELXL crystal structure refinement to locate the vanadium. Their results showed the M1,2 octahedron has an average bond length below 1.90 Å and is slightly overbonded (bond-valence sum 3.03 valence units), while the more distorted M3 site has longer bonds (~1.96 Å) and is slightly underbonded (BVS = 2.78 vu).</p>
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:".7em"}}>The crystal field produces absorption bands centred near 350 nm (V³⁺) and 380 nm (V⁴⁺), as documented by Karl Schmetzer in his 1982 systematic study of V³⁺-bearing natural oxides and silicates. In the unheated state, the trichroic colours — blue along the a-axis, violet along the b-axis, and burgundy along the c-axis — result from anisotropic absorption along each crystallographic direction. Heat treatment at 500–600°C drives a valence exchange: V³⁺ oxidises to V⁴⁺, suppressing the 350 nm band and rendering Ti⁴⁺-related absorption colourless. The brown/burgundy component vanishes; what remains is a stable dichroic stone showing only blue and violet. The process mimics the natural heating that some surface crystals experienced when Maasai grassfires swept the Merelani hillsides — the geological basis for the Maasai folktale that tanzanite was born from lightning.</p>
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:0}}>A point of scientific uncertainty: the relative contributions of V³⁺→V⁴⁺ oxidation versus Ti⁴⁺ charge-transfer suppression to the colour change remain incompletely resolved. The Gemology Project notes that the colour "largely depends on the ratio of Vanadium and Titanium within its crystal structure," suggesting the mechanism may be more complex than a simple single-chromophore model.</p>
-        </Side>
+        </SB>
 
-        <SB/>
+        <Flr/>
 
         {/* ——— ACT II: STAKES — The Discovery ——— */}
 
@@ -372,13 +390,13 @@ export default function App(){
 
         <Fig caption={<><strong>The colour chemistry.</strong> Schematic absorption spectra before and after heat treatment. Heating drives V³⁺→V⁴⁺ oxidation, suppressing the ~350 nm band and rendering Ti⁴⁺ colourless. The brown component vanishes; blue and violet dominate. Nearly all commercial tanzanite is heat-treated — a process so universal it requires no disclosure. After Schmetzer (1982); Bačík et al. (2023).</>}><SpecSVG/></Fig>
 
-        <Side title="Sidebar 2: The Geology of Scarcity">
+        <SB title="SB 2: The Geology of Scarcity">
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:".7em"}}>Tanzanite deposits are confined to isoclinal fold hinges within a specific stratigraphic horizon in the Lelatema Mountains. The host sequence — graphitic and gypsum-bearing gneiss interlayered with dolomitic marble and calc-silicate rocks — was folded and sheared during Pan-African metamorphism between approximately 800 and 450 Ma, with the tanzanite-forming event dated to roughly 585 Ma during the mid-Ediacaran Period. The mineralised zone sits within a strip approximately 7 km long and 2 km wide, trending NE–SW along the Lelatema fault system.</p>
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:".7em"}}>The fold geometry limits the deposit laterally; the increasing depth of unexploited pockets limits it vertically. The 2018 National Bureau of Statistics of Tanzania report estimated total reserves at 109 million carats (21,800 kg). Block C alone accounts for approximately 87.1 million carats, with a Life of Mine expected to extend into the 2040s based on current extraction rates. Blocks B and D, worked by artisanal miners with hand tools, have no independently verified reserve estimates — a significant gap in the geological record.</p>
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:0}}>The USGS Minerals Yearbook (2019) confirmed that mining at Block C was expected to continue until 2042 under the TanzaniteOne/STAMICO joint venture. No other occurrence of gem-quality vanadium-bearing blue zoisite has been confirmed anywhere on Earth despite exploration in analogous metamorphic terranes. The deposit is, in the strictest geological sense, unique — and non-renewable.</p>
-        </Side>
+        </SB>
 
-        <SB/>
+        <Flr/>
 
         {/* ——— ACT III: COMPLICATION — The Mine ——— */}
 
@@ -388,13 +406,13 @@ export default function App(){
 
         <Fig caption={<><strong>Where the blue lives.</strong> NW–SE cross-section through the Merelani deposit. Tanzanite crystallised in isoclinal fold hinges within dolomitic marble from hydrothermal fluids migrating along the Lelatema fault. Artisanal shafts in Blocks B and D descend 400+ m through this stratigraphy with no elevators. After Olivier (2006); Malisa (1987); Davies &amp; Chase (1994).</>}><GeoSVG/></Fig>
 
-        <Side title="Sidebar 3: The Human Cost — A Mortality Record">
+        <SB title="SB 3: The Human Cost — A Mortality Record">
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:".7em"}}>No comprehensive mortality database exists for the Merelani tanzanite mines. The following is compiled from journalistic sources, the Tanzania Journal of Science, and JCK (Jewelers' Circular Keystone) industry reporting:</p>
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:".7em"}}>In 1998, over 100 miners were killed in flash flooding (JCK, 2008). In July 2002, 42 miners died after an air pump failed at 125 m depth in Block D (JCK, 2002; BBC). In March 2008, 57 miners drowned and 17 went missing when 155 mm of rain in 90 minutes flooded Block B's interlinked shafts (JCK, 2008; TanzaniteOne confirmation). Between April and September 2021, at least a dozen miners died in separate incidents in Block D, including five in a single pit collapse in July and two suffocations in November (The Citizen, Tanzania, 2021).</p>
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:0}}>Occupational health research (Malisa & Kinabo, Tanzania Journal of Science, Vol. 31, 2005) documents that artisanal miners at depths exceeding 100 m work in narrow shafts within soft, fractured, graphitic gneiss, breathing through compressor hoses that "sometimes fail or are deliberately switched off." Exposure to dust mixed with graphite, quartz, and micas is hazardous, and the study recommends proper ventilation and adherence to the Ministry of Energy and Minerals code of practice — recommendations that remain largely unimplemented in Blocks B and D.</p>
-        </Side>
+        </SB>
 
-        <SB/>
+        <Flr/>
 
         {/* ——— ACT IV: DEEPENING — The Nation ——— */}
 
@@ -404,19 +422,19 @@ export default function App(){
 
         <Fig caption={<><strong>The collision that made colour possible.</strong> Left: Merelani's position within the Mozambique Belt, the suture zone formed as East and West Gondwana collided. Right: formation sequence from Mozambique Ocean opening (~800 Ma) through continental collision, tanzanite crystallisation at ~585 Ma, and discovery in 1967.</>}><TectonicSVG/></Fig>
 
-        <Side title="Sidebar 4: Resource Nationalism — The Wall and the Hub">
+        <SB title="SB 4: Resource Nationalism — The Wall and the Hub">
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:".7em"}}>Tanzania's approach to tanzanite under Presidents Magufuli (2015–2021) and Samia Suluhu Hassan (2021–present) combines infrastructure investment, export restrictions, and mandatory state equity. Key policy instruments include: the 2018 construction of a 24 km perimeter wall with army checkpoint, reducing smuggling and increasing documented production from 148 kg to 781 kg in one year; the 2010 ban on raw stone exports over one gram, forcing domestic value addition; the 2010 law requiring 50% STAMICO ownership in large-scale operations; the 2017 mining legislation mandating at least 16% government ownership in all mining projects; and the reduction of taxation to a flat 7% royalty.</p>
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:0}}>The vision is to transform Tanzania from raw-material exporter to gemstone processing hub — cutting and polishing domestically rather than shipping to Jaipur. The policy has succeeded in formalising production and capturing state revenue, but the artisanal sector in Blocks B and D remains largely outside the formal safety and environmental regulatory framework. The $81 billion smuggling-loss figure cited by the Ministry of Minerals has not been independently audited.</p>
-        </Side>
+        </SB>
 
         <Fig caption={<><strong>Reserves and the clock.</strong> Left: annual rough production in kg, showing the dramatic impact of the 2018 perimeter wall. Right: reserve breakdown from the 2018 NBS Tanzania report — 109 million carats total, with Block C (87.1M ct) expected to sustain mining until the 2040s. As high-grade zones exhaust, ore-grade decline pushes extraction costs upward.</>}><ReservesSVG/></Fig>
 
-        <Side title="Sidebar 5: What Remains — The Depletion Arithmetic">
+        <SB title="SB 5: What Remains — The Depletion Arithmetic">
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:".7em"}}>The 2018 National Bureau of Statistics report estimated total tanzanite reserves at 109 million carats (21,800 kg). Block C, the only mechanised operation, holds approximately 87.1 million carats with a Life of Mine projected to the 2040s. Blocks B and D have no independent reserve estimate — a critical data gap. At the 2019 record extraction rate of 781 kg per year (across all blocks), the total reserve of 21,800 kg implies a theoretical lifespan of roughly 28 years, consistent with the widely cited "20–30 year" estimate. However, this calculation does not account for ore-grade decline — the progressive exhaustion of high-grade zones forcing miners into lower-grade pockets that require more rock processing per carat.</p>
           <p style={{fontSize:"14.5px",lineHeight:1.62,marginBottom:0}}>The fundamental constraint is geometric: tanzanite occurs in fold hinges within a specific stratigraphic horizon. The fold geometry limits the deposit laterally; depth limits it vertically. No other gem-quality vanadium-bearing blue zoisite occurrence has been confirmed anywhere on Earth. The deposit is, in the strictest geological and economic sense, both unique and terminal. The question is not whether Merelani will be exhausted but what happens to the estimated 70,000 people whose livelihoods depend on it when it is.</p>
-        </Side>
+        </SB>
 
-        <SB/>
+        <Flr/>
 
         {/* ——— ACT V: RESOLUTION / COSMIC KICKER ——— */}
 

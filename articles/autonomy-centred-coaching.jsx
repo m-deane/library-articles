@@ -1,9 +1,22 @@
+/* --- YAML frontmatter --- */
+/*
+title: "The Freedom to Change"
+subtitle: "For seven decades, psychotherapy assumed that the expert in the room was the therapist. A quiet revolution — grounded in rigorous science — has been dismantling that idea one session at a time."
+category: "neuroscience"
+style: "natgeo-classic"
+date: "2026-04-19"
+tags: [self-determination-theory, psychotherapy, motivational-interviewing, autonomy]
+*/
 
-import { useState } from "react";
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, BarChart, Bar, Legend, ReferenceLine
-} from "recharts";
+const ARTICLE_DATA = {
+  title: "The Freedom to Change",
+  subtitle: "For seven decades, psychotherapy assumed that the expert in the room was the therapist. A quiet revolution — grounded in rigorous science — has been dismantling that idea one session at a time.",
+  category: "neuroscience",
+  style: "natgeo-classic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["self-determination-theory", "psychotherapy", "motivational-interviewing", "autonomy"],
+};
 
 // ─── DESIGN TOKENS ───────────────────────────────────────────────────────────
 const C = {
@@ -115,7 +128,7 @@ const EffectSizeChart = () => {
 
 // ─── HELPER COMPONENTS ────────────────────────────────────────────────────────
 
-const DropCap = ({ letter, rest }) => (
+const DC = ({ letter, rest }) => (
   <p style={{ fontFamily: "'Source Serif 4', serif", fontSize: 20, lineHeight: 1.75, color: C.black, marginBottom: "1.5em", marginTop: 0 }}>
     <span style={{
       float: "left", fontSize: 72, lineHeight: 0.82, fontFamily: "'Playfair Display', serif",
@@ -125,7 +138,7 @@ const DropCap = ({ letter, rest }) => (
   </p>
 );
 
-const Sidebar = ({ title, children }) => (
+const SB = ({ title, children }) => (
   <div style={{
     background: C.sidebarBg, border: `1px solid ${C.borderLight}`,
     borderRadius: 2, padding: "28px 28px 24px", margin: "36px 0", clear: "both"
@@ -141,7 +154,7 @@ const Sidebar = ({ title, children }) => (
   </div>
 );
 
-const ImgCaption = ({ label, text }) => (
+const Cap = ({ label, text }) => (
   <div style={{ marginTop: 10, marginBottom: 32 }}>
     <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: C.accent, marginRight: 8 }}>{label}</span>
     <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontSize: 13, color: "#6B6560", lineHeight: 1.5 }}>{text}</span>
@@ -195,7 +208,7 @@ export default function AutonomyCentredCoaching() {
       {/* Yellow Border Strip */}
       <div style={{ height: 4, background: C.natgeoYellow, width: "100%" }} />
 
-      {/* Hero Section */}
+      {/* Hero Sec */}
       <div style={{
         minHeight: "88vh", position: "relative", display: "flex", flexDirection: "column",
         justifyContent: "flex-end",
@@ -250,7 +263,7 @@ export default function AutonomyCentredCoaching() {
       {/* Article Body */}
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "64px 32px 80px" }}>
 
-        <DropCap
+        <DC
           letter="T"
           rest="he notebook, when William Miller finally looked at it, contained almost nothing useful. It was 1982, and the young American psychologist was on sabbatical at the Hjellestad Clinic outside Bergen, Norway, filling days by sitting in on therapy sessions with problem drinkers. What he had been trained to do — and what the clinic's staff did with considerable conviction — was confront patients about their behaviour. Challenge their denial. Break through their defences. Hold up a mirror to the damage they were causing and insist they look."
         />
@@ -274,7 +287,7 @@ export default function AutonomyCentredCoaching() {
             onError={e => { e.target.style.display = 'none'; }}
           />
         </div>
-        <ImgCaption label="◆ Character" text="A motivational interviewing session at an addiction recovery centre. The approach, developed by William Miller in the early 1980s, repositions the therapist from expert-director to collaborative guide — honouring the client's autonomy as a core therapeutic mechanism." />
+        <Cap label="◆ Character" text="A motivational interviewing session at an addiction recovery centre. The approach, developed by William Miller in the early 1980s, repositions the therapist from expert-director to collaborative guide — honouring the client's autonomy as a core therapeutic mechanism." />
 
         <SceneBreak />
 
@@ -284,13 +297,13 @@ export default function AutonomyCentredCoaching() {
 
         <Para>Those core conditions — unconditional positive regard, empathic understanding, and congruence in the therapist — are remembered today mainly as training touchstones, warm principles taught in the first semester of counselling programmes. What is less often remembered is that Rogers insisted they were not merely helpful but <em>necessary and sufficient</em> for therapeutic change. That claim proved too strong for the evidence that eventually accumulated. But the core insight embedded within it — that the quality of the relational climate is a direct mechanism of change, not simply a vehicle for delivering techniques — has proven extraordinarily durable.</Para>
 
-        <Sidebar title="The Three Basic Psychological Needs">
+        <SB title="The Three Basic Psychological Needs">
           <p style={{ marginBottom: 10 }}>Self-determination theory, the theoretical framework most rigorously associated with autonomy-centred practice, proposes that human beings have three universal, innate psychological needs whose satisfaction is necessary for wellbeing and whose thwarting produces distress and dysregulation.</p>
           <p style={{ marginBottom: 10 }}><strong>Autonomy</strong> — the need to experience one's actions as volitional and self-endorsed, arising from one's own values and sense of self, rather than from external pressure or introjected obligation. Autonomy does not mean independence or isolation; a person can feel autonomy while accepting help or guidance, provided they experience that help as chosen rather than imposed.</p>
           <p style={{ marginBottom: 10 }}><strong>Competence</strong> — the need to feel effective and capable within one's important life contexts. Not confidence per se, but the felt sense of mastering challenges, producing desired outcomes, and not being overwhelmed by one's environment.</p>
           <p><strong>Relatedness</strong> — the need to feel meaningfully connected to others, to matter to people who matter to oneself. Research consistently shows that relatedness satisfaction moderates the effects of the other two needs: autonomy and competence flourish within relationships characterised by genuine care.</p>
           <p style={{ marginTop: 10, fontSize: 13, color: C.warmGray }}>Source: Ryan, R.M. &amp; Deci, E.L. (2017). <em>Self-Determination Theory: Basic Psychological Needs in Motivation, Development, and Wellness</em>. Guilford Press.</p>
-        </Sidebar>
+        </SB>
 
         <Para>The theoretical framework that would eventually provide autonomy-centred practice with its most rigorous foundation was built not in a therapy room but in a set of experiments at the University of Rochester in the late 1970s. Edward Deci, a psychologist interested in what happens to intrinsic motivation when external rewards are introduced, had found something counterintuitive: that rewarding people for activities they already enjoyed could, under certain conditions, <em>reduce</em> their motivation to engage in those activities. The reward shifted the experienced locus of causality — the reason felt external rather than internal, controlled rather than chosen — and something in the quality of engagement diminished.</Para>
 
@@ -314,12 +327,12 @@ export default function AutonomyCentredCoaching() {
 
         <Para>"Autonomous motivation is a new common factor," Zuroff and his colleagues concluded — using the phrase that psychotherapy researchers reserve for mechanisms that operate across treatment boundaries, in the way that the therapeutic alliance does, rather than being specific to a particular protocol. The implication was significant: that any therapy, regardless of its theoretical orientation, might produce better outcomes if it supported the patient's sense of authorship over their own participation.</Para>
 
-        <Sidebar title="Motivational Interviewing: Core Mechanics">
+        <SB title="Motivational Interviewing: Core Mechanics">
           <p style={{ marginBottom: 10 }}>Motivational Interviewing (MI), developed by William Miller in the early 1980s and refined with Stephen Rollnick through four editions of their foundational text, is built around what Miller describes as "the MI spirit" — a cluster of relational stances rather than a set of techniques. Those stances are partnership (the therapeutic relationship as collaborative rather than hierarchical), acceptance (which includes explicit acknowledgement of client autonomy), compassion, and evocation (drawing out the client's own motivations rather than installing the practitioner's).</p>
           <p style={{ marginBottom: 10 }}>The mechanism the model proposes is centred on "change talk" — the client's own verbal articulation of reasons for, capability toward, commitment to, and steps toward change. Research by Theresa Moyers and colleagues at the University of New Mexico has found that MI-consistent therapist behaviours are significantly associated with more client change talk (r = .55 in one meta-analysis), and that client change talk, in turn, predicts better clinical outcomes.</p>
           <p>A 2005 meta-analysis in the British Journal of General Practice covering 72 randomised controlled trials found MI had a significant and clinically relevant effect in approximately three out of four studies — with effects on both physiological outcomes (72% of relevant studies) and psychological outcomes (75%). Effect sizes were modest — consistent with a transtherapeutic facilitative mechanism rather than a curative intervention in its own right.</p>
           <p style={{ marginTop: 10, fontSize: 13, color: C.warmGray }}>Sources: Miller, W.R. &amp; Rollnick, S. (2023). <em>Motivational Interviewing</em>, 4th ed. Guilford Press. Hettema, J. et al. (2005). <em>Annual Review of Clinical Psychology</em>. Moyers, T.B. et al. (2017). <em>Journal of Counseling Psychology</em>.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -364,7 +377,7 @@ export default function AutonomyCentredCoaching() {
             </div>
           </div>
         </div>
-        <ImgCaption label="◆ Consequence" text="The therapeutic dyad. Research by David Zuroff at McGill University found that patients' sense of autonomous motivation — the feeling that their participation in treatment was a freely made choice — predicted remission from depression more strongly than the therapeutic alliance itself, regardless of treatment modality." />
+        <Cap label="◆ Consequence" text="The therapeutic dyad. Research by David Zuroff at McGill University found that patients' sense of autonomous motivation — the feeling that their participation in treatment was a freely made choice — predicted remission from depression more strongly than the therapeutic alliance itself, regardless of treatment modality." />
 
         <SceneBreak />
 
@@ -378,12 +391,12 @@ export default function AutonomyCentredCoaching() {
 
         <Para>The numbers are, on their own terms, unspectacular. Effect sizes in the small-to-medium range, substantial heterogeneity, acknowledged publication bias. SDT advocates would point out that these are typical for psychosocial interventions across the board — and that the mediational findings (the evidence that the proposed mechanism is actually producing the effect) are unusually strong. Critics would note that most SDT intervention studies are short-term, that follow-up periods rarely extend beyond six months, and that the gap between laboratory demonstrations and clinical implementation remains substantial.</Para>
 
-        <Sidebar title="Where Autonomy Support Fails: The Limits of the Evidence">
+        <SB title="Where Autonomy Support Fails: The Limits of the Evidence">
           <p style={{ marginBottom: 10 }}>The case for autonomy-centred practice is strong, but its limits are real and worth stating clearly. Research by Zuroff and colleagues in 2010 found that autonomous motivation predicted treatment outcomes more strongly for patients with less recurrent depression — but that for patients with highly recurrent depression, the therapeutic alliance was a stronger predictor than autonomous motivation. The model's power is not uniform across clinical presentations.</p>
           <p style={{ marginBottom: 10 }}>SDT's critics have also noted that the theory's core constructs — autonomy, competence, relatedness — are difficult to disentangle methodologically. Many interventions labelled "SDT-based" involve multiple simultaneous changes (more support, more choice, more feedback), making it hard to isolate which element is driving effects. The construct of "perceived autonomy support" is typically measured by self-report, introducing potential confounding with general therapeutic alliance.</p>
           <p style={{ marginBottom: 10 }}>There are also cultural considerations. While Ryan and Deci have consistently argued that the three basic needs are universal — and cross-cultural evidence from numerous countries supports this — the <em>expression</em> of autonomy support may need to vary significantly across cultural contexts. What feels autonomy-supportive in a Northern European clinical encounter may feel indifferent or abandoning in cultural contexts where directive guidance from an authority figure is the expected form of care.</p>
           <p style={{ fontSize: 13, color: C.warmGray }}>Sources: Zuroff et al. (2010). <em>Psychotherapy Research</em>. Ryan &amp; Deci (2017). <em>Self-Determination Theory</em>. Ntoumanis et al. (2021). <em>Psychology &amp; Health</em>.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -422,7 +435,7 @@ export default function AutonomyCentredCoaching() {
             </div>
           </div>
         </div>
-        <ImgCaption label="◆ Resolution" text="The path ahead, chosen. Self-determination theory proposes that humans are constitutively different when they experience their actions as self-authored rather than externally imposed — a difference that shows up not merely in subjective satisfaction but in physiological markers, behavioural persistence, and clinical outcomes." />
+        <Cap label="◆ Resolution" text="The path ahead, chosen. Self-determination theory proposes that humans are constitutively different when they experience their actions as self-authored rather than externally imposed — a difference that shows up not merely in subjective satisfaction but in physiological markers, behavioural persistence, and clinical outcomes." />
 
         <SceneBreak />
 

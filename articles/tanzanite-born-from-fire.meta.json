@@ -1,12 +1,18 @@
 {
   "slug": "tanzanite-born-from-fire",
-  "title": "Tanzanite Born From Fire",
-  "subtitle": "",
-  "date": "",
+  "title": "Born from Fire",
+  "subtitle": "Deep beneath Tanzania's Merelani Hills, young men descend 400 metres on wooden ladders to extract the only gemstone on Earth found in a single place. The deposit could be exhausted within a generation. This is the story of the people who mine it \u2014 and the country fighting to keep its wealth.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "science-nature",
+  "style": "natgeo-classic",
+  "tags": [
+    "tanzanite",
+    "gemstones",
+    "tanzania",
+    "mining",
+    "merelani"
+  ],
   "component": "TanzaniteArticle",
   "url": "articles/tanzanite-born-from-fire.html",
   "pdf_url": "articles/tanzanite-born-from-fire.pdf"

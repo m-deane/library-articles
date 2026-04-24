@@ -1,4 +1,22 @@
-import { useState, useEffect } from "react";
+/* --- YAML frontmatter --- */
+/*
+title: "The Colour of the Walls"
+subtitle: "Archaeology, archival demography, and material culture analysis are rewriting the history of enslaved labour in Hospitaller Malta — revealing what the fortifications conceal."
+category: "archaeology"
+style: "natgeo-sciam-hybrid"
+date: "2026-04-19"
+tags: [malta, slavery, hospitallers, bioarchaeology, corsairing]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Colour of the Walls",
+  subtitle: "Archaeology, archival demography, and material culture analysis are rewriting the history of enslaved labour in Hospitaller Malta — revealing what the fortifications conceal.",
+  category: "archaeology",
+  style: "natgeo-sciam-hybrid",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["malta", "slavery", "hospitallers", "bioarchaeology", "corsairing"],
+};
 
 /*
 MODE: Scientific American Hybrid | FORMAT: Standard Feature
@@ -126,9 +144,9 @@ export default function App(){
   const [ok,setOk]=useState(false);
   useEffect(()=>{setTimeout(()=>setOk(true),80)},[]);
 
-  const SB=()=><div style={{textAlign:"center",margin:"34px 0",color:C.honey,fontSize:"15px",letterSpacing:"10px"}}>❧</div>;
+  const Flr=()=><div style={{textAlign:"center",margin:"34px 0",color:C.honey,fontSize:"15px",letterSpacing:"10px"}}>❧</div>;
   const Fig=({children,caption})=>(<div style={{margin:"42px -22px"}}>{children}<div style={{fontSize:"12px",color:C.cap,lineHeight:1.55,padding:"10px 22px 0",fontStyle:"italic",borderTop:`1px solid ${C.stoneD}`}}>{caption}</div></div>);
-  const Side=({title,children})=>(<div style={{background:C.stoneD,borderLeft:`3px solid ${C.honey}`,padding:"22px 26px",margin:"36px 0"}}><h4 style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",fontWeight:700,color:C.mid,marginBottom:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</h4>{children}</div>);
+  const SB=({title,children})=>(<div style={{background:C.stoneD,borderLeft:`3px solid ${C.honey}`,padding:"22px 26px",margin:"36px 0"}}><h4 style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",fontWeight:700,color:C.mid,marginBottom:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</h4>{children}</div>);
   const sp={fontSize:"14.5px",lineHeight:1.62,marginBottom:".7em"};
 
   return(<>
@@ -171,9 +189,9 @@ export default function App(){
 
         <Fig caption={<><strong>Four evidence streams.</strong> The convergent methodology Palmer (2021) proposes for studying captivity in the absence of direct physical evidence. Archival records (notarial contracts, Inquisition files), material culture (Ottoman coffee cups excavated at Birgu and Valletta — Cutajar & Spiteri 2019), graffiti (thousands of ship carvings documented by the Malta Ship Graffiti Project and CMPHP photogrammetry), and bioarchaeological analysis of skeletal remains converge on a single conclusion: captivity shaped every dimension of Hospitaller society.</>}><EvidenceSVG/></Fig>
 
-        <Side title="Sidebar 1: Galley Biomechanics and Demographic Scale">
+        <SB title="SB 1: Galley Biomechanics and Demographic Scale">
           <p style={sp}>Each Hospitaller galley was approximately 50 metres long, powered by roughly 280 oarsmen seated on three tiers of benches (outboard, middle, inboard) flanking a central gangway called the corsia. Robert Davis's 2007 analysis in the Journal of Medieval and Early Modern Studies estimated that Mediterranean nations collectively employed some 20,000 forced rowers in peacetime — a figure that rises dramatically during wartime mobilisations. The rowing population was heterogeneous: enslaved Muslims (schiavi), convicted criminals (forzati), debtors, and a small number of voluntary rowers (buonavoglie) who received pay. Wettinger notes that the Order kept separate administrative categories for each class, and that attrition among galley slaves was high — compressor hoses did not exist in the sixteenth century, but the equivalent was the relentless physical demand of oar-stroke cycles lasting hours, in conditions that Muscat and Agius (2013) describe with the phrase "as strong as a Turk," reflecting the common assessment that Turkish captives were the most valued rowers. The musculoskeletal consequences of this labour — repetitive strain on shoulders, lower back, and hands — are precisely the kind of traces that Palmer's bioarchaeological methodology can detect in skeletal remains, though no systematic osteological study of identified galley-rower burials in Malta has yet been published.</p>
-        </Side>
+        </SB>
 
         <Fig caption={<><strong>280 oarsmen per vessel.</strong> Schematic cross-section showing the three-tier rowing arrangement on a Hospitaller galley. The Order maintained three galleys — the Capitana, San Luigi, and San Nicola — requiring a minimum of 840 rowers at any given time. Musculoskeletal stress from repetitive oar-stroke cycles leaves identifiable traces on skeletal remains (Martin 2008).</>}><GalleySVG/></Fig>
 
@@ -185,15 +203,15 @@ export default function App(){
 
         <Fig caption={<><strong>The demographic arc.</strong> Estimated slave population from the Knights' arrival to Napoleon's liberation. The 280-rower-per-galley requirement for the Order's three-vessel fleet alone demanded a minimum baseline of 840 at-sea rowers, before accounting for land-based labour. Attrition-rate analysis (Wettinger 2002) provides the primary demographic methodology; archival gaps before 1580 are significant.</>}><PopSVG/></Fig>
 
-        <Side title="Sidebar 2: The 1749 Revolt — Forensic Reconstruction">
+        <SB title="SB 2: The 1749 Revolt — Forensic Reconstruction">
           <p style={sp}>The 1749 conspiracy represents the most extensively documented slave revolt attempt in Hospitaller Malta, and its forensic record survives in the trial transcripts of the Gran Corte della Castellania. Mustafa, Pasha of Rhodes — an Ottoman official captured when Christian slaves seized the Ottoman flagship Lupa in February 1748 — coordinated a network of approximately 150 conspirators across multiple sites: the Slaves' Prison, the Grandmaster's Palace guard (where the Persian neophyte Antonio de Viguier served), and the three galleys of the Order's fleet, where galley slaves had been supplied with arsenic to poison the knights at sea. The target date — 29 June 1749, the feast of Saints Peter and Paul — was chosen because Grand Master Pinto would be hosting a banquet, concentrating the leadership in one location. The plan included simultaneous poisonings at the Palace and the auberges, assassination of the Grand Master, seizure of Fort St Elmo's armouries, and a signal to an Ottoman corsair ship offshore. The plot was exposed on 6 June when conspirators assaulted Giacomo Cassar, a guard of Armenian origin, in a coffeehouse on Strada Fontana. Giuseppe Cohen, the shop owner — a Jewish neophyte — reported to Pinto. The subsequent repression: 150 arrested, interrogation under torture, 35 executed (hanged, quartered, beheaded), 3 died in custody, 72 condemned to the galleys, 8 branded with R (ribelli) on their foreheads. Mustafa, protected by French diplomacy, was exiled to Rhodes in 1751.</p>
-        </Side>
+        </SB>
 
-        <Side title="Sidebar 3: The 2026 Paris Exhibition">
+        <SB title="SB 3: The 2026 Paris Exhibition">
           <p style={sp}>In March 2026, the Institut du monde arabe in Paris opened "Mediterranean Slavery: 17th–18th Centuries," co-curated by Meredith Martin (NYU) and Gillian Weiss — the first major museum exhibition dedicated to the history and representation of enslaved Muslims in Mediterranean Europe. The exhibition focuses on France, Italy, and Malta, featuring objects including a life drawing of an enslaved Muslim by Charles Le Brun (Louis XIV's chief painter), paintings depicting the 1749 Malta revolt, an album of drawings by Fabroni showing galley slaves at work and at rest, naval weapons, talismans, and letters written by Muslim and Christian captives. A new contemporary artwork by Kevork Mourad, Suspended in Time, addresses the erasure of this history following France's capture of Algiers in 1830. The exhibition's significance lies in its demonstration that Mediterranean galley slavery was not a footnote to the Atlantic slave trade but a parallel, contemporaneous, and in the sixteenth and seventeenth centuries actually larger system — one whose material and cultural traces are only now being systematically documented through the kind of convergent archaeological methodology Palmer advocates.</p>
-        </Side>
+        </SB>
 
-        <SB/>
+        <Flr/>
 
         <p>The scientific uncertainty in this field centres on scale. Wettinger acknowledged significant archival gaps before 1580, and the Ottoman archives — which would contain the other side of the ledger, records of the captives' origins, families, and communities — are in poor condition for this period. Michel Fontenay's 2001 analysis in Quaderni Storici estimated the Maltese slave market's throughput but noted that Mediterranean slave-trade figures for the sixteenth century remain imprecise, in contrast to the relatively well-documented Atlantic trade. The archaeological evidence is also partial: the Slaves' Prison was demolished in the nineteenth century, and no systematic excavation of its site has been conducted. Palmer's graffiti analysis, the CMPHP's photogrammetric documentation, and the ongoing Malta Ship Graffiti Project are generating new data, but the bioarchaeological programme — the osteological analysis of identified galley-rower remains that could confirm the musculoskeletal stress hypothesis — remains a future research agenda, not a completed study.</p>
 

@@ -1,12 +1,18 @@
 {
   "slug": "avoidance-based-behaviour",
-  "title": "Avoidance Based Behaviour",
-  "subtitle": "",
-  "date": "",
+  "title": "Moving Away",
+  "subtitle": "Avoidance is the oldest survival behaviour in the animal kingdom. In the human mind, refined by language and memory into something far more elaborate, it has become both a cornerstone of psychological protection and, when it escapes its proper boundaries, the architecture of suffering itself.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "neuroscience",
+  "style": "encyclopaedic",
+  "tags": [
+    "avoidance",
+    "anxiety",
+    "clinical-psychology",
+    "two-factor-theory",
+    "exposure-therapy"
+  ],
   "component": "AvoidanceBasedBehaviour",
   "url": "articles/avoidance-based-behaviour.html",
   "pdf_url": "articles/avoidance-based-behaviour.pdf"

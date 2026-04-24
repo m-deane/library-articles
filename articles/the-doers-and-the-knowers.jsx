@@ -1,5 +1,22 @@
-import { useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend, Cell, AreaChart, Area } from "recharts";
+/* --- YAML frontmatter --- */
+/*
+title: "The Doers and the Knowers"
+subtitle: "Knowledge has been commoditised. What remains scarce is the willingness to act on it. The economy is inverting its oldest hierarchy — and nobody has told the universities."
+category: "economics"
+style: "economist"
+date: "2026-04-19"
+tags: [ai, labour, education, knowledge-economy, automation]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Doers and the Knowers",
+  subtitle: "Knowledge has been commoditised. What remains scarce is the willingness to act on it. The economy is inverting its oldest hierarchy — and nobody has told the universities.",
+  category: "economics",
+  style: "economist",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["ai", "labour", "education", "knowledge-economy", "automation"],
+};
 
 const COLORS = {
   economistRed: "#E3120B",
@@ -163,8 +180,8 @@ function HierarchySVG() {
   );
 }
 
-// ─── Sidebar ─────────────────────────────────────────────────────────────────
-function Sidebar({ title, children }) {
+// ─── SB ─────────────────────────────────────────────────────────────────
+function SB({ title, children }) {
   return (
     <div style={{
       margin: "36px 0", padding: "24px 28px", background: COLORS.cream,
@@ -240,9 +257,9 @@ export default function DoersAndKnowers() {
           The irony is exquisite. The very technology that was built by the knowledge economy is now devouring it from within. Every new data centre requires electricians and plumbers to build. Every AI-powered factory requires mechanics to maintain. Every autonomous vehicle, when it eventually arrives, will need physical infrastructure that no algorithm can install. Mathews, a fourth-generation plumber who works on data-centre cooling systems, described these roles to CNBC as "new-collar" jobs — traditional trades workers and network engineers working alongside each other and, for the first time, being valued the same. The PhD and the pipefitter, it turns out, are converging.
         </p>
 
-        <Sidebar title="The cost of a first draft">
+        <SB title="The cost of a first draft">
           The mechanism of the inversion is straightforward. Generative AI has driven the marginal cost of producing a first draft — of code, of copy, of analysis, of design — toward zero. When the Ramp Economics Lab tracked firm-level spending, it found businesses substituting freelance labour for AI at a ratio of $1 to $0.03. If production is nearly free, the binding constraint on value creation shifts from the ability to produce to the willingness to initiate. The person who says "we should build X" and then builds it — however imperfectly — captures more value than the person who can explain why X would work in theory. This is not a temporary artefact of early adoption. It is an economic logic that strengthens as the tools improve. The cheaper the draft, the more valuable the decision to start one.
-        </Sidebar>
+        </SB>
 
         <p style={{ fontFamily: FONTS.body, fontSize: 17, lineHeight: 1.78, color: COLORS.black, marginBottom: 24 }}>
           This logic has implications that extend beyond the labour market into the structure of education itself. If knowledge can be accessed on demand, the purpose of learning shifts from accumulation to application. You do not need to spend four years mastering corporate law if an AI can surface the relevant precedents in seconds; the premium shifts to the person who can use that legal knowledge to read a counterparty, spot a risk, and close a deal. You do not need three years of accounting training to perform reconciliations; the premium shifts to the person who can interpret the AI's output, challenge its assumptions, and advise a client on strategy. Learning does not disappear in this model. But it becomes instrumental rather than terminal — you learn in order to do, not in order to know. The distinction matters enormously, because it means that the most economically rational form of education may no longer be the one that goes deepest, but the one that arrives fastest at the point of action.
@@ -256,9 +273,9 @@ export default function DoersAndKnowers() {
           But this picture, if taken at face value, risks a dangerous conclusion. If the argument is that doing matters more than knowing, and that deep academic mastery is economically overpriced, then the logical endpoint is a new anti-intellectualism — a society that stops producing deep thinkers because the market no longer rewards them. This would be a catastrophe of the first order. Climate modelling cannot be reduced to a prompt. Constitutional adjudication requires centuries of accumulated jurisprudence and the human capacity to reason from it. Pandemic preparedness depends on virologists whose expertise takes a decade to acquire. Fundamental physics, the kind that produces GPS and MRI machines and the semiconductors inside every AI chip, emerges from precisely the kind of sustained, curiosity-driven investigation that has no immediate commercial application. The market's repricing of knowledge is an economic signal, not a civilisational verdict. Confusing the two is the surest way to build a society that can deploy AI but no longer understands it.
         </p>
 
-        <Sidebar title="What gets commoditised next?">
+        <SB title="What gets commoditised next?">
           If the current wave is commoditising knowledge, the next wave may commoditise judgement. AI agents are already capable of multi-step reasoning, workflow management, and decision-making across complex task sequences. Fiverr reported an 18,347 percent surge in demand for AI-agent specialists in six months — a signal that autonomous systems capable of coordination, not just generation, are arriving fast. If judgement and coordination follow knowledge into the commoditised zone, then even the "human edge" described in social-skills research may have a shelf life. What remains after that is speculative, but the candidates are telling: taste, conviction, the willingness to be wrong in public, the ability to inspire others to follow you into uncertainty. These are less cognitive capacities than dispositional ones — qualities of character, not of intellect. Whether an education system designed around intellect can cultivate them is the question that no institution has yet answered.
-        </Sidebar>
+        </SB>
 
         <p style={{ fontFamily: FONTS.body, fontSize: 17, lineHeight: 1.78, color: COLORS.black, marginBottom: 24 }}>
           The uncomfortable reality is that the economy is demanding a kind of person that most institutions were not built to produce. Universities were designed to cultivate knowledge and certify its acquisition. Corporations were designed to deploy that knowledge within defined hierarchies. Both assumed that the primary asset a worker brought to market was what they knew. The post-knowledge economy does not abolish knowledge — AI could not function without the vast corpus of human learning on which it was trained — but it does demote knowledge from a scarce, high-value asset to an abundant, low-cost commodity. What remains scarce is everything else: initiative, risk tolerance, the willingness to act on imperfect information, the capacity to sell an idea to someone who does not yet know they need it. These are the qualities of the entrepreneur, the tradesperson-proprietor, the creative director who can work with AI rather than be replaced by it. They are, not coincidentally, the qualities that no examination has ever measured and no degree has ever certified.

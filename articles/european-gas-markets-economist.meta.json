@@ -1,12 +1,18 @@
 {
   "slug": "european-gas-markets-economist",
-  "title": "European Gas Markets Economist",
-  "subtitle": "",
-  "date": "",
+  "title": "Europe's Gas Gamble",
+  "subtitle": "The continent thought it had solved its energy crisis. The Strait of Hormuz closure proved it had merely postponed it.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "energy",
+  "style": "economist",
+  "tags": [
+    "natural-gas",
+    "ttf",
+    "lng",
+    "europe",
+    "energy-security"
+  ],
   "component": "EuropeanGasArticle",
   "url": "articles/european-gas-markets-economist.html",
   "pdf_url": "articles/european-gas-markets-economist.pdf"

@@ -1,5 +1,22 @@
-import { useState } from "react";
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area, Cell, ComposedChart, PieChart, Pie } from "recharts";
+/* --- YAML frontmatter --- */
+/*
+title: "The Crude Market in Full"
+subtitle: "A technical reference on fundamentals, benchmarks, derivatives, and physical trading mechanics — assembled for a crude analyst interview in the week the Strait of Hormuz remained closed."
+category: "energy"
+style: "encyclopaedic"
+date: "2026-04-19"
+tags: [crude-oil, brent, commodities, trading, benchmarks]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Crude Market in Full",
+  subtitle: "A technical reference on fundamentals, benchmarks, derivatives, and physical trading mechanics — assembled for a crude analyst interview in the week the Strait of Hormuz remained closed.",
+  category: "energy",
+  style: "encyclopaedic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["crude-oil", "brent", "commodities", "trading", "benchmarks"],
+};
 
 const C = {
   yellow: "#FFCE00", black: "#1a1a1a", offWhite: "#FAF8F5", cream: "#F2EDE4",
@@ -84,7 +101,7 @@ const crackSpreads = [
 
 // ─── COMPONENTS ──────────────────────────────────────────────────────
 
-const DropCap = ({ children }) => {
+const DC = ({ children }) => {
   // children here is a plain string (no inline JSX in the drop-cap paragraph)
   const text = typeof children === "string" ? children : String(children);
   const first = text.charAt(0);
@@ -100,7 +117,7 @@ const SceneBreak = () => <div style={{ textAlign: "center", margin: "48px 0", fo
 const PullQuote = ({ children }) => (
   <blockquote style={{ fontFamily: F.headline, fontStyle: "italic", fontSize: "24px", lineHeight: 1.4, color: C.black, borderLeft: `3px solid ${C.yellow}`, paddingLeft: "24px", margin: "40px 0" }}>{children}</blockquote>
 );
-const Sidebar = ({ title, children }) => (
+const SB = ({ title, children }) => (
   <div style={{ background: C.sidebarBg, border: `1px solid ${C.borderLight}`, padding: "28px 32px", margin: "36px 0", borderRadius: "2px" }}>
     <div style={{ fontFamily: F.sans, fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: C.darkGray, marginBottom: "6px", paddingBottom: "8px", borderBottom: `2px solid ${C.yellow}`, display: "inline-block" }}>{title}</div>
     <div style={{ fontFamily: F.sans, fontSize: "15px", lineHeight: 1.65, color: C.darkGray, marginTop: "14px" }}>{children}</div>
@@ -150,7 +167,7 @@ export default function CrudeMarketsBriefing() {
 
       <div style={{ maxWidth: "720px", margin: "0 auto", padding: "48px 24px 80px" }}>
 
-        <DropCap>{"On 2 April 2026, front-month ICE Brent settled at $127.83 per barrel — the highest outright print since the 2022 post-invasion spike. Dated Brent, the physical benchmark, touched an unprecedented $144.42 the same week, producing a $35 premium over the paper futures contract. The market was not in a single state; it was in two states simultaneously. The prompt physical market was starved of Middle Eastern cargoes after the 28 February closure of the Strait of Hormuz. The deferred paper market was pricing the eventual return of those barrels and the structural oversupply that had dominated the 2025 forecasts. The Dec-26 to Dec-27 Brent spread — the cleanest read on underlying market tension — had blown out to roughly $22. The 1-to-12-month spread was $35. The EIA assessed March crude production shut-ins at 7.5 million b/d, rising to a projected peak of 9.1 million b/d in April. The IEA released 400 million barrels of strategic stocks on 11 March in the largest coordinated draw in its history."}</DropCap>
+        <DC>{"On 2 April 2026, front-month ICE Brent settled at $127.83 per barrel — the highest outright print since the 2022 post-invasion spike. Dated Brent, the physical benchmark, touched an unprecedented $144.42 the same week, producing a $35 premium over the paper futures contract. The market was not in a single state; it was in two states simultaneously. The prompt physical market was starved of Middle Eastern cargoes after the 28 February closure of the Strait of Hormuz. The deferred paper market was pricing the eventual return of those barrels and the structural oversupply that had dominated the 2025 forecasts. The Dec-26 to Dec-27 Brent spread — the cleanest read on underlying market tension — had blown out to roughly $22. The 1-to-12-month spread was $35. The EIA assessed March crude production shut-ins at 7.5 million b/d, rising to a projected peak of 9.1 million b/d in April. The IEA released 400 million barrels of strategic stocks on 11 March in the largest coordinated draw in its history."}</DC>
 
         <P>This is the world a crude analyst walks into in April 2026: a market whose short-term pricing is dominated by a geopolitical supply shock, whose medium-term fundamentals still point to oversupply, whose benchmarks are themselves in flux, and whose physical and paper markets have temporarily decoupled. The purpose of this briefing is to provide a technically rigorous, source-anchored reference across every dimension of that market: the fundamental balance, the benchmark architecture, the derivatives complex, the physical trading mechanics, and the inventory and positioning data that connect them. Nothing here is speculation; every figure is traceable to IEA, EIA, OPEC, Platts, CFTC, Kpler, or the underlying exchange data.</P>
 
@@ -190,9 +207,9 @@ export default function CrudeMarketsBriefing() {
           The record $35 spread between Dated Brent and Brent futures in early April 2026 reflects the bifurcation of physical and paper markets. Urals trades at a ~$15 discount to Brent — tighter than the 2022–23 panic discount of $30+, but wider than the pre-sanctions norm of $1–3.
         </ChartCaption>
 
-        <Sidebar title="The Dated Brent MOC process">
+        <SB title="The Dated Brent MOC process">
           Dated Brent is assessed through the Platts Market-on-Close (MOC) window, a structured half-hour assessment period (currently 16:00–16:30 London time) in which market participants submit bids, offers, and trade reports on specific cargoes with 10–25 day forward loading dates. Platts editors observe the window and assess a single price based on the most recent concluded activity. The methodology requires minimum volumes (typically 600,000 barrel cargoes), specific loading windows, and approved terminal provenance. Participants can submit <em>Cash BFOE</em> for forward-month cargoes or <em>Dated Brent</em> for loading within the physical window. The mechanism is adversarial by design: bids and offers are publicly visible and must be converted to firm commitments. This creates the physical price that becomes the settlement reference for an estimated $100+ billion per day of financial instruments linked to Brent.
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -225,9 +242,9 @@ export default function CrudeMarketsBriefing() {
           The pre-war curve showed mild M1–M3 backwardation flattening to contango from 2028. The post-Hormuz curve is steeply backwardated through 2027, pricing a temporary shock that subsides by the long end. The shape of the curve — not its level — is the signal.
         </ChartCaption>
 
-        <Sidebar title="Time spreads, calendar spreads, and options">
+        <SB title="Time spreads, calendar spreads, and options">
           <em>Time spreads</em> or <em>calendar spreads</em> are the differences between contract months — e.g., the Jun-26/Dec-26 Brent spread. They trade as a single instrument on ICE and CME and isolate exposure to curve shape rather than outright price. The <em>Dec-Dec</em> spread (e.g., Dec-26/Dec-27) is a standard gauge of annual structure. <em>Prompt spreads</em> (M1/M2, M1/M3) respond fastest to physical market tension. <em>Calendar Spread Options (CSOs)</em> allow hedging of curve shape changes — useful for storage operators, refinery turnaround managers, and any trader whose P&L is directly exposed to the slope of the curve. <em>CFDs (Contracts for Differences)</em> on Dated Brent vs Cash Brent are the primary mechanism by which physical traders manage the spread between the two benchmarks during the 10-business-day MOC window.
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -260,9 +277,9 @@ export default function CrudeMarketsBriefing() {
           Non-OPEC+ growth (Brazil, Guyana, Argentina, Canada) provides the structural supply story; US shale is flat-to-down; OPEC+ additions depend entirely on whether the announced unwind is actually delivered once Hormuz reopens.
         </ChartCaption>
 
-        <Sidebar title="The three tiers of Russian and sanctioned supply">
+        <SB title="The three tiers of Russian and sanctioned supply">
           Russian crude exports continue at approximately 4.5 mb/d, of which roughly 3.3 mb/d is seaborne and the balance flows via pipeline. The G7+ price cap was lowered from $60/b to $47.60/b on 3 September 2025; Urals in November 2025 averaged $55/b, still above the cap. The cap is enforced by blocking access to Western shipping insurance for cargoes priced above it. Russia has circumvented this by building a "shadow fleet" of older tankers operating outside Western insurance. As of November 2025, sanctioned shadow tankers carried 65% of Russian crude exports, G7+ tankers 27%, and non-sanctioned shadow tankers 7%. The Urals-Brent discount, which exceeded $30/b in 2022–23, has narrowed to $6–15/b depending on enforcement intensity. China takes 47% of Russian crude exports, India 38%; the EU receives only 6%, entirely via the Druzhba pipeline exemptions for Hungary and Slovakia. Iran and Venezuela together produce approximately 5.6 mb/d; Venezuela's exports have been constrained since December 2025 by a US naval blockade, forcing expanded floating storage.
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -325,9 +342,9 @@ export default function CrudeMarketsBriefing() {
           Chinese strategic stocks and sanctioned floating storage absorbed most of 2025's 1.9 mb/d surplus. The March 2026 drop in non-Middle East stocks reflects the Hormuz closure forcing consumers to draw inventory rather than receive cargoes.
         </ChartCaption>
 
-        <Sidebar title="Cushing: the paper-physical nexus">
+        <SB title="Cushing: the paper-physical nexus">
           Cushing, Oklahoma — an inland hub with roughly 90 million barrels of commercial storage capacity — is the NYMEX WTI physical delivery point. Its stock level is the single most-watched inventory datapoint in US markets. When Cushing fills toward "tank tops" (typically around 80 million barrels of working capacity), the WTI front-month collapses into local contango as storage-economics traders sell spot and buy deferred. When Cushing drains toward operational minimums (roughly 20 million barrels), the opposite occurs and WTI front spreads blow out. As of Q1 2026, Cushing stocks have been running below the five-year average — one reason WTI has held relative strength versus Brent even during the Hormuz-driven Brent rally. The weekly EIA crude stock report (released Wednesdays at 10:30 ET) is the most immediately market-moving scheduled release in the US session.
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -405,9 +422,9 @@ export default function CrudeMarketsBriefing() {
 
         <P><em>Pricing windows and the "pricing story"</em>: a typical term contract for, say, Forties crude loading 15–20 May 2026 might be priced at "Dated Brent averaged over the five days around B/L plus $0.40." If the trader buys physical and hedges with prompt Brent futures, they remain exposed to the <em>Dated-to-Frontline</em> (or "DFL") spread — the gap between Dated Brent and the relevant Brent futures. DFLs are the primary instrument by which physical Brent traders hedge the time gap between physical and paper.</P>
 
-        <Sidebar title="Refinery OSPs and the pricing calendar">
+        <SB title="Refinery OSPs and the pricing calendar">
           The first week of each month is the refinery OSP calendar. Saudi Aramco is the pacesetter; its Asian OSP (published around the 5th of each month for the following month's loading) directly sets Gulf producer differentials. ADNOC, Kuwait Petroleum Corp (KPC), QatarEnergy, and Iraq's SOMO follow within days, typically echoing Aramco's direction. For April 2026 loadings — announced in early March before the war — Aramco had cut Asian Arab Light OSPs to signal a push for market share. That pricing became immediately irrelevant when Hormuz closed. OSP decisions reveal OPEC's strategic intent in a way that production announcements often obscure: cuts-with-OSP-increases signal price defence; maintenance-with-OSP-cuts signals market-share defence.
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 

@@ -1,10 +1,22 @@
+/* --- YAML frontmatter --- */
+/*
+title: "Too Much of a Good Thing"
+subtitle: "For decades, psychiatry understood emotional suffering as a problem of too little control. A new therapy built on twenty-five years of clinical research is rewriting that assumption — and targeting a hidden epidemic of people who suffer not because they can't hold themselves together, but because they hold themselves together far too well."
+category: "neuroscience"
+style: "natgeo-sciam-hybrid"
+date: "2026-04-19"
+tags: [ro-dbt, overcontrol, clinical-psychology, dbt, lynch]
+*/
 
-import { useState } from "react";
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, LineChart, Line, Legend, ReferenceLine,
-  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis
-} from "recharts";
+const ARTICLE_DATA = {
+  title: "Too Much of a Good Thing",
+  subtitle: "For decades, psychiatry understood emotional suffering as a problem of too little control. A new therapy built on twenty-five years of clinical research is rewriting that assumption — and targeting a hidden epidemic of people who suffer not because they can't hold themselves together, but because they hold themselves together far too well.",
+  category: "neuroscience",
+  style: "natgeo-sciam-hybrid",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["ro-dbt", "overcontrol", "clinical-psychology", "dbt", "lynch"],
+};
 
 // ─── DESIGN TOKENS ───────────────────────────────────────────────────────────
 const C = {
@@ -129,21 +141,21 @@ const DBTComparison = () => {
 };
 
 // ─── HELPER COMPONENTS ────────────────────────────────────────────────────────
-const DropCap = ({ letter, rest }) => (
+const DC = ({ letter, rest }) => (
   <p style={{ fontFamily: "'Source Serif 4', serif", fontSize: 20, lineHeight: 1.75, color: C.black, marginBottom: "1.5em", marginTop: 0 }}>
     <span style={{ float: "left", fontSize: 72, lineHeight: 0.82, fontFamily: "'Playfair Display', serif", fontWeight: 900, marginRight: 8, marginTop: 6, color: C.black }}>{letter}</span>
     {rest}
   </p>
 );
 
-const Sidebar = ({ title, children }) => (
+const SB = ({ title, children }) => (
   <div style={{ background: C.sidebarBg, border: `1px solid ${C.borderLight}`, borderRadius: 2, padding: "28px 28px 24px", margin: "36px 0", clear: "both" }}>
     <div style={{ fontFamily: "'Source Sans 3', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: C.black, borderBottom: `2px solid ${C.natgeoYellow}`, paddingBottom: 6, marginBottom: 14 }}>{title}</div>
     <div style={{ fontFamily: "'Source Sans 3', sans-serif", fontSize: 15, lineHeight: 1.7, color: C.darkGray }}>{children}</div>
   </div>
 );
 
-const ImgCaption = ({ label, text }) => (
+const Cap = ({ label, text }) => (
   <div style={{ marginTop: 10, marginBottom: 32 }}>
     <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: C.accent, marginRight: 8 }}>{label}</span>
     <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontSize: 13, color: "#6B6560", lineHeight: 1.5 }}>{text}</span>
@@ -193,7 +205,7 @@ export default function RadicallyOpenDBT() {
       {/* Yellow Border Strip */}
       <div style={{ height: 4, background: C.natgeoYellow, width: "100%" }} />
 
-      {/* Hero Section */}
+      {/* Hero Sec */}
       <div style={{
         minHeight: "88vh", position: "relative", display: "flex", flexDirection: "column",
         justifyContent: "flex-end",
@@ -245,7 +257,7 @@ export default function RadicallyOpenDBT() {
       {/* Article Body */}
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "64px 32px 80px" }}>
 
-        <DropCap
+        <DC
           letter="T"
           rest="he patient, by every visible measure, was doing everything right. She kept her appointments. She completed her homework. She never missed a session, never raised her voice, never cried in the room. Her self-monitoring diaries were meticulous — sometimes filling three pages where one was asked for. She had held the same demanding job for nine years. She exercised every morning at six. She was, in the vocabulary of clinical psychology, highly compliant."
         />
@@ -269,7 +281,7 @@ export default function RadicallyOpenDBT() {
             onError={e => { e.target.style.display = 'none'; }}
           />
         </div>
-        <ImgCaption label="◆ Establishing" text="A group skills training class — a core component of RO-DBT's dual-format structure. The RefraMED trial delivered 27 group skills classes alongside 29 individual sessions over six months. For overcontrolled patients, the group setting is not incidental but mechanistically central: it provides repeated practice in the social signalling behaviours the treatment targets." />
+        <Cap label="◆ Establishing" text="A group skills training class — a core component of RO-DBT's dual-format structure. The RefraMED trial delivered 27 group skills classes alongside 29 individual sessions over six months. For overcontrolled patients, the group setting is not incidental but mechanistically central: it provides repeated practice in the social signalling behaviours the treatment targets." />
 
         <SceneBreak />
 
@@ -282,13 +294,13 @@ export default function RadicallyOpenDBT() {
         <OCvsUCRadar />
         <DiagramCaption title="Overcontrol vs. Undercontrol: Phenotypic Profile">Schematic radar comparison of the trait profiles associated with undercontrol (the primary target of standard DBT) and overcontrol (the primary target of RO-DBT). The two profiles are approximate mirror images across several dimensions. Overcontrolled individuals score high on self-control, detail focus, and risk aversion while scoring low on emotional expression, cognitive flexibility, and social openness. Standard psychiatric assessment tools are designed primarily to detect undercontrol — a gap that Lynch argues contributes to systematic misdiagnosis and failed treatment of overcontrolled presentations. Source: Adapted from Lynch (2018); Lynch et al. (2015).</DiagramCaption>
 
-        <Sidebar title="The Neurobiosocial Theory: Three Pathways to Overcontrol">
+        <SB title="The Neurobiosocial Theory: Three Pathways to Overcontrol">
           <p style={{ marginBottom: 10 }}>Lynch's neurobiosocial model identifies three interlocking factors that produce maladaptive overcontrol:</p>
           <p style={{ marginBottom: 10 }}><strong>1. Biotemperamental predisposition.</strong> Heightened threat sensitivity — mediated by the body's threat-detection systems, including elevated activity in threat-processing neural circuits — produces a constitutional tendency to perceive ambiguous social cues as dangerous, to scan environments for potential failure, and to inhibit spontaneous behaviour in the presence of uncertainty. Diminished reward sensitivity means positive social feedback registers less intensely, making the reinforcement value of social connection feel weaker than the risk.</p>
           <p style={{ marginBottom: 10 }}><strong>2. Socially learned inhibition.</strong> Environments that reward performance and punish emotional display — high-achieving family systems, certain cultural contexts, competitive professional environments — teach overcontrolled individuals that emotional expression is a liability. The child who cries and is told not to, or whose vulnerability is met with discomfort rather than care, learns to seal the signal. Over years, this becomes automatic — the facial expression flattens at a pre-attentive level, before conscious awareness can intervene.</p>
           <p><strong>3. Self-control coping.</strong> The more overcontrolled individuals apply self-control to social situations — rehearsing interactions, scripting emotional responses, monitoring facial expressions during conversations — the more they withdraw from the spontaneity that makes connection feel real to other people. The very competence that keeps their internal world orderly becomes the barrier to the intimacy their nervous system simultaneously craves and fears.</p>
           <p style={{ marginTop: 10, fontSize: 13, color: C.warmGray }}>Source: Lynch, T.R. (2018). <em>Radically Open Dialectical Behavior Therapy</em>, pp. 41–89. New Harbinger. NCBI Bookshelf: NBK535119.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -303,7 +315,7 @@ export default function RadicallyOpenDBT() {
 
         <Para>The trial authors interpret the attenuating effect with care. "RO-DBT does not label depression as the primary problem," the <em>British Journal of Psychiatry</em> paper notes. "Instead it targets emotional overcontrol — a maladaptive personality style known to predict the development of chronic internalising disorders such as refractory depression." Personality change, the argument runs, operates on a longer timescale than the 18-month window of most clinical trials. A treatment that targets characterological rigidity should not be expected to show its full effect within a year of completion. The authors call for longer follow-up periods in future research — a methodologically sound request that is also, inevitably, an expensive one.</Para>
 
-        <Sidebar title="The Five Behavioural Themes of Overcontrol">
+        <SB title="The Five Behavioural Themes of Overcontrol">
           <p style={{ marginBottom: 10 }}>RO-DBT organises its clinical assessment around five behavioural themes that characterise maladaptive overcontrol. These are not diagnostic criteria but clinical anchors — patterns the therapist and client collaboratively identify as the mechanisms maintaining the patient's isolation:</p>
           <p style={{ marginBottom: 8 }}><strong>1. Hyper detail-focused and overly cautious behaviour</strong> — intense attention to potential errors, prolonged preparation before action, difficulty tolerating uncertainty.</p>
           <p style={{ marginBottom: 8 }}><strong>2. Rigid and rule-governed behaviour</strong> — strong adherence to internal standards, discomfort with unexpected changes, difficulty abandoning ineffective strategies when circumstances change.</p>
@@ -311,7 +323,7 @@ export default function RadicallyOpenDBT() {
           <p style={{ marginBottom: 8 }}><strong>4. Distant and aloof social connectedness</strong> — avoidance of vulnerability in relationships; the experience of closeness as threatening rather than rewarding.</p>
           <p><strong>5. Bitterness and envy</strong> — chronic social comparison, a sense that others navigate the world with an ease that feels inaccessible; feelings that are rarely expressed but significantly influence relational behaviour.</p>
           <p style={{ marginTop: 10, fontSize: 13, color: C.warmGray }}>Source: Lynch et al. (2015). <em>American Journal of Psychotherapy</em>, 69(2), 141–162; PMC6955577.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -357,7 +369,7 @@ export default function RadicallyOpenDBT() {
             </svg>
           </div>
         </div>
-        <ImgCaption label="◆ Data" text="Schematic of suppressed social signalling — the neurobiological target of RO-DBT. Overcontrolled individuals do not lack emotional experience; they lack the micro-expressive signals — eyebrow movements, vocal prosody, postural openness — that communicate that experience to others. The treatment targets this gap directly through structured social signalling practice." />
+        <Cap label="◆ Data" text="Schematic of suppressed social signalling — the neurobiological target of RO-DBT. Overcontrolled individuals do not lack emotional experience; they lack the micro-expressive signals — eyebrow movements, vocal prosody, postural openness — that communicate that experience to others. The treatment targets this gap directly through structured social signalling practice." />
 
         <SceneBreak />
 

@@ -1,4 +1,22 @@
-import { useState } from "react";
+/* --- YAML frontmatter --- */
+/*
+title: "The Cavalier That Broke an Empire"
+subtitle: "For thirty-one days in 1565, the raised gun platform at the heart of Fort St Elmo held back the most powerful armada Islam had ever sent westward — and changed the course of Mediterranean history forever."
+category: "history"
+style: "natgeo-classic"
+date: "2026-04-19"
+tags: [malta, fort-st-elmo, knights-of-st-john, ottoman, siege]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Cavalier That Broke an Empire",
+  subtitle: "For thirty-one days in 1565, the raised gun platform at the heart of Fort St Elmo held back the most powerful armada Islam had ever sent westward — and changed the course of Mediterranean history forever.",
+  category: "history",
+  style: "natgeo-classic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["malta", "fort-st-elmo", "knights-of-st-john", "ottoman", "siege"],
+};
 
 const YELLOW = "#FFCC00";
 const RUST = "#c0472a";
@@ -130,7 +148,7 @@ const S = {
     fontWeight: 300,
     lineHeight: 1.5,
   },
-  // Section head
+  // Sec head
   sectionHead: {
     margin: "60px 0 24px",
     paddingTop: 18,
@@ -218,7 +236,7 @@ const S = {
     fontWeight: 300,
   },
   diagramBody: { padding: "24px", background: "#fff" },
-  // Sidebar
+  // SB
   sidebar: {
     float: "right",
     width: 270,
@@ -531,7 +549,7 @@ function FortPlan() {
   );
 }
 
-// ── Cross-Section SVG ──────────────────────────────────────────────────────
+// ── Cross-Sec SVG ──────────────────────────────────────────────────────
 function CrossSection() {
   return (
     <svg viewBox="0 0 720 360" style={{ width: "100%", height: "auto", fontFamily: "Arial, sans-serif" }}>
@@ -824,7 +842,7 @@ export default function App() {
         {/* SECTION: ARCHITECTURE */}
         <SectionHead eyebrow="Architecture" title="The Anatomy of the Cavalier" />
 
-        <DiagramWrap badge="Cross-Section" title="The Cavalier — Section Through the Gun Platform">
+        <DiagramWrap badge="Cross-Sec" title="The Cavalier — Sec Through the Gun Platform">
           <CrossSection />
         </DiagramWrap>
 

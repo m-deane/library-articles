@@ -1,5 +1,22 @@
-import { useState } from "react";
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area, Cell } from "recharts";
+/* --- YAML frontmatter --- */
+/*
+title: "Europe's Gas Gamble"
+subtitle: "The continent thought it had solved its energy crisis. The Strait of Hormuz closure proved it had merely postponed it."
+category: "energy"
+style: "economist"
+date: "2026-04-19"
+tags: [natural-gas, ttf, lng, europe, energy-security]
+*/
+
+const ARTICLE_DATA = {
+  title: "Europe's Gas Gamble",
+  subtitle: "The continent thought it had solved its energy crisis. The Strait of Hormuz closure proved it had merely postponed it.",
+  category: "energy",
+  style: "economist",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["natural-gas", "ttf", "lng", "europe", "energy-security"],
+};
 
 // ─── DESIGN TOKENS (Economist mode) ─────────────────────────────────
 const COLORS = {
@@ -86,7 +103,7 @@ const supplyColors = [COLORS.chartNavy, COLORS.chartBlue, COLORS.chartRed, COLOR
 
 // ─── HELPER COMPONENTS ───────────────────────────────────────────────
 
-const Sidebar = ({ title, children }) => (
+const SB = ({ title, children }) => (
   <div style={{
     background: COLORS.sidebarBg,
     border: `1px solid ${COLORS.borderLight}`,
@@ -289,9 +306,9 @@ export default function EuropeanGasArticle() {
 
         <P>The structural shift left Europe dependent on a commodity that travels by sea — and therefore on the chokepoints through which those ships must pass. This was, for a time, an acceptable trade-off. The anticipated wave of new LNG export capacity was the largest in history. The IEA estimated that roughly 345 bcm per year of new liquefaction capacity would come online between 2025 and 2030, with the United States and Qatar together accounting for 70% of additions. Goldman Sachs forecast that TTF prices would fall to €20/MWh by 2027 and potentially as low as €12/MWh by 2028–29. The supply glut, it was assumed, would ease all pressures.</P>
 
-        <Sidebar title="The coming LNG wave">
+        <SB title="The coming LNG wave">
           The scale of new capacity is staggering. In the United States, Plaquemines LNG shipped 16.4m tonnes in its first full year. Golden Pass, a joint venture between ExxonMobil and QatarEnergy, is ramping up. In total, roughly 96m tonnes per year of new American capacity is expected to be operational by the end of the decade. Qatar planned to raise its output from 77m to 142m tonnes per year by 2030 through its North Field East, South, and West expansions. Canada's first large-scale LNG project began exports in 2025. The Oxford Institute for Energy Studies estimated that global capacity would jump by 113 bcm in 2026–27 alone — rising from 593 to 707 bcm. However, with Qatar's Ras Laffan damaged and force majeure declared, a significant portion of that expected supply is now delayed by years.
-        </Sidebar>
+        </SB>
 
         <P>Then came the war. On 28 February 2026, the United States and Israel launched strikes against Iran. Tehran retaliated by closing the Strait of Hormuz — the passage through which 20% of global LNG and 25% of seaborne oil normally flows. QatarEnergy declared force majeure after its Ras Laffan facility, the world's largest LNG plant, sustained missile damage. The company warned that full restoration could take up to five years. No LNG cargo has transited the strait in over a month.</P>
 
@@ -385,9 +402,9 @@ export default function EuropeanGasArticle() {
           The largest capacity wave in LNG history was expected to peak at roughly 95 bcm/yr of additions in 2028. Damage to Qatar's Ras Laffan facility and the broader Hormuz disruption now threaten to delay or reduce a significant portion of planned supply.
         </ChartCaption>
 
-        <Sidebar title="What should Europe do?">
+        <SB title="What should Europe do?">
           Three priorities stand out. First, accelerate demand reduction — not just in power, where renewables are already substituting, but in buildings and industry, where progress has stalled. The Commission's target of replacing 100 bcm of gas by 2030 through efficiency and renewables is achievable, but requires faster permitting, larger heat-pump deployment, and credible industrial-decarbonisation support. Second, diversify supply routes and contract structures. Europe needs long-term LNG purchase agreements that reduce spot-market exposure — the very flexibility that was celebrated as a feature of the LNG market is now its greatest vulnerability. Third, invest in strategic gas storage as a genuine security buffer, not merely a winter-management tool. The current 90% target is meaningless if it cannot be met when global supply tightens. A dedicated strategic reserve, funded collectively and held separately from commercial stocks, would provide resilience that market mechanisms alone cannot.
-        </Sidebar>
+        </SB>
 
         <P>The EU's target of ending all Russian fossil fuel imports by 2027 remains nominally in place. The roadmap published in May 2025 called for halting pipeline and LNG imports from Russia by November 2027. Member states were required to present national diversification plans by March 2026. This timeline now looks both more urgent and more difficult. More urgent, because continued dependence on any single source or transit route has been shown, twice in four years, to carry catastrophic risks. More difficult, because the global LNG market on which Europe depends is now tighter, more contested, and more geopolitically fraught than at any point since the modern gas trade began.</P>
 

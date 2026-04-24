@@ -1,12 +1,18 @@
 {
   "slug": "reverse-osmosis-desalination",
-  "title": "Reverse Osmosis Desalination",
-  "subtitle": "",
-  "date": "",
+  "title": "The Membrane at the Edge of Thirst",
+  "subtitle": "Reverse osmosis was supposed to solve humanity's water crisis. It has come closer than any technology in history \u2014 and in doing so, has created crises of its own.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "science-nature",
+  "style": "natgeo-classic",
+  "tags": [
+    "desalination",
+    "reverse-osmosis",
+    "water",
+    "membranes",
+    "brine"
+  ],
   "component": "ReverseOsmosisFeature",
   "url": "articles/reverse-osmosis-desalination.html",
   "pdf_url": "articles/reverse-osmosis-desalination.pdf"

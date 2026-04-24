@@ -1,12 +1,18 @@
 {
   "slug": "the-doers-and-the-knowers",
-  "title": "The Doers And The Knowers",
-  "subtitle": "",
-  "date": "",
+  "title": "The Doers and the Knowers",
+  "subtitle": "Knowledge has been commoditised. What remains scarce is the willingness to act on it. The economy is inverting its oldest hierarchy \u2014 and nobody has told the universities.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "economics",
+  "style": "economist",
+  "tags": [
+    "ai",
+    "labour",
+    "education",
+    "knowledge-economy",
+    "automation"
+  ],
   "component": "DoersAndKnowers",
   "url": "articles/the-doers-and-the-knowers.html",
   "pdf_url": "articles/the-doers-and-the-knowers.pdf"

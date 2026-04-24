@@ -1,12 +1,18 @@
 {
   "slug": "malta-aqueduct",
-  "title": "Malta Aqueduct",
-  "subtitle": "",
-  "date": "",
+  "title": "The City That Water Built",
+  "subtitle": "For four hundred years, a limestone aqueduct carried the only thing that made Valletta possible. The water has stopped flowing. The crisis has not.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "history",
+  "style": "natgeo-classic",
+  "tags": [
+    "malta",
+    "aqueduct",
+    "wignacourt",
+    "water",
+    "valletta"
+  ],
   "component": "MaltaAqueduct",
   "url": "articles/malta-aqueduct.html",
   "pdf_url": "articles/malta-aqueduct.pdf"

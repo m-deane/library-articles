@@ -1,12 +1,18 @@
 {
   "slug": "fair-value-modelling-european-energy",
-  "title": "Fair Value Modelling European Energy",
-  "subtitle": "",
-  "date": "",
+  "title": "The Price of Knowing",
+  "subtitle": "Fair-value modelling in European energy markets \u2014 convenience yields, stochastic curves, and the algorithmic machinery that now sets the price of a marginal molecule.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "energy",
+  "style": "economist",
+  "tags": [
+    "fair-value",
+    "convenience-yield",
+    "european-energy",
+    "quant",
+    "modelling"
+  ],
   "component": "EconomistArticle",
   "url": "articles/fair-value-modelling-european-energy.html",
   "pdf_url": "articles/fair-value-modelling-european-energy.pdf"

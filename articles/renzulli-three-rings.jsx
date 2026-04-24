@@ -1,10 +1,22 @@
+/* --- YAML frontmatter --- */
+/*
+title: "Beyond the Number"
+subtitle: "For most of the twentieth century, a single number determined which children the educational system recognised as gifted. A Connecticut psychologist spent his career arguing that this was not only wrong, but that what it missed was precisely the thing that mattered most."
+category: "neuroscience"
+style: "natgeo-classic"
+date: "2026-04-19"
+tags: [gifted-education, renzulli, three-rings, talent-development, enrichment]
+*/
 
-import { useState } from "react";
-import {
-  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
-  ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, Legend, ScatterChart, Scatter, ZAxis, Cell
-} from "recharts";
+const ARTICLE_DATA = {
+  title: "Beyond the Number",
+  subtitle: "For most of the twentieth century, a single number determined which children the educational system recognised as gifted. A Connecticut psychologist spent his career arguing that this was not only wrong, but that what it missed was precisely the thing that mattered most.",
+  category: "neuroscience",
+  style: "natgeo-classic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["gifted-education", "renzulli", "three-rings", "talent-development", "enrichment"],
+};
 
 const C = {
   natgeoYellow: "#FFCE00",
@@ -134,19 +146,19 @@ const GiftednessTypes = () => {
 };
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
-const DropCap = ({ letter, rest }) => (
+const DC = ({ letter, rest }) => (
   <p style={{ fontFamily: "'Source Serif 4',serif", fontSize: 20, lineHeight: 1.75, color: C.black, marginBottom: "1.5em", marginTop: 0 }}>
     <span style={{ float: "left", fontSize: 72, lineHeight: 0.82, fontFamily: "'Playfair Display',serif", fontWeight: 900, marginRight: 8, marginTop: 6, color: C.black }}>{letter}</span>
     {rest}
   </p>
 );
-const Sidebar = ({ title, children }) => (
+const SB = ({ title, children }) => (
   <div style={{ background: C.sidebarBg, border: `1px solid ${C.borderLight}`, borderRadius: 2, padding: "28px 28px 24px", margin: "36px 0", clear: "both" }}>
     <div style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: C.black, borderBottom: `2px solid ${C.natgeoYellow}`, paddingBottom: 6, marginBottom: 14 }}>{title}</div>
     <div style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 15, lineHeight: 1.7, color: C.darkGray }}>{children}</div>
   </div>
 );
-const ImgCaption = ({ label, text }) => (
+const Cap = ({ label, text }) => (
   <div style={{ marginTop: 10, marginBottom: 32 }}>
     <span style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: C.accent, marginRight: 8 }}>{label}</span>
     <span style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 13, color: "#6B6560", lineHeight: 1.5 }}>{text}</span>
@@ -225,7 +237,7 @@ export default function RenzulliThreeRings() {
       {/* Body */}
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "64px 32px 80px" }}>
 
-        <DropCap letter="I" rest="n 1904, the French psychologist Alfred Binet was asked by the Paris school system to develop a test that could identify children who were unlikely to succeed in ordinary classrooms. What Binet produced — a battery of tasks measuring attention, memory, and reasoning — became, in the hands of the American psychologists who adapted it over the following decades, something he had explicitly warned against: a fixed, heritable measure of intelligence, expressed as a quotient, used to rank human beings on a single scale." />
+        <DC letter="I" rest="n 1904, the French psychologist Alfred Binet was asked by the Paris school system to develop a test that could identify children who were unlikely to succeed in ordinary classrooms. What Binet produced — a battery of tasks measuring attention, memory, and reasoning — became, in the hands of the American psychologists who adapted it over the following decades, something he had explicitly warned against: a fixed, heritable measure of intelligence, expressed as a quotient, used to rank human beings on a single scale." />
 
         <Para>Lewis Terman at Stanford revised Binet's instrument into the Stanford-Binet Intelligence Scale and used it to study the development of highly intelligent children in his landmark Genetic Studies of Genius project. Terman tracked 1,528 children with IQs of 140 or above across their lifetimes, and his findings shaped the dominant assumption of twentieth-century gifted education: that exceptional ability was a stable, identifiable trait measurable by standardised test, and that the task of schools was to locate the children who possessed it and provide them with advanced instruction.</Para>
 
@@ -240,7 +252,7 @@ export default function RenzulliThreeRings() {
             style={{ width: "100%", borderRadius: 2, maxHeight: 400, objectFit: "cover" }}
             onError={e => { e.target.style.display = 'none'; }} />
         </div>
-        <ImgCaption label="◆ Establishing" text="Students in deep engagement with a complex problem. Renzulli's Three-Ring model specifically targets what he calls 'creative-productive giftedness' — the behavioural profile of students who bring above-average ability, creative thinking, and sustained task commitment to real problems. His Schoolwide Enrichment Model, implemented in over 4,000 US schools, operationalises this by identifying a talent pool of 15–20% of students rather than the 2–5% captured by IQ threshold approaches." />
+        <Cap label="◆ Establishing" text="Students in deep engagement with a complex problem. Renzulli's Three-Ring model specifically targets what he calls 'creative-productive giftedness' — the behavioural profile of students who bring above-average ability, creative thinking, and sustained task commitment to real problems. His Schoolwide Enrichment Model, implemented in over 4,000 US schools, operationalises this by identifying a talent pool of 15–20% of students rather than the 2–5% captured by IQ threshold approaches." />
 
         <SceneBreak />
 
@@ -255,13 +267,13 @@ export default function RenzulliThreeRings() {
         <ThreeRingVenn />
         <DiagramCaption title="The Three-Ring Conception of Giftedness">Renzulli's model represents giftedness as the interaction of three partially overlapping clusters of traits: above-average ability (upper left), creativity (upper right), and task commitment (bottom). No single ring constitutes giftedness. The shaded central intersection — where all three overlap — represents the interaction that research on creative-productive people had consistently identified as the prerequisite for significant contribution. The model shifted identification from a fixed threshold on a single measure to the ongoing observation of behaviourally expressed gifted behaviour across multiple dimensions. Source: Renzulli (1978). <em>Phi Delta Kappan</em>, 60(3), 180–184; ERIC EJ190430.</DiagramCaption>
 
-        <Sidebar title="Schoolhouse Giftedness vs. Creative-Productive Giftedness">
+        <SB title="Schoolhouse Giftedness vs. Creative-Productive Giftedness">
           <p style={{ marginBottom: 10 }}>One of Renzulli's most analytically precise contributions was his distinction between two fundamentally different types of giftedness that educational systems persistently conflate.</p>
           <p style={{ marginBottom: 10 }}><strong>Schoolhouse giftedness</strong> — sometimes called lesson-learning giftedness — is the capacity measured by IQ tests and achievement assessments: the ability to acquire, retain, and apply information with high efficiency, to perform well under standardised testing conditions, and to master curriculum quickly. Students who exhibit schoolhouse giftedness are reliably identifiable, easy to serve in pull-out enrichment programmes, and tend to perform at the highest levels in conventional academic environments. They are, in Renzulli's terms, "good test-takers and lesson-learners."</p>
           <p style={{ marginBottom: 10 }}><strong>Creative-productive giftedness</strong> is the capacity to use and apply information to produce original, high-quality work in real domains. This is the giftedness of the scientist who makes a discovery, the composer who writes a work that endures, the entrepreneur who creates something that did not exist. It is characterised by intrinsic motivation toward problems (rather than toward grades), by high task commitment in areas of personal interest, and by the ability to generate novel approaches rather than optimise within existing frameworks. It is substantially harder to identify, because it often manifests as unconventional, disruptive, or unpredictable behaviour in structured classroom settings.</p>
           <p>The critical point: the two types overlap but are not identical. The highest achievers in school are not necessarily the most creatively productive across a lifetime, and the most creatively productive people are not always the highest academic achievers. A gifted education system that identifies only schoolhouse giftedness systematically fails to reach the second population.</p>
           <p style={{ marginTop: 10, fontSize: 13, color: C.warmGray }}>Source: Renzulli (1978, 2005, 2021); uconn.edu gifted centre; Springer 2020 chapter.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -281,12 +293,12 @@ export default function RenzulliThreeRings() {
         <GiftednessTypes />
         <DiagramCaption title="Two Kinds of Giftedness: Schoolhouse vs. Creative-Productive">Schematic radar comparison of trait profiles for schoolhouse giftedness (high IQ, test performance, lesson mastery) and creative-productive giftedness (the target of the Three-Ring model). The two profiles differ most significantly on creativity and self-direction, while overlapping substantially on memory and general cognitive ability. A system that identifies only by IQ captures the yellow profile; the Three-Ring model is designed to reach the blue profile — the one most likely to produce genuine contribution. Source: Schematic; adapted from Renzulli (1978–2021).</DiagramCaption>
 
-        <Sidebar title="The Three-Ring Model's International Reach and Contemporary Status">
+        <SB title="The Three-Ring Model's International Reach and Contemporary Status">
           <p style={{ marginBottom: 10 }}>The Schoolwide Enrichment Model has been implemented in over 4,000 schools across the United States and has been adopted, adapted, and tested internationally in Europe, Asia, South America, and Central America. Hernandez-Torrano and Saranli's 2015 cross-cultural overview in <em>Gifted Education International</em> documented SEM implementation across culturally diverse contexts, finding that the model's core principles — broadened identification, authentic task engagement, interest-based enrichment — translated well across national and linguistic contexts, though the specific enrichment activities required cultural adaptation.</p>
           <p style={{ marginBottom: 10 }}>Reis and Peters' 2021 overview in <em>Gifted Education International</em> reviewed four decades of SEM research and found generally positive results across schools with widely differing socioeconomic levels. The research base includes studies demonstrating increased academic achievement, creative productivity, and engagement in SEM schools, though the quality of individual studies varies and few meet the stringent design criteria of current evidence-based practice standards.</p>
           <p>The most active contemporary debates in Renzulli's tradition concern: (1) the intersection of giftedness with twice-exceptionality (students who are both gifted and learning disabled), where the Three-Ring model's multidimensional identification offers particular promise; (2) the integration of the model with equity frameworks that address racial and socioeconomic disparities in gifted identification at a systemic level; and (3) the application of the creative-productive giftedness framework to talent development in domains outside the traditional academic canon.</p>
           <p style={{ marginTop: 10, fontSize: 13, color: C.warmGray }}>Sources: SEM website (gifted.uconn.edu); Hernandez-Torrano &amp; Saranli (2015) <em>Gifted Education International</em> 31(3); Reis &amp; Peters (2021) <em>Gifted Education International</em>, doi 10.1177/0261429420963987.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -299,7 +311,7 @@ export default function RenzulliThreeRings() {
             onError={e => { e.target.style.display = 'none'; }}
           />
         </div>
-        <ImgCaption label="◆ Character" text="The Renzulli Center for Creativity, Gifted Education, and Talent Development, housed at the University of Connecticut's Neag School of Education. Renzulli joined UConn in the early 1970s and built it into the leading institutional home for gifted education research in the United States, directing the National Research Center on the Gifted and Talented for over three decades." />
+        <Cap label="◆ Character" text="The Renzulli Center for Creativity, Gifted Education, and Talent Development, housed at the University of Connecticut's Neag School of Education. Renzulli joined UConn in the early 1970s and built it into the leading institutional home for gifted education research in the United States, directing the National Research Center on the Gifted and Talented for over three decades." />
 
         <Para>The deeper provocation of Renzulli's model is not methodological but conceptual: it reframes the question "who is gifted?" as "when, and under what conditions, do people display gifted behaviour?" The first question implies a fixed category, a boundary, a population to be sorted. The second implies a developmental process, an interaction between a person's traits and the environment's demands, a phenomenon that emerges rather than exists. It is a small shift in framing, but its implications for practice are substantial. A system oriented around the second question does not ask which children to include in the gifted programme. It asks which conditions most reliably evoke the creative-productive engagement that Renzulli's three rings describe — and how to build those conditions into the educational experience of the broadest possible population of students.</Para>
 

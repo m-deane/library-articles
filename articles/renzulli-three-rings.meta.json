@@ -1,12 +1,18 @@
 {
   "slug": "renzulli-three-rings",
-  "title": "Renzulli Three Rings",
-  "subtitle": "",
-  "date": "",
+  "title": "Beyond the Number",
+  "subtitle": "For most of the twentieth century, a single number determined which children the educational system recognised as gifted. A Connecticut psychologist spent his career arguing that this was not only wrong, but that what it missed was precisely the thing that mattered most.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "neuroscience",
+  "style": "natgeo-classic",
+  "tags": [
+    "gifted-education",
+    "renzulli",
+    "three-rings",
+    "talent-development",
+    "enrichment"
+  ],
   "component": "RenzulliThreeRings",
   "url": "articles/renzulli-three-rings.html",
   "pdf_url": "articles/renzulli-three-rings.pdf"

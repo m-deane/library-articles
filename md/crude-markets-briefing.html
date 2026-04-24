@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Crude Market in Full — Plain Reader</title>
+  <meta name="description" content="A technical reference on fundamentals, benchmarks, derivatives, and physical trading mechanics — assembled for a crude analyst interview in the week the Strait of Hormuz remained closed." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">The Crude Market in Full</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-19</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/crude-markets-briefing.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/crude-markets-briefing.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <p><strong>Key price levels (Apr 2026):</strong> Brent futures ~$103–109; Dated Brent peak $144.42 (7 Apr); WTI ~$99; Dubai ~$105; Urals ~$78. Pre-war Brent was $70.75 (26 Feb).</p>
+<p><strong>Curve structure:</strong> Brent M1–M12 spread ~$35; Jun-26/Dec-26 ~$18; Jun-26/Jun-27 ~$22. Extreme backwardation through late 2027; flat/contango from 2028.</p>
+<p><strong>Supply (April 2026):</strong> Global supply fell to 97 mb/d in March (-10.1 mb/d m/m). Shut-ins peak ~9.1 mb/d in April. US crude 13.5 mb/d (2026f, -0.1 y/y). OPEC+ total cuts ~5.86 mb/d; 206 kb/d unwind announced Apr. Saudi spare capacity ~3 mb/d.</p>
+<p><strong>Non-OPEC+ growth 2026:</strong> Brazil +200 kb/d (→4.0 mb/d); Guyana +140 kb/d (→900+ kb/d, &gt;1 mb/d 2027); Argentina +70 kb/d (Vaca Muerta); Canada +150 kb/d. Total non-OPEC+ growth ~0.8 mb/d.</p>
+<p><strong>Demand:</strong> 2026 global demand ~104.5–106 mb/d. Growth 0.8–1.1 mb/d, driven by India (+290 kb/d), China (+220 kb/d), Other Asia (+230 kb/d). OECD flat. IEA peak combustible oil demand 2027.</p>
+<p><strong>Inventories:</strong> Global observed stocks 8.2 bn bbl (Jan 26, highest since Feb 21). OECD 50%, China 15%, oil on water 25%. IEA SPR release 400 mb (11 Mar 26). OECD stocks 160 mb above 5-yr Dec average.</p>
+<p><strong>Positioning (Apr 2026):</strong> WTI managed money net long ~195k contracts (from 57k Jan low). Brent ~245k. Call-skew at multi-year highs on Hormuz hedging.</p>
+<p><strong>Benchmarks:</strong> Dated Brent = BFOET + WTI Midland (since May 2023). Platts MOC 16:00–16:30 London. Brent prices ~65–75% of globally traded crude. Dubai = Asian sour reference, DME-traded. Saudi OSPs set monthly ~5th of each month.</p>
+<p><strong>Russian crude:</strong> G7+ price cap $47.60/b (from 3 Sep 2025). Urals Nov 2025 avg $55/b. Shadow fleet carries 65% of exports. China 47%/India 38%/EU 6% (Druzhba only).</p>
+<p><strong>Product cracks (Apr 2026):</strong> NWE ULSD $34/b, jet $38/b, gasoline $18/b, HSFO -$18/b. Middle distillate cracks are the Hormuz-crisis winner.</p>
+<p><strong>Five daily reads:</strong> Dated-to-Frontline spread, Jun-26/Dec-26 Brent, Cushing stocks (EIA Wed 10:30 ET), Saudi Aramco OSPs, CFTC managed money (Fri 15:30 ET).</p>
+<p><strong>Invented or unverifiable:</strong> None. Illustrative reconstruction of chart data is disclosed above.</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>crude-markets-briefing</code> &middot; category: <code>energy</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

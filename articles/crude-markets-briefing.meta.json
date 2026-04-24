@@ -1,12 +1,18 @@
 {
   "slug": "crude-markets-briefing",
-  "title": "Crude Markets Briefing",
-  "subtitle": "",
-  "date": "",
+  "title": "The Crude Market in Full",
+  "subtitle": "A technical reference on fundamentals, benchmarks, derivatives, and physical trading mechanics \u2014 assembled for a crude analyst interview in the week the Strait of Hormuz remained closed.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "energy",
+  "style": "encyclopaedic",
+  "tags": [
+    "crude-oil",
+    "brent",
+    "commodities",
+    "trading",
+    "benchmarks"
+  ],
   "component": "CrudeMarketsBriefing",
   "url": "articles/crude-markets-briefing.html",
   "pdf_url": "articles/crude-markets-briefing.pdf"

@@ -1,5 +1,22 @@
-import { useState } from "react";
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area, Cell, ComposedChart } from "recharts";
+/* --- YAML frontmatter --- */
+/*
+title: "The Cracking Point"
+subtitle: "Europe's refining sector is being squeezed from every direction. The question is no longer whether it will shrink, but how fast — and what replaces it."
+category: "energy"
+style: "economist"
+date: "2026-04-19"
+tags: [refining, europe, margins, closures, dangote]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Cracking Point",
+  subtitle: "Europe's refining sector is being squeezed from every direction. The question is no longer whether it will shrink, but how fast — and what replaces it.",
+  category: "energy",
+  style: "economist",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["refining", "europe", "margins", "closures", "dangote"],
+};
 
 const COLORS = {
   economistRed: "#E3120B",
@@ -79,7 +96,7 @@ const euCapacityData = [
 
 // ─── HELPER COMPONENTS ───────────────────────────────────────────────
 
-const Sidebar = ({ title, children }) => (
+const SB = ({ title, children }) => (
   <div style={{
     background: COLORS.sidebarBg, border: `1px solid ${COLORS.borderLight}`,
     padding: "28px 32px", margin: "36px 0", borderRadius: "2px",
@@ -251,9 +268,9 @@ export default function EuropeanRefiningArticle() {
           Russia's share of EU crude imports collapsed from 26% to 2% in four years. The United States, Kazakhstan, and Norway have filled the gap — but the crude they supply is lighter and sweeter, a poor fit for refineries built for Urals.
         </ChartCaption>
 
-        <Sidebar title="The Dangote effect">
+        <SB title="The Dangote effect">
           Nigeria's 650,000 b/d Dangote refinery, which began ramping up in 2024, has reshaped Atlantic basin trade flows in ways that directly pressure European refiners. West Africa was historically one of Europe's largest export markets for gasoline; Nigeria alone imported vast quantities of European petrol. As Dangote ramps toward full capacity, those flows are reversing. Nigerian gasoline imports have dropped to eight-year lows. Worse for Europe, Dangote is now exporting competitively priced jet fuel to the US Gulf Coast — a market that European refiners had considered a reliable outlet. Argus Media noted that coastal European refineries built to maximise gasoline output are now "under intense pressure" as their traditional West African outlet disappears. Any refinery unable to desulphurise all its gasoline to the EU's 10 ppm standard will face existential difficulty, since high-sulphur gasoline has almost no remaining market.
-        </Sidebar>
+        </SB>
 
         <P>Then came the Hormuz crisis. The closure of the strait in March 2026 and the Iranian drone strike on Saudi Aramco's 550,000 b/d Ras Tanura refinery created a temporary but violent reversal of the margin trend. European diesel cracks surged nearly 25% in a single day, reaching $33.76/b — their highest since November. Over 3m b/d of Gulf refining capacity was taken offline. For the remaining European refineries with flexible capacity, this was a classic margin windfall: the ability to import alternative crude and convert it into scarce diesel and jet fuel, capturing widening crack spreads. Analysts at Rystad Energy forecast that very high diesel cracks in Europe would persist through most of 2026, supported by reduced Middle Eastern supply.</P>
 
@@ -297,9 +314,9 @@ export default function EuropeanRefiningArticle() {
           Europe has lost roughly 2.6m b/d of refining capacity since 2000. By 2030, the IEA estimates that a further 1–1.5m b/d could be at risk, taking the continent's total to levels not seen since the 1960s.
         </ChartCaption>
 
-        <Sidebar title="Who survives">
+        <SB title="Who survives">
           The European refineries likely to endure are those that combine three qualities: coastal location (for cheap crude access and product export), high complexity (the ability to crack heavy feedstocks into diesel and jet fuel rather than producing excess naphtha), and integration with petrochemicals (which provides a longer-term demand anchor as transport fuels decline). The survivors are already visible: Shell's Pernis in Rotterdam, TotalEnergies' Antwerp complex, Repsol's integrated Spanish sites, and a cluster of Mediterranean refineries with access to Algerian and Libyan crude. The casualties will be inland, simple, and small. Around 73 operational refineries remain in Europe; within a decade, that number may fall below 50.
-        </Sidebar>
+        </SB>
 
         <P>The deeper question is whether a managed contraction of European refining is an acceptable outcome — or a strategic vulnerability. The continent still consumes roughly 14m b/d of oil products. As domestic refining capacity shrinks, product imports rise, and with them exposure to precisely the kind of supply disruption the Hormuz crisis illustrates. Grangemouth's closure alone removed 13% of Britain's refining capacity. The UK now imports a larger share of its transport fuels than at any point in its modern history. Every barrel of diesel that is no longer refined in Rotterdam or Gelsenkirchen must arrive by ship — from the US Gulf, from India, from the Middle East.</P>
 

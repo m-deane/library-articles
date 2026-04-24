@@ -1,10 +1,22 @@
+/* --- YAML frontmatter --- */
+/*
+title: "Moving Away"
+subtitle: "Avoidance is the oldest survival behaviour in the animal kingdom. In the human mind, refined by language and memory into something far more elaborate, it has become both a cornerstone of psychological protection and, when it escapes its proper boundaries, the architecture of suffering itself."
+category: "neuroscience"
+style: "encyclopaedic"
+date: "2026-04-19"
+tags: [avoidance, anxiety, clinical-psychology, two-factor-theory, exposure-therapy]
+*/
 
-import { useState } from "react";
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, LineChart, Line, Legend, ReferenceLine,
-  AreaChart, Area
-} from "recharts";
+const ARTICLE_DATA = {
+  title: "Moving Away",
+  subtitle: "Avoidance is the oldest survival behaviour in the animal kingdom. In the human mind, refined by language and memory into something far more elaborate, it has become both a cornerstone of psychological protection and, when it escapes its proper boundaries, the architecture of suffering itself.",
+  category: "neuroscience",
+  style: "encyclopaedic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["avoidance", "anxiety", "clinical-psychology", "two-factor-theory", "exposure-therapy"],
+};
 
 const C = {
   natgeoYellow: "#FFCE00",
@@ -161,19 +173,19 @@ const ExposureEffects = () => {
 };
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
-const DropCap = ({ letter, rest }) => (
+const DC = ({ letter, rest }) => (
   <p style={{ fontFamily: "'Source Serif 4',serif", fontSize: 20, lineHeight: 1.75, color: C.black, marginBottom: "1.5em", marginTop: 0 }}>
     <span style={{ float: "left", fontSize: 72, lineHeight: 0.82, fontFamily: "'Playfair Display',serif", fontWeight: 900, marginRight: 8, marginTop: 6, color: C.black }}>{letter}</span>
     {rest}
   </p>
 );
-const Sidebar = ({ title, children }) => (
+const SB = ({ title, children }) => (
   <div style={{ background: C.sidebarBg, border: `1px solid ${C.borderLight}`, borderRadius: 2, padding: "28px 28px 24px", margin: "36px 0", clear: "both" }}>
     <div style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: C.black, borderBottom: `2px solid ${C.natgeoYellow}`, paddingBottom: 6, marginBottom: 14 }}>{title}</div>
     <div style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 15, lineHeight: 1.7, color: C.darkGray }}>{children}</div>
   </div>
 );
-const ImgCaption = ({ label, text }) => (
+const Cap = ({ label, text }) => (
   <div style={{ marginTop: 10, marginBottom: 32 }}>
     <span style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: C.accent, marginRight: 8 }}>{label}</span>
     <span style={{ fontFamily: "'Source Sans 3',sans-serif", fontSize: 13, color: "#6B6560", lineHeight: 1.5 }}>{text}</span>
@@ -274,7 +286,7 @@ export default function AvoidanceBasedBehaviour() {
       {/* Body */}
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "64px 32px 80px" }}>
 
-        <DropCap letter="O" rest="n a cold February morning in 1947, Orval Hobart Mowrer sat in his office at Yale University and wrote the paper that would define how psychology understood avoidance for the next half century. Mowrer was a learning theorist, and the problem he was working on was a paradox that had vexed the field since Pavlov: why do animals — and people — keep avoiding things that no longer threaten them? The dog that learned to jump a hurdle to escape electric shock kept jumping long after the electricity was turned off. The soldier who flinched at a car backfire in 1952 had last heard gunfire in 1945. The logic of conditioning predicted extinction. The data showed persistence." />
+        <DC letter="O" rest="n a cold February morning in 1947, Orval Hobart Mowrer sat in his office at Yale University and wrote the paper that would define how psychology understood avoidance for the next half century. Mowrer was a learning theorist, and the problem he was working on was a paradox that had vexed the field since Pavlov: why do animals — and people — keep avoiding things that no longer threaten them? The dog that learned to jump a hurdle to escape electric shock kept jumping long after the electricity was turned off. The soldier who flinched at a car backfire in 1952 had last heard gunfire in 1945. The logic of conditioning predicted extinction. The data showed persistence." />
 
         <Para>Mowrer's solution was two-factor theory: a proposal that avoidance behaviour is not one thing but two, held together by a relay mechanism operating below the level of conscious awareness. The first factor is classical conditioning — the neutral stimulus (a sound, a place, a smell) becomes associated with genuine threat, acquiring the capacity to trigger fear. The second factor is operant conditioning — the avoidance action is learned and maintained because it works: the feared stimulus disappears, the fear subsides, and the relief itself becomes the reinforcing reward. The circuit is elegant, self-sealing, and deeply conservative. Each successful avoidance confirms that the threat would have been real. The test never comes.</Para>
 
@@ -295,18 +307,18 @@ export default function AvoidanceBasedBehaviour() {
             style={{ width: "100%", borderRadius: 2, maxHeight: 400, objectFit: "cover" }}
             onError={e => { e.target.style.display = 'none'; }} />
         </div>
-        <ImgCaption label="◆ Establishing" text="A fear hierarchy used in exposure therapy — the primary evidence-based treatment for avoidance-dominant conditions. Exposure works by violating the central mechanism of avoidance: it prevents the avoidance response that would otherwise maintain the fear association, allowing new inhibitory learning to accumulate. Effect sizes for prolonged exposure against PTSD, the most studied condition, reach Hedges' g = 1.08 versus waitlist control (Powers et al., 2010)." />
+        <Cap label="◆ Establishing" text="A fear hierarchy used in exposure therapy — the primary evidence-based treatment for avoidance-dominant conditions. Exposure works by violating the central mechanism of avoidance: it prevents the avoidance response that would otherwise maintain the fear association, allowing new inhibitory learning to accumulate. Effect sizes for prolonged exposure against PTSD, the most studied condition, reach Hedges' g = 1.08 versus waitlist control (Powers et al., 2010)." />
 
         <AvoidanceSpiral />
         <DiagramCaption title="The Avoidance Spiral">Schematic representation of how perceived threat and momentary relief interact across repeated avoidance cycles. Each avoidance action produces powerful short-term relief (yellow), which negatively reinforces the avoidance behaviour. But perceived threat on the next encounter (red) does not decrease — it escalates, because the organism has received no information that challenges the original threat association. Over time, the world the avoidant person inhabits contracts. Source: Adapted from Mowrer (1947) two-factor theory; Salkovskis (1991); Psychology Tools (2019).</DiagramCaption>
 
-        <Sidebar title="The Behavioural Architecture of Avoidance: Active and Passive Forms">
+        <SB title="The Behavioural Architecture of Avoidance: Active and Passive Forms">
           <p style={{ marginBottom: 10 }}>Avoidance behaviours fall into two broad categories, a distinction first formalised in animal learning research and now central to clinical assessment.</p>
           <p style={{ marginBottom: 10 }}><strong>Active avoidance</strong> involves performing a learned action to prevent a threatening stimulus from occurring — crossing the street to avoid a dog, leaving a party early to forestall anxiety, ritualising to prevent contamination. The behaviour is instrumental: it produces a specific outcome (non-occurrence of the aversive stimulus) and is maintained by that outcome.</p>
           <p style={{ marginBottom: 10 }}><strong>Passive avoidance</strong> involves withholding a response to prevent harm — not speaking in meetings, not initiating relationships, not opening emails. The behaviour is the absence of action, and it is often harder to detect clinically because it leaves no visible trace.</p>
           <p style={{ marginBottom: 10 }}><strong>Safety behaviours</strong> represent a third category occupying the space between. First described by Paul Salkovskis at the University of Bath, safety behaviours are actions that reduce anxiety within the feared situation while simultaneously preventing the disconfirmatory learning that would extinguish the fear. The person with social anxiety who memorises conversation starters, rehearses transitions, monitors their own expression throughout an encounter — they enter the situation, but on terms that guarantee they never discover that the situation was safe. The avoidance is concealed inside the engagement.</p>
           <p style={{ fontSize: 13, color: C.warmGray }}>Sources: Neuropsychopharmacology (Hinojosa et al., 2022); Salkovskis (1991) cited in Psychology Tools; PMC4508580.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -319,12 +331,12 @@ export default function AvoidanceBasedBehaviour() {
         <DiagnosticAvoidance />
         <DiagramCaption title="Avoidance as a Transdiagnostic Feature">Schematic clinical ratings of avoidance centrality (how central avoidance is to the disorder's maintenance) and exposure as a primary treatment target across seven diagnostic categories. PTSD and specific phobia show the highest ratings on both dimensions; depression shows somewhat lower ratings reflecting the additional cognitive and biological components of that condition. Values are illustrative of relative clinical consensus, not absolute empirical data. Sources: Vervliet et al. (2015), Frontiers in Behavioral Neuroscience; Neuropsychopharmacology (Hinojosa et al., 2022).</DiagramCaption>
 
-        <Sidebar title="Experiential Avoidance and the ACT Framework">
+        <SB title="Experiential Avoidance and the ACT Framework">
           <p style={{ marginBottom: 10 }}>Steven Hayes developed Acceptance and Commitment Therapy at the University of Nevada Reno in the 1980s, grounding it in Relational Frame Theory — an account of human language and cognition based on the capacity to arbitrarily relate events through symbolic networks. ACT's central contention is that experiential avoidance — the attempt to suppress, control, or escape unwanted private events — is a core process in the maintenance of psychological suffering across diagnoses.</p>
           <p style={{ marginBottom: 10 }}>The Acceptance and Action Questionnaire (AAQ), the primary measure of experiential avoidance developed by Hayes and colleagues, has been used in hundreds of studies demonstrating that higher experiential avoidance predicts worse outcomes across anxiety, depression, trauma, chronic pain, and substance use. In Hayes's 2006 meta-analysis in <em>Behaviour Research and Therapy</em>, the AAQ showed consistent correlations with psychological distress across populations.</p>
           <p style={{ marginBottom: 10 }}>ACT's treatment approach does not target avoidance directly through exposure — unlike CBT's classical exposure protocols — but through acceptance: changing the person's relationship with aversive private events so that avoiding them is no longer experienced as necessary. The six core ACT processes (acceptance, cognitive defusion, present-moment awareness, self-as-context, values, committed action) collectively dismantle the cognitive infrastructure that makes experiential avoidance feel obligatory.</p>
           <p style={{ fontSize: 13, color: C.warmGray }}>Sources: Hayes, S.C. et al. (2006). <em>Behaviour Research and Therapy</em>; PMC2727477; contextualscience.org.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -342,12 +354,12 @@ export default function AvoidanceBasedBehaviour() {
         <ExposureEffects />
         <DiagramCaption title="Exposure Therapy Effect Sizes Across Conditions">Hedges' g for exposure-based treatments versus waitlist or treatment-as-usual controls across six avoidance-central conditions. All effects are large (g ≥ 0.68), reflecting the consistency of exposure therapy's efficacy when avoidance is the primary maintenance mechanism. The reference line marks g = 0.8. The PTSD follow-up figure (g = 0.68) represents maintained effects at post-treatment assessment, confirming durability. Sources: Powers et al. (2010), PubMed 20546985; adapted from Vervliet et al. (2015).</DiagramCaption>
 
-        <Sidebar title="Behavioural Activation: Breaking the Avoidance-Depression Cycle">
+        <SB title="Behavioural Activation: Breaking the Avoidance-Depression Cycle">
           <p style={{ marginBottom: 10 }}>Behavioural Activation (BA) is one of the most extensively evidence-based treatments in all of psychiatry, despite being among the least glamorous. Its premise is straightforward: depression is maintained by the progressive withdrawal from sources of positive reinforcement, and recovery requires re-engagement — however tentative, however graduated — with those sources.</p>
           <p style={{ marginBottom: 10 }}>The COBRA trial, published in <em>The Lancet</em> in 2016 by David Richards and colleagues at the University of Exeter, compared BA delivered by junior mental health workers against CBT delivered by trained therapists in 440 adults with depression. BA was non-inferior to CBT at 12 months on all primary outcomes, at substantially lower cost. The finding challenged the assumption that the cognitive components of CBT — thought records, schema work, Socratic questioning — add clinical value beyond the behavioural components that target avoidance directly.</p>
           <p style={{ marginBottom: 10 }}>Contemporary BA focuses on identifying the TRAP (Trigger–Response–Avoidance Pattern) and replacing it with the TRAC (Trigger–Response–Alternative Coping): finding alternative approach behaviours, however small, that re-engage the person with valued reinforcers. The treatment does not require insight. It requires action — and it works because the action, not the insight, is the mechanism.</p>
           <p style={{ fontSize: 13, color: C.warmGray }}>Sources: Richards, D.A. et al. (2016). <em>The Lancet</em>, 388(10047), 871–880 (COBRA trial); PMC9082162; Cambridge Core, Advances in Psychiatric Treatment.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 

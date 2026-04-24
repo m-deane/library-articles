@@ -1,12 +1,18 @@
 {
   "slug": "audhd-entelechy-v2",
-  "title": "Audhd Entelechy V2",
-  "subtitle": "",
-  "date": "",
+  "title": "The Engine That Cannot Be Redirected",
+  "subtitle": "Inside the neuroscience of why AuDHD individuals carry an almost ungovernable drive toward autonomy \u2014 and what Aristotle's concept of entelechy reveals about a brain pursuing its own fulfilment.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "neuroscience",
+  "style": "natgeo-sciam-hybrid",
+  "tags": [
+    "audhd",
+    "autism",
+    "adhd",
+    "self-determination-theory",
+    "monotropism"
+  ],
   "component": "AuDHDEntelechyFull",
   "url": "articles/audhd-entelechy-v2.html",
   "pdf_url": "articles/audhd-entelechy-v2.pdf"

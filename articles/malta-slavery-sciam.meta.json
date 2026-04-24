@@ -1,12 +1,18 @@
 {
   "slug": "malta-slavery-sciam",
-  "title": "Malta Slavery Sciam",
-  "subtitle": "",
-  "date": "",
+  "title": "The Colour of the Walls",
+  "subtitle": "Archaeology, archival demography, and material culture analysis are rewriting the history of enslaved labour in Hospitaller Malta \u2014 revealing what the fortifications conceal.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "archaeology",
+  "style": "natgeo-sciam-hybrid",
+  "tags": [
+    "malta",
+    "slavery",
+    "hospitallers",
+    "bioarchaeology",
+    "corsairing"
+  ],
   "component": "App",
   "url": "articles/malta-slavery-sciam.html",
   "pdf_url": "articles/malta-slavery-sciam.pdf"

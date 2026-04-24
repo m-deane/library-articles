@@ -1,12 +1,18 @@
 {
   "slug": "xlendi-wreck",
-  "title": "Xlendi Wreck",
-  "subtitle": "",
-  "date": "",
+  "title": "Fourteen Minutes at the Edge of the World",
+  "subtitle": "At 110 metres beneath Xlendi Bay, a Phoenician ship has been waiting 2,700 years to be found. The technical divers who reach it have about fourteen minutes before the ocean demands they leave.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "archaeology",
+  "style": "natgeo-classic",
+  "tags": [
+    "malta",
+    "xlendi",
+    "phoenician",
+    "shipwreck",
+    "technical-diving"
+  ],
   "component": "XlendiWreck",
   "url": "articles/xlendi-wreck.html",
   "pdf_url": "articles/xlendi-wreck.pdf"

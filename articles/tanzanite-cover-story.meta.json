@@ -1,12 +1,18 @@
 {
   "slug": "tanzanite-cover-story",
-  "title": "Tanzanite Cover Story",
-  "subtitle": "",
-  "date": "",
+  "title": "Born from Fire",
+  "subtitle": "The crystallography, tectonic genesis, and contested economics of the world's only tanzanite deposit \u2014 a 585-million-year-old mineralogical accident occupying 14 km\u00b2 of northern Tanzania.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "science-nature",
+  "style": "natgeo-sciam-hybrid",
+  "tags": [
+    "tanzanite",
+    "zoisite",
+    "crystallography",
+    "tanzania",
+    "merelani"
+  ],
   "component": "App",
   "url": "articles/tanzanite-cover-story.html",
   "pdf_url": "articles/tanzanite-cover-story.pdf"

@@ -1,12 +1,18 @@
 {
   "slug": "malta-slavery",
-  "title": "Malta Slavery",
-  "subtitle": "",
-  "date": "",
+  "title": "The Colour of the Walls",
+  "subtitle": "Valletta's golden fortifications were built by the hands of enslaved Muslims, Jews, and Christians. For 268 years, the Knights of St John ran one of the Mediterranean's largest slave economies. The stones remember what the plaques do not.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "history",
+  "style": "natgeo-classic",
+  "tags": [
+    "malta",
+    "slavery",
+    "knights-of-st-john",
+    "valletta",
+    "mediterranean"
+  ],
   "component": "App",
   "url": "articles/malta-slavery.html",
   "pdf_url": "articles/malta-slavery.pdf"

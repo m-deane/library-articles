@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Cavalier That Broke an Empire — Plain Reader</title>
+  <meta name="description" content="For thirty-one days in 1565, the raised gun platform at the heart of Fort St Elmo held back the most powerful armada Islam had ever sent westward — and changed the course of Mediterranean history forever." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">The Cavalier That Broke an Empire</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-19</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/fort_st_elmo_ng.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/fort_st_elmo_ng.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <p>A
+t the seaward tip of Malta's Sciberras Peninsula, where honey-coloured limestone meets
+the Mediterranean, a raised gun platform tells one of history's most extraordinary stories
+of defiance. Fort St Elmo's Cavalier — an elevated artillery position designed to fire over
+its own fort's walls — stood at the epicentre of a 31-day siege in 1565 that cost the
+Ottoman Empire an estimated 8,000 dead and altered the trajectory of European civilisation.</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>fort_st_elmo_ng</code> &middot; category: <code>history</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

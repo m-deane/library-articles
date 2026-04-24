@@ -1,12 +1,18 @@
 {
   "slug": "european-gas-trading",
-  "title": "European Gas Trading",
-  "subtitle": "",
-  "date": "",
+  "title": "The Invisible Arbitrage",
+  "subtitle": "How traders exploit the price differentials hidden inside Europe's pipeline network \u2014 and how algorithms are learning to do it faster.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "energy",
+  "style": "natgeo-classic",
+  "tags": [
+    "natural-gas",
+    "trading",
+    "arbitrage",
+    "storage",
+    "optimisation"
+  ],
   "component": "EuropeanGasTrading",
   "url": "articles/european-gas-trading.html",
   "pdf_url": "articles/european-gas-trading.pdf"

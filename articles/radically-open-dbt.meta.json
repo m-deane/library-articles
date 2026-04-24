@@ -1,12 +1,18 @@
 {
   "slug": "radically-open-dbt",
-  "title": "Radically Open Dbt",
-  "subtitle": "",
-  "date": "",
+  "title": "Too Much of a Good Thing",
+  "subtitle": "For decades, psychiatry understood emotional suffering as a problem of too little control. A new therapy built on twenty-five years of clinical research is rewriting that assumption \u2014 and targeting a hidden epidemic of people who suffer not because they can't hold themselves together, but because they hold themselves together far too well.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "neuroscience",
+  "style": "natgeo-sciam-hybrid",
+  "tags": [
+    "ro-dbt",
+    "overcontrol",
+    "clinical-psychology",
+    "dbt",
+    "lynch"
+  ],
   "component": "RadicallyOpenDBT",
   "url": "articles/radically-open-dbt.html",
   "pdf_url": "articles/radically-open-dbt.pdf"

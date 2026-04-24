@@ -1,12 +1,18 @@
 {
   "slug": "fort-st-elmo",
-  "title": "Fort St Elmo",
-  "subtitle": "",
-  "date": "",
+  "title": "The Gun Platform Above the Sea",
+  "subtitle": "At the tip of the Sciberras Peninsula, the cavalier of Fort St Elmo rises above the star fort that held off 40,000 Ottoman troops for twenty-eight days in 1565 \u2014 and killed the greatest corsair of the sixteenth century.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "history",
+  "style": "natgeo-classic",
+  "tags": [
+    "malta",
+    "fort-st-elmo",
+    "great-siege",
+    "dragut",
+    "cavalier"
+  ],
   "component": "App",
   "url": "articles/fort-st-elmo.html",
   "pdf_url": "articles/fort-st-elmo.pdf"

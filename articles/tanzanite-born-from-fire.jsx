@@ -1,4 +1,22 @@
-import { useState, useEffect, useRef } from "react";
+/* --- YAML frontmatter --- */
+/*
+title: "Born from Fire"
+subtitle: "Deep beneath Tanzania's Merelani Hills, young men descend 400 metres on wooden ladders to extract the only gemstone on Earth found in a single place. The deposit could be exhausted within a generation. This is the story of the people who mine it — and the country fighting to keep its wealth."
+category: "science-nature"
+style: "natgeo-classic"
+date: "2026-04-19"
+tags: [tanzanite, gemstones, tanzania, mining, merelani]
+*/
+
+const ARTICLE_DATA = {
+  title: "Born from Fire",
+  subtitle: "Deep beneath Tanzania's Merelani Hills, young men descend 400 metres on wooden ladders to extract the only gemstone on Earth found in a single place. The deposit could be exhausted within a generation. This is the story of the people who mine it — and the country fighting to keep its wealth.",
+  category: "science-nature",
+  style: "natgeo-classic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["tanzanite", "gemstones", "tanzania", "mining", "merelani"],
+};
 
 // ─── NATGEO TANZANITE FEATURE ───────────────────────────────────────────────
 // "Born from Fire" — A National Geographic-style feature article

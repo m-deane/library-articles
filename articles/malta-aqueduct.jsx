@@ -1,8 +1,22 @@
-import { useState, useEffect } from "react";
-import {
-  LineChart, Line, BarChart, Bar, XAxis, YAxis,
-  CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine
-} from "recharts";
+/* --- YAML frontmatter --- */
+/*
+title: "The City That Water Built"
+subtitle: "For four hundred years, a limestone aqueduct carried the only thing that made Valletta possible. The water has stopped flowing. The crisis has not."
+category: "history"
+style: "natgeo-classic"
+date: "2026-04-19"
+tags: [malta, aqueduct, wignacourt, water, valletta]
+*/
+
+const ARTICLE_DATA = {
+  title: "The City That Water Built",
+  subtitle: "For four hundred years, a limestone aqueduct carried the only thing that made Valletta possible. The water has stopped flowing. The crisis has not.",
+  category: "history",
+  style: "natgeo-classic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["malta", "aqueduct", "wignacourt", "water", "valletta"],
+};
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 const C = {
@@ -300,7 +314,7 @@ function AqueductCrossSection() {
 
 // ─── HELPER COMPONENTS ────────────────────────────────────────────────────────
 
-function DropCap({ letter, rest }) {
+function DC({ letter, rest }) {
   return (
     <p style={{ fontFamily: F.body, fontSize: "1.18rem", lineHeight: 1.78, color: C.black,
                 marginBottom: "1.4em", marginTop: 0 }}>
@@ -342,7 +356,7 @@ function SceneBreak() {
   );
 }
 
-function Sidebar({ title, children }) {
+function SB({ title, children }) {
   return (
     <aside style={{
       background: C.sidebarBg, border: `1px solid ${C.borderLight}`,
@@ -360,7 +374,7 @@ function Sidebar({ title, children }) {
   );
 }
 
-function ImgCaption({ label, text }) {
+function Cap({ label, text }) {
   return (
     <div style={{ fontFamily: F.sans, fontSize: 11.5, color: C.warmGray, marginTop: 8,
                   marginBottom: 24, lineHeight: 1.55, borderLeft: `2px solid ${C.accent}`, paddingLeft: 10 }}>
@@ -450,7 +464,7 @@ export default function MaltaAqueduct() {
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "56px 24px 80px" }}>
 
         {/* LEAD */}
-        <DropCap letter="T" rest={`he spring at Għajn Qajjied, in the low hills above Rabat, does not announce itself. There is no drama here: no cascade, no carved basin, no plaque. A seep of water moves through the fractured upper coralline limestone, collecting in a perched aquifer that formed before Rome built its first aqueduct, and emerges from the rock face on the western slope of Malta's plateau in a steady, unhurried trickle. In winter, when the island's rainfall — some 550 millimetres a year, falling almost entirely between October and February — percolates through the porous stone, this spring runs freely. In summer, it diminishes. In drought years, it whispers.`} />
+        <DC letter="T" rest={`he spring at Għajn Qajjied, in the low hills above Rabat, does not announce itself. There is no drama here: no cascade, no carved basin, no plaque. A seep of water moves through the fractured upper coralline limestone, collecting in a perched aquifer that formed before Rome built its first aqueduct, and emerges from the rock face on the western slope of Malta's plateau in a steady, unhurried trickle. In winter, when the island's rainfall — some 550 millimetres a year, falling almost entirely between October and February — percolates through the porous stone, this spring runs freely. In summer, it diminishes. In drought years, it whispers.`} />
 
         <Para>In the early seventeenth century, an old French knight stood somewhere near this spring and made a calculation. He was building a city on a limestone peninsula with no river, no lake, no natural freshwater source of any consequence. The city already had thirty thousand inhabitants. More were arriving. The Grand Harbour below was filling with galleys that needed water for their crossings, soldiers who needed water to survive a siege, a growing civilian population that needed water for every ordinary thing that water is needed for. The cisterns were not enough. The seasonal wells were not enough. What was needed was a connection — a sixteen-kilometre thread of stone and gravity stretching from this spring, across the karst valleys of Malta's interior, to the fountains of a new capital that had no business existing on a rock in the middle of the sea.</Para>
 
@@ -460,14 +474,14 @@ export default function MaltaAqueduct() {
 
         {/* HERO IMAGE ALREADY SHOWN — SECONDARY IMAGE: ARCHES */}
         <Photo src={IMAGES.aqueductArches} alt="Wignacourt Aqueduct arches, Malta" />
-        <ImgCaption
+        <Cap
           label="Establishing"
           text="The surviving arched section of the Wignacourt Aqueduct, photographed near the Malta Historical Society. The above-ground portion stretches from Attard through Birkirkara to Santa Venera — the only part of the sixteen-kilometre structure visible today. | Source: Malta Historical Society"
         />
 
         {/* AQUEDUCT MAP */}
         <AqueductMap />
-        <ImgCaption
+        <Cap
           label="Data"
           text="Schematic route of the Wignacourt Aqueduct from the springs at Dingli/Rabat to Valletta. The above-ground arched section (Attard to Santa Venera) is the only surviving visible portion; the rest was carried in underground stone conduits."
         />
@@ -483,20 +497,20 @@ export default function MaltaAqueduct() {
 
         <Para>The Arabs left a more legible mark, however: language. A substantial portion of the Maltese vocabulary, which is itself an Arabic dialect written in the Latin alphabet — the only Semitic language with that distinction — is the vocabulary of water. <em>Wied</em>, meaning valley, derives from the Arabic <em>wadin</em>; <em>għajn</em>, meaning spring (and eye), from the Arabic <em>ʿayn</em>; <em>bir</em>, meaning well, from <em>biʾr</em>; <em>baħar</em>, sea, from <em>baħr</em>. Professor Joseph Aquilina, one of Malta's preeminent linguists, described the Arabs as "linguistically the most important people that ever managed the affairs of the country." What he meant, in part, was that the language of water in Malta is Arabic: the words Maltese farmers have used for a thousand years to describe the springs, valleys, and wells of their island are the same words North African and Levantine farmers used when they first taught the island to irrigate itself.</Para>
 
-        <Sidebar title="Water Words — The Arab Lexicon in Maltese Landscape">
+        <SB title="Water Words — The Arab Lexicon in Maltese Landscape">
           <p style={{ marginBottom: "1em" }}>The Arabic imprint on Malta's water vocabulary is not incidental. It is cartographic. Arab geographers named what they found; those names hardened into the toponymy of the island and persist in modern Maltese. A survey of medieval place names found 137 settlements incorporating the word <em>bir</em> (well) and 87 incorporating <em>għajn</em> (spring) — a density of water-vocabulary in place names that is itself evidence of how thoroughly Arab settlers organised Malta's hydrology.</p>
           <p style={{ marginBottom: "1em" }}><strong>Wied</strong> (Arabic: <em>wadin</em>) — valley or watercourse. The valleys of Malta are almost all named <em>wied</em>: Wied il-Qlejgħa, Wied ir-Rum, Wied Ħażrun. These were not merely topographic features; they were the drainage lines along which water moved, and around which Arab agricultural estates were built.</p>
           <p style={{ marginBottom: "1em" }}><strong>Għajn</strong> (Arabic: <em>ʿayn</em>) — spring, also eye. The spring sources of the Wignacourt Aqueduct — Għajn Qajjied, Għajn Tewżien — carry this word. In Arabic, the shared term for spring and eye is not metaphor; it reflects a perception of the landscape as a living face from which water looks out.</p>
           <p style={{ marginBottom: "1em" }}><strong>Bir</strong> (Arabic: <em>biʾr</em>) — well. Birkirkara, Malta's most densely populated city today, takes its name from this root: <em>bir</em> (well) + <em>il-karkara</em> (the trickle). A city named after the sound of falling water.</p>
           <p><strong>Marsa</strong> (Arabic: <em>marsa</em>) — harbour, anchorage. The springs of the Marsa — the flat ground south of Grand Harbour — were the first water source the Knights of St John used when they arrived in 1530. The word harbour and the word water-source share the same root in a landscape where the sea and the spring were never truly separate concerns.</p>
-        </Sidebar>
+        </SB>
 
         <Para>When the Knights of St John arrived in Malta in October 1530, granted the island by Emperor Charles V as a base for their Mediterranean operations, they inherited this Arab hydraulic legacy in modified form. The Norman and later Sicilian lords who had governed Malta since 1091 had maintained rather than extended the Arab water systems. What the Knights found was an island of roughly twenty thousand people — the Knights' arrival added five thousand more — dependent on a network of cisterns, seasonal wells, and the modest springs of the Marsa plain for a water supply that had not been systematically upgraded in four centuries.</Para>
 
         <Para>The Great Siege of 1565 exposed the vulnerability of this arrangement with lethal clarity. The Ottoman fleet of some forty thousand troops besieged the Knights and their Maltese allies for four months in the summer heat. The defenders held — but the record of that siege contains repeated references to the want of water, to the suffering of the people behind the walls of Birgu. A survey conducted by Romano Fortunato Carapecchia in 1723, ordered by a later Grand Master to assess Valletta's water storage, identified 21 public cisterns, 821 private cisterns, and 40 cisterns within the three Cities' fortifications. These figures testify both to the resourcefulness of the island's inhabitants and to the basic insufficiency of cistern-based supply: 821 private cisterns is the infrastructure of a city that cannot trust its own water.</Para>
 
         <Photo src={IMAGES.dingli} alt="Dingli Cliffs Malta limestone plateau" />
-        <ImgCaption
+        <Cap
           label="Source"
           text="Dingli Cliffs, the highest point on Malta at roughly 253 metres above sea level. The springs that fed the Wignacourt Aqueduct — Għajn Qajjied, Għajn Tewżien, and others — emerge from the perched aquifer in this western plateau. The Arabs who settled here in 870 AD understood what the rock held. | Author: Wikimedia Commons / Continentaleurope (CC BY-SA 3.0)"
         />
@@ -517,7 +531,7 @@ export default function MaltaAqueduct() {
         <Para>Into this crisis came Bontadino de Bontadini, a Bolognese hydraulic engineer recommended by the Inquisitor Evangelista Carbonesi, who arrived in Malta in July 1612. Bontadini made two decisions that saved the project. First, he endorsed the local Maltese <em>capomastri</em> — master builders — who had proposed abandoning the underground route and building above-ground stone arches through the low-lying sections between Attard and Hamrun. Second, he identified the correct waterproof cement: pozzolana, a volcanic aggregate that had sealed the aqueducts of Rome and Pompeii. It was Bontadini's pozzolana, and the arched solution of the anonymous Maltese builders whose names do not appear in the history books, that made the water flow.</Para>
 
         <AqueductCrossSection />
-        <ImgCaption
+        <Cap
           label="Data"
           text="Schematic cross-section of the Wignacourt Aqueduct's arched viaduct, showing the gravity-feed principle, pozzolana-sealed earthenware water channel, local limestone construction, and the underlying geological strata — including the Blue Clay aquitard that created the perched aquifer feeding the springs."
         />
@@ -525,17 +539,17 @@ export default function MaltaAqueduct() {
         <SceneBreak />
 
         {/* THREAD 1 — ENGINEERING SIDEBAR */}
-        <Sidebar title="The Engineering of the Wignacourt — Gravity, Stone, and Cement">
+        <SB title="The Engineering of the Wignacourt — Gravity, Stone, and Cement">
           <p style={{ marginBottom: "1em" }}>The Wignacourt Aqueduct solved a problem that had defeated every previous engineer: how to carry water from a spring at elevation, across Malta's irregular karst terrain, to a coastal city sixteen kilometres away, without mechanical pumps, without losing pressure, and without the water simply leaking into the ground.</p>
           <p style={{ marginBottom: "1em" }}>The solution was topographically elegant. From the springs at Dingli and Rabat, the aqueduct followed the island's natural gradient toward Valletta, maintaining a slope calculated at approximately 1 in 1,000 — gentle enough that water would not rush and erode the channel, steep enough that it would not pool and stagnate. The first section, from the springs to Attard, was underground: stone conduits cut into the limestone bedrock, sealed with pozzolana cement, carrying water invisibly beneath farms and roads. Contemporary records note that this underground section was preferred partly for keeping the water cool.</p>
           <p style={{ marginBottom: "1em" }}>The problem came at Attard, where the terrain dips into a series of valleys before rising again toward the coastal plain. Here, the underground option failed: the hills the water needed to ascend exceeded the pressure available from the gradient. Tomasucci's solution — siphon-like underground pipes — collapsed when his mortar failed. Bontadini's solution was the arch: stone piers of local globigerina limestone, set in pozzolana mortar, carrying the water channel on their backs across the depressions. The above-ground section stretched from Attard through Balzan, Birkirkara, and Fleur-de-Lys to Santa Venera — roughly four kilometres of arched viaduct. From Santa Venera to Valletta, the conduit returned underground to Hamrun, Floriana, and finally the capital.</p>
           <p style={{ marginBottom: "1em" }}>The workforce numbered 600 local Maltese workers. Construction spanned four years, from 1610 to 1614. The completed system delivered approximately 1,400 cubic metres of water per day to a city of around 30,000 people — roughly 47 litres per person, comparable to modern estimates of minimum adequate daily supply. Three water inspection towers were built along the route to allow maintenance access and flow regulation; all three survive.</p>
           <p>The key innovation, largely unsung, was Bontadini's use of pozzolana cement. Previous engineers had tried to seal stone channels with local limestone mortar, which absorbed moisture and cracked in the alkaline conditions of the Maltese aquifer. Pozzolana — a volcanic ash from the Phlegraean Fields near Naples, prized by Roman engineers since antiquity — forms a hydraulic cement that hardens even when wet. It was the same material that had sealed the Aqua Claudia in Rome and the cisterns of Pompeii. Bontadini's introduction of it to Malta was not merely an engineering decision; it was a technological transfer that connected the island's water history to the deepest traditions of Mediterranean hydraulic engineering.</p>
-        </Sidebar>
+        </SB>
 
         {/* WATER SUPPLY TIMELINE */}
         <WaterTimeline />
-        <ImgCaption
+        <Cap
           label="Data"
           text="Malta's water infrastructure timeline from the Arab conquest (870 AD) to the present. The 1615 inauguration of the Wignacourt Aqueduct is the central inflection point — but the trajectory from ancient cisterns to modern desalination reveals a continuous negotiation with the same fundamental scarcity."
         />
@@ -548,7 +562,7 @@ export default function MaltaAqueduct() {
         <Para>The arches run alongside a busy road. Cars pass within two metres of piers that were set in 1613. A man selling fruit from a van has parked his vehicle directly beneath one of the largest spans. The aqueduct is not dramatic in the way that Roman aqueducts are dramatic — there is no Pont du Gard here, no single arresting achievement of scale. What it is, is persistent. It stays in your field of vision for almost a kilometre, appearing and disappearing between houses and petrol stations, each appearance a small shock of historical presence in a suburban landscape that has grown up around and through it as if the arches were simply another feature of the built environment, like a wall or a kerb.</Para>
 
         <Photo src={IMAGES.santaVenera} alt="Wignacourt Aqueduct Santa Venera surviving arches" />
-        <ImgCaption
+        <Cap
           label="Character"
           text="The surviving arched section of the Wignacourt Aqueduct in Santa Venera, where the above-ground viaduct meets the Tower of St Joseph — beyond this point, the water returned to underground conduits for its final journey to Valletta. The arches have stood beside what is now a busy suburban road since 1614. | Source: Wikimedia Commons (CC BY-SA 3.0)"
         />
@@ -576,7 +590,7 @@ export default function MaltaAqueduct() {
         <Para>In 2009, Cremona warned that intensive agriculture's demand on the boreholes would render groundwater too saline for irrigation by around 2025. He was not wrong. Chloride levels in the mean sea-level aquifer — the freshwater lens that floats on saltwater at the base of the limestone — have exceeded 2,000 milligrams per litre at some extraction points, far above the 250 mg/L threshold for potable use. The two main aquifer bodies, the Malta and Gozo mean sea-level systems, are now losing more water to abstraction than they gain from rainfall. This is not a temporary imbalance that a wet winter can correct; it is a structural deficit driven by roughly 22.7 million cubic metres of groundwater extracted per year, including an estimated 2.97 million from illegal, unregistered boreholes for which the government has no reliable data.</Para>
 
         <WaterSupplyChart />
-        <ImgCaption
+        <Cap
           label="Data"
           text="Malta's shift from groundwater to desalination as the primary water source, 1980–2024. The trend is structural rather than cyclical: groundwater quality is declining as salinisation advances, making greater reliance on reverse osmosis both a necessity and an irreversible dependency. Sources: Water Services Corporation; MDPI Sustainability (2020); Euronews (2023)."
         />
@@ -592,19 +606,19 @@ export default function MaltaAqueduct() {
 
         <Para>But research published in 2021 projects that Malta is likely to lose sixteen percent of its groundwater through climate change and rising sea levels over the next eighty years. The island's Environmental Resources Authority has confirmed that the 2023–2024 hydrological year was the driest on record in Malta. Climate projections for the central Mediterranean under high-emissions scenarios anticipate precipitation decreases of between twenty and twenty-five percent by the end of the century, concentrated in the spring and summer months when groundwater recharge is already at its minimum. Sea-level rise threatens the freshwater lens of the mean sea-level aquifer directly: as saltwater intrudes from below, the freshwater above it shrinks. Assuming a one-metre rise in sea level, groundwater production potential could fall by roughly forty percent.</Para>
 
-        <Sidebar title="The Aquifer Crisis — Current Data and Future Projections">
+        <SB title="The Aquifer Crisis — Current Data and Future Projections">
           <p style={{ marginBottom: "1em" }}>Malta is classified by several international bodies as the most water-stressed country in the European Union and among the top ten globally. The numbers behind that classification are sobering.</p>
           <p style={{ marginBottom: "1em" }}><strong>Extraction vs. recharge:</strong> Total groundwater extraction stands at approximately 22.7 million cubic metres per year — a figure that includes an estimated 2.97 million from illegal, unregistered boreholes with no government oversight. This extraction consistently exceeds the aquifer's natural recharge rate from rainfall, constituting a structural deficit.</p>
           <p style={{ marginBottom: "1em" }}><strong>Salinisation:</strong> Chloride levels in parts of the mean sea-level aquifer now exceed 2,000 mg/L — eight times the EU potability threshold of 250 mg/L. The groundwater that arrives at pumping stations today percolated into the aquifer forty years ago, meaning that the nitrate and salt contamination caused by current extraction patterns has not yet fully manifested at the tap.</p>
           <p style={{ marginBottom: "1em" }}><strong>Desalination dependency:</strong> Approximately sixty to sixty-five percent of Malta's fresh water now comes from four seawater reverse osmosis plants and one brackish-water plant. Desalination is energy-intensive, expensive, and strategically vulnerable: Malta's electricity supply depends in part on a submarine cable to Sicily. A power failure or infrastructure attack would leave the island with roughly two days of water storage.</p>
           <p style={{ marginBottom: "1em" }}><strong>Climate trajectory:</strong> Under high-emission scenarios (RCP8.5), annual precipitation over Malta is projected to fall below 500 mm — already low — by 2050–2070, with the reduction concentrated in the winter months that currently provide most of the aquifer's recharge. Rising sea levels will simultaneously push saltwater further into the freshwater lens of the lower aquifer.</p>
           <p>The aquifer that took millennia to fill is being exhausted in decades. Unlike most infrastructure crises, this one does not announce itself with a broken pipe or a power cut. It announces itself in the slow creep of salinity in a borehole that last year was fresh, in a farmer's field that no longer sustains the crop it always has, in a spring that has not run since the last wet winter.</p>
-        </Sidebar>
+        </SB>
 
         <Para>The Wignacourt Aqueduct, in its heyday, delivered 1,400 cubic metres of water per day to 30,000 people. Modern Malta, with a population of roughly 574,000 concentrated on an island of 316 square kilometres — one of the most densely settled nations on Earth — requires many orders of magnitude more. The comparison is not meant to be flattering to the aqueduct. It is meant to be humbling to us. The Knights understood, in a way that seems to have been partially forgotten, that water infrastructure is not a amenity to be provided when convenient; it is the prior condition of everything else. You do not build the city and then sort out the water. You sort out the water, and then the city becomes possible.</Para>
 
         <Photo src={IMAGES.dingli} alt="Dingli plateau western Malta" />
-        <ImgCaption
+        <Cap
           label="Consequence"
           text="The western plateau of Malta above Dingli, source of the springs that fed the Wignacourt Aqueduct for three centuries. The perched aquifer that once sustained these springs — recharged by winter rainfall percolating through upper coralline limestone — is now drawn down faster than it can recover. Natural springs no longer run freely here; they have been replaced by boreholes. | Source: Wikimedia Commons"
         />
@@ -616,13 +630,13 @@ export default function MaltaAqueduct() {
 
         <Para>The Wignacourt Aqueduct was decommissioned as the primary supply sometime in the early decades of the twentieth century, its role absorbed by the expanding British mechanical network. Osbert Chadwick, the British engineer who produced a comprehensive report on Malta's water supply in 1884, had already begun replacing the aqueduct's stone channels with iron pipes in 1885. By the mid-twentieth century, sections of the above-ground arches that had not been demolished had been bypassed; the triumphal arch at Fleur-de-Lys was destroyed in the wartime bombing of 1943 and 1944 and its remains cleared for traffic. What the bombs and the road-wideners spared, the suburbs swallowed. The arches that survive in Birkirkara and Santa Venera are the remnant of a structure that once ran continuously for sixteen kilometres; they are the paragraphs that remain after most of the book has been torn away.</Para>
 
-        <Sidebar title="The Engineering Lineage — From Wignacourt to Reverse Osmosis">
+        <SB title="The Engineering Lineage — From Wignacourt to Reverse Osmosis">
           <p style={{ marginBottom: "1em" }}>Every major water system the Knights and the British built in Malta was, in some sense, a response to the same problem: the island extracts more water than it receives. The technologies changed; the fundamental imbalance did not.</p>
           <p style={{ marginBottom: "1em" }}>The Knights' solution was gravity: channel spring water downhill from the highland aquifer to the coastal city, using the topography as the engine. This worked beautifully for two centuries and failed not because of engineering deficiency but because the population it was serving grew by a factor of twenty.</p>
           <p style={{ marginBottom: "1em" }}>The British solution was mechanical: motorised pumps to reach the sea-level aquifer, reservoirs to store what the pumps brought up. This worked, but it opened the deeper aquifer to systematic exploitation for the first time — the exploitation that has, over a century and a half, driven salinity levels to their current crisis point.</p>
           <p style={{ marginBottom: "1em" }}>The current solution is chemical: reverse osmosis desalination converts seawater into fresh water by forcing it through semi-permeable membranes at high pressure, removing dissolved salts. Malta's plants can produce over 31 million cubic metres of desalinated water per year — more than the entire groundwater supply. This works, but it depends on continuous energy input, and it does nothing to arrest the salinisation of the aquifer.</p>
           <p>What each successive solution has done is buy time. The aqueduct bought three centuries. The British pumps bought a century. Reverse osmosis may buy another generation. The question — the one no engineering solution has yet answered — is what happens to an island that has systematically depleted the geology it was built on.</p>
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 

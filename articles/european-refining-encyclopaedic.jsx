@@ -1,5 +1,22 @@
-import { useState } from "react";
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area, Cell, PieChart, Pie } from "recharts";
+/* --- YAML frontmatter --- */
+/*
+title: "The Last Barrels"
+subtitle: "Europe's refineries once turned the continent into an industrial powerhouse. Now, caught between cheap American crude, efficient Asian mega-plants, and a future that runs on electricity, they face a reckoning decades in the making."
+category: "energy"
+style: "encyclopaedic"
+date: "2026-04-19"
+tags: [refining, europe, oil-products, margins, industrial-policy]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Last Barrels",
+  subtitle: "Europe's refineries once turned the continent into an industrial powerhouse. Now, caught between cheap American crude, efficient Asian mega-plants, and a future that runs on electricity, they face a reckoning decades in the making.",
+  category: "energy",
+  style: "encyclopaedic",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["refining", "europe", "oil-products", "margins", "industrial-policy"],
+};
 
 // ─── DESIGN TOKENS ───────────────────────────────────────────────────
 const C = {
@@ -58,7 +75,7 @@ const marginForecast = [
 ];
 
 // ─── COMPONENTS ──────────────────────────────────────────────────────
-const DropCap = ({ children }) => {
+const DC = ({ children }) => {
   const first = children.charAt(0);
   const rest = children.slice(1);
   return (<p style={{ fontFamily: F.body, fontSize: "18px", lineHeight: 1.75, color: C.black, marginBottom: "20px" }}>
@@ -72,7 +89,7 @@ const SceneBreak = () => <div style={{ textAlign: "center", margin: "48px 0", fo
 const PullQuote = ({ children }) => (
   <blockquote style={{ fontFamily: F.headline, fontStyle: "italic", fontSize: "24px", lineHeight: 1.4, color: C.black, borderLeft: `3px solid ${C.yellow}`, paddingLeft: "24px", margin: "40px 0" }}>{children}</blockquote>
 );
-const Sidebar = ({ title, children }) => (
+const SB = ({ title, children }) => (
   <div style={{ background: C.sidebarBg, border: `1px solid ${C.borderLight}`, padding: "28px 32px", margin: "36px 0", borderRadius: "2px" }}>
     <div style={{ fontFamily: F.sans, fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: C.darkGray, marginBottom: "6px", paddingBottom: "8px", borderBottom: `2px solid ${C.yellow}`, display: "inline-block" }}>{title}</div>
     <div style={{ fontFamily: F.sans, fontSize: "15px", lineHeight: 1.65, color: C.darkGray, marginTop: "14px" }}>{children}</div>
@@ -137,7 +154,7 @@ export default function EuropeanRefiningEncyclopaedic() {
       <div style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 24px 80px" }}>
 
         {/* ═══ ACT I: THE SCENE ═══ */}
-        <DropCap>{"The flare stacks at Grangemouth had burned continuously for seventy years, a constellation of industrial fire visible from the bridges of the Firth of Forth. On a grey morning in late April 2025, the last crude oil flowed through the distillation columns, and the flames — one after another — went out. Four hundred workers walked through the gates for the final time. Scotland's only refinery, which had processed 150,000 barrels per day since the 1950s, was now an import terminal. Petroineos, the joint venture between PetroChina and INEOS that owned the plant, said it had been losing roughly half a million dollars every day. The economics, the company's statement read, were \"unsustainable.\""}</DropCap>
+        <DC>{"The flare stacks at Grangemouth had burned continuously for seventy years, a constellation of industrial fire visible from the bridges of the Firth of Forth. On a grey morning in late April 2025, the last crude oil flowed through the distillation columns, and the flames — one after another — went out. Four hundred workers walked through the gates for the final time. Scotland's only refinery, which had processed 150,000 barrels per day since the 1950s, was now an import terminal. Petroineos, the joint venture between PetroChina and INEOS that owned the plant, said it had been losing roughly half a million dollars every day. The economics, the company's statement read, were \"unsustainable.\""}</DC>
 
         <P>Grangemouth was not alone. In the same season, Shell shut down crude processing at its 147,000 b/d Wesseling plant in Germany's Rhineland — part of a complex where Royal Dutch Shell had been refining since the 1930s. BP announced it would carve a third off its 257,000 b/d Gelsenkirchen refinery, a sprawling dual-site operation in the industrial heartland of North Rhine-Westphalia that BP itself described as "currently not competitive." In England, the Prax Lindsey Oil Refinery entered administration and could find no buyer. Gunvor, the Swiss trading house, mothballed its upgrading unit in Rotterdam after a 25% increase in operating costs over four years. Combined, these closures removed more than 400,000 barrels per day from the European system — roughly 3% of the continent's refining capacity — in a single year.</P>
 
@@ -160,9 +177,9 @@ export default function EuropeanRefiningEncyclopaedic() {
 
         <P>The architecture of a refinery is, at its simplest, an exercise in molecular separation. Crude oil is a soup of hydrocarbons — chains and rings of carbon and hydrogen atoms of wildly varying length. The distillation column, the cathedral-like tower at the centre of every refinery, heats this soup until its components boil off at different temperatures: the lightest fractions — butane and propane — rise to the top; then naphtha, the feedstock for petrochemicals and gasoline blending; then kerosene and jet fuel; then diesel and gasoil; and at the very bottom, the heavy residues that become fuel oil, bitumen, and petroleum coke. The refiner's art lies not merely in separating these fractions but in converting the ones the market does not want into the ones it does — cracking heavy molecules into lighter ones, reforming naphtha into high-octane gasoline, hydrotreating diesel to strip out sulphur. The complexity of a refinery — measured by indices like the Nelson Complexity Index — determines its ability to extract value from every barrel. The most complex plants can process heavy, sulphurous crudes that simpler refineries cannot touch, turning the cheapest feedstock into the most valuable products.</P>
 
-        <Sidebar title="The Nelson Complexity Index">
+        <SB title="The Nelson Complexity Index">
           Developed by the American petroleum engineer Wilbur Nelson in the 1960s, the Nelson Complexity Index (NCI) assigns a value to each processing unit in a refinery relative to the crude distillation unit, which is indexed at 1.0. A simple topping refinery that does nothing but distil crude scores around 2. A modern complex refinery with hydrocrackers, cokers, catalytic reformers, and desulphurisation units can score 10 or higher. Europe's surviving refineries tend to cluster between 7 and 12. The refineries closing — Grangemouth (NCI ~6), Wesseling, Lindsey — are at the lower end. The mega-refineries displacing them — Kuwait's Al-Zour, India's Jamnagar, Saudi Arabia's Jizan — score 12 and above. Complexity is, in effect, a measure of a refinery's ability to survive margin compression: the more complex the plant, the wider the range of crudes it can process and the more precisely it can match its output to market demand.
-        </Sidebar>
+        </SB>
 
         <P>Europe's refineries were built, overwhelmingly, to process one grade of crude: Russian Urals. Pumped from the fields of Western Siberia and the Volga-Urals basin, delivered by pipeline through Belarus and Ukraine or by short tanker voyage from the Baltic, Urals was a medium-sour grade — API gravity around 31, sulphur content around 1.3% — ideally suited to the hydrocracking and desulphurisation units that European refiners had invested in over decades. It was also cheap: proximity and pipeline delivery kept transport costs low, and Russia, hungry for hard currency, priced it at a persistent discount to North Sea Brent. Before the invasion of Ukraine, Russia supplied roughly 26% of EU crude imports. For Mediterranean refineries, the figure was higher; many also processed Iranian Heavy and Iraqi Basra, grades of similar density. The entire European refining complex, in other words, was calibrated — from its catalysts to its pipe diameters — for a medium-sour world.</P>
 
@@ -245,13 +262,13 @@ export default function EuropeanRefiningEncyclopaedic() {
           label="Consequence"
         />
 
-        <Sidebar title="The new competitors">
+        <SB title="The new competitors">
           The mega-refineries reshaping global competition share common advantages that European plants cannot replicate. Kuwait's Al-Zour (615,000 b/d, operational 2022) was designed from scratch for the most complex crude processing, with a Nelson Complexity Index above 12. Nigeria's Dangote (650,000 b/d, ramping since 2024) benefits from proximity to West African crude, low labour costs, and a captive domestic market of 220 million people. Oman's Duqm (230,000 b/d, operational 2024) sits at the mouth of the Persian Gulf with direct access to Omani and Gulf crudes. China's Yulong (400,000 b/d, operational 2024–25) integrates refining with two 1.5 million-tonne-per-year steam crackers. All operate without the burden of the EU's emissions trading system, without ageing infrastructure, and without the declining domestic demand that haunts European operators.
-        </Sidebar>
+        </SB>
 
-        <Sidebar title="The cost of carbon">
+        <SB title="The cost of carbon">
           Europe's refineries face a cost that no competitor in the Middle East, Africa, or most of Asia bears: the EU emissions trading system. In 2025, the carbon price stood at €70–80 per tonne of CO₂, according to the European Council on Foreign Relations. For a complex refinery emitting 3–4 million tonnes per year, the annual compliance cost runs to €200–320 million — a sum that dwarfs the margin improvement from any single operational efficiency. Wood Mackenzie warned that increasing exposure to emissions costs would "pressure European refiners' margins in the long term once global oil demand has peaked." The EU's Carbon Border Adjustment Mechanism (CBAM), phasing in from 2026, is intended to level the field by imposing equivalent costs on imports. But CBAM covers only a limited range of products and does not apply to refined petroleum fuels — meaning that European refiners bear the carbon cost while competing against importers who do not.
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 
@@ -339,9 +356,9 @@ export default function EuropeanRefiningEncyclopaedic() {
           NW Europe faces the steepest margin decline of any major refining centre — a 36% drop versus 16% on the US Gulf Coast.
         </ChartCaption>
 
-        <Sidebar title="Who survives — and why">
+        <SB title="Who survives — and why">
           The European refineries likely to endure the next decade share three characteristics. First, <em>coastal location</em>: access to deep-water ports for cheap crude import and product export. Second, <em>high complexity</em>: Nelson Complexity Index of 10 or above, with hydrocracking and coking capacity to crack heavy feedstocks into diesel and jet fuel. Third, <em>petrochemical integration</em>: co-location with steam crackers, aromatics units, or polymer plants that provide a demand anchor beyond declining transport fuels. The survivors are already identifiable: Shell's 404,000 b/d Pernis in Rotterdam, TotalEnergies' Antwerp complex, Repsol's integrated Spanish sites at Cartagena and Tarragona, and a cluster of Mediterranean refineries in Sicily and Sardinia with access to North African crude. Around 73 refineries remain operational; within a decade, the number may fall below 50.
-        </Sidebar>
+        </SB>
 
         <SceneBreak />
 

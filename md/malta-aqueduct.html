@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The City That Water Built — Plain Reader</title>
+  <meta name="description" content="For four hundred years, a limestone aqueduct carried the only thing that made Valletta possible. The water has stopped flowing. The crisis has not." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">The City That Water Built</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-19</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/malta-aqueduct.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/malta-aqueduct.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <p><strong>Marsa</strong> (Arabic: <em>marsa</em>) — harbour, anchorage. The springs of the Marsa — the flat ground south of Grand Harbour — were the first water source the Knights of St John used when they arrived in 1530. The word harbour and the word water-source share the same root in a landscape where the sea and the spring were never truly separate concerns.</p>
+<p>The key innovation, largely unsung, was Bontadini's use of pozzolana cement. Previous engineers had tried to seal stone channels with local limestone mortar, which absorbed moisture and cracked in the alkaline conditions of the Maltese aquifer. Pozzolana — a volcanic ash from the Phlegraean Fields near Naples, prized by Roman engineers since antiquity — forms a hydraulic cement that hardens even when wet. It was the same material that had sealed the Aqua Claudia in Rome and the cisterns of Pompeii. Bontadini's introduction of it to Malta was not merely an engineering decision; it was a technological transfer that connected the island's water history to the deepest traditions of Mediterranean hydraulic engineering.</p>
+<p>The aquifer that took millennia to fill is being exhausted in decades. Unlike most infrastructure crises, this one does not announce itself with a broken pipe or a power cut. It announces itself in the slow creep of salinity in a borehole that last year was fresh, in a farmer's field that no longer sustains the crop it always has, in a spring that has not run since the last wet winter.</p>
+<p>What each successive solution has done is buy time. The aqueduct bought three centuries. The British pumps bought a century. Reverse osmosis may buy another generation. The question — the one no engineering solution has yet answered — is what happens to an island that has systematically depleted the geology it was built on.</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>malta-aqueduct</code> &middot; category: <code>history</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

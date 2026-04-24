@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fourteen Minutes at the Edge of the World — Plain Reader</title>
+  <meta name="description" content="At 110 metres beneath Xlendi Bay, a Phoenician ship has been waiting 2,700 years to be found. The technical divers who reach it have about fourteen minutes before the ocean demands they leave." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Fourteen Minutes at the Edge of the World</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-19</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/xlendi-wreck.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/xlendi-wreck.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <p>High-Pressure Nervous Syndrome (HPNS) — a neurological condition characterised by tremors, dizziness, and cognitive impairment caused by helium under high pressure — becomes clinically significant at depths below 150 metres. At 110 metres, divers may experience sub-threshold precursor effects, particularly if descending rapidly. The Xlendi team managed this by controlling descent rate, typically aiming for no more than 15 to 18 metres per minute. Three to four bailout cylinders containing independent gas supplies are carried in case of rebreather failure at depth — because at 110 metres, the rebreather is the only thing standing between the diver and the ocean.</p>
+<p>The Xlendi amphorae told Sourisseau a story of a ship that had been to at least three distinct production zones before it sank. The heterogeneity of the cargo argues against a simple two-port trading voyage; it suggests a ship working a circuit — loading and trading, picking up and dropping off, accumulating a hold full of goods from multiple suppliers, each one a connection in a network that stretched, in the 7th century BC, from the British Isles to Mesopotamia.</p>
+<p>The deeper question is one that the archaeology itself forces: who has a claim on a ship that sank in Phoenician waters, off a Maltese island, carrying goods from Tunisia and Sicily, built by craftsmen whose descendants are distributed across the entire Mediterranean? The 2001 UNESCO Convention sidesteps sovereignty disputes by emphasising the heritage of humanity over the heritage of states. The tooth in the lower sediment of the Xlendi wreck, currently undergoing DNA analysis, may eventually speak to whether the Phoenicians who passed through this water 2,700 years ago left any trace in the genetics of the people now charged with protecting their memory. In the meantime, the site belongs to the sea — and, through the protocols of the park, to anyone qualified to go down and look.</p>
+<p><strong>Voices to add in full editorial process:</strong></p>
+<p>— Prof. Gambin direct interview re current post-excavation findings and DNA tooth results</p>
+<p>— Dave Gration direct interview re specific rebreather planning for Xlendi dives</p>
+<p>— Gozitan diver or dive operator who has visited the deepwater park since 2023</p>
+<p>— Sourisseau or a ceramicist on the significance of the mixed cargo's geographic origin</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>xlendi-wreck</code> &middot; category: <code>archaeology</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,12 +1,18 @@
 {
   "slug": "european-refining-encyclopaedic",
-  "title": "European Refining Encyclopaedic",
-  "subtitle": "",
-  "date": "",
+  "title": "The Last Barrels",
+  "subtitle": "Europe's refineries once turned the continent into an industrial powerhouse. Now, caught between cheap American crude, efficient Asian mega-plants, and a future that runs on electricity, they face a reckoning decades in the making.",
+  "date": "2026-04-19",
   "read_time": "",
-  "category": "general",
-  "style": "",
-  "tags": [],
+  "category": "energy",
+  "style": "encyclopaedic",
+  "tags": [
+    "refining",
+    "europe",
+    "oil-products",
+    "margins",
+    "industrial-policy"
+  ],
   "component": "EuropeanRefiningEncyclopaedic",
   "url": "articles/european-refining-encyclopaedic.html",
   "pdf_url": "articles/european-refining-encyclopaedic.pdf"

@@ -1,5 +1,22 @@
-import { useState } from "react";
-import { LineChart, Line, BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from "recharts";
+/* --- YAML frontmatter --- */
+/*
+title: "The Price of Knowing"
+subtitle: "Fair-value modelling in European energy markets — convenience yields, stochastic curves, and the algorithmic machinery that now sets the price of a marginal molecule."
+category: "energy"
+style: "economist"
+date: "2026-04-19"
+tags: [fair-value, convenience-yield, european-energy, quant, modelling]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Price of Knowing",
+  subtitle: "Fair-value modelling in European energy markets — convenience yields, stochastic curves, and the algorithmic machinery that now sets the price of a marginal molecule.",
+  category: "energy",
+  style: "economist",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["fair-value", "convenience-yield", "european-energy", "quant", "modelling"],
+};
 
 // ─── DESIGN TOKENS (Economist Mode) ─────────────────────────────────────────
 const COLORS = {
@@ -87,7 +104,7 @@ const brentCurveData = [
 ];
 
 // ─── HELPER COMPONENTS ──────────────────────────────────────────────────────
-const Sidebar = ({ title, children }) => (
+const SB = ({ title, children }) => (
   <div style={{
     background: COLORS.sidebarBg,
     border: `1px solid ${COLORS.borderLight}`,
@@ -302,9 +319,9 @@ export default function EconomistArticle() {
 
         <P>This formula works tolerably well for storable commodities with liquid futures markets. For gold, where storage is cheap and convenience yield is negligible, the cost-of-carry model predicts futures prices with considerable accuracy. For natural gas, it does not. European gas storage is expensive, seasonal, and physically constrained. Germany&rsquo;s storage facilities were just 22% full in early 2026; the Netherlands, 6%. The convenience yield&mdash;the implicit value of being able to deliver gas to customers during a cold snap or a Dunkelflaute, when wind and solar output collapse simultaneously&mdash;is both enormous and impossible to observe directly. It must be inferred from the shape of the futures curve, which makes the model circular: fair value depends on convenience yield, which depends on futures prices, which depend on fair value.</P>
 
-        <Sidebar title="The convenience yield problem">
+        <SB title="The convenience yield problem">
           Convenience yield is what makes commodity futures fundamentally different from financial futures. A utility holding physical gas inventory can keep the grid running during a supply disruption&mdash;a benefit with real economic value that reduces the effective cost of carry. When European gas storage fell below 40% in early 2025, the implied convenience yield on prompt TTF contracts widened sharply, pushing the curve into steep backwardation. Traders who could model this shift accurately&mdash;quantifying the &ldquo;option value&rdquo; embedded in physical inventory&mdash;profited. Those who relied on static cost-of-carry estimates did not.
-        </Sidebar>
+        </SB>
 
         <P>The cost-of-carry framework is the foundation, but professional commodity traders rarely use it in isolation. Structural econometric models layer on supply-demand fundamentals: Norwegian pipeline throughput, LNG cargo arrivals at European terminals, weather-driven heating demand, wind and solar output (which determines how much gas is burned for electricity generation), and the state of global competition for LNG between Europe and Asia. Reduced-form models&mdash;statistical approaches that forecast prices from observable variables without specifying a full structural mechanism&mdash;occupy a middle ground. Factor models in the tradition of Fuertes, Miffre and Rallis decompose commodity returns into carry, momentum and hedging-pressure signals. The carry signal alone, as Macrosynergy&rsquo;s research has documented, has an annualised standard deviation of 156% in natural gas, compared with just 2% in silver&mdash;a measure of how violently the gas curve can move and how much money is at stake in getting the model right.</P>
 
@@ -357,9 +374,9 @@ export default function EconomistArticle() {
 
         <P>The trading houses, for their part, are investing heavily but talking cautiously. Vitol, which operates from an unremarkable office block near Victoria station in London with approximately 1,800 staff in its core trading business, has long emphasised an analytical culture&mdash;its chief executive, Russell Hardy, who joined from BP in 1993, describes himself as &ldquo;more mathematical&rdquo; than his charismatic predecessor Ian Taylor. McKinsey estimated in February 2025 that quantitative funds with high rates of digital adoption achieve risk-adjusted returns 27% higher than less data-driven actively managed funds. The same report projected that commodity traders could eliminate more than $5bn in costs industry-wide through digitalisation, with a further $20bn of optimisation value left untapped in oil and oil products alone. The implication is clear: firms that invest in ML-driven analytics will capture a disproportionate share of shrinking margins.</P>
 
-        <Sidebar title="Who regulates the algorithms?">
+        <SB title="Who regulates the algorithms?">
           The EU&rsquo;s Regulation on Wholesale Energy Market Integrity and Transparency (REMIT), revised in May 2024, is the principal framework governing energy trading conduct. The revision strengthened ACER&rsquo;s surveillance powers, broadened the scope of covered products and participants, and&mdash;critically&mdash;brought algorithmic and high-frequency trading in energy products under closer scrutiny. ACER is establishing a new Investigations Department, due to be fully operational by 2027, to handle cross-border enforcement cases. Meanwhile, ESMA and ACER cooperate through the annual Energy Trading Enforcement Forum (ETEF) to align energy-market oversight with financial-market rules under the Market Abuse Regulation. The challenge for regulators is that ML-driven trading strategies are, by design, harder to audit than human decision-making.
-        </Sidebar>
+        </SB>
 
         <P>Yet scepticism is warranted. The commodity markets in which ML has proved most effective&mdash;liquid, exchange-traded, electronically intermediated&mdash;are not a precise analogue for much of European energy trading. The TTF is the most liquid gas hub in Europe, with traded volumes exceeding 14 times Dutch domestic consumption. But physical gas delivery still involves pipeline nominations, LNG cargo scheduling, regasification slot booking and bilateral contracts that are negotiated over-the-counter, often via chat messages that must be manually captured and processed. BP, for instance, has deployed AWS machine learning tools to extract pricing information from traders&rsquo; chat messages&mdash;a task that is, in essence, natural-language processing applied to the messiest possible data.</P>
 

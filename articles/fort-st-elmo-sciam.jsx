@@ -1,4 +1,22 @@
-import { useState, useEffect } from "react";
+/* --- YAML frontmatter --- */
+/*
+title: "The Gun Platform Above the Sea"
+subtitle: "The materials science of Miocene limestone, the fire-control geometry of a raised gun platform, and the ballistic accident that killed the Mediterranean's greatest corsair — examined through petrography, military engineering, and 450 years of weathering data."
+category: "archaeology"
+style: "natgeo-sciam-hybrid"
+date: "2026-04-19"
+tags: [malta, fort-st-elmo, great-siege, globigerina-limestone, fortifications]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Gun Platform Above the Sea",
+  subtitle: "The materials science of Miocene limestone, the fire-control geometry of a raised gun platform, and the ballistic accident that killed the Mediterranean's greatest corsair — examined through petrography, military engineering, and 450 years of weathering data.",
+  category: "archaeology",
+  style: "natgeo-sciam-hybrid",
+  date: "2026-04-19",
+  author: "Matthew Deane",
+  tags: ["malta", "fort-st-elmo", "great-siege", "globigerina-limestone", "fortifications"],
+};
 
 /*
 MODE: Scientific American Hybrid | FORMAT: Standard Feature
@@ -180,9 +198,9 @@ export default function App(){
   const [ok,setOk]=useState(false);
   useEffect(()=>{setTimeout(()=>setOk(true),80)},[]);
 
-  const SB=()=><div style={{textAlign:"center",margin:"34px 0",color:C.honey,fontSize:"15px",letterSpacing:"10px"}}>❧</div>;
+  const Flr=()=><div style={{textAlign:"center",margin:"34px 0",color:C.honey,fontSize:"15px",letterSpacing:"10px"}}>❧</div>;
   const Fig=({children,caption})=>(<div style={{margin:"42px -22px"}}>{children}<div style={{fontSize:"12px",color:C.cap,lineHeight:1.55,padding:"10px 22px 0",fontStyle:"italic",borderTop:`1px solid ${C.stoneD}`}}>{caption}</div></div>);
-  const Side=({title,children})=>(<div style={{background:C.stoneD,borderLeft:`3px solid ${C.honey}`,padding:"22px 26px",margin:"36px 0"}}><h4 style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",fontWeight:700,color:C.mid,marginBottom:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</h4>{children}</div>);
+  const SB=({title,children})=>(<div style={{background:C.stoneD,borderLeft:`3px solid ${C.honey}`,padding:"22px 26px",margin:"36px 0"}}><h4 style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",fontWeight:700,color:C.mid,marginBottom:"10px",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</h4>{children}</div>);
   const sp={fontSize:"14.5px",lineHeight:1.62,marginBottom:".7em"};
 
   return(<>
@@ -225,9 +243,9 @@ export default function App(){
 
         <Fig caption={<><strong>The building block of siege warfare.</strong> Materials science of Lower Globigerina Limestone — a Miocene bioclastic packstone of globigerinid foraminiferal tests in a micrite matrix. Porosity of 24–41% absorbs ballistic energy but oblique impacts can produce lethal shrapnel. The Franka subtype's recession rate of 1.4 mm/century means the fortifications are effectively permanent on human timescales. Designated IUGS Global Heritage Stone Resource in 2019.</>}><LimestoneSVG/></Fig>
 
-        <Side title="Sidebar 1: Petrography of a Cannonball's Target">
+        <SB title="SB 1: Petrography of a Cannonball's Target">
           <p style={sp}>Globigerina Limestone is petrographically classified as a bioclastic packstone to wackestone (Dunham classification), composed of more than 92% calcite with small amounts of clay minerals. The bioclasts are predominantly the tests (shells) of planktonic globigerinid foraminifera — single-celled organisms whose calcium carbonate shells settled on the Miocene seafloor of the Pelagian Shelf. The matrix is micrite (microcrystalline calcite, grain size &lt;4 μm), with neomorphic spar (5–15 μm) developing through diagenetic recrystallisation — a process observed by Gatt (2006) in SEM micrographs of 17th-century building stone from Floriana. Porosity is both intergranular (between fossil tests) and intragranular (within the hollow chambers of foraminifera). This dual-porosity system is what gives the stone its distinctive mechanical behaviour: soft enough to cut with a saw when freshly quarried (the calcium carbonate has not yet fully recrystallised around the pore spaces), it hardens significantly over months to years of atmospheric exposure as desiccation drives further cementation. In ballistic terms, the high porosity functions as a shock absorber — deformation energy is distributed across the pore network rather than concentrated at the point of impact, reducing the radius of fragmentation. This property made Globigerina Limestone a surprisingly effective defensive material against sixteenth-century iron cannonballs, which typically weighed 12–24 kg and impacted at velocities of 200–400 m/s.</p>
-        </Side>
+        </SB>
 
         <p>By the time the Ottomans arrived on 18 May 1565, Pardo's fort had acquired three additional elements: a covertway (a covered path along the outer edge of the ditch), a tenaille (a low outwork covering the main wall's base), and the cavalier — a raised rectangular gun platform set within the star-shaped perimeter, elevating the fort's heaviest guns approximately eight to ten metres above the main parapet line. The cavalier's military function was geometric: by raising the fire point above the main walls, it eliminated the dead ground that exists at the base of any fortification — the zone where attackers, having crossed the ditch and reached the wall, are below the defenders' angle of depression. From the cavalier, cannon could deliver plunging fire into this zone, and could also fire over the main parapet toward approaching siege works or ships. The total elevation from sea level to the cavalier's gun platform was approximately twenty metres. The Ottomans' response was to position their batteries on Mount Sciberras, the ridge that runs along the peninsula behind the fort, giving them the elevation advantage that the cavalier was designed to provide the defenders — a geometric reversal that Francesco Laparelli, the Pope's architect, would solve after the siege by building the entire city of Valletta on the ridge itself.</p>
 
@@ -235,19 +253,19 @@ export default function App(){
 
         <div className="pq">"If the child cost us so dear, what will the parent cost?"<br/><span style={{fontSize:"12px",fontWeight:400,fontStyle:"normal",color:C.cap}}>— Mustafa Pasha, surveying the Ottoman dead after the fall of Fort St Elmo. Ottoman losses at St Elmo alone: ~8,000. The fort was expected to fall in 3 days; it held for 28.</span></div>
 
-        <Side title="Sidebar 2: The Siege as Engineering Problem">
+        <SB title="SB 2: The Siege as Engineering Problem">
           <p style={sp}>The initial garrison numbered approximately 150 knights and 600 soldiers (majority Spanish), plus sixty armed galley slaves. Francisco Balbi di Correggio, a Spanish soldier who survived the Great Siege and published his account in 1568, recorded that Ottoman engineers estimated the fort would fall in three to five days — a calculation based on the weight of their siege train (thirty-six or more guns on Mount Sciberras) and the fort's relatively small footprint. The cavalier extended this estimate to twenty-eight days by providing a secondary defensive position that remained tenable even after the main walls were breached. The hastily built ravelin — described as little more than earth and fascines — fell around 10 June. The main fort followed on 23 June, by which time the entire garrison had been killed except nine Maltese soldiers who swam to Fort St Angelo. The delay was decisive: it allowed the fortification of Birgu and Senglea and bought time for the Gran Soccorso — approximately 8,000 Spanish and Italian relief troops — which landed at St Paul's Bay on 7 September and drove the Ottomans off the island. The cavalier's engineering contribution can be quantified in a rough metric: twenty-five additional days of resistance per eight metres of elevation — a ratio that would inform European fortification design for the next century.</p>
-        </Side>
+        </SB>
 
         <Fig caption={<><strong>Twenty-eight days.</strong> The Fort St Elmo phase of the Great Siege, from the Ottoman fleet's arrival to the relief force's landing. The cavalier's elevation advantage extended resistance from an expected 3 days to 28, at a cost of approximately 8,000 Ottoman dead — including Dragut, killed by a limestone fragment on 18 June.</>}><SiegeSVG/></Fig>
 
-        <SB/>
+        <Flr/>
 
         <p>After the siege, Laparelli rebuilt Fort St Elmo and incorporated it into Valletta's fortification system. The seventeenth and eighteenth centuries added the Vendôme Bastion (1614), the Carafa Enceinte (1687), and various barracks and churches. The British added musketry parapets in the nineteenth century. Very few elements of the present structure can be securely dated to 1552 — a point that military historian Stephen Spiteri has emphasised, noting that "few of the present-day features actually witnessed the events of 1565." The original fort's footprint is largely preserved, but its surfaces have been overwritten by successive engineering interventions. During the €15.5 million restoration completed in 2015 — funded eighty-five per cent by the European Regional Development Fund and implemented by the Grand Harbour Regeneration Corporation in collaboration with Heritage Malta — archaeological excavations uncovered elements of the pre-1565 fort, including sections of Pardo's original revetments. The cavalier's vaulted interior, which had served as magazine, barracks, shelter, and armoury across five centuries, was converted into an immersive heritage experience: three projectors casting computer-generated seas and explosions onto the curved walls while holographic actors deliver the historical narrative inside the same space where defenders sheltered from the Ottoman bombardment.</p>
 
-        <Side title="Sidebar 3: Conservation Science — 450 Years of Weathering">
+        <SB title="SB 3: Conservation Science — 450 Years of Weathering">
           <p style={sp}>Roussel et al.'s 2021 Geomorphology study represents the first systematic quantification of limestone recession on Maltese fortifications. Using Structure from Motion (SfM) photogrammetry at six sites, combined with on-site Leeb hardness testing and laboratory petrographic and porosimetric analysis, the team measured surface recession relative to protected reference surfaces (such as stone behind later additions or beneath protective cappings). The Franka subtype showed remarkable durability: a median recession of 1.4 mm/century, meaning that fortification surfaces built in the 1560s have lost approximately 6.4 mm of material over 450 years. The Soll subtype, by contrast, receded at 50 mm/century — explaining the dramatic alveolar (honeycomb) weathering visible on some sections of the Carafa Enceinte. The primary weathering mechanism is salt crystallisation: in Malta's salt-laden marine environment, sodium chloride and sodium sulphate crystals grow within the pore network, exerting expansive pressures that fracture the stone from within. The conservation challenge is that treatments designed to reduce porosity (such as TEOS-based silicate consolidants) also reduce the stone's natural ability to absorb and release moisture, potentially accelerating rather than retarding decay — a finding that JoAnn Cassar's research group at the University of Malta has explored extensively.</p>
-        </Side>
+        </SB>
 
         <p>The question that the cavalier poses — and that materials scientists, military engineers, and conservation specialists have been answering from different angles for five centuries — is fundamentally one of geometry and time. Pardo understood that ten metres of elevation would translate into additional days of resistance, and designed the cavalier accordingly. Dragut understood that the fort had to fall before the harbours could be secured, and died proving it. Laparelli understood that the high ground of Sciberras Peninsula was the real strategic asset, and built a city to claim it. Roussel's team understood that the same stone which resisted Ottoman cannonballs at 200 m/s is slowly losing its surface to salt crystals at 1.4 mm per century — a rate that makes the fortifications effectively permanent on any human planning horizon, but not permanent in geological time. The Globigerina Limestone was deposited between 23 and 14 million years ago. It has been quarried for 6,000 years. It has been fortification stone for 500. The cavalier it built was expected to survive three days; it survived twenty-eight. The weathering data suggest it will survive at least another 70,000 years at current recession rates, barring catastrophic salt loading or climate-driven acceleration. The stone has outlasted every army that has attacked it. Whether it will outlast the sea that made it is a question the foraminifera, whose tests compose its matrix, are no longer alive to answer.</p>
 
