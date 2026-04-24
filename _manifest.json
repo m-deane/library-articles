@@ -18,6 +18,25 @@
     "pdf_url": "articles/fish-farms-environmental-impact.pdf"
   },
   {
+    "slug": "obsidian-and-claude-code",
+    "title": "Obsidian and Claude Code",
+    "subtitle": "Where thinking happens and where executing happens \u2014 and what lives on the seam between a note vault and an agent runtime.",
+    "date": "2026-04-24",
+    "read_time": "",
+    "category": "data-engineering",
+    "style": "encyclopaedic",
+    "tags": [
+      "obsidian",
+      "claude-code",
+      "workflow",
+      "mcp",
+      "data-engineering"
+    ],
+    "component": "ObsidianAndClaudeCode",
+    "url": "articles/obsidian-and-claude-code.html",
+    "pdf_url": "articles/obsidian-and-claude-code.pdf"
+  },
+  {
     "slug": "looksmaxxing",
     "title": "Looksmaxxing",
     "subtitle": "How a vocabulary from the incelosphere became the operating system of young male beauty",

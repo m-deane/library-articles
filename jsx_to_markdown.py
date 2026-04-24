@@ -94,6 +94,7 @@ SLUGS = [
     "tanzanite-cover-story",
     "the-doers-and-the-knowers",
     "xlendi-wreck",
+    "obsidian-and-claude-code",
 ]
 
 

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Obsidian and Claude Code — Plain Reader</title>
+  <meta name="description" content="Where thinking happens and where executing happens — and what lives on the seam between a note vault and an agent runtime." />
+
+  <!-- Local vendored fonts (no cross-origin fetch) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared site chrome + plain-reader typography -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/md-styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+</head>
+<body class="md-body">
+  <!-- Compact header bar — same pattern as the JSX reader -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">Obsidian and Claude Code</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-24</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read"></span>
+      </div>
+      <a class="md-link header-md-link active" title="Plain-HTML reader (you are here)">📄 Plain</a>
+      <a class="jsx-link header-jsx-link" href="../articles/obsidian-and-claude-code.html" title="Full JSX reader with interactive charts">🎨 Full</a>
+      <a class="pdf-link header-pdf-link" href="../articles/obsidian-and-claude-code.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All</a>
+    </div>
+  </header>
+
+  <main class="md-container">
+    <article class="md-article">
+      <h2 id="1-the-article-generation-daemon">1. The article-generation daemon</h2>
+<p>The pattern begins with the narrowest possible seam: a file watcher. In the live workspace, a launchd-driven Python process scans an Obsidian vault every 30 seconds looking for notes whose YAML frontmatter contains <code>status: ready</code>. When it finds one, it atomically flips <code>ready</code> to <code>generating</code> using an advisory file lock, extracts <code>article-skill</code> and <code>article-mode</code> from the frontmatter, resolves <code>[[wikilinks]]</code> and <code>![[embeds]]</code>, composes a prompt, and spawns <code>claude -p</code> with the appropriate slash-command. The generator skill writes a JSX file and the daemon records the outcome.</p>
+<p>The atomicity matters. A naive implementation races: two scans, both see <code>ready</code>, both spawn Claude. The live daemon uses <code>fcntl.flock(LOCK_EX)</code> on the note file itself and re-reads the status after acquiring the lock; if the re-read doesn't say <code>ready</code>, the scan abandons the claim. A unit test in the workspace (<code>tests/test_state_machine.py</code>) exercises three invariants: that a <code>ready</code> note flips to <code>generated</code> on success, that a failing CLI invocation flips it to <code>failed</code> with the first 500 characters of stderr captured in an <code>error-log</code> frontmatter key, and that a non-<code>ready</code> note is left untouched. No real CLI is spawned in the test — <code>run_claude</code> is monkeypatched.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Cell 1: daemon.py (extract)</span>
+<span class="c1"># Injection point for tests: monkeypatch run_claude to avoid the real CLI.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_claude</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CompletedProcess</span><span class="p">:</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">CLAUDE_BIN</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--permission-mode&quot;</span><span class="p">,</span> <span class="s2">&quot;acceptEdits&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--add-dir&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">LIBRARY_ROOT</span><span class="p">),</span>
+        <span class="s2">&quot;--add-dir&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">LIBRARY_ARTICLES_ROOT</span><span class="p">),</span>
+        <span class="s2">&quot;--output-format&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--max-budget-usd&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">MAX_BUDGET_USD</span><span class="p">),</span>
+        <span class="n">prompt</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">CLAUDE_TIMEOUT</span><span class="p">,</span>
+                          <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The anti-pattern to avoid: using the daemon as a place to also commit and push. Keep it dumb. Generation writes a file; a separate watcher on the output directory picks the file up and publishes. Two processes with one responsibility each is easier to reason about than one daemon with two. In the live workspace, the article-daemon and the Phase 2 ingest watcher are genuinely independent — the daemon can crash mid-run and the publishing pipeline still moves forward on whatever JSX already exists.</p>
+<h2 id="2-research-reading-structured-prose">2. Research reading → structured prose</h2>
+<p>A vault is a natural place to collect reading. A PDF opens, the Annotator plugin extracts highlights, and the highlights land as a child note. Over weeks you accumulate eight or ten of these, plus a hand-written overview note. When you want a literature-review draft, the seam is simple: point Claude Code at the folder, describe the frame, ask for a synthesis.</p>
+<p>The content here is prose, not runnable code. Claude Code's Read tool walks the folder, and its long-context window lets it hold the source material and the draft in memory simultaneously. You discipline the output with a CLAUDE.md at the root of the folder — a few hundred words describing voice, citation style, and the Three-Tier evidence rule that everything cited must trace to a verifiable source. CLAUDE.md files combine hierarchically from user scope (<code>~/.claude/CLAUDE.md</code>) down through project root and subdirectory, with more specific levels overriding on conflicts.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># shell</span>
+<span class="err">$</span> <span class="n">cd</span> <span class="o">~/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Obsidian</span>\ <span class="n">Vault</span><span class="o">/</span><span class="n">Reading</span><span class="o">/</span><span class="n">Diffusion</span>\ <span class="n">Models</span><span class="o">/</span>
+<span class="err">$</span> <span class="n">claude</span> <span class="o">-</span><span class="n">p</span> <span class="s2">&quot;Read every note in this folder. Write a 1,500-word </span><span class="se">\</span>
+<span class="s2">literature-review draft that frames diffusion as score matching. </span><span class="se">\</span>
+<span class="s2">Cite with [[wikilinks]] to the notes you used. Save to _draft.md.&quot;</span>
+</code></pre></div>
+
+<p>The failure mode is credulity. Claude will happily synthesise a confident-sounding paragraph that is factually slightly wrong, because the source notes themselves contained a misreading you never corrected. The mitigation is the same as for any technical writing: every claim must cite a note; every note you rely on you must reread. The Obsidian graph view helps — when Claude cites notes you haven't opened in three months, that is a prompt to reread them before trusting the synthesis.</p>
+<h2 id="3-dataset-documentation">3. Dataset documentation</h2>
+<p>Datasets rot in documentation faster than in storage. A README says "120 million rows, 42 features" on the day it is written; six months later the truth is 180 million and 49. The Dataview plugin and a scheduled Claude Code hook together can keep documentation fresh without anyone writing prose.</p>
+<p>Dataview transforms an Obsidian vault into a queryable database. You write a code block with a DQL query or a DataviewJS block that runs JavaScript against the index; the plugin renders the output inline. Dataview's DataviewJS blocks have the same level of access as any other Obsidian plugin — they can read files, make network calls, and mutate the vault — so you use them sparingly, but for read-only summaries over the vault itself they are excellent. A dataset note can carry a Dataview block that lists every child notebook tagged <code>#uses-this-dataset</code>, so the README always answers "who depends on this?" without manual maintenance.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># dataview block in a dataset README</span>
+<span class="err">```</span><span class="n">dataview</span>
+<span class="n">TABLE</span> <span class="n">file</span><span class="o">.</span><span class="n">mtime</span> <span class="k">as</span> <span class="s2">&quot;Last edited&quot;</span><span class="p">,</span> <span class="n">status</span>
+<span class="n">FROM</span> <span class="s2">&quot;Notebooks&quot;</span>
+<span class="n">WHERE</span> <span class="n">contains</span><span class="p">(</span><span class="n">datasets</span><span class="p">,</span> <span class="p">[[</span><span class="n">trades</span><span class="o">-</span><span class="mi">2026</span><span class="p">]])</span>
+<span class="n">SORT</span> <span class="n">file</span><span class="o">.</span><span class="n">mtime</span> <span class="n">DESC</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">The</span><span class="w"> </span><span class="n">Claude</span><span class="w"> </span><span class="n">Code</span><span class="w"> </span><span class="n">side</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">seam</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">scheduled</span><span class="w"> </span><span class="nl">subagent</span><span class="p">:</span><span class="w"> </span><span class="k">every</span><span class="w"> </span><span class="n">Monday</span><span class="w"> </span><span class="n">morning</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">cron</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">invokes</span><span class="w"> </span><span class="err">`</span><span class="n">claude</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="ss">&quot;/refresh-dataset-stats trades-2026&quot;</span><span class="err">`</span><span class="p">.</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">skill</span><span class="w"> </span><span class="k">reads</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Parquet</span><span class="w"> </span><span class="k">file</span><span class="p">,</span><span class="w"> </span><span class="n">updates</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">row</span><span class="o">-</span><span class="nf">count</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="k">schema</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">dataset</span><span class="s1">&#39;s Markdown README, and records the delta in a changelog section. The anti-pattern is letting Claude generate the Dataview query itself at every run — the query should be hand-written and stable, because Dataview queries that mutate their own surrounding note produce confusing diffs. Let Claude update numbers, not code.</span>
+
+<span class="s1">![A file-watcher log is the quietest piece of infrastructure you can own. Lines only appear when something changes, and the daemon cost is a few milliseconds of directory stat per tick.](https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=1600&amp;q=80)</span>
+
+<span class="s1">*A file-watcher log is the quietest piece of infrastructure you can own. Lines only appear when something changes, and the daemon cost is a few milliseconds of directory stat per tick. — [Markus Spiske / Unsplash](https://unsplash.com/photos/monitor-showing-java-programming-iar-afB0QQw?utm_source=dsl&amp;utm_medium=referral)*</span>
+
+<span class="s1">## 4. Plan-first implementation</span>
+
+<span class="s1">For anything larger than a one-file change, write the plan before the code. Obsidian is an unusually good place to draft a plan — wikilinks let you reference the existing files you will touch, Dataview can pull in the list of tests that currently exist for the module, and the graph view gives you a cheap check that you have thought about the dependencies.</span>
+
+<span class="s1">Claude Code exposes two mechanisms that consume such a plan: the user-authored `CLAUDE.md` memory hierarchy and the Claude Agent SDK&#39;</span><span class="n">s</span><span class="w"> </span><span class="n">subagent</span><span class="w"> </span><span class="n">pattern</span><span class="p">.</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">SDK</span><span class="w"> </span><span class="n">lets</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="n">spawn</span><span class="w"> </span><span class="n">subagents</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">isolated</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="n">windows</span><span class="p">,</span><span class="w"> </span><span class="k">each</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">their</span><span class="w"> </span><span class="n">own</span><span class="w"> </span><span class="n">allowed</span><span class="o">-</span><span class="n">tools</span><span class="w"> </span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="k">collect</span><span class="w"> </span><span class="n">their</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="err">—</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="n">Anthropic</span><span class="w"> </span><span class="n">documents</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">parallelising</span><span class="w"> </span><span class="n">independent</span><span class="w"> </span><span class="n">tasks</span><span class="p">.</span><span class="w"> </span><span class="k">For</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">plan</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">three</span><span class="w"> </span><span class="n">independent</span><span class="w"> </span><span class="n">steps</span><span class="w"> </span><span class="p">(</span><span class="k">add</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">endpoint</span><span class="p">,</span><span class="w"> </span><span class="n">extend</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">schema</span><span class="p">,</span><span class="w"> </span><span class="k">write</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">tests</span><span class="p">)</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">hand</span><span class="w"> </span><span class="k">each</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">subagent</span><span class="p">.</span>
+
+<span class="err">```</span><span class="n">python</span>
+<span class="err">#</span><span class="w"> </span><span class="k">plan</span><span class="p">.</span><span class="n">md</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">vault</span><span class="p">,</span><span class="w"> </span><span class="n">referenced</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">CLAUDE</span><span class="p">.</span><span class="n">md</span><span class="w"> </span><span class="n">import</span>
+<span class="err">#</span><span class="w"> </span><span class="k">Plan</span><span class="err">:</span><span class="w"> </span><span class="k">add</span><span class="w"> </span><span class="o">/</span><span class="n">health</span><span class="w"> </span><span class="n">endpoint</span>
+
+<span class="o">-</span><span class="w"> </span><span class="o">[</span><span class="n"> </span><span class="o">]</span><span class="w"> </span><span class="k">Read</span><span class="w"> </span><span class="o">[</span><span class="n">[server/app.py</span><span class="o">]</span><span class="err">]</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">identify</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">route</span><span class="w"> </span><span class="n">decorator</span><span class="w"> </span><span class="n">style</span>
+<span class="o">-</span><span class="w"> </span><span class="o">[</span><span class="n"> </span><span class="o">]</span><span class="w"> </span><span class="k">Add</span><span class="w"> </span><span class="k">GET</span><span class="w"> </span><span class="o">/</span><span class="n">health</span><span class="w"> </span><span class="n">returning</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;ok&quot;</span><span class="err">:</span><span class="w"> </span><span class="k">true</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;commit&quot;</span><span class="err">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">sha</span><span class="o">&gt;</span><span class="err">}</span>
+<span class="o">-</span><span class="w"> </span><span class="o">[</span><span class="n"> </span><span class="o">]</span><span class="w"> </span><span class="n">Extend</span><span class="w"> </span><span class="o">[</span><span class="n">[tests/test_server.py</span><span class="o">]</span><span class="err">]</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="n">health</span><span class="w"> </span><span class="n">test</span>
+<span class="o">-</span><span class="w"> </span><span class="o">[</span><span class="n"> </span><span class="o">]</span><span class="w"> </span><span class="k">Update</span><span class="w"> </span><span class="o">[</span><span class="n">[README</span><span class="o">]</span><span class="err">]</span><span class="w"> </span><span class="ss">&quot;Endpoints&quot;</span><span class="w"> </span><span class="k">section</span>
+
+<span class="nl">Acceptance</span><span class="p">:</span><span class="w"> </span><span class="n">tests</span><span class="w"> </span><span class="n">pass</span><span class="p">;</span><span class="w"> </span><span class="n">README</span><span class="w"> </span><span class="n">shows</span><span class="w"> </span><span class="o">/</span><span class="n">health</span><span class="p">;</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="n">localhost</span><span class="o">/</span><span class="n">health</span><span class="w"> </span><span class="k">returns</span><span class="w"> </span><span class="mf">200.</span>
+</code></pre></div>
+
+<p>The seam is an import. <code>CLAUDE.md</code> supports an <code>@path/to/file</code> import syntax that pulls another file into the memory context, so the vault plan note can be referenced from the repo's <code>CLAUDE.md</code> during the session. The anti-pattern is writing the plan and the code in the same pass — the plan becomes self-justifying, and the first time a subagent's proposal surprises you, you cannot tell whether the plan or the code drifted. Separate the two.</p>
+<h2 id="5-daily-briefing-agent">5. Daily briefing agent</h2>
+<p>At 07:00 a small scheduled agent writes a note into the vault at <code>Daily/2026-04-24.md</code>. Three sections: what git landed yesterday across the repos you care about, what GitHub PRs are waiting on your review, what the most recent experiment's metric moved to. You open Obsidian with your coffee and the note is already there.</p>
+<p>The implementation has no clever parts. <code>launchctl</code> on macOS or cron on Linux runs <code>claude -p "/morning-briefing"</code> at the schedule. The skill is a single markdown file in <code>~/.claude/skills/morning-briefing/</code> whose body instructs Claude to run <code>git log --since=yesterday</code> across a known list of repos, query <code>gh pr list --search "review-requested:@me"</code>, and read the latest row of a metrics CSV. It writes the result to the vault using the Write tool.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># launchd plist fragment</span>
+<span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="n">StartCalendarInterval</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nb">dict</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="n">Hour</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;&lt;</span><span class="n">integer</span><span class="o">&gt;</span><span class="mi">7</span><span class="o">&lt;/</span><span class="n">integer</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="n">Minute</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;&lt;</span><span class="n">integer</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">integer</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nb">dict</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="n">ProgramArguments</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">array</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;/</span><span class="n">Users</span><span class="o">/</span><span class="n">you</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">claude</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;-</span><span class="n">p</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;/</span><span class="n">morning</span><span class="o">-</span><span class="n">briefing</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">array</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<p>Two anti-patterns. First, letting the agent phone the internet at 07:00 sharp against rate-limited APIs will sometimes fail silently — always write a minimal placeholder note even when a data fetch fails, so the missing section in the morning note is visible rather than invisible. Second, do not let the agent compute anything expensive in this loop. The morning briefing is a <em>readout</em> of state you already have, not a computation. Expensive jobs belong in their own scheduled skills with their own budgets.</p>
+<h2 id="6-skill-authoring-loop">6. Skill authoring loop</h2>
+<p>A Claude Code skill is a small file: YAML frontmatter with a <code>name</code> and a <code>description</code>, followed by Markdown body instructions. The description is load-bearing — Claude uses it to decide whether to invoke the skill in response to a user prompt. "Only <code>description</code> is recommended so Claude knows when to use the skill," per the official docs. A skill that writes a dataset changelog might have a description like <em>"Use when the user asks to summarise dataset changes, regenerate a CHANGELOG, or refresh dataset README stats."</em></p>
+<p>The authoring loop is short. Open Obsidian, draft the skill body as a normal note, iterate on the description until it captures the trigger conditions you want. Save the file to <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code>. The official Anthropic skills repo and the plugin-dev skill both recommend targeting 1,500–2,000 words in the body, moving detail into a <code>references/</code> folder, and testing whether Claude picks the skill up under the triggers you expect.</p>
+<p>In this workspace, skills live at <code>~/.claude/skills/</code> and are mirrored into each library repo at <code>.claude/skills/</code>. The mirror matters because Claude Code for web — the claude.ai/code sandbox — only reads repository-committed configuration; a user-scope skill is invisible to the web sandbox. The workspace ships a <code>.claude/sync-skills.sh</code> script that copies user-scope skills into the repo mirror. The anti-pattern is editing the mirror instead of the source and letting them drift. Always edit <code>~/.claude/skills/</code>, then sync; the workspace <code>CLAUDE.md</code> documents this contract explicitly.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># SKILL.md frontmatter shape</span>
+<span class="o">---</span>
+<span class="n">name</span><span class="p">:</span> <span class="n">dataset</span><span class="o">-</span><span class="n">changelog</span>
+<span class="n">description</span><span class="p">:</span> <span class="n">Use</span> <span class="n">when</span> <span class="n">the</span> <span class="n">user</span> <span class="n">asks</span> <span class="n">to</span> <span class="n">summarise</span> <span class="n">dataset</span> <span class="n">changes</span><span class="p">,</span>
+  <span class="n">regenerate</span> <span class="n">a</span> <span class="n">CHANGELOG</span><span class="p">,</span> <span class="ow">or</span> <span class="n">refresh</span> <span class="n">dataset</span> <span class="n">README</span> <span class="n">stats</span><span class="o">.</span>
+<span class="o">---</span>
+
+<span class="c1"># Dataset Changelog</span>
+
+<span class="n">Read</span> <span class="n">the</span> <span class="n">dataset</span><span class="s1">&#39;s Parquet file at `datasets/&lt;slug&gt;.parquet`</span>
+<span class="ow">and</span> <span class="n">write</span> <span class="n">a</span> <span class="n">CHANGELOG</span> <span class="n">row</span><span class="o">...</span>
+</code></pre></div>
+
+<h2 id="7-meeting-notes-action-items">7. Meeting notes → action items</h2>
+<p>Meeting notes are a natural Obsidian habit — today's note contains both the narrative of the call and a scatter of <code>- [ ]</code> task checkboxes. The seam pushes those checkboxes into your issue tracker as soon as the call ends. Claude Code's hook system is the right primitive: the <code>Stop</code> hook fires when Claude finishes responding, and its stdout is available for a follow-up shell action.</p>
+<p>Claude Code documents twelve lifecycle hook events: <code>PreToolUse</code>, <code>PostToolUse</code>, <code>Stop</code>, <code>SubagentStop</code>, <code>SessionStart</code>, <code>SessionEnd</code>, <code>UserPromptSubmit</code>, <code>PreCompact</code>, <code>Notification</code>, and a few more. Hooks are configured in JSON settings files with three levels of nesting — an event, a matcher group, and one or more handlers. A handler is typically a shell command; it receives the event payload on stdin and signals outcome via exit code (0 = success, 2 = blocking error fed back to Claude as stderr text).</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># ~/.claude/settings.json fragment</span>
+<span class="p">{</span>
+  <span class="s2">&quot;hooks&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;Stop&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s2">&quot;matcher&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;any&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+        <span class="s2">&quot;hooks&quot;</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;command&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;python3 ~/.claude/hooks/file_tasks_as_issues.py&quot;</span>
+          <span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The handler parses today's meeting note out of the vault, finds every unchecked <code>- [ ]</code> line, and calls <code>gh issue create --title ...</code> per task. A small idempotency guard — append the issue number back into the note as <code>- [ ] (gh#123) task</code> — prevents duplicate issues on reruns. The anti-pattern is using <code>PreToolUse</code> for this; <code>PreToolUse</code> runs before every tool call and is the wrong place for heavy work. Use <code>Stop</code> or <code>SubagentStop</code> for once-per-turn side effects, and keep per-tool hooks cheap.</p>
+<h2 id="8-learning-log-with-spaced-repetition">8. Learning log with spaced repetition</h2>
+<p>Each technical concept you learn becomes a note: a title, one screen of explanation, a worked example, and a <code>next-review: 2026-05-01</code> frontmatter field. A daily Claude Code agent queries the vault for notes whose review date is today or overdue, picks three, and writes a short quiz into <code>Daily/2026-04-24.md</code>. You answer on paper or in-note, and a <code>PostToolUse</code> hook on the Write tool rolls the review dates forward using a simple SM-2-lite schedule (right → next interval × 2, wrong → back to 1 day).</p>
+<p>Dataview does the querying. A DataviewJS block can return an array of note paths sorted by <code>next-review</code>; the agent reads the block's rendered output or, equivalently, calls Dataview's JavaScript API directly through the Obsidian Local REST API plugin exposed to an MCP server (see §10). The anti-pattern is trying to do spaced repetition entirely inside the vault with no Claude loop at all — Anki already exists, and better. The value of the Claude loop is that it <em>writes</em> — it constructs a new quiz note each morning that contains the questions plus the source links, so answering the quiz is also rereading. The note is the artefact, not the schedule.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># frontmatter on a concept note</span>
+<span class="o">---</span>
+<span class="n">concept</span><span class="p">:</span> <span class="n">backprop</span><span class="o">-</span><span class="n">through</span><span class="o">-</span><span class="n">time</span>
+<span class="n">created</span><span class="p">:</span> <span class="mi">2026</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">10</span>
+<span class="nb">next</span><span class="o">-</span><span class="n">review</span><span class="p">:</span> <span class="mi">2026</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">25</span>
+<span class="n">interval</span><span class="o">-</span><span class="n">days</span><span class="p">:</span> <span class="mi">3</span>
+<span class="n">streak</span><span class="p">:</span> <span class="mi">2</span>
+<span class="o">---</span>
+</code></pre></div>
+
+<p><img alt="The slow rhythm. A spaced-repetition loop rewards exactly the kind of reading the vault is already for — one concept, one page, one review cycle at a time." src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1600&amp;q=80"></p>
+<p><em>The slow rhythm. A spaced-repetition loop rewards exactly the kind of reading the vault is already for — one concept, one page, one review cycle at a time. — <a href="https://unsplash.com/photos/person-reading-book-fMntI8HAAB8?utm_source=dsl&amp;utm_medium=referral">Patrick Tomasso / Unsplash</a></em></p>
+<h2 id="9-memory-synchronisation">9. Memory synchronisation</h2>
+<p>Claude Code has a four-tier memory hierarchy: <code>~/.claude/CLAUDE.md</code> at user scope, <code>&lt;repo&gt;/CLAUDE.md</code> at project root, <code>&lt;repo&gt;/&lt;subdir&gt;/CLAUDE.md</code> at subdirectory scope, and <code>&lt;repo&gt;/CLAUDE.local.md</code> for personal gitignored overrides. All four combine on session start; more specific levels override on conflicts. The official guidance is to target under 200 lines per file and to use the <code>@path/to/file</code> import syntax to keep the main memory lean while loading detail on demand.</p>
+<p>Obsidian's vault is a parallel memory system — different shape, different retrieval mechanism (graph + search), different retention (forever). The seam question is: when a fact exists in both places, which one wins? The rule that has held up here: <em>the vault is the source of truth for things the human reads; <code>CLAUDE.md</code> is the source of truth for things the agent reads.</em> A description of the article pipeline belongs in the workspace <code>CLAUDE.md</code> because Claude needs it to operate correctly; the same description paraphrased for a reader belongs in an <code>AUTOMATION.md</code> next to it. They restate the same truth in different registers.</p>
+<p>The anti-pattern is duplicating facts. A fact written twice drifts; a fact written once and imported is stable. When a file exists in both the vault and the repo, use an import: in this workspace, project-specific CLAUDE.md files at each of the four subfolders (<code>library/</code>, <code>library-articles/</code>, <code>article-daemon/</code>) are the real source, and the parent workspace <code>CLAUDE.md</code> summarises the pipeline without restating it. If a subfolder's contract changes, one file moves.</p>
+<blockquote>
+<p><strong>Rule of thumb</strong></p>
+<p>The vault is write-mostly for humans. <code>CLAUDE.md</code> is read-mostly for agents. When a sentence belongs in both, write it once and link.</p>
+</blockquote>
+<h2 id="10-mcp-servers-over-the-vault">10. MCP servers over the vault</h2>
+<p>The Model Context Protocol is an open standard for client-server communication between AI applications and external tools, introduced by Anthropic in late 2024 and now governed under the Linux Foundation's Agentic AI Foundation. It uses JSON-RPC 2.0 as its wire format and supports two transports: stdio for same-machine connections and Streamable HTTP (plus SSE) for remote clients. Claude Code is an MCP client; the clean way to expose an Obsidian vault to Claude is to run an MCP server that speaks the protocol on behalf of the vault.</p>
+<p>Several published implementations exist in the <em>awesome-mcp-servers</em> ecosystem. The two most widely referenced are <code>MarkusPfundstein/mcp-obsidian</code> and <code>cyanheads/obsidian-mcp-server</code>, both of which bridge to the Obsidian Local REST API community plugin. They expose tools like <code>list_files_in_vault</code>, <code>get_file_contents</code>, <code>search</code>, <code>patch_content</code>, <code>append_content</code>, and <code>delete_file</code>. Prerequisites: install the Obsidian Local REST API plugin, enable it in the vault settings, copy the API key into the MCP server's config. Claude Code connects and can now read and write the vault.</p>
+<p>Once the server is running, a Claude Code session can ask the vault natural questions: "find every note tagged #paper-to-read and not yet linked from the reading log." The protocol is the point — the same server pattern also works from Cursor, Claude Desktop, or any MCP-capable client. The published servers use permissive scoping, so read the source before pointing one at a vault that contains anything private.</p>
+<blockquote>
+<p><strong>⚠️ Reference implementation — not a published package</strong></p>
+<p>The minimal sketch below is for exposition only. It is not a published package; treat it as pseudocode for what the published <code>mcp-obsidian</code> and <code>obsidian-mcp-server</code> repositories do for real. In production, use one of those maintained servers rather than rolling your own.</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># sketch — not production code</span>
+<span class="c1"># A minimum-viable MCP server stub: list and read notes.</span>
+<span class="c1"># For real use, install MarkusPfundstein/mcp-obsidian or</span>
+<span class="c1"># cyanheads/obsidian-mcp-server, which wrap the Local REST API plugin.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span>
+
+<span class="n">VAULT</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;Documents/Obsidian Vault&quot;</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="s2">&quot;obsidian-vault-reference&quot;</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_notes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">VAULT</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">VAULT</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*.md&quot;</span><span class="p">)]</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_note</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">VAULT</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The anti-pattern is exposing <code>delete_file</code> without a consent UI. Write tools that mutate the vault should require an explicit confirmation step, either in the server or in the client; a model that halluciates a path is a model that can delete a day of reading notes. The maintained servers handle this carefully — follow their lead.</p>
+<h2 id="_1"></h2>
+<p><em>[Figure: Use Case Matrix — see interactive JSX version]</em></p>
+<p><em>The ten cases plotted by where their weight falls. The seam column fills up fastest: most of the valuable work is neither pure note-taking nor pure code execution, but the plumbing between them.</em></p>
+<h2 id="coda-and-the-tools-that-did-not-make-the-cut">Coda — and the tools that did not make the cut</h2>
+<p>Three Obsidian plugins are worth naming even though they did not earn their own use case above. <strong>Smart Connections</strong> (Brian Petro) builds local embeddings over the vault and surfaces semantically related notes — its zero-configuration local model means vault content never leaves the machine. <strong>Templater</strong> (SilentVoid13) executes JavaScript at note-creation time and loads user scripts from a designated <code>Scripts/</code> folder; the daemon's <code>article-note</code> template uses it. <strong>Obsidian Git</strong> (Vinzent03) handles automatic commits and pushes, which is how the vault ends up on a remote without anyone thinking about it. All three are safe to combine.</p>
+<p>The pattern, summarised: Obsidian rewards the slow rhythm; Claude Code rewards the fast rhythm; the seam is the interesting surface. Every use case above is a small piece of glue — a file watcher, a hook, a skill, an MCP server. None of them are clever on their own. Their value compounds because they all read and write the same two systems, and because the state machine that connects them is small enough to fit in a 30-second daemon tick.</p>
+<blockquote>
+<p>A vault rewards revisiting; an agent rewards executing. Everything useful sits between them.</p>
+</blockquote>
+<h2 id="source-integrity-note">Source Integrity Note</h2>
+<p>This article follows the Three-Tier evidence rule. Tier 1 claims are verified against a web source or a file in the live workspace. Tier 2 claims are composites — generalisations of one concrete implementation into a described pattern — and are flagged below. Tier 3 (invented) is prohibited.</p>
+<blockquote>
+<p><strong>Web sources consulted</strong></p>
+<ul>
+</blockquote>
+<li>Claude Code hooks reference — `https://code.claude.com/docs/en/hooks` (events, exit codes, JSON config)</li>
+<li>Claude Code skills — `https://code.claude.com/docs/en/skills` and `platform.claude.com/docs/en/agents-and-tools/agent-skills/overview` (frontmatter, description-as-trigger)</li>
+<li>Anthropic skills repo — `github.com/anthropics/skills`</li>
+<li>Claude Code memory — `https://code.claude.com/docs/en/memory` (CLAUDE.md hierarchy, @imports, ~200-line guidance)</li>
+<li>Claude Agent SDK — `github.com/anthropics/claude-agent-sdk-python`, `code.claude.com/docs/en/agent-sdk/overview` (subagents, allowedTools)</li>
+<li>Model Context Protocol spec — `https://modelcontextprotocol.io/specification/2025-11-25` (JSON-RPC 2.0, stdio + Streamable HTTP transports)</li>
+<li>`MarkusPfundstein/mcp-obsidian`, `cyanheads/obsidian-mcp-server` (Obsidian Local REST API bridge MCP servers)</li>
+<li>Obsidian Local REST API plugin — `github.com/coddingtonbear/obsidian-local-rest-api`</li>
+<li>Dataview — `blacksmithgu.github.io/obsidian-dataview` (DQL, DataviewJS, plugin-level access warning)</li>
+<li>Templater — `silentvoid13.github.io/Templater` (user scripts, `tp` object)</li>
+<li>Smart Connections — `github.com/brianpetro/obsidian-smart-connections` (local-first embeddings)</li>
+<li>Obsidian Git — `github.com/Vinzent03/obsidian-git` (automatic commit-and-sync)</li>
+</ul>
+<blockquote>
+<p><strong>Workspace files read</strong></p>
+<ul>
+</blockquote>
+<li>`____p-library/CLAUDE.md` — pipeline conventions, skill-mirror rule</li>
+<li>`____p-library/AUTOMATION.md` — three-workflow operator guide</li>
+<li>`____p-library/article-daemon/daemon.py` — live daemon source (`run_claude`, `_claim_note`, `process_note`, `run_once`)</li>
+<li>`____p-library/article-daemon/README.md` — state machine, frontmatter schema, logs</li>
+<li>`____p-library/article-daemon/tests/test_state_machine.py` — three invariants the daemon guarantees</li>
+<li>`____p-library/library-articles/.claude/CLAUDE.md` — library-articles project context (vendored runtime, PWA layer)</li>
+<li>`____p-library/library-articles/.claude/skills/shared-article-jsx-reference.md` — JSX component contract</li>
+<li>`~/.claude/skills/` — structure of live skill files</li>
+</ul>
+<blockquote>
+<p><strong>Tier-2 composites flagged</strong></p>
+<ul>
+</blockquote>
+<li>§3 "Dataset documentation" — the scheduled Claude hook that refreshes row counts is described as a pattern; the live workspace has a related ingest watcher but not this exact cron job.</li>
+<li>§5 "Daily briefing agent" — a reference implementation pattern. The live workspace runs launchd-driven agents (see `AUTOMATION.md`) but the 07:00 morning-briefing agent described here is illustrative.</li>
+<li>§7 "Meeting notes → action items" — the `Stop`-hook-to-`gh issue create` flow is constructed from Claude Code's documented hook system; the specific handler is a reference implementation, not a published package.</li>
+<li>§8 "Spaced repetition" — the SM-2-lite loop is described as a pattern; no shipping implementation in this workspace yet.</li>
+</ul>
+<blockquote>
+<p><strong>Reference implementations (not published packages)</strong></p>
+<ul>
+</blockquote>
+<li>§10's MCP server code block labelled "sketch — not production code". For production, use `MarkusPfundstein/mcp-obsidian` or `cyanheads/obsidian-mcp-server`.</li>
+<li>§5 launchd plist fragment and §7 hook handler JSON — illustrative; adapt paths and environment to match your own machine before running.</li>
+</ul>
+<p>/div&gt;</p>
+<p>/article&gt;
+  );
+}</p>
+    </article>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>obsidian-and-claude-code</code> &middot; category: <code>data-engineering</code> &middot; plain-HTML reader (no JS)</span>
+      <a href="../index.html">Back to index &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
