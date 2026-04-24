@@ -1,4 +1,3 @@
-import { useState } from "react";
 
 const C = {
   bg: "#FAFBFC", card: "#FFFFFF", border: "#E2E8F0", accent: "#0F766E",

@@ -1,4 +1,3 @@
-import { useState } from "react";
 
 const C = {
   y: "#FFCE00", bk: "#1a1a1a", ow: "#FAF8F5", cr: "#F2EDE4", wg: "#8A8278",

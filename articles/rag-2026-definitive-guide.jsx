@@ -1,4 +1,3 @@
-import { useState } from "react";
 const C={bg:"#FAFBFC",card:"#FFFFFF",border:"#E2E8F0",accent:"#4F46E5",accentLight:"#EEF2FF",accentDark:"#312E81",text:"#1E293B",muted:"#64748B",light:"#94A3B8",code:"#1E1E2E",codeBg:"#F1F5F9",warn:"#F59E0B",warnBg:"#FFFBEB",info:"#3B82F6",infoBg:"#EFF6FF",green:"#10B981",red:"#EF4444",purple:"#7C3AED",orange:"#F97316",tipBg:"#F0FDF4",indigo:"#6366F1",violet:"#8B5CF6",sky:"#0EA5E9",amber:"#D97706",teal:"#0F766E"};
 const F={h:"'Newsreader',Georgia,serif",b:"'Inter',-apple-system,sans-serif",m:"'JetBrains Mono','Fira Code',monospace"};
 
