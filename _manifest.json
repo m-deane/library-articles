@@ -1,5 +1,41 @@
 [
   {
+    "slug": "fish-farms-environmental-impact",
+    "title": "The Blue Paradox: What Fish Farms Are Doing To The Ocean",
+    "subtitle": "Aquaculture now feeds the world more seafood than wild fisheries. Whether that is good news depends on which farm you visit \u2014 and which column of the ledger you are reading.",
+    "date": "2026-04-24",
+    "read_time": "24 min",
+    "category": "science-nature",
+    "style": "natgeo-sciam-hybrid",
+    "tags": [
+      "aquaculture",
+      "environment",
+      "food-systems",
+      "salmon"
+    ],
+    "component": "FishFarms",
+    "url": "articles/fish-farms-environmental-impact.html",
+    "pdf_url": "articles/fish-farms-environmental-impact.pdf"
+  },
+  {
+    "slug": "looksmaxxing",
+    "title": "Looksmaxxing",
+    "subtitle": "How a vocabulary from the incelosphere became the operating system of young male beauty",
+    "date": "2026-04-24",
+    "read_time": "",
+    "category": "history",
+    "style": "encyclopaedic",
+    "tags": [
+      "subcultures",
+      "masculinity",
+      "psychology",
+      "social-media"
+    ],
+    "component": "Looksmaxxing",
+    "url": "articles/looksmaxxing.html",
+    "pdf_url": "articles/looksmaxxing.pdf"
+  },
+  {
     "slug": "london-housing-market-2026",
     "title": "London Housing 2026: Four Theses, Tested Against the Data",
     "subtitle": "Did flat affordability peak in 2022? Is the upsizing ladder broken? Are older owners anchoring? Is Stamp Duty the brake? What the numbers say \u2014 and don't.",

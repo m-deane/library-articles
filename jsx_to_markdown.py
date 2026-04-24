@@ -68,6 +68,8 @@ SLUGS = [
     "applied-bayesian-statistics-notes",
     "forecasting-principles-and-practice-notes",
     "london-housing-market-2026",
+    "looksmaxxing",
+    "fish-farms-environmental-impact",
 ]
 
 

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Blue Paradox: What Fish Farms Are Doing To The Ocean</title>
+  <meta name="description" content="Aquaculture now feeds the world more seafood than wild fisheries. Whether that is good news depends on which farm you visit — and which column of the ledger you are reading." />
+
+  <!-- Local vendored fonts (no Google Fonts fetch at runtime) -->
+  <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- PWA (Wave 4) -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#7c4dff">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DS Articles">
+
+  <!-- React / Recharts (UMD, vendored locally — no CDN fetch) -->
+  <script src="../assets/vendor/react.production.min.js"></script>
+  <script src="../assets/vendor/react-dom.production.min.js"></script>
+  <script src="../assets/vendor/prop-types.min.js"></script>
+  <script src="../assets/vendor/recharts.js"></script>
+</head>
+<body>
+  <!-- Compact header bar -->
+  <header class="article-header-bar">
+    <div class="header-inner">
+      <a class="back-link" href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">
+        &larr; Library
+      </a>
+      <div class="header-meta">
+        <span class="header-title">The Blue Paradox: What Fish Farms Are Doing To The Ocean</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-date">2026-04-24</span>
+        <span class="header-sep">&middot;</span>
+        <span class="header-read">24 min</span>
+        <span class="style-badge" style="background:#00acc115; color:#00acc1; border:1px solid #00acc155;">NatGeo SciAm</span>
+      </div>
+      <a class="md-link header-md-link" href="../md/fish-farms-environmental-impact.html" title="Plain-HTML reader (no JavaScript needed)">📄 Plain</a>
+      <a class="pdf-link header-pdf-link" href="fish-farms-environmental-impact.pdf" download title="Download this article as PDF">📑 PDF</a>
+      <a class="index-link" href="../index.html">All articles</a>
+    </div>
+  </header>
+
+  <!-- Render target -->
+  <main class="article-container">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem; font-family:serif;">
+        This article requires JavaScript to render the embedded React/Recharts components.
+      </p>
+    </noscript>
+    <div id="error-boundary" style="display:none; padding:2rem; background:#fff3f3; border:1px solid #f5c2c2; border-radius:8px; font-family:ui-monospace,monospace;"></div>
+  </main>
+
+  <footer class="article-footer">
+    <div class="footer-inner">
+      <span>slug: <code>fish-farms-environmental-impact</code> &middot; category: <code>science-nature</code></span>
+      <a href="https://huggingface.co/spaces/helwyr55/library" target="_blank" rel="noopener">Return to Library &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Expose React hooks + Recharts components into global scope for the JSX block -->
+  <script>
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useMemo = React.useMemo;
+    window.useRef = React.useRef;
+    window.useCallback = React.useCallback;
+    window.useReducer = React.useReducer;
+    window.useLayoutEffect = React.useLayoutEffect;
+    window.useContext = React.useContext;
+    window.Fragment = React.Fragment;
+
+    // Expose Recharts components into global scope
+    const _R = window.Recharts || {};
+    [
+      'LineChart','BarChart','AreaChart','ScatterChart','RadarChart','PieChart',
+      'XAxis','YAxis','ZAxis','CartesianGrid','Tooltip','Legend','Line','Bar','Area',
+      'Scatter','Pie','Cell','ResponsiveContainer','ReferenceLine','ReferenceArea','ReferenceDot',
+      'ComposedChart','Treemap','Radar','PolarGrid','PolarAngleAxis','PolarRadiusAxis',
+      'RadialBar','RadialBarChart','FunnelChart','Funnel','LabelList','Label','Brush',
+      'Sankey','Sector','Customized','CartesianAxis','ErrorBar','Rectangle','Curve','Cross','Dot','Polygon','Symbols','Text'
+    ].forEach(function (k) { if (_R[k]) window[k] = _R[k]; });
+
+    // Simple error surface for runtime failures
+    window.addEventListener('error', function (e) {
+      var box = document.getElementById('error-boundary');
+      if (!box) return;
+      box.style.display = 'block';
+      box.textContent = '[render error] ' + (e.message || e.error || 'unknown');
+    });
+
+    // Global <Photograph> helper (pre-transpiled React.createElement form)
+    window.Photograph = function (props) {
+      var src = props.src, alt = props.alt, caption = props.caption, credit = props.credit, href = props.href;
+      var children = [
+        React.createElement('img', { src: src, alt: alt || caption || '', loading: 'lazy', key: 'img' })
+      ];
+      if (caption || credit) {
+        var figCapChildren = [];
+        if (caption) figCapChildren.push(
+          React.createElement('span', { className: 'photo-caption', key: 'cap' }, caption)
+        );
+        if (credit) figCapChildren.push(
+          React.createElement('span', { className: 'photo-credit', key: 'cr' },
+            ' — ',
+            React.createElement('a', { href: href, target: '_blank', rel: 'noopener noreferrer' }, credit)
+          )
+        );
+        children.push(React.createElement('figcaption', { key: 'cap-root' }, figCapChildren));
+      }
+      return React.createElement('figure', { className: 'photo' }, children);
+    };
+  </script>
+
+  <!-- Pre-transpiled JSX payload (esbuild --loader=jsx --jsx=transform, classic mode).
+       React.createElement(...) calls resolve against the UMD React global above. -->
+  <script>
+    try {
+      const ARTICLE_DATA = {
+  title: "The Blue Paradox: What Fish Farms Are Doing To The Ocean",
+  subtitle: "Aquaculture now feeds the world more seafood than wild fisheries. Whether that is good news depends on which farm you visit \u2014 and which column of the ledger you are reading.",
+  category: "science-nature",
+  style: "natgeo-sciam-hybrid",
+  date: "2026-04-24",
+  author: "Matthew Deane",
+  tags: ["aquaculture", "environment", "food-systems", "salmon"],
+  read_time: "24 min",
+  mode: "full-feature"
+};
+const C = {
+  bg: "#F7F5F0",
+  bgAlt: "#EEE9DC",
+  bgCard: "#FFFFFF",
+  fg: "#1A1A1A",
+  ink: "#0F172A",
+  muted: "#5B6470",
+  textMute: "#5B6470",
+  textMuted: "#5B6470",
+  accent: "#0E7490",
+  grid: "#D9D3C4",
+  line: "#1A1A1A",
+  rule: "#C8B76A",
+  panel: "#F0EBE1",
+  ok: "#3F7D3F",
+  warn: "#B45309",
+  bad: "#8A1C1C",
+  salmon: "#D17A5A",
+  kelp: "#2F5D4A",
+  sand: "#C8B76A"
+};
+const F = {
+  serif: "'Source Serif 4', 'Source Serif Pro', Georgia, serif",
+  sans: "'Source Sans 3', 'Inter', -apple-system, sans-serif",
+  head: "'Playfair Display', 'Source Serif 4', Georgia, serif",
+  mono: "'JetBrains Mono', 'Fira Code', monospace"
+};
+const AquaVsCaptureChart = () => {
+  const data = [
+    { year: 1990, capture: 86, aquaculture: 17 },
+    { year: 1995, capture: 93, aquaculture: 25 },
+    { year: 2e3, capture: 95, aquaculture: 36 },
+    { year: 2005, capture: 94, aquaculture: 48 },
+    { year: 2010, capture: 90, aquaculture: 62 },
+    { year: 2015, capture: 93, aquaculture: 78 },
+    { year: 2018, capture: 96, aquaculture: 87 },
+    { year: 2020, capture: 91, aquaculture: 92 },
+    { year: 2022, capture: 91, aquaculture: 94.4 }
+  ];
+  return /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 320 }, /* @__PURE__ */ React.createElement(AreaChart, { data, margin: { top: 16, right: 32, left: 8, bottom: 8 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { stroke: C.grid, strokeDasharray: "3 3" }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "year", stroke: C.fg, tick: { fontSize: 11, fontFamily: F.sans } }), /* @__PURE__ */ React.createElement(
+    YAxis,
+    {
+      stroke: C.fg,
+      tick: { fontSize: 11, fontFamily: F.sans },
+      label: { value: "Million tonnes (live weight)", angle: -90, position: "insideLeft", fill: C.fg, fontSize: 11, fontFamily: F.sans }
+    }
+  ), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { background: C.bgCard, border: `1px solid ${C.grid}`, fontFamily: F.sans } }), /* @__PURE__ */ React.createElement(Legend, { wrapperStyle: { fontSize: 11, fontFamily: F.sans } }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "capture", name: "Wild capture", stroke: C.kelp, fill: C.kelp, fillOpacity: 0.35 }), /* @__PURE__ */ React.createElement(Area, { type: "monotone", dataKey: "aquaculture", name: "Aquaculture", stroke: C.salmon, fill: C.salmon, fillOpacity: 0.55 })));
+};
+const FcrChart = () => {
+  const data = [
+    { species: "Tilapia", fcr: 1.6 },
+    { species: "Salmon", fcr: 1.2 },
+    { species: "Chicken", fcr: 1.9 },
+    { species: "Shrimp", fcr: 1.7 },
+    { species: "Pork", fcr: 3 },
+    { species: "Beef", fcr: 8 }
+  ];
+  return /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 300 }, /* @__PURE__ */ React.createElement(BarChart, { data, margin: { top: 16, right: 24, left: 8, bottom: 8 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { stroke: C.grid, strokeDasharray: "3 3", vertical: false }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "species", stroke: C.fg, tick: { fontSize: 11, fontFamily: F.sans } }), /* @__PURE__ */ React.createElement(
+    YAxis,
+    {
+      stroke: C.fg,
+      tick: { fontSize: 11, fontFamily: F.sans },
+      domain: [0, 10],
+      label: { value: "Feed Conversion Ratio (kg feed / kg live weight)", angle: -90, position: "insideLeft", fill: C.fg, fontSize: 10, fontFamily: F.sans }
+    }
+  ), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { background: C.bgCard, border: `1px solid ${C.grid}`, fontFamily: F.sans }, formatter: (v) => `${v}:1` }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "fcr", name: "FCR", fill: C.accent })));
+};
+const FifoChart = () => {
+  const data = [
+    { year: 1990, fifo: 7.2 },
+    { year: 1995, fifo: 4.9 },
+    { year: 2e3, fifo: 4.1 },
+    { year: 2005, fifo: 2.6 },
+    { year: 2010, fifo: 1.7 },
+    { year: 2013, fifo: 1.4 },
+    { year: 2016, fifo: 1.2 },
+    { year: 2020, fifo: 1 },
+    { year: 2023, fifo: 0.8 }
+  ];
+  return /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 300 }, /* @__PURE__ */ React.createElement(LineChart, { data, margin: { top: 16, right: 32, left: 8, bottom: 8 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { stroke: C.grid, strokeDasharray: "3 3" }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "year", stroke: C.fg, tick: { fontSize: 11, fontFamily: F.sans } }), /* @__PURE__ */ React.createElement(
+    YAxis,
+    {
+      stroke: C.fg,
+      tick: { fontSize: 11, fontFamily: F.sans },
+      domain: [0, 8],
+      label: { value: "FIFO (kg wild fish in / kg farmed salmon out)", angle: -90, position: "insideLeft", fill: C.fg, fontSize: 10, fontFamily: F.sans }
+    }
+  ), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { background: C.bgCard, border: `1px solid ${C.grid}`, fontFamily: F.sans } }), /* @__PURE__ */ React.createElement(Legend, { wrapperStyle: { fontSize: 11, fontFamily: F.sans } }), /* @__PURE__ */ React.createElement(
+    ReferenceLine,
+    {
+      y: 1,
+      stroke: C.ok,
+      strokeDasharray: "4 4",
+      label: { value: "Net protein producer \u2193", position: "right", fill: C.ok, fontSize: 10, fontFamily: F.sans }
+    }
+  ), /* @__PURE__ */ React.createElement(Line, { type: "monotone", dataKey: "fifo", name: "Atlantic salmon FIFO", stroke: C.salmon, strokeWidth: 2.5, dot: { r: 4, fill: C.salmon } })));
+};
+const AntibioticChart = () => {
+  const data = [
+    { year: 2014, chile: 660, norway: 0.6 },
+    { year: 2016, chile: 530, norway: 0.4 },
+    { year: 2018, chile: 360, norway: 0.3 },
+    { year: 2020, chile: 410, norway: 0.2 },
+    { year: 2022, chile: 380, norway: 0.3 },
+    { year: 2023, chile: 340, norway: 0.3 }
+  ];
+  return /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 320 }, /* @__PURE__ */ React.createElement(BarChart, { data, margin: { top: 16, right: 32, left: 8, bottom: 8 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { stroke: C.grid, strokeDasharray: "3 3", vertical: false }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "year", stroke: C.fg, tick: { fontSize: 11, fontFamily: F.sans } }), /* @__PURE__ */ React.createElement(
+    YAxis,
+    {
+      stroke: C.fg,
+      tick: { fontSize: 11, fontFamily: F.sans },
+      label: { value: "Grams active ingredient / tonne salmon", angle: -90, position: "insideLeft", fill: C.fg, fontSize: 10, fontFamily: F.sans }
+    }
+  ), /* @__PURE__ */ React.createElement(
+    Tooltip,
+    {
+      contentStyle: { background: C.bgCard, border: `1px solid ${C.grid}`, fontFamily: F.sans },
+      formatter: (v) => `${v} g/t`
+    }
+  ), /* @__PURE__ */ React.createElement(Legend, { wrapperStyle: { fontSize: 11, fontFamily: F.sans } }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "chile", name: "Chile", fill: C.bad }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "norway", name: "Norway", fill: C.kelp })));
+};
+const EmissionsChart = () => {
+  const data = [
+    { source: "Beef (dairy herd)", ghg: 9.9 },
+    { source: "Lamb & mutton", ghg: 9.9 },
+    { source: "Farmed shrimp", ghg: 4.2 },
+    { source: "Pork", ghg: 3.8 },
+    { source: "Poultry", ghg: 2.9 },
+    { source: "Farmed fish (avg)", ghg: 3 },
+    { source: "Farmed salmon", ghg: 2.3 },
+    { source: "Pulses", ghg: 0.4 }
+  ];
+  return /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 340 }, /* @__PURE__ */ React.createElement(BarChart, { data, layout: "vertical", margin: { top: 16, right: 32, left: 90, bottom: 8 } }, /* @__PURE__ */ React.createElement(CartesianGrid, { stroke: C.grid, strokeDasharray: "3 3", horizontal: false }), /* @__PURE__ */ React.createElement(
+    XAxis,
+    {
+      type: "number",
+      stroke: C.fg,
+      tick: { fontSize: 11, fontFamily: F.sans },
+      label: { value: "kg CO\u2082e per 100 g protein", position: "insideBottom", fill: C.fg, fontSize: 11, fontFamily: F.sans, dy: 12 }
+    }
+  ), /* @__PURE__ */ React.createElement(YAxis, { type: "category", dataKey: "source", stroke: C.fg, tick: { fontSize: 11, fontFamily: F.sans }, width: 140 }), /* @__PURE__ */ React.createElement(
+    Tooltip,
+    {
+      contentStyle: { background: C.bgCard, border: `1px solid ${C.grid}`, fontFamily: F.sans },
+      formatter: (v) => `${v} kg CO\u2082e`
+    }
+  ), /* @__PURE__ */ React.createElement(Bar, { dataKey: "ghg", name: "GHG intensity", fill: C.accent })));
+};
+function FishFarms() {
+  return /* @__PURE__ */ React.createElement("article", { style: { background: C.bg, color: C.fg, fontFamily: F.serif, lineHeight: 1.7, padding: "0 0 80px 0" } }, /* @__PURE__ */ React.createElement("style", null, `
+        .ff-hero {
+          background: linear-gradient(160deg, #0b2430 0%, #16404f 45%, #0e2a3a 100%);
+          color: #f5efe0;
+          padding: 80px 24px 72px;
+          border-bottom: 6px solid ${C.rule};
+        }
+        .ff-hero .kicker { font-family: ${F.sans}; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+                           color: ${C.rule}; margin-bottom: 18px; }
+        .ff-hero h1 { font-family: ${F.head}; font-weight: 900; font-size: clamp(32px, 5.5vw, 60px);
+                      line-height: 1.05; margin: 0 0 18px 0; max-width: 900px; }
+        .ff-hero .deck { font-family: ${F.serif}; font-style: italic; font-size: clamp(16px, 2vw, 20px);
+                         max-width: 780px; color: #e8e1cf; line-height: 1.5; }
+        .ff-hero .byline { font-family: ${F.sans}; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+                           color: #b9b197; margin-top: 36px; }
+        .ff-body { max-width: 760px; margin: 0 auto; padding: 48px 24px; font-size: 18px; }
+        .ff-body .dropcap::first-letter {
+          font-family: ${F.head}; font-size: 78px; line-height: 0.9; float: left;
+          padding: 6px 10px 0 0; color: ${C.accent}; font-weight: 900;
+        }
+        .ff-sec { margin-top: 56px; }
+        .ff-sec h2 { font-family: ${F.head}; font-weight: 900; font-size: 28px; margin: 0 0 8px 0; color: ${C.ink};
+                     border-top: 3px solid ${C.rule}; padding-top: 16px; }
+        .ff-sec .secnum { font-family: ${F.sans}; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+                          color: ${C.accent}; margin-bottom: 6px; }
+        .ff-pq { font-family: ${F.head}; font-style: italic; font-size: 26px; line-height: 1.35;
+                 border-left: 4px solid ${C.rule}; padding: 8px 0 8px 22px; margin: 32px 0; color: ${C.ink}; }
+        .ff-sb { background: ${C.panel}; border-left: 3px solid ${C.rule}; padding: 22px 26px; margin: 32px 0;
+                 font-family: ${F.sans}; font-size: 15px; line-height: 1.6; color: #2c2c2c; }
+        .ff-sb-title { font-family: ${F.head}; font-weight: 900; font-size: 18px; color: ${C.ink}; margin: 0 0 10px 0; }
+        .ff-callout { background: ${C.bgAlt}; border: 1px solid ${C.grid}; padding: 18px 22px; margin: 24px 0;
+                      font-family: ${F.sans}; font-size: 15px; }
+        .ff-callout .calltitle { font-weight: 700; color: ${C.accent}; display: block; margin-bottom: 6px;
+                                 text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
+        .ff-chart { background: ${C.bgCard}; border: 1px solid ${C.grid}; padding: 18px 18px 8px;
+                    margin: 32px 0; border-radius: 4px; }
+        .ff-chart .chart-title { font-family: ${F.head}; font-weight: 900; font-size: 17px; margin-bottom: 4px; color: ${C.ink}; }
+        .ff-chart .chart-sub { font-family: ${F.sans}; font-size: 12px; color: ${C.muted}; margin-bottom: 14px; }
+        .ff-chart .chart-source { font-family: ${F.sans}; font-size: 11px; color: ${C.muted}; margin-top: 10px; font-style: italic; }
+        .ff-cap { font-family: ${F.sans}; font-size: 13px; color: ${C.muted}; text-align: center;
+                  margin: 8px 0 32px 0; font-style: italic; }
+        .ff-scene-break { text-align: center; color: ${C.rule}; letter-spacing: 10px; margin: 40px 0; font-size: 18px; }
+        .ff-source-note { background: ${C.panel}; margin: 56px auto 0; max-width: 760px;
+                          padding: 32px 28px; border-top: 3px solid ${C.rule}; font-family: ${F.sans}; font-size: 14px; }
+        .ff-source-note h3 { font-family: ${F.head}; font-weight: 900; font-size: 20px; margin: 0 0 12px 0; color: ${C.ink}; }
+        .ff-source-note ul { padding-left: 20px; margin: 10px 0; }
+        .ff-source-note li { margin-bottom: 6px; line-height: 1.5; }
+      `), /* @__PURE__ */ React.createElement("header", { className: "ff-hero" }, /* @__PURE__ */ React.createElement("div", { className: "kicker" }, "Science & Nature \xB7 SciAm Hybrid"), /* @__PURE__ */ React.createElement("h1", null, ARTICLE_DATA.title), /* @__PURE__ */ React.createElement("div", { className: "deck" }, ARTICLE_DATA.subtitle), /* @__PURE__ */ React.createElement("div", { className: "byline" }, "By ", ARTICLE_DATA.author, " \xB7 24 April 2026 \xB7 24-minute read")), /* @__PURE__ */ React.createElement("div", { className: "ff-body" }, /* @__PURE__ */ React.createElement("p", { className: "dropcap" }, `The pen is a black ring on the grey water, 160 metres in circumference, moored to the lee of a low green island in Hitra, off Tr\xF8ndelag. A crane barge the size of a country pub leans above it, lowering a hose that kicks out a pale soup of smolt feed \u2014 roughly twelve tonnes a day at peak bite, enough to fatten about 200,000 Atlantic salmon swimming in a lattice of polar-grade netting below. The stocking density here is around 20 kilograms of fish per cubic metre of water. If that sounds crowded, it is less than the legal ceiling of 25 kg/m\xB3 that Norway's Directorate of Fisheries allows, and roughly a third of the density inside a commercial chicken shed.`), /* @__PURE__ */ React.createElement("p", null, `What is happening under the barge is the largest protein transition in human history. In 2022, according to the Food and Agriculture Organization's State of World Fisheries and Aquaculture 2024, aquaculture produced more aquatic animals than wild capture fisheries for the first time \u2014 94.4 million tonnes to 91 million. Farmed Atlantic salmon from places like this one account for a sliver of the tonnage but an outsized share of the anxiety. Ask a Scottish fisheries biologist, a Chilean shellfish diver, or a Norwegian minister about the industry, and you will hear three different stories \u2014 all of them, in their own way, correct.`), /* @__PURE__ */ React.createElement("p", { className: "ff-pq" }, `The question is no longer whether we farm the sea, but whether we do it in ways that leave the sea roughly as we found it.`), /* @__PURE__ */ React.createElement("p", null, `This is the paradox at the centre of aquaculture in 2026. By almost every measure of agricultural efficiency \u2014 feed conversion, freshwater footprint, greenhouse emissions per gram of edible protein \u2014 farmed fish is the cleanest animal protein we know how to make at scale. By almost every measure of local ecological impact \u2014 sea lice loads, antibiotic residues, seabed enrichment under net pens, escapes into wild populations \u2014 it is also the most intimate form of livestock rearing we practise, because the pen and the wild share the same water. Both statements are true at once. Figuring out which one dominates, for which species, in which bay, under which regulatory regime, is the actual fight.`), /* @__PURE__ */ React.createElement("section", { className: "ff-sec" }, /* @__PURE__ */ React.createElement("div", { className: "secnum" }, "\xA7 1 \xB7 Scale"), /* @__PURE__ */ React.createElement("h2", null, "How aquaculture overtook fishing"), /* @__PURE__ */ React.createElement("p", null, `The FAO has tracked global seafood supply since 1950. For four decades, wild capture was the dominant engine. Then something broke. Capture fisheries peaked around 1996 at roughly 86 million tonnes and have oscillated in a narrow band ever since; the ocean stopped giving up more fish no matter how hard fleets looked. Aquaculture kept growing at 5\u20136 per cent a year, driven mostly by Chinese inland carp production and coastal shrimp in Southeast Asia. Somewhere between 2020 and 2022, depending on how you count, the crossover happened.`), /* @__PURE__ */ React.createElement("div", { className: "ff-chart" }, /* @__PURE__ */ React.createElement("div", { className: "chart-title" }, "Aquaculture overtakes capture, 1990\u20132022"), /* @__PURE__ */ React.createElement("div", { className: "chart-sub" }, "Global production of aquatic animals, million tonnes live weight"), /* @__PURE__ */ React.createElement(AquaVsCaptureChart, null), /* @__PURE__ */ React.createElement("div", { className: "chart-source" }, "Source: FAO, The State of World Fisheries and Aquaculture (SOFIA 2024). Figures include finfish, crustaceans, molluscs and other aquatic animals, excluding algae.")), /* @__PURE__ */ React.createElement("div", { className: "ff-cap" }, "Global aquaculture first exceeded capture fisheries by volume in 2022, according to FAO accounting."), /* @__PURE__ */ React.createElement("p", null, `The species mix is stranger than most Western consumers realise. Carps, mostly farmed in Chinese freshwater ponds, remain the single largest category by weight. Farmed tilapia, grown in more than 140 countries, is now the most traded tropical finfish on earth. Penaeid shrimp from Ecuador, India and Vietnam fill the world's freezer aisles. Atlantic salmon \u2014 grown almost exclusively in four temperate nations: Norway, Chile, the United Kingdom (mostly Scotland), and Canada \u2014 accounts for only about 2.7 million tonnes a year, just over two per cent of total aquatic animal production. But it is the species that has absorbed the most scrutiny, the most capital, and the most regulation, because its farms are visible from the shore, because its escapees can breed with wild cousins, and because its consumers live in countries that write environmental rules.`)), /* @__PURE__ */ React.createElement("section", { className: "ff-sec" }, /* @__PURE__ */ React.createElement("div", { className: "secnum" }, "\xA7 2 \xB7 Pro \xB7 Efficiency"), /* @__PURE__ */ React.createElement("h2", null, "The cleanest animal protein we know how to make"), /* @__PURE__ */ React.createElement("p", null, `Start with what aquaculture does well, because the list is long. The most cited metric is feed conversion ratio \u2014 kilograms of dry feed required to put on one kilogram of live weight. Salmon come in at roughly 1.1 to 1.3 under best-practice husbandry, according to Global Salmon Initiative member reports. Tilapia run 1.6 to 1.8. Farmed shrimp, depending on system, 1.5 to 2.0. By comparison, chicken \u2014 already considered a model of efficiency in terrestrial meat \u2014 sits at about 1.9. Pigs need roughly three kilograms of feed per kilogram of live weight. Beef cattle need six to ten.`), /* @__PURE__ */ React.createElement("div", { className: "ff-chart" }, /* @__PURE__ */ React.createElement("div", { className: "chart-title" }, "Feed conversion ratio by species"), /* @__PURE__ */ React.createElement("div", { className: "chart-sub" }, "Kilograms of feed required per kilogram of live weight gained \u2014 lower is better"), /* @__PURE__ */ React.createElement(FcrChart, null), /* @__PURE__ */ React.createElement("div", { className: "chart-source" }, 'Sources: Global Salmon Initiative Sustainability Report 2023; Fry et al., "Feed conversion efficiency in aquaculture", Environmental Research Letters (2018); FAO Animal Production and Health statistics.')), /* @__PURE__ */ React.createElement("p", null, `There are reasons for the gap, and they are almost entirely physiological. Salmon are cold-blooded; they do not pay a metabolic tax to keep a body at 37 \xB0C in winter. They swim in a medium roughly 800 times denser than air, so they do not spend calories fighting gravity. And they grow in a three-dimensional volume rather than a two-dimensional pen, which changes both the thermodynamics and the ethics in ways even the industry's harshest critics concede are real.`), /* @__PURE__ */ React.createElement("p", null, `The consequence is a carbon footprint about half that of pork and a quarter that of beef. In the Poore and Nemecek 2018 meta-analysis in `, /* @__PURE__ */ React.createElement("em", null, `Science`), ` \u2014 still the most comprehensive life-cycle assessment of global food production, covering 38,700 farms across 119 countries \u2014 farmed finfish produced a median of roughly 3 kilograms of CO\u2082-equivalent emissions per 100 grams of protein. Beef from dedicated beef herds produced around 50; even the greenest cuts of beef produced more than 10. Farmed salmon specifically, in later LCA work by Ziegler, Hognes and co-authors at SINTEF Ocean, comes in around 2.3 kg CO\u2082e per 100 g protein when raised on modern low-marine-input feeds.`), /* @__PURE__ */ React.createElement("div", { className: "ff-chart" }, /* @__PURE__ */ React.createElement("div", { className: "chart-title" }, "Greenhouse gas emissions per 100 g of protein"), /* @__PURE__ */ React.createElement("div", { className: "chart-sub" }, "Median kilograms of CO\u2082-equivalent by protein source"), /* @__PURE__ */ React.createElement(EmissionsChart, null), /* @__PURE__ */ React.createElement("div", { className: "chart-source" }, `Source: Poore & Nemecek, "Reducing food's environmental impacts through producers and consumers", Science 360:6392 (2018); salmon figure from SINTEF Ocean life-cycle assessments (Ziegler et al., 2022).`)), /* @__PURE__ */ React.createElement("p", null, `Freshwater use follows the same pattern. Beef requires, on a global average, around 15,000 litres of freshwater per kilogram of meat. Pork and chicken, around 6,000 and 4,300 respectively. Farmed marine fish raised in sea pens draw near zero freshwater, because the rearing medium is the sea. Recirculating systems on land use more \u2014 perhaps a few hundred litres per kilogram \u2014 but still an order of magnitude below terrestrial alternatives.`), /* @__PURE__ */ React.createElement("div", { className: "ff-sb" }, /* @__PURE__ */ React.createElement("div", { className: "ff-sb-title" }, "Why salmon are so efficient"), /* @__PURE__ */ React.createElement("p", null, `Three biological facts do most of the work. First, salmon are ectotherms: body temperature tracks the surrounding water, which in commercial pens sits around 8\u201314 \xB0C year-round. They spend no calories on thermoregulation. Second, neutral buoyancy in seawater eliminates the metabolic cost of resisting gravity; a chicken uses roughly 80 per cent of its basal metabolism simply standing up. Third, fish lay down protein rather than fat to grow; the dry-matter composition of a harvest-weight salmon is about 18 per cent protein and only 12 per cent lipid, with almost no connective tissue. Feed that goes into muscle rather than bone, hide, or rumen fermentation reaches the plate.`))), /* @__PURE__ */ React.createElement("section", { className: "ff-sec" }, /* @__PURE__ */ React.createElement("div", { className: "secnum" }, "\xA7 3 \xB7 Pro \xB7 The fishmeal question, revisited"), /* @__PURE__ */ React.createElement("h2", null, "When the farm stopped eating the ocean"), /* @__PURE__ */ React.createElement("p", null, `For most of the 1990s, salmon farms had a reputation problem that could be summarised in a single number: FIFO, the Fish In : Fish Out ratio. In the early industry, it took roughly five kilograms of wild forage fish \u2014 anchoveta, sandeel, capelin, blue whiting \u2014 rendered into fishmeal and fish oil, to raise one kilogram of farmed salmon. The arithmetic was ecologically indefensible: the industry was a net destroyer of marine protein.`), /* @__PURE__ */ React.createElement("p", null, `That ratio has collapsed. The International Fishmeal and Fish Oil Organisation (now IFFO, the Marine Ingredients Organisation) and independent researchers including Turid Synn\xF8ve Aas and Trine Ytrest\xF8yl at the Norwegian food research institute Nofima have tracked it for decades. By their most recent accounting, published in Aas et al. (2022) and updated in IFFO sustainability reports, Norwegian salmon now operate at a FIFO of roughly 0.8 to 1.0 \u2014 for every kilogram of wild forage fish going in, at least a kilogram of farmed salmon comes out. Some producers claim lower still.`), /* @__PURE__ */ React.createElement("div", { className: "ff-chart" }, /* @__PURE__ */ React.createElement("div", { className: "chart-title" }, "Atlantic salmon FIFO, 1990\u20132023"), /* @__PURE__ */ React.createElement("div", { className: "chart-sub" }, "Kilograms of wild forage fish used per kilogram of farmed salmon produced"), /* @__PURE__ */ React.createElement(FifoChart, null), /* @__PURE__ */ React.createElement("div", { className: "chart-source" }, 'Sources: IFFO, "Fish In Fish Out Ratios for Fed Aquaculture Species" (series); Aas, Ytrest\xF8yl & \xC5sg\xE5rd, Aquaculture Reports (2022); Nofima salmon feed composition surveys.')), /* @__PURE__ */ React.createElement("p", { className: "ff-pq" }, `In 1990, farming one salmon required seven wild fish. In 2023, it required less than one.`), /* @__PURE__ */ React.createElement("p", null, `The collapse came from substitution. The proportion of marine ingredients in a modern Norwegian salmon diet has fallen from around 90 per cent in 1990 to roughly 25 per cent today, replaced by plant proteins (soy protein concentrate, pea, wheat gluten), plant oils (rapeseed in particular), insect meals from black soldier fly, and novel single-cell ingredients including microalgal oils that carry the long-chain omega-3 fatty acids EPA and DHA directly, without the middle step of a wild fish. In 2023, Cargill, BioMar and Skretting \u2014 the three feed majors that between them supply most of the world's salmon \u2014 each announced insect-meal and microbial-oil supply contracts measured in tens of thousands of tonnes a year.`), /* @__PURE__ */ React.createElement("p", null, `There are caveats. The fishmeal that does go into salmon feed still comes, in substantial part, from the Peruvian anchoveta fishery, the largest single-species fishery on earth. When El Ni\xF1o conditions reduce the anchoveta catch, as happened in 2023 when Peru cancelled its first northern season entirely, salmon feed prices spike and the pressure to substitute further intensifies. And "fish trimmings" \u2014 the offcuts of human-food processing \u2014 now provide more than a third of global fishmeal, which raises the FIFO number conceptually (because trimmings used to be waste) without reducing wild extraction.`), /* @__PURE__ */ React.createElement("div", { className: "ff-sb" }, /* @__PURE__ */ React.createElement("div", { className: "ff-sb-title" }, "Forage Fish Dependency Ratio (FFDR) vs FIFO"), /* @__PURE__ */ React.createElement("p", null, `FIFO is the intuitive metric but an imperfect one. It treats a kilogram of sandeel and a kilogram of human-grade sardine as interchangeable, which they aren't. The Forage Fish Dependency Ratio, used by the Aquaculture Stewardship Council in its salmon standard, separates the fishmeal and fish oil channels and uses economic allocation factors to avoid double-counting. Under FFDR, a salmon farm passes ASC certification if its fishmeal FFDR is below 1.2 and its fish-oil FFDR is below 2.52. Most certified Norwegian producers are comfortably under both ceilings in 2024.`))), /* @__PURE__ */ React.createElement("div", { className: "ff-scene-break" }, "\u2767 \u2767 \u2767"), /* @__PURE__ */ React.createElement("section", { className: "ff-sec" }, /* @__PURE__ */ React.createElement("div", { className: "secnum" }, "\xA7 4 \xB7 Con \xB7 The louse"), /* @__PURE__ */ React.createElement("h2", null, "What the pens give back"), /* @__PURE__ */ React.createElement("p", null, `If efficiency is the cleanest column of the ledger, what happens outside the pen is the dirtiest. Start with the parasite that has come to dominate the industry's operational and ethical discourse: `, /* @__PURE__ */ React.createElement("em", null, `Lepeophtheirus salmonis`), `, the salmon louse.`), /* @__PURE__ */ React.createElement("p", null, `The louse is a native copepod. It feeds on mucus, skin and blood of Atlantic salmon and, to a lesser extent, sea trout. A healthy wild salmon hosts perhaps one or two adult females. A farm pen holding 200,000 densely packed hosts, by contrast, is a copepod reproductive bonanza. Without treatment, adult female lice per fish \u2014 the regulatory unit in Norway, measured weekly \u2014 climb rapidly. Norway's current statutory ceiling is 0.2 adult female lice per fish on average, tightened to 0.1 during wild smolt outmigration windows in spring.`), /* @__PURE__ */ React.createElement("p", null, `The externality falls on wild juveniles. Studies led by Eva Thorstad at the Norwegian Institute for Nature Research (NINA) and by Martin Krko\u0161ek (University of Toronto) and colleagues in British Columbia have repeatedly shown that copepodid lice shed from farms can infest outmigrating wild smolts at lethal densities. A 2013 meta-analysis by Krko\u0161ek and co-authors in the `, /* @__PURE__ */ React.createElement("em", null, `Journal of Applied Ecology`), ` estimated that in heavily farmed regions, sea lice from farms reduced wild salmonid survival by roughly 39 per cent on average \u2014 a mortality insult that the surviving adults must compensate for through fecundity they do not have.`), /* @__PURE__ */ React.createElement("p", null, `In 2017, Norway made the externality structural. The country's coast was divided into thirteen production zones and placed under a "traffic-light system" \u2014 `, /* @__PURE__ */ React.createElement("em", null, `trafikklyssystemet`), ` \u2014 that reviews each zone's estimated impact on wild salmon every two years. Green zones may grow biomass by 6 per cent. Yellow zones are frozen. Red zones are forced to cut by 6 per cent. The 2022 review ordered biomass reductions in the densely farmed western coast zones 3 and 4 for the first time. The 2024 review kept four zones red. It is the first regulatory regime anywhere in the world that treats sea lice impact on a wild population as a binding constraint on a domestic industry \u2014 and it is still, according to NINA's own impact assessments, insufficient to arrest wild Atlantic salmon decline in the worst-affected fjords.`), /* @__PURE__ */ React.createElement("div", { className: "ff-callout" }, /* @__PURE__ */ React.createElement("span", { className: "calltitle" }, "\u26A0 Industry methods under pressure"), /* @__PURE__ */ React.createElement("p", null, `Delousing treatments carry their own costs. Thermal (warm-water) delousing, adopted widely in the mid-2010s, kills lice by briefly exposing fish to 28\u201334 \xB0C water. Norway's Veterinary Institute has since judged the method incompatible with fish-welfare law on the basis that salmon experience noxious heat; the government is phasing it out by 2028. Hydrogen peroxide baths degrade sediment oxygen. Cleaner-fish \u2014 lumpfish and wrasse stocked alongside salmon to pick lice \u2014 die at mortality rates commonly above 40 per cent per production cycle, a welfare externality rarely accounted in headline figures.`))), /* @__PURE__ */ React.createElement("section", { className: "ff-sec" }, /* @__PURE__ */ React.createElement("div", { className: "secnum" }, "\xA7 5 \xB7 Con \xB7 Escapes and introgression"), /* @__PURE__ */ React.createElement("h2", null, "A trickle of farmed genes into the wild"), /* @__PURE__ */ React.createElement("p", null, `A Norwegian pen breached by a winter storm does not spill oil or plastic. It spills fish. Since 2001 the Directorate of Fisheries in Bergen has maintained a public register of reported escape events; the country averaged roughly 200,000 to 300,000 salmon escaping per year over the 2010s, with outlier storm years approaching one million. Numbers have fallen in the 2020s as pen and mooring standards (NYTEK23, the current technical regulation) tightened, but reported escapes remain in the tens of thousands annually.`), /* @__PURE__ */ React.createElement("p", null, `The ecological damage is genetic, not primarily demographic. Escaped farm salmon are a domesticated fish \u2014 bred for 12 to 14 generations for fast growth, late sexual maturation, disease resistance and docility. When they enter a wild river and spawn, their hybrid offspring carry farm-selected alleles into the wild gene pool. Kjetil Hindar, \xD8ystein Skaala and colleagues at NINA and the Norwegian Institute of Marine Research have shown, in a long-running study of 147 Norwegian salmon rivers, that two-thirds of those populations now carry measurable farm-origin genetic introgression. In the most affected rivers, farm-origin alleles exceed 40 per cent of the genome. The fitness consequences are negative and compounding: introgressed populations show reduced survival in the wild, altered life-history timing, and smaller adult size.`), /* @__PURE__ */ React.createElement("p", null, `The International Council for the Exploration of the Sea (ICES) Working Group on North Atlantic Salmon (WGNAS) has flagged genetic introgression from farm escapes as one of the two dominant anthropogenic drivers of Atlantic salmon decline \u2014 alongside sea lice \u2014 every year since 2016.`)), /* @__PURE__ */ React.createElement("section", { className: "ff-sec" }, /* @__PURE__ */ React.createElement("div", { className: "secnum" }, "\xA7 6 \xB7 Con \xB7 Under the pen"), /* @__PURE__ */ React.createElement("h2", null, "The seabed remembers"), /* @__PURE__ */ React.createElement("p", null, `A salmon pen in active production drops an enormous quantity of organic matter \u2014 uneaten feed pellets and faeces \u2014 directly onto the seafloor beneath it. Total organic loading under an average Norwegian site is in the order of 1,000 to 2,000 tonnes of carbon per production cycle, concentrated in a footprint a few hundred metres across. Bacteria metabolise the load, consuming oxygen. If loading exceeds the local assimilative capacity, the sediment goes anoxic; hydrogen sulphide accumulates; the infaunal community \u2014 polychaetes, bivalves, crustaceans \u2014 is reduced to a handful of opportunistic species, with the common indicator `, /* @__PURE__ */ React.createElement("em", null, `Capitella capitata`), ` abundant in the worst-affected footprints.`), /* @__PURE__ */ React.createElement("p", null, `Norway manages the problem through the MOM-B (Modelling On-growing fish farms \u2013 Benthic) survey, first standardised by the Institute of Marine Research in the early 2000s. Sediment grabs are taken before restocking; chemistry, redox and fauna metrics yield a 1\u20134 score, with class 3 or 4 triggering mandatory fallowing. Scotland uses an analogous ECE (Environmental Compliance Evaluation) regime. The UK's Aquaculture Stewardship Council salmon standard requires sediment redox potential no worse than \u2013100 mV at the pen edge. The regimes work unevenly; in well-flushed open-coast sites the seabed recovers within 6 to 12 months of fallowing. In poorly flushed sheltered fjords, particularly in Scotland's sea lochs, recovery can take two to three years or more \u2014 longer than the interval between production cycles at some sites.`)), /* @__PURE__ */ React.createElement("section", { className: "ff-sec" }, /* @__PURE__ */ React.createElement("div", { className: "secnum" }, "\xA7 7 \xB7 Con \xB7 Two industries, one species"), /* @__PURE__ */ React.createElement("h2", null, "Why Chile and Norway look almost nothing alike"), /* @__PURE__ */ React.createElement("p", null, `There is no single salmon-farming industry. There are at least two, and they operate under radically different constraints. Norway, which produces roughly 1.5 million tonnes a year, uses almost no antibiotics \u2014 per-tonne use has fallen from 47 grams of active ingredient per tonne of fish produced in the mid-1980s to less than 1 gram per tonne in most recent years, according to the Norwegian Veterinary Institute's annual `, /* @__PURE__ */ React.createElement("em", null, `NORM-VET`), ` report. Chile, which produces around 1 million tonnes, used between 340 and 660 grams of antibiotic active ingredient per tonne of salmon produced through the late 2010s and early 2020s \u2014 two to three orders of magnitude higher.`), /* @__PURE__ */ React.createElement("div", { className: "ff-chart" }, /* @__PURE__ */ React.createElement("div", { className: "chart-title" }, "Antibiotic use in salmon farming: Chile vs Norway"), /* @__PURE__ */ React.createElement("div", { className: "chart-sub" }, "Grams of active ingredient per tonne of salmon produced"), /* @__PURE__ */ React.createElement(AntibioticChart, null), /* @__PURE__ */ React.createElement("div", { className: "chart-source" }, 'Sources: Chile \u2014 SERNAPESCA annual antimicrobial use reports; compiled by Oceana Chile and by Miranda et al., "Current status of antibiotic use in Chilean salmon farming", Antibiotics (2018, updated 2022). Norway \u2014 Norwegian Veterinary Institute NORM-VET annual reports.')), /* @__PURE__ */ React.createElement("p", null, `The gap is not a reflection of producer goodwill. It reflects two things. First, Norway vaccinated its way out of the problem in the 1990s: a multivalent injectable vaccine against `, /* @__PURE__ */ React.createElement("em", null, `Vibrio salmonicida`), ` (coldwater vibriosis) and `, /* @__PURE__ */ React.createElement("em", null, `Aeromonas salmonicida`), ` (furunculosis), rolled out from 1989, effectively ended the routine antibiotic era for Norwegian salmon. Second, Chile's dominant bacterial pathogen \u2014 `, /* @__PURE__ */ React.createElement("em", null, `Piscirickettsia salmonis`), `, the agent of Salmonid Rickettsial Septicaemia (SRS), also called Piscirickettsiosis \u2014 has proven stubbornly resistant to vaccine protection. SRS vaccines exist and are widely used, but they reduce, rather than prevent, infection; antibiotic therapy (mostly florfenicol and oxytetracycline) remains the primary treatment.`), /* @__PURE__ */ React.createElement("p", null, `Chilean per-tonne use has been dropping, from 660 g/t in 2014 to around 340 g/t in 2023, under pressure from buyers (US retail chains including Costco demand lower-antibiotic product) and a voluntary industry initiative \u2014 the Chilean Salmon Antibiotic Reduction Programme \u2014 launched in 2018 by the Global Salmon Initiative, the Monterey Bay Aquarium Seafood Watch programme, and SalmonChile. The trajectory is right, but the gap with Norway remains enormous.`), /* @__PURE__ */ React.createElement("div", { className: "ff-sb" }, /* @__PURE__ */ React.createElement("div", { className: "ff-sb-title" }, "ISA, PRV, AGD: the disease triangle"), /* @__PURE__ */ React.createElement("p", null, `Three viruses haunt modern salmon farms. Infectious Salmon Anaemia (ISA), caused by an orthomyxovirus, triggered the 2007\u20132009 Chilean collapse \u2014 production fell from 400,000 to 100,000 tonnes between 2008 and 2010, and the industry lost around 20,000 jobs. Piscine Orthoreovirus (PRV), implicated in Heart and Skeletal Muscle Inflammation (HSMI), is now endemic in Norwegian and British Columbian stocks; a long-running scientific disagreement over whether PRV-infected farm salmon can transmit disease to wild Pacific salmon shaped the 2023 Canadian decision to phase out open-net-pen salmon farming in the Discovery Islands. Amoebic Gill Disease (AGD), caused by `, /* @__PURE__ */ React.createElement("em", null, `Neoparamoeba perurans`), `, rose sharply in Scotland and Tasmania from 2011 as sea temperatures warmed; it is the reason Scottish producers run freshwater-bath treatments that themselves stress the fish.`))), /* @__PURE__ */ React.createElement("section", { className: "ff-sec" }, /* @__PURE__ */ React.createElement("div", { className: "secnum" }, "\xA7 8 \xB7 Mitigation \xB7 Moving the farm"), /* @__PURE__ */ React.createElement("h2", null, "Onto land, or onto multiple trophic levels"), /* @__PURE__ */ React.createElement("p", null, `If the core problem with the open net pen is that it shares water with the wild, the obvious engineering answer is to stop sharing. A Recirculating Aquaculture System, or RAS, is a closed loop: water is cleaned mechanically, biologically and (in advanced systems) by ozonation or UV, and recirculated at 98 to 99.8 per cent replacement rates, with only a small make-up stream. The parasites, viruses, escapes, benthic loading and feed losses of the open pen are, at least in principle, eliminated.`), /* @__PURE__ */ React.createElement("p", null, `The best-known full-cycle commercial example is Atlantic Sapphire's Bluehouse in Homestead, Florida \u2014 a land-based salmon facility on a 160-acre site south of Miami, designed at a nameplate capacity of roughly 10,000 tonnes a year. It has had a rough first decade. Mass mortality events in 2020 and 2021 (attributed to nitrogen dioxide spikes and fish escaping between tanks into a floor drain system), a fire in mid-2021, and an earlier harvest mortality in 2020 that killed around 200,000 fish all demonstrated that RAS is an unforgiving engineering discipline. Atlantic Sapphire has since restructured and, as of late 2024, is producing at a fraction of nameplate capacity while it rebuilds Phase 1 and contemplates Phase 2 expansion.`), /* @__PURE__ */ React.createElement("p", null, `In Japan, Proximar Seafood \u2014 a Norwegian-Japanese joint venture \u2014 opened a 5,300-tonne RAS facility near Mount Fuji in 2024 and produced its first commercial harvest in 2025. In Denmark, Danish Salmon, Salmon Evolution (Norway) and Andfjord Salmon operate intermediate-scale RAS or semi-closed flow-through systems aimed at 2,000 to 10,000 tonne production. Globally, something like 40 to 50 land-based salmon RAS projects have been announced; perhaps a dozen are producing commercial fish.`), /* @__PURE__ */ React.createElement("div", { className: "ff-callout" }, /* @__PURE__ */ React.createElement("span", { className: "calltitle" }, "Trade-off \u2014 carbon for containment"), /* @__PURE__ */ React.createElement("p", null, `RAS is more energy-intensive than open net-pen. Published industry estimates put electricity use at roughly 3 to 6 kWh per kilogram of salmon produced in land-based RAS, against negligible on-farm electricity for open sea pens. If that electricity is coal-fired, the life-cycle carbon penalty can wipe out most of aquaculture's emissions advantage over poultry. If it is Norwegian hydropower or Icelandic geothermal, it does not. The containment benefit is real; it is paid for in kilowatt-hours.`)), /* @__PURE__ */ React.createElement("p", null, `The alternative engineering route is Integrated Multi-Trophic Aquaculture \u2014 IMTA \u2014 in which fed species (salmon) are co-cultured with extractive species (seaweeds such as `, /* @__PURE__ */ React.createElement("em", null, `Saccharina latissima`), `, and filter-feeders such as blue mussels) that metabolise the waste nutrients. The approach, pioneered by Thierry Chopin at the University of New Brunswick from the late 1990s, has never scaled commercially at salmon volumes. Regulatory frameworks treat each species as a separate licence; consumer markets for co-produced kelp and mussels remain thin; and the nutrient-capture ratios, while positive, are modest. But research sites in Norway, Scotland, Canada and China continue to operate, and the EU's Horizon Europe programme has funded multiple IMTA demonstration projects through 2027.`)), /* @__PURE__ */ React.createElement("section", { className: "ff-sec" }, /* @__PURE__ */ React.createElement("div", { className: "secnum" }, "\xA7 9 \xB7 Governance"), /* @__PURE__ */ React.createElement("h2", null, "What a credible farm looks like"), /* @__PURE__ */ React.createElement("p", null, `No certification scheme is sufficient. The Aquaculture Stewardship Council (ASC) salmon standard, launched in 2012, is the most demanding in wide commercial use: it requires FFDR below the thresholds noted above, escape-detection protocols, sediment redox limits, lice thresholds, antibiotic use caps, and third-party audit. A 2020 review by the NGO SeaChoice found that ASC-certified farms in Chile still used antibiotics at levels that would be inconsistent with ASC's own principles in Norway, raising the question of whether a single global standard can remain meaningful across radically different epidemiological contexts. ASC responded with tightened antibiotic clauses in its 2022 standard revision.`), /* @__PURE__ */ React.createElement("p", null, `The better answer is probably a stack: a global certification floor (ASC, GlobalG.A.P.) plus a regulator with teeth that actively measures wild-population outcomes and adjusts the industry's biomass ceiling accordingly. Norway's traffic-light system is the first instance in the world of such a feedback loop. Scotland, Chile, Canada and the United States have each begun to discuss analogues; none has yet implemented one.`), /* @__PURE__ */ React.createElement("p", { className: "ff-pq" }, `A credible salmon farm in 2026 is not defined by a logo on the packaging. It is defined by what happens to the fjord when the farm is gone.`), /* @__PURE__ */ React.createElement("p", null, `What, then, does a credibly sustainable farm look like in 2026? On current evidence, something like this: it sits in a well-flushed zone cleared under a regional-scale wild-population impact model; it uses a salmon feed with marine ingredient share below 25 per cent and a FFDR well under ASC thresholds, sourcing from a FIP-certified forage fishery; it fallows sites for long enough to return sediment chemistry to class-1 MOM-B; it treats sea lice with cleaner-fish welfare monitored, not just lice counts; it publishes its escape events within hours; it uses antibiotic grams per tonne in single digits at worst; and it is prepared, if its host fjord flips to red, to pull biomass out of the water. Such farms exist. So do farms that do almost none of this. The problem with aquaculture is not that the good farm is impossible. It is that the bad farm is still legal.`)), /* @__PURE__ */ React.createElement("section", { className: "ff-sec" }, /* @__PURE__ */ React.createElement("div", { className: "secnum" }, "\xA7 10 \xB7 Closing"), /* @__PURE__ */ React.createElement("h2", null, "The open questions"), /* @__PURE__ */ React.createElement("p", null, `Several scientific debates remain genuinely unresolved, and an honest account has to name them. How much of the wild salmon decline in, say, the River Lax\xE5 in Iceland is driven by sea lice from Icelandic and Faroese farms, and how much by warming North Atlantic feeding grounds where the smolts winter? Both are real; the relative weighting is still contested. Can microalgal oils scale to fully replace fish oil in salmon feed at industrial volumes without displacing land use? The biochemistry works; the economics are early. Does RAS's carbon penalty disappear as grids decarbonise? Yes, in principle; the timeline depends on grid policy in the producing country, not on the farm.`), /* @__PURE__ */ React.createElement("p", null, `And the deepest question, the one the FAO statistic at the top of this piece hides: if aquaculture is the most efficient animal protein we have, and if humanity is going to eat more animal protein in 2050 than it does now, does that mean we should farm more of the sea, or less of it? The efficiency argument says more. The ecological argument says more `, /* @__PURE__ */ React.createElement("em", null, `if`), ` \u2014 if the farm is closed, if the feed is decoupled from wild forage, if the fjord has a regulator that means it. The industry is moving in that direction faster than its critics sometimes concede and slower than the science requires. The pen in Hitra is neither a crime nor a solution. It is a fulcrum, and it will be for some time.`))), /* @__PURE__ */ React.createElement("aside", { className: "ff-source-note" }, /* @__PURE__ */ React.createElement("h3", null, "Source Integrity Note"), /* @__PURE__ */ React.createElement("p", null, /* @__PURE__ */ React.createElement("strong", null, "Factual tier disclosure."), " This article was generated under the Three-Tier Evidence System defined in the ", /* @__PURE__ */ React.createElement("code", null, "natgeo-article"), " skill. Named people, institutions, studies, and statistics are Tier 1 (verifiable from published sources). The opening farm scene in Hitra, Tr\xF8ndelag, is a ", /* @__PURE__ */ React.createElement("strong", null, "Tier 2 composite"), ": Hitra is a real, heavily farmed Norwegian salmon region off Tr\xF8ndelag; pen circumference (~160 m), stocking density (~20 kg/m\xB3 vs 25 kg/m\xB3 legal ceiling), feed throughput and production numbers reflect industry-typical figures but are not drawn from a single named facility on a specific date. No direct quotations are used; all statements are reported from published literature."), /* @__PURE__ */ React.createElement("p", null, /* @__PURE__ */ React.createElement("strong", null, "Primary sources consulted (selected):")), /* @__PURE__ */ React.createElement("ul", null, /* @__PURE__ */ React.createElement("li", null, "FAO, ", /* @__PURE__ */ React.createElement("em", null, "The State of World Fisheries and Aquaculture 2024 (SOFIA)"), ". fao.org/publications/sofia."), /* @__PURE__ */ React.createElement("li", null, `Poore, J. & Nemecek, T. (2018). "Reducing food's environmental impacts through producers and consumers." `, /* @__PURE__ */ React.createElement("em", null, "Science"), " 360(6392): 987\u2013992."), /* @__PURE__ */ React.createElement("li", null, 'Fry, J.P. et al. (2018). "Feed conversion efficiency in aquaculture: do we measure it correctly?" ', /* @__PURE__ */ React.createElement("em", null, "Environmental Research Letters"), " 13: 024017."), /* @__PURE__ */ React.createElement("li", null, 'Aas, T.S., Ytrest\xF8yl, T. & \xC5sg\xE5rd, T. (2022). "Utilisation of feed resources in the production of Atlantic salmon in Norway: An update for 2020." ', /* @__PURE__ */ React.createElement("em", null, "Aquaculture Reports"), " 26: 101316. Nofima."), /* @__PURE__ */ React.createElement("li", null, "IFFO \u2014 The Marine Ingredients Organisation: ", /* @__PURE__ */ React.createElement("em", null, "Fish In : Fish Out"), " ratio methodology and series updates (iffo.com)."), /* @__PURE__ */ React.createElement("li", null, "Global Salmon Initiative, ", /* @__PURE__ */ React.createElement("em", null, "Sustainability Report 2023"), " (globalsalmoninitiative.org)."), /* @__PURE__ */ React.createElement("li", null, 'Thorstad, E.B. & Finstad, B. (2018). "Impacts of salmon lice emanating from salmon farms on wild Atlantic salmon and sea trout." ', /* @__PURE__ */ React.createElement("em", null, "NINA Report"), " 1449. Norwegian Institute for Nature Research."), /* @__PURE__ */ React.createElement("li", null, 'Krko\u0161ek, M. et al. (2013). "Impact of parasites on salmon recruitment in the Northeast Atlantic Ocean." ', /* @__PURE__ */ React.createElement("em", null, "Journal of Applied Ecology"), "."), /* @__PURE__ */ React.createElement("li", null, "Norwegian Directorate of Fisheries (Fiskeridirektoratet) \u2014 ", /* @__PURE__ */ React.createElement("em", null, "Traffic-light system"), " (trafikklyssystemet) production zone reviews, 2017, 2020, 2022, 2024 (fiskeridir.no)."), /* @__PURE__ */ React.createElement("li", null, "ICES Working Group on North Atlantic Salmon (WGNAS), annual reports 2016\u20132024 (ices.dk)."), /* @__PURE__ */ React.createElement("li", null, "Glover, K.A., Skaala, \xD8., Hindar, K. et al. \u2014 Norwegian Institute of Marine Research / NINA series on genetic introgression of farm salmon into wild populations (imr.no; nina.no)."), /* @__PURE__ */ React.createElement("li", null, "Norwegian Veterinary Institute, ", /* @__PURE__ */ React.createElement("em", null, "NORM-VET"), " annual antimicrobial usage reports (vetinst.no)."), /* @__PURE__ */ React.createElement("li", null, "SERNAPESCA (Chile), annual reports on antimicrobial use in aquaculture (sernapesca.cl)."), /* @__PURE__ */ React.createElement("li", null, 'Miranda, C.D. et al. (2018; updated 2022). "Current status of the use of antibiotics and the antimicrobial resistance in the Chilean salmon farms." ', /* @__PURE__ */ React.createElement("em", null, "Antibiotics"), "."), /* @__PURE__ */ React.createElement("li", null, "Oceana Chile \u2014 ", /* @__PURE__ */ React.createElement("em", null, "Salmon farming and antibiotics"), " series (chile.oceana.org)."), /* @__PURE__ */ React.createElement("li", null, "Aquaculture Stewardship Council (ASC), ", /* @__PURE__ */ React.createElement("em", null, "Salmon Standard v1.4"), " (2022) (asc-aqua.org)."), /* @__PURE__ */ React.createElement("li", null, "Atlantic Sapphire ASA, annual reports and investor communications, 2020\u20132024."), /* @__PURE__ */ React.createElement("li", null, "Proximar Seafood, corporate disclosures on the Mount Fuji RAS facility, 2024\u20132025."), /* @__PURE__ */ React.createElement("li", null, "Mowi ASA, ", /* @__PURE__ */ React.createElement("em", null, "Salmon Farming Industry Handbook"), " (annual editions 2018\u20132024)."), /* @__PURE__ */ React.createElement("li", null, "Chopin, T. et al., University of New Brunswick \u2014 Integrated Multi-Trophic Aquaculture research programme.")), /* @__PURE__ */ React.createElement("p", null, /* @__PURE__ */ React.createElement("strong", null, "Illustrative charts."), " The antibiotic-use chart (Chile vs Norway) is derived from the Miranda et al. and SERNAPESCA series cited above; intermediate years were interpolated from reported multi-year averages for chart readability and should be read as illustrative of the order-of-magnitude gap and the downward Chilean trend rather than as precise annual figures. The FIFO chart draws on IFFO and Nofima time series; the 1990 value is from early industry feed-composition literature. The Aquaculture-vs-Capture chart reflects FAO SOFIA 2024 long-series data to the nearest million tonnes."), /* @__PURE__ */ React.createElement("p", null, /* @__PURE__ */ React.createElement("strong", null, "No fabricated researchers, institutions, or studies."), " Every named person and organisation in the body text corresponds to a verifiable public record.")));
+}
+
+      ReactDOM.createRoot(document.getElementById('root')).render(
+        React.createElement(FishFarms)
+      );
+    } catch (err) {
+      var box = document.getElementById('error-boundary');
+      if (box) {
+        box.style.display = 'block';
+        box.textContent = '[render error] ' + (err && err.message ? err.message : err);
+      }
+      console.error(err);
+    }
+  </script>
+
+  <!-- PWA service worker registration (Wave 4) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('SW register failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
