@@ -153,6 +153,12 @@ IMPORT_RE = re.compile(
     r"^\s*import\s+.*?from\s+['\"][^'\"]+['\"]\s*;?\s*$",
     re.MULTILINE,
 )
+# Multi-line braced `import { A, B, C } from "mod";` — the single-line
+# IMPORT_RE doesn't span newlines because `.*?` stops at a line break.
+IMPORT_MULTILINE_RE = re.compile(
+    r"^\s*import\s+\{[^}]*\}\s*from\s+['\"][^'\"]+['\"]\s*;?",
+    re.MULTILINE | re.DOTALL,
+)
 # Bare `import 'foo';`
 IMPORT_BARE_RE = re.compile(
     r"^\s*import\s+['\"][^'\"]+['\"]\s*;?\s*$",
@@ -435,7 +441,9 @@ def process_jsx(source: str, slug: str) -> tuple[str, str]:
     """
     src = strip_frontmatter_comment(source)
 
-    # Strip imports
+    # Strip imports — multi-line form first (since it could span what
+    # the single-line pattern would only partially match).
+    src = IMPORT_MULTILINE_RE.sub("", src)
     src = IMPORT_RE.sub("", src)
     src = IMPORT_BARE_RE.sub("", src)
 
