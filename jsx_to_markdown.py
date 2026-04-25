@@ -106,6 +106,7 @@ SLUGS = [
     "drone-hyperlapse-mavic-3-pro",
     "cape-verde-travel-guide",
     "scilly-isles-travel-guide",
+    "audhd-life-around-the-engine",
 ]
 
 

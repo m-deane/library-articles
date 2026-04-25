@@ -110,6 +110,25 @@
     "pdf_url": "articles/east-iceland-hiking-photography.pdf"
   },
   {
+    "slug": "audhd-life-around-the-engine",
+    "title": "Life Around the Engine",
+    "subtitle": "A companion to The Engine That Cannot Be Redirected. Not a treatise on AuDHD brains, but a portrait of the rooms, routines, jobs, partnerships, and refusals that AuDHD adults build to live well at the speed their nervous systems insist upon.",
+    "date": "2026-04-25",
+    "read_time": "",
+    "category": "neuroscience",
+    "style": "natgeo-classic",
+    "tags": [
+      "audhd",
+      "autism",
+      "adhd",
+      "lived-experience",
+      "flourishing"
+    ],
+    "component": "AudhdLifeAroundTheEngine",
+    "url": "articles/audhd-life-around-the-engine.html",
+    "pdf_url": "articles/audhd-life-around-the-engine.pdf"
+  },
+  {
     "slug": "drone-hyperlapse-mavic-3-pro",
     "title": "Drone Hyperlapse with the DJI Mavic 3 Pro",
     "subtitle": "An encyclopaedic technical reference for the triple-camera flagship \u2014 sensors, modes, mathematics, regulation, post",
