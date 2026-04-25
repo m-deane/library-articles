@@ -842,9 +842,23 @@ def _find_all_events(src: str) -> list[tuple[int, str, dict]]:
     anchored scanning to avoid catastrophic backtracking."""
     events: list[tuple[int, str, dict]] = []
 
-    # <Sec n="..." title="..."> — produce a heading
-    for m in re.finditer(r'<Sec\s+n="([^"]*)"\s+title="([^"]*)"', src):
-        events.append((m.start(), "sec", {"n": m.group(1), "title": m.group(2)}))
+    # <Sec ...> heading — captures every shape we've seen in the wild:
+    #   <Sec n="1" title="Foo">…</Sec>          (numbered, with body)
+    #   <Sec title="Foo">…</Sec>                (unnumbered, with body)
+    #   <Sec title="1 · Foo" />                 (self-closing — number is
+    #                                            embedded in the title; the
+    #                                            section body lives as
+    #                                            sibling <H3>/<P>/etc)
+    # The trailing `/?>` lets self-closing tags match. Title is required;
+    # any Sec without one is skipped (probably a hand-rolled placeholder).
+    for m in re.finditer(r"<Sec\b([^>]*?)/?>", src):
+        attrs = _parse_attrs(m.group(1))
+        title = attrs.get("title", "")
+        if not title:
+            continue
+        events.append(
+            (m.start(), "sec", {"n": attrs.get("n", ""), "title": title})
+        )
 
     # <Callout ...>{`...`}</Callout>  — scan by finding the opener, then the
     # next {`, then backtick-}, then </Callout>
@@ -906,34 +920,27 @@ def _find_all_events(src: str) -> list[tuple[int, str, dict]]:
                 (m.start(), "code", {"title": title, "body": body})
             )
 
-    # <P>{`...`}</P>
+    # <P>{ ... }</P> — supports `template literal` AND "double-quoted" strings
+    # AND 'single-quoted' strings inside the braces. Some agents emit
+    # <P>{"text..."}</P> instead of the backtick form.
     for m in re.finditer(r"<P>\{", src):
-        s = m.end()
-        tick_start = s - 1
-        # we matched `<P>{` so tick should be next
-        if src[s - 1] == "{" and src[s] == "`":
-            tick_start = s
-            tick_end = _find_matching_backtick(src, tick_start + 1)
-            if tick_end == -1:
-                continue
-            close = src.find("</P>", tick_end)
-            if close == -1:
-                continue
-            events.append(
-                (m.start(), "p", {"body": src[tick_start + 1 : tick_end]})
-            )
+        body = _read_braced_string_body(src, m.end())
+        if body is None:
+            continue
+        close = src.find("</P>", m.end())
+        if close == -1:
+            continue
+        events.append((m.start(), "p", {"body": body}))
 
-    # <DC>{`...`}</DC>
+    # <DC>{ ... }</DC> — same string-shape tolerance as <P>
     for m in re.finditer(r"<DC>\{", src):
-        s = m.end()
-        if src[s - 1] == "{" and src[s] == "`":
-            tick_end = _find_matching_backtick(src, s + 1)
-            if tick_end == -1:
-                continue
-            close = src.find("</DC>", tick_end)
-            if close == -1:
-                continue
-            events.append((m.start(), "p", {"body": src[s + 1 : tick_end]}))
+        body = _read_braced_string_body(src, m.end())
+        if body is None:
+            continue
+        close = src.find("</DC>", m.end())
+        if close == -1:
+            continue
+        events.append((m.start(), "p", {"body": body}))
 
     # <Cap>...</Cap>  (text children, no template wrapper in standard form)
     for m in re.finditer(r"<Cap>", src):
@@ -1165,6 +1172,38 @@ def _find_balanced_div(src: str, start: int) -> int:
     return -1
 
 
+def _read_braced_string_body(src: str, brace_end: int) -> str | None:
+    """Read a single string expression inside JSX braces and return its body.
+
+    `brace_end` is the index just AFTER the opening `{`. Skips whitespace and
+    accepts a `template literal`, "double-quoted" string, or 'single-quoted'
+    string. Returns the unwrapped body (no escapes processed) or None if no
+    string-shape expression is found before content.
+    """
+    i = brace_end
+    n = len(src)
+    while i < n and src[i] in " \t\n\r":
+        i += 1
+    if i >= n:
+        return None
+    ch = src[i]
+    if ch == "`":
+        end = _find_matching_backtick(src, i + 1)
+        return None if end == -1 else src[i + 1 : end]
+    if ch in ('"', "'"):
+        j = i + 1
+        while j < n:
+            c = src[j]
+            if c == "\\":
+                j += 2
+                continue
+            if c == ch:
+                return src[i + 1 : j]
+            j += 1
+        return None
+    return None
+
+
 def _find_matching_backtick(src: str, start: int) -> int:
     """Find the closing backtick for a JS template literal starting at start.
 
@@ -1221,7 +1260,9 @@ def generic_text_extraction(src: str) -> str:
         if "end" in payload:
             consumed_end = payload["end"]
         if kind == "sec":
-            parts.append(f"## {payload['n']}. {payload['title']}")
+            n = payload["n"]
+            title = payload["title"]
+            parts.append(f"## {n}. {title}" if n else f"## {title}")
             # don't extend consumed_end — Sec itself has no body here
             continue
         if kind == "callout":
