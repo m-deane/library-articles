@@ -109,6 +109,8 @@ SLUGS = [
     "audhd-life-around-the-engine",
     "audhd-entelechy-form-and-fulfilment",
     "audhd-corporate-workplace-navigation",
+    "audhd-late-diagnosis-arc",
+    "audhd-outwardly-successful",
 ]
 
 

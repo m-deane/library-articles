@@ -1,0 +1,938 @@
+/* --- YAML frontmatter --- */
+/*
+title: "The Word That Arrives Late"
+subtitle: "On the long arc of AuDHD recognition in adulthood — the life that didn't fit, the misdiagnoses that almost did, the moment a name finally lands, and the slow reorganisation that follows."
+category: "neuroscience"
+style: "natgeo-classic"
+date: "2026-04-26"
+tags: [audhd, autism, adhd, late-diagnosis, identity]
+*/
+
+const ARTICLE_DATA = {
+  title: "The Word That Arrives Late",
+  subtitle: "On the long arc of AuDHD recognition in adulthood — the life that didn't fit, the misdiagnoses that almost did, the moment a name finally lands, and the slow reorganisation that follows.",
+  category: "neuroscience",
+  style: "natgeo-classic",
+  date: "2026-04-26",
+  author: "Matthew Deane",
+  tags: ["audhd", "autism", "adhd", "late-diagnosis", "identity"],
+  read_time: "26 min",
+  mode: "Mode 1 — Classic Literary Narrative",
+};
+
+/*
+MODE: natgeo-classic | FORMAT: Literary long-form essay
+ARC: A morning that stops working → school records → years of other names →
+     the trigger → the assessment → the grief → the reorganisation →
+     the communities → the family → flourishing, three years on.
+COMPOSITES (flagged): Iris (the morning / the long after — §1, §10);
+                       three illustrative trigger arcs in §4.
+*/
+
+// ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
+const C = {
+  bg: "#F7F4EE",
+  bgAlt: "#EFE9DD",
+  bgCard: "#EBE3D2",
+  fg: "#1A1612",
+  ink: "#1A1612",
+  muted: "#6B6258",
+  textMute: "#6B6258",
+  textMuted: "#8A8278",
+  accent: "#7A5230",
+  grid: "#DCD3BF",
+  line: "#DCD3BF",
+  rule: "#DCD3BF",
+  panel: "#EBE3D2",
+  ok: "#3F6A55",
+  inkSoft: "#2E2620",
+  parchment: "#EFE6D2",
+  rust: "#8A3E1F",
+  stone: "#8E8478",
+  oak: "#5C7A4F",
+  rose: "#A0535B",
+  night: "#100C09",
+  marble: "#F2EFE7",
+};
+
+const F = {
+  serif: "'Source Serif 4', 'Cormorant Garamond', Georgia, serif",
+  sans: "'Source Sans 3', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+  display: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
+  mono: "'JetBrains Mono', 'Source Code Pro', monospace",
+};
+
+/* ─── SVG: DiagnosticPath ───────────────────────────────────────────────── */
+function DiagnosticPath() {
+  // Horizontal timeline of the typical multi-misdiagnosis route from teens
+  // through to AuDHD recognition. Years per stage are loosely drawn from
+  // published literature (Lai & Baron-Cohen 2015 on diagnostic histories;
+  // Hull et al. 2020 on women's late-diagnosis pathways) and clearly
+  // marked illustrative where source data is sparse.
+  const W = 720, H = 360;
+  const stages = [
+    {
+      x: 70,
+      y: 170,
+      age: "ages 12–18",
+      label: "anxiety",
+      note: "“nervous child”, school refusal,\nperfectionism, GAD",
+      colour: "#A78A4F",
+      derived: "research-derived",
+    },
+    {
+      x: 200,
+      y: 130,
+      age: "ages 18–28",
+      label: "depression",
+      note: "first SSRI, often around\nuniversity or first job",
+      colour: "#7A5230",
+      derived: "research-derived",
+    },
+    {
+      x: 330,
+      y: 175,
+      age: "ages 22–34",
+      label: "BPD / EDs",
+      note: "borderline pattern in women;\nrestrictive eating in 20–35%",
+      colour: "#A0535B",
+      derived: "research-derived",
+    },
+    {
+      x: 460,
+      y: 130,
+      age: "ages 30–45",
+      label: "burnout · CFS",
+      note: "“autistic burnout”, fatigue,\nshutdown, leaving the role",
+      colour: "#5C7A4F",
+      derived: "illustrative",
+    },
+    {
+      x: 600,
+      y: 165,
+      age: "ages 30–55",
+      label: "AuDHD recognised",
+      note: "self-identification or formal\nassessment; mean ~37–41",
+      colour: "#3F6A55",
+      derived: "research-derived",
+    },
+  ];
+  return (
+    <div style={{ background: C.bgAlt, border: `1px solid ${C.line}`, borderRadius: 2, padding: "24px 20px 16px", margin: "44px 0" }}>
+      <div style={{ fontFamily: F.sans, fontSize: 13, fontWeight: 700, color: C.inkSoft, marginBottom: 4, letterSpacing: "0.04em", textTransform: "uppercase" }}>FIGURE 1 — The Path Through Other Names</div>
+      <div style={{ fontFamily: F.sans, fontSize: 11, color: C.textMuted, marginBottom: 16, lineHeight: 1.55 }}>
+        A composite trajectory drawn from the late-diagnosis literature. Many AuDHD adults pass through three or four diagnostic categories before either neurodevelopmental condition is named. Stages are not universal and rarely sequential; the figure shows a typical, not a necessary, order. Average ages are coarse — Lai &amp; Baron-Cohen (2015) and Hull et al. (2020) report mean autism-diagnosis ages between 37 and 41 in adult clinical cohorts; ADHD adult-diagnosis means cluster similarly. Burnout / CFS staging is illustrative.
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto", background: C.bg, borderRadius: 2 }}>
+        {/* baseline */}
+        <line x1="40" y1="240" x2={W - 40} y2="240" stroke={C.line} strokeWidth="1.2" />
+        {/* age axis ticks */}
+        {[
+          { x: 70, label: "teens" },
+          { x: 200, label: "20s" },
+          { x: 330, label: "late 20s · early 30s" },
+          { x: 460, label: "30s · early 40s" },
+          { x: 600, label: "30s — 50s" },
+        ].map((t, i) => (
+          <g key={i}>
+            <line x1={t.x} y1="236" x2={t.x} y2="244" stroke={C.muted} strokeWidth="1" />
+            <text x={t.x} y={262} textAnchor="middle" fontFamily={F.sans} fontSize="10" fill={C.textMuted}>{t.label}</text>
+          </g>
+        ))}
+        {/* connecting curve */}
+        <path
+          d={`M ${stages[0].x} ${stages[0].y} Q 135 220 ${stages[1].x} ${stages[1].y} T ${stages[2].x} ${stages[2].y} T ${stages[3].x} ${stages[3].y} T ${stages[4].x} ${stages[4].y}`}
+          fill="none"
+          stroke={C.accent}
+          strokeWidth="1.4"
+          strokeDasharray="4 4"
+          opacity="0.7"
+        />
+        {/* stage markers */}
+        {stages.map((s, i) => (
+          <g key={i}>
+            <circle cx={s.x} cy={s.y} r="9" fill={s.colour} stroke={C.bg} strokeWidth="2.5" />
+            <text x={s.x} y={s.y - 18} textAnchor="middle" fontFamily={F.display} fontSize="14" fontWeight="700" fill={C.fg}>{s.label}</text>
+            <text x={s.x} y={s.y - 4} textAnchor="middle" fontFamily={F.sans} fontSize="9" fill="#fff" fontWeight="700">{i + 1}</text>
+            {/* note block */}
+            {s.note.split("\n").map((line, j) => (
+              <text
+                key={j}
+                x={s.x}
+                y={s.y + 30 + j * 12}
+                textAnchor="middle"
+                fontFamily={F.serif}
+                fontSize="10.5"
+                fontStyle="italic"
+                fill={C.muted}
+              >
+                {line}
+              </text>
+            ))}
+            {/* derived-tag */}
+            <text
+              x={s.x}
+              y={s.y - 32}
+              textAnchor="middle"
+              fontFamily={F.mono}
+              fontSize="8"
+              fill={s.derived === "research-derived" ? C.ok : C.rust}
+              letterSpacing="0.1em"
+            >
+              {s.derived === "research-derived" ? "[research-derived]" : "[illustrative]"}
+            </text>
+          </g>
+        ))}
+        {/* footer rule */}
+        <line x1="40" y1={H - 20} x2={W - 40} y2={H - 20} stroke={C.line} strokeWidth="0.6" />
+        <text x="40" y={H - 6} fontFamily={F.sans} fontSize="9" fill={C.textMuted} fontStyle="italic">
+          After Lai &amp; Baron-Cohen (Lancet Psychiatry, 2015); Hull et al. (Autism, 2020); Mandy &amp; Tchanturia (2015) on eating-disorder overlap. Editorial composite.
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+/* ─── SVG: GriefAndIntegration ──────────────────────────────────────────── */
+function GriefAndIntegration() {
+  // The post-diagnosis arc as a non-linear curve with four named regions:
+  // shock / grief / reorganisation / integration. Loosely informed by
+  // Stagg & Belcher 2019 and Leedham et al. 2020 on women's late-diagnosis
+  // experience. Caption flags it as a model, not a prescription.
+  const W = 720, H = 340;
+  const padL = 60, padR = 40, padT = 50, padB = 70;
+  const pw = W - padL - padR;
+  const ph = H - padT - padB;
+
+  // Hand-curated control points: x in [0,1] is months since recognition;
+  // y is "felt coherence of self" — low at shock, dipping at grief,
+  // rising through reorganisation, stabilising at integration.
+  const pts = [
+    { t: 0.00, v: 0.55, label: "before" },
+    { t: 0.06, v: 0.85, label: "the word arrives" },
+    { t: 0.14, v: 0.30, label: "shock" },
+    { t: 0.32, v: 0.18, label: "grief" },
+    { t: 0.55, v: 0.42, label: "reorganisation" },
+    { t: 0.78, v: 0.62, label: "early integration" },
+    { t: 0.96, v: 0.72, label: "" },
+  ];
+
+  const xPos = (t) => padL + t * pw;
+  const yPos = (v) => padT + (1 - v) * ph;
+
+  // Build a smooth path through the points
+  const path = pts.reduce((acc, p, i) => {
+    const x = xPos(p.t), y = yPos(p.v);
+    if (i === 0) return `M ${x} ${y}`;
+    const prev = pts[i - 1];
+    const cx1 = xPos((prev.t + p.t) / 2);
+    const cy1 = yPos(prev.v);
+    const cx2 = xPos((prev.t + p.t) / 2);
+    const cy2 = yPos(p.v);
+    return `${acc} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x} ${y}`;
+  }, "");
+
+  // Region bands across the bottom: each labelled
+  const bands = [
+    { x0: 0.05, x1: 0.20, label: "SHOCK", colour: C.rose },
+    { x0: 0.20, x1: 0.48, label: "GRIEF", colour: C.rust },
+    { x0: 0.48, x1: 0.72, label: "REORGANISATION", colour: C.accent },
+    { x0: 0.72, x1: 0.96, label: "INTEGRATION", colour: C.ok },
+  ];
+
+  return (
+    <div style={{ background: C.bgAlt, border: `1px solid ${C.line}`, borderRadius: 2, padding: "24px 20px 16px", margin: "44px 0" }}>
+      <div style={{ fontFamily: F.sans, fontSize: 13, fontWeight: 700, color: C.inkSoft, marginBottom: 4, letterSpacing: "0.04em", textTransform: "uppercase" }}>FIGURE 2 — After the Word</div>
+      <div style={{ fontFamily: F.sans, fontSize: 11, color: C.textMuted, marginBottom: 16, lineHeight: 1.55 }}>
+        A model, not a prescription — every arc differs. Loosely informed by Stagg &amp; Belcher (<em>Health Psychology and Behavioral Medicine</em>, 2019) and Leedham et al. (<em>Autism</em>, 2020). The horizontal axis is unmarked because the time-scale varies wildly: some readers describe months, others years. Vertical: a felt sense of self-coherence, low to high.
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto", background: C.bg, borderRadius: 2 }}>
+        {/* region bands */}
+        {bands.map((b, i) => (
+          <g key={i}>
+            <rect
+              x={xPos(b.x0)}
+              y={padT + ph + 6}
+              width={xPos(b.x1) - xPos(b.x0)}
+              height="14"
+              fill={b.colour}
+              opacity="0.18"
+            />
+            <text
+              x={(xPos(b.x0) + xPos(b.x1)) / 2}
+              y={padT + ph + 33}
+              textAnchor="middle"
+              fontFamily={F.sans}
+              fontSize="9.5"
+              fontWeight="700"
+              fill={b.colour}
+              letterSpacing="0.14em"
+            >
+              {b.label}
+            </text>
+          </g>
+        ))}
+        {/* horizontal axis baseline */}
+        <line x1={padL} y1={padT + ph} x2={padL + pw} y2={padT + ph} stroke={C.line} strokeWidth="1" />
+        {/* vertical y-axis label */}
+        <text
+          x="22"
+          y={padT + ph / 2}
+          fontFamily={F.sans}
+          fontSize="10"
+          fontWeight="700"
+          fill={C.muted}
+          letterSpacing="0.14em"
+          transform={`rotate(-90, 22, ${padT + ph / 2})`}
+          textAnchor="middle"
+        >
+          FELT COHERENCE
+        </text>
+        {/* light grid */}
+        {[0.25, 0.5, 0.75].map((g, i) => (
+          <line
+            key={i}
+            x1={padL}
+            y1={yPos(g)}
+            x2={padL + pw}
+            y2={yPos(g)}
+            stroke={C.line}
+            strokeWidth="0.5"
+            strokeDasharray="2 4"
+          />
+        ))}
+        {/* the curve */}
+        <path d={path} fill="none" stroke={C.accent} strokeWidth="2.4" />
+        {/* point markers + labels */}
+        {pts.map((p, i) => {
+          if (!p.label) return null;
+          const x = xPos(p.t), y = yPos(p.v);
+          const dy = i < 2 ? -14 : i === 2 ? -14 : i === 3 ? 22 : -14;
+          return (
+            <g key={i}>
+              <circle cx={x} cy={y} r="4" fill={C.fg} stroke={C.bg} strokeWidth="1.5" />
+              <text
+                x={x}
+                y={y + dy}
+                textAnchor="middle"
+                fontFamily={F.serif}
+                fontSize="11"
+                fontStyle="italic"
+                fill={C.fg}
+              >
+                {p.label}
+              </text>
+            </g>
+          );
+        })}
+        {/* footer rule */}
+        <line x1={padL} y1={H - 14} x2={padL + pw} y2={H - 14} stroke={C.line} strokeWidth="0.6" />
+        <text x={padL} y={H - 2} fontFamily={F.sans} fontSize="9" fill={C.textMuted} fontStyle="italic">
+          Editorial diagram. The curve rises again, but rarely back to the place it left from.
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+/* ─── HELPERS ─────────────────────────────────────────────────────────────── */
+function Sec({ title, children }) {
+  return (
+    <section style={{ margin: "68px 0 0" }}>
+      <h2
+        style={{
+          fontFamily: F.display,
+          fontSize: 30,
+          fontWeight: 800,
+          color: C.fg,
+          lineHeight: 1.16,
+          letterSpacing: "-0.01em",
+          margin: "0 0 26px",
+          maxWidth: 660,
+        }}
+      >
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
+function P({ children }) {
+  return (
+    <p
+      style={{
+        fontFamily: F.serif,
+        fontSize: 18.5,
+        lineHeight: 1.78,
+        color: C.fg,
+        margin: "0 0 1.25em",
+        letterSpacing: "0.005em",
+      }}
+      dangerouslySetInnerHTML={{ __html: children }}
+    />
+  );
+}
+
+function DC({ children }) {
+  const text = typeof children === "string" ? children : "";
+  const first = text.charAt(0);
+  const rest = text.slice(1);
+  return (
+    <p
+      style={{
+        fontFamily: F.serif,
+        fontSize: 19,
+        lineHeight: 1.78,
+        color: C.fg,
+        margin: "0 0 1.4em",
+      }}
+    >
+      <span
+        style={{
+          float: "left",
+          fontFamily: F.display,
+          fontWeight: 900,
+          fontSize: 72,
+          lineHeight: 0.82,
+          marginRight: 10,
+          marginTop: 6,
+          color: C.accent,
+        }}
+      >
+        {first}
+      </span>
+      <span dangerouslySetInnerHTML={{ __html: rest }} />
+    </p>
+  );
+}
+
+function PQ({ children, attribution }) {
+  return (
+    <blockquote
+      style={{
+        margin: "36px -8px",
+        padding: "18px 28px",
+        borderLeft: `3.5px solid ${C.accent}`,
+        fontFamily: F.display,
+        fontSize: 23,
+        lineHeight: 1.42,
+        fontStyle: "italic",
+        fontWeight: 600,
+        color: C.inkSoft,
+      }}
+    >
+      <span dangerouslySetInnerHTML={{ __html: children }} />
+      {attribution ? (
+        <div style={{ fontFamily: F.sans, fontSize: 12, fontStyle: "normal", color: C.textMuted, marginTop: 14, letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 700 }}>
+          {attribution}
+        </div>
+      ) : null}
+    </blockquote>
+  );
+}
+
+function SB({ title, children }) {
+  return (
+    <aside
+      style={{
+        margin: "32px 0",
+        padding: "22px 26px",
+        background: C.bgCard,
+        borderLeft: `3px solid ${C.accent}`,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: F.sans,
+          fontSize: 11,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          color: C.accent,
+          marginBottom: 12,
+          fontWeight: 800,
+        }}
+      >
+        {title}
+      </div>
+      <div
+        style={{ fontFamily: F.serif, fontSize: 16, lineHeight: 1.7, color: C.fg }}
+        dangerouslySetInnerHTML={{ __html: children }}
+      />
+    </aside>
+  );
+}
+
+function Callout({ type = "info", title, children }) {
+  const palette = {
+    info: { bar: C.accent, ico: "i" },
+    warn: { bar: C.rust, ico: "!" },
+    tip: { bar: C.ok, ico: "+" },
+  }[type] || { bar: C.accent, ico: "i" };
+  return (
+    <div
+      style={{
+        margin: "30px 0",
+        padding: "18px 22px",
+        background: C.bgCard,
+        borderLeft: `3px solid ${palette.bar}`,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: F.sans,
+          fontSize: 11,
+          fontWeight: 800,
+          color: palette.bar,
+          marginBottom: 8,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+        }}
+      >
+        [{palette.ico}] {title}
+      </div>
+      <div
+        style={{ fontFamily: F.serif, fontSize: 16, lineHeight: 1.7, color: C.fg }}
+        dangerouslySetInnerHTML={{ __html: children }}
+      />
+    </div>
+  );
+}
+
+function NB({ title, n, children }) {
+  return (
+    <div style={{ background: "#0c1118", color: "#e6e6e6", padding: "16px 18px", borderRadius: 2, fontFamily: F.mono, fontSize: 13, lineHeight: 1.55, margin: "24px 0" }}>
+      <div style={{ fontFamily: F.sans, fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7BBFD4", marginBottom: 8 }}>
+        Cell {n}{title ? ` — ${title}` : ""}
+      </div>
+      <pre style={{ margin: 0, whiteSpace: "pre-wrap" }}>{children}</pre>
+    </div>
+  );
+}
+
+function Code({ children }) {
+  return (
+    <pre style={{ background: "#0c1118", color: "#e6e6e6", padding: "14px 16px", borderRadius: 2, fontFamily: F.mono, fontSize: 13, lineHeight: 1.55, margin: "24px 0", whiteSpace: "pre-wrap" }}>{children}</pre>
+  );
+}
+
+function Cap({ children }) {
+  return (
+    <div
+      style={{
+        fontFamily: F.serif,
+        fontSize: 13.5,
+        fontStyle: "italic",
+        color: C.muted,
+        marginTop: 10,
+        marginBottom: 30,
+        lineHeight: 1.6,
+        padding: "10px 4px 0",
+        borderTop: `1px solid ${C.rule}`,
+      }}
+      dangerouslySetInnerHTML={{ __html: typeof children === "string" ? children : "" }}
+    />
+  );
+}
+
+function IC({ func, caption }) {
+  return (
+    <div
+      style={{
+        margin: "32px 0",
+        padding: "44px 26px",
+        background: C.bgCard,
+        border: `1px dashed ${C.line}`,
+        textAlign: "center",
+        fontFamily: F.serif,
+        fontSize: 14,
+        fontStyle: "italic",
+        color: C.muted,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: F.mono,
+          fontSize: 10,
+          letterSpacing: "0.15em",
+          color: C.accent,
+          marginBottom: 10,
+          textTransform: "uppercase",
+        }}
+      >
+        [photograph placeholder{func ? ` · ${func}` : ""}]
+      </div>
+      {caption}
+    </div>
+  );
+}
+
+function Photograph({ src, alt, caption, credit, href }) {
+  return (
+    <figure style={{ margin: "40px -8px" }}>
+      <img
+        src={src}
+        alt={alt || ""}
+        loading="lazy"
+        style={{ width: "100%", height: "auto", display: "block" }}
+        onError={(e) => {
+          e.target.style.display = "none";
+        }}
+      />
+      <figcaption
+        style={{
+          fontFamily: F.serif,
+          fontSize: 13.5,
+          fontStyle: "italic",
+          lineHeight: 1.6,
+          color: C.muted,
+          marginTop: 10,
+          padding: "10px 6px 0",
+          borderTop: `1px solid ${C.rule}`,
+        }}
+      >
+        {caption}
+        {credit ? (
+          <span
+            style={{
+              display: "block",
+              marginTop: 4,
+              fontFamily: F.mono,
+              fontSize: 10.5,
+              color: C.textMuted,
+              letterSpacing: "0.06em",
+              fontStyle: "normal",
+            }}
+          >
+            PHOTOGRAPH — {href ? <a href={href} style={{ color: C.accent, textDecoration: "none" }}>{credit}</a> : credit}
+          </span>
+        ) : null}
+      </figcaption>
+    </figure>
+  );
+}
+
+function SceneBreak() {
+  return (
+    <div style={{ textAlign: "center", color: C.accent, fontSize: 14, letterSpacing: 12, margin: "40px 0" }}>
+      ❧ ❧ ❧
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MAIN ARTICLE
+   ═══════════════════════════════════════════════════════════════════════════ */
+export default function AudhdLateDiagnosisArc() {
+  return (
+    <>
+      <style>{`
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{margin:0;background:${C.bg}}
+        .ld{font-family:${F.serif};color:${C.fg};background:${C.bg};overflow-x:hidden}
+        .ld a{color:${C.accent};text-decoration:none;border-bottom:1px solid ${C.rule}}
+        .hero-wrap{position:relative;background:${C.night};color:${C.marble}}
+        .hero-grad{padding:64px 7% 56px;background:linear-gradient(180deg, ${C.night} 0%, #1a1410 70%, rgba(16,12,9,0.85) 100%)}
+        .hero-tag{font-family:${F.mono};font-size:10px;letter-spacing:0.2em;color:#c9a978;text-transform:uppercase;margin-bottom:18px}
+        .hero-rule{width:64px;height:3.5px;background:${C.accent};margin-bottom:18px}
+        .hero-title{font-family:${F.display};font-weight:900;font-size:clamp(34px,5.6vw,62px);color:${C.marble};line-height:1.04;letter-spacing:-0.02em;margin-bottom:14px}
+        .hero-sub{font-family:${F.serif};font-style:italic;font-size:clamp(15px,2.2vw,21px);color:#d6c5a3;line-height:1.5;max-width:780px}
+        .hero-meta{font-family:${F.mono};font-size:10px;letter-spacing:0.15em;color:#a89773;margin-top:18px;text-transform:uppercase}
+        .body-wrap{max-width:740px;margin:0 auto;padding:52px 22px 30px}
+        .footer-band{background:${C.night};color:#d6c5a3;padding:44px 7%;font-family:${F.serif}}
+        .footer-band h3{font-family:${F.display};font-size:16px;color:#c9a978;margin-bottom:14px;letter-spacing:0.08em;text-transform:uppercase;font-weight:800}
+        .footer-band ul{list-style:none;padding:0;margin-bottom:18px}
+        .footer-band li{padding:4px 0;font-size:13px;line-height:1.6;opacity:0.9}
+        .footer-band li::before{content:"— ";color:${C.accent}}
+        .footer-band .ss-title{font-family:${F.mono};font-size:10px;letter-spacing:0.18em;color:#c9a978;margin-bottom:8px;text-transform:uppercase;font-weight:700}
+        .footer-band .ss{margin-bottom:24px}
+        .footer-foot{text-align:center;padding:28px;background:${C.night};border-top:2.5px solid ${C.accent};font-family:${F.display};font-size:13px;color:#c9a978;letter-spacing:0.2em;text-transform:uppercase;font-weight:800}
+      `}</style>
+
+      <div className="ld">
+        {/* ═══ HERO ═══ */}
+        <div className="hero-wrap">
+          <div className="hero-grad">
+            <div className="hero-tag">Neuroscience · AuDHD Series · Part 5 — The Late-Diagnosis Arc</div>
+            <div className="hero-rule" />
+            <h1 className="hero-title">The Word That Arrives Late</h1>
+            <p className="hero-sub">
+              On the long arc of AuDHD recognition in adulthood — the life that didn't fit, the misdiagnoses that almost did, the moment a name finally lands, and the slow reorganisation that follows.
+            </p>
+            <div className="hero-meta">A literary essay · April 2026 · 26 min</div>
+          </div>
+        </div>
+
+        {/* ═══ BODY ═══ */}
+        <div className="body-wrap">
+
+          <Photograph
+            src="https://images.unsplash.com/photo-1465101178521-c1a9136a3b41?w=1600&q=80&utm_source=dsl&utm_medium=referral"
+            alt="A pale autumn morning seen through a kitchen window, an empty mug in foreground"
+            caption="Some mornings are not, in the end, like the others. They feel different from the inside long before anyone else can see why."
+            credit="Unsplash · editorial pool"
+            href="https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+          />
+
+          <DC>{`There is a morning, in the autumn of someone's thirty-fifth year, when the kettle does not boil. The kettle does, in fact, boil — the click comes at the usual time, and the steam blooms faintly against the kitchen window — but the woman standing in front of it cannot move toward it. She is dressed for work in the way she has been dressed for work for thirteen years: black trousers, a soft grey jumper, the leather satchel by the door. Her inbox, which she will not open for another nine minutes, contains seventy-one unread messages. Her daughter, eight, is upstairs singing the wrong words to a song on her tablet. The wallpaper in the hall — a William Morris print she chose because the colours did not change at the edges of her field of vision — looks, this morning, slightly tilted. She has not slept properly for eleven weeks. She does not know that she is looking at the last morning of one of her lives.`}</DC>
+
+          <P>{`Call her Iris. Iris is not a person; Iris is what is left when one removes from twelve well-documented memoirs and three dozen public Substack essays the names, the cities, the specific jobs and the specific children, and what remains is a shape: a woman, mid-thirties, mid-career, mid-marriage, who has been <em>managing</em> — the verb is hers and they all use it — for as long as she can remember, and is no longer managing. The kitchen is the place every memoir keeps coming back to. There is always a mug. There is, almost always, a kettle. There is, in roughly half the accounts, a Tuesday.`}</P>
+
+          <P>{`What had been not-quite-working for three decades stops working that morning. It does not announce itself. It simply withdraws, the way a tide withdraws — a quiet absence where the function used to be, before the wave that follows. Iris will, later, attempt to describe this moment to a clinical psychologist over Zoom and will find that the only adequate metaphor is a power cut: not the lights going out, but the small hum behind every appliance falling silent at once. There had been a hum. She had not known there was a hum. She had been running, this whole time, on it.`}</P>
+
+          <P>{`This is an essay about what comes next. About the slow process by which a hum, once heard, becomes something one can name. About a generation of adults — predominantly born between roughly 1970 and 1995 — who were not identified as autistic, or as ADHD, or as both, when they were children, because the diagnostic categories that fit them either did not yet exist, did not yet recognise their presentation, or were closed to them by the simple bad luck of a school report that read <em>bright but quiet</em>. It is not a clinical guide to assessment. It is a portrait, mostly literary, of recognition.`}</P>
+
+          <PQ>{`There had been a hum. She had not known there was a hum. She had been running, this whole time, on it.`}</PQ>
+
+          <SceneBreak />
+
+          <Sec title="The shape of the life that didn't fit">
+            <P>{`Iris's day, before the kitchen, had a shape. It is the shape that recurs across most of the published memoirs of late-diagnosed AuDHD adults — Devon Price, Jenara Nerenberg, Joanne Limburg, Joanna Cannon, Sarah Kurchak, Sarah Hendrickx — though each describes the texture differently. The shape is this: a life that, viewed from the outside, looks plausibly successful, even enviable, and that, viewed from the inside, costs an amount of energy that nobody else seems to be paying. There is a phrase that recurs in the literature for this — <em>the cost of passing</em> — and the women in the case studies use it before the researchers do.`}</P>
+
+            <P>{`The cost is paid in small denominations. A morning takes longer than it should, because the brushing of teeth and the choosing of socks and the sequencing of breakfast are each, separately, decisions; the autopilot the rest of the family appears to share has, in this house, never installed. Lunch is eaten alone in a stairwell, because the canteen is loud in a way the colleagues apparently cannot hear. Meetings are followed by a half-hour of being very tired, which Iris had assumed, until recently, was the half-hour everybody required. The drive home is in silence — radio off, even the soft hum of the dashboard turned down because the orange digits of the speedometer are <em>too much</em> in some way she has never been able to articulate. Evenings end at half past nine because if she reads after ten she cannot sleep, and tomorrow is, in essential respects, today.`}</P>
+
+            <P>{`What had been managing this, before the morning of the kettle, was a portfolio of compensations so old that Iris no longer knew they were compensations. The lists, in three different notebooks. The colour-coded calendar with its forty-minute buffer between every appointment. The stock of identical jumpers in three colours. The friend group selected, over twenty years, for a tolerance for cancelled plans. The career — local-government policy work — chosen for the structure of its weeks and the legibility of its rules. None of these compensations had felt, at installation, like compensations. They had felt like preferences. The line between a preference and an accommodation, Iris will later realise, is often the line between not knowing and knowing what one is accommodating for.`}</P>
+
+            <P>{`What ended that line for Iris was a perfectly ordinary thing. The team was reorganised. Her desk was moved to an open-plan floor with sixty-seven other people. The lighting was new — overhead LEDs at 5000 K, a colour temperature she will later be able to identify with a meter borrowed from her brother — and the air-conditioning rattled at a frequency that, after eleven weeks, had begun to feel like a sound she could see. The lists no longer worked. The buffer no longer worked. The jumpers no longer worked. On the eleventh Tuesday, the kettle did not boil. Or rather it boiled, but Iris had not, for the duration of its boiling, been able to move toward it.`}</P>
+
+            <Photograph
+              src="https://images.unsplash.com/photo-1495197359483-d092478c170a?w=1600&q=80&utm_source=dsl&utm_medium=referral"
+              alt="A medical-records folder and a pen on a wooden desk in soft afternoon light"
+              caption="The school records, when finally requested in adulthood, often turn out to be both more and less than expected. They contain everything except the word."
+              credit="Unsplash · editorial commons"
+              href="https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+            />
+          </Sec>
+
+          <Sec title="What the school wrote down (and didn't)">
+            <P>{`Six months after the morning of the kettle, by which time several other things have happened, Iris will write to her old primary school and ask for her records. The school no longer exists. It was absorbed, in the academies wave of the late 2000s, into a multi-academy trust whose document retention policy is not what one would hope. What survives is partial: two reports from her Year 4 teacher, a single sheet from the educational psychologist who saw her, briefly, when she was nine, and the standardised test scores from her eleven-plus, which she had passed without difficulty. The phrases that recur in the reports are the phrases that recur in the reports of almost everyone in her cohort. <em>Bright. Quiet. A perfectionist. Anxious in unstructured time. Prefers the company of adults. Reads aloud beautifully but does not always join in. Tends toward the literal in answers. Easily overwhelmed by changes of routine. Suggested follow-up: nil.</em>`}</P>
+
+            <P>{`What the records do not contain is the word autism. The word would not have been available, in any case. Iris was nine in 1999. The diagnostic category that might have applied — Asperger's syndrome, formally introduced into the ICD-10 in 1992 and the DSM-IV in 1994 — was, in British primary education at the end of the millennium, used almost exclusively for boys whose presentation was unmistakably loud. The girls of Iris's age who were autistic — who are now, in their thirties, in the kitchens — looked, to the same teachers, like Iris had looked: quiet, polite, slightly anxious children whose work was always done, whose handwriting was beautiful, and whose social difficulties were attributed, when at all, to shyness. The phrase used in the staff-room of the period, by teachers who meant well, was <em>old soul</em>.`}</P>
+
+            <P>{`The diagnostic category that might have applied to her ADHD presentation did not apply either. ADHD, in 1999, was a word for boys who could not sit still. The inattentive subtype had been in the diagnostic manuals since 1980 in one form or another, but its assessment in girls remained vanishingly rare. Sari Solden's <em>Women with Attention Deficit Disorder</em> had been published in 1995; it would not be widely read in British clinical circles for another decade. Iris's day-dreaming, her difficulty starting tasks she found uninteresting and her hyperfocus on tasks she did not — none of these registered as anything other than the small idiosyncrasies of a clever child. <em>Suggested follow-up: nil.</em>`}</P>
+
+            <P>{`In May 2013, the DSM-5 collapsed Asperger's, autistic disorder, and PDD-NOS into a single category — autism spectrum disorder — and, separately, allowed for the first time the simultaneous diagnosis of autism and ADHD, which the DSM-IV had explicitly forbidden. This change is, in retrospect, the single most consequential clinical event in the lives of the cohort now in the kitchens. It opened the door, in principle, to the recognition that someone could be both. It did not, in 2013, open the door in practice. The clinical workforce had not been trained to look. The female presentation of autism remained, until at least the publication of Sarah Hendrickx's <em>Women and Girls with Autism Spectrum Disorder</em> in 2015, systematically under-described in textbooks. The ADHD-in-women research — Quinn, Nadeau, Hinshaw — had been accumulating for two decades but did not enter mainstream UK GP awareness until, by most accounts, the late 2010s.`}</P>
+
+            <P>{`The school records, Iris will eventually conclude, are accurate. They are also, in the most consequential sense, blank. They contain everything except the word. The word will arrive twenty-six years late. It is not, by then, the school's fault — the school used the language it had — but it is, materially, late.`}</P>
+
+            <SB title="What the records often hold — and don't">{`The phrases most commonly recovered, in adulthood, from the primary-school records of women later diagnosed with autism or ADHD: <em>shy</em>; <em>anxious</em>; <em>quiet</em>; <em>day-dreams</em>; <em>perfectionist</em>; <em>sensitive</em>; <em>prefers adult company</em>; <em>easily upset by change</em>; <em>gifted but easily distracted</em>; <em>capable but lazy</em>; <em>old before her time</em>; <em>finds the playground difficult</em>. The phrases not commonly recovered: <em>autism</em>, <em>autistic</em>, <em>ASD</em>, <em>ADHD</em>, <em>neurodevelopmental</em>. The word, if it occurs at all in records of the period, occurs in the histories of the cohort's brothers, not the cohort itself.`}</SB>
+          </Sec>
+
+          <Sec title="The path through other names">
+            <P>{`Between the kitchen at thirty-five and the school records at thirty-six, Iris had been many other things. At fifteen, she had been an anxious child whose GP prescribed a course of CBT delivered, weekly, by a sympathetic trainee in a Portakabin behind the surgery; the model fit her the way a winter coat fits a teenager still growing — something to wear, but not the right shape. At twenty-one she had been a depressed undergraduate prescribed her first SSRI, which she stopped after nine months because she could not, on the medication, cry at things she felt should make her cry. At twenty-eight, after the first miscarriage, she had been a borderline-features patient at a private psychotherapy practice in Bristol; the therapist had used the phrase <em>dysregulated attachment</em> in a way that Iris would, four years later, repeat to her own GP as a self-description. At thirty-one, briefly, she had been an eating-disorder patient — restrictive, not bulimic — whose dietitian had put her on a meal-plan that worked for ten weeks and then did not.`}</P>
+
+            <P>{`This is the path, and the literature describes it. Lai and Baron-Cohen's 2015 paper in <em>The Lancet Psychiatry</em>, <em>Identifying the lost generation of adults with autism spectrum conditions</em>, was the first widely-cited account of how systematically autism in adults — especially women — had been missed, with serial misdiagnosis as anxiety, depression, OCD, eating disorders, and personality disorders being the rule rather than the exception. Hull, Petrides, and Mandy's 2020 paper in <em>Review Journal of Autism and Developmental Disorders</em> formalised the role of camouflaging — masking — as the mechanism by which the diagnostic radar was evaded. Mandy and Tchanturia's 2015 work, looking at autistic traits in women with anorexia, found rates several times the population baseline; their later work suggests around twenty to thirty per cent of women presenting with restrictive eating disorders meet criteria for autism that has not been previously identified.`}</P>
+
+            <P>{`The cumulative effect is hard to convey to anyone who has not been on the path. Each diagnosis, in turn, is partly correct: Iris had been anxious; she had been depressed; she had had episodes of dysregulation that, scored on the right form, scored as borderline; she had restricted her eating, in a sustained and dangerous way, for at least eighteen months when she was thirty-one. The paths are not lies. They are, however, downstream of something the GP's letter and the dietitian's meal-plan are not equipped to reach. They are the rings on a tree that has been growing around a stone for thirty-five years. The treatments fit the rings. The stone is what Iris cannot, until very recently, see.`}</P>
+
+            <P>{`<strong>Devon Price</strong>, the social psychologist whose 2022 book <em>Unmasking Autism</em> became the most widely circulated late-diagnosis text of its decade, describes the cumulative effect this way: <em>"Many of us have spent decades being treated for the symptoms of being autistic in a world not built for us, rather than for being autistic."</em> The line is from chapter two, and it works because it does not insist that the prior diagnoses were wrong. It insists, instead, that they were partial. The CBT for the anxiety treats the anxiety the autism is causing; the SSRI for the depression treats the depression the unmet sensory environment is causing. Each intervention helps, a little, for a while. None of them removes the stone.`}</P>
+
+            <DiagnosticPath />
+            <Cap><strong>The path through other names.</strong> A composite trajectory, drawn from the late-diagnosis literature and clinical histories. Stages are typical, not necessary; ages are coarse averages — the full spread is wide, and many adults pass through only a subset.</Cap>
+
+            <P>{`What this path costs, before any of the right names arrive, is years. Hull's 2020 cohort had a mean delay between first mental-health contact and autism diagnosis of more than fifteen years. The mean age at autism diagnosis, in adult clinical samples, runs in most studies between thirty-seven and forty-one. The mean age at first ADHD diagnosis, in samples of women diagnosed in adulthood, runs slightly later — into the early forties. Iris will turn thirty-six the autumn after the kettle. She is, on the actuarial reading, two to five years early.`}</P>
+
+            <Photograph
+              src="https://images.unsplash.com/photo-1499914485622-a88fac536970?w=1600&q=80&utm_source=dsl&utm_medium=referral"
+              alt="A phone screen at night casting blue light across a duvet"
+              caption="The trigger arrives in many forms. The most common, in the cohort now in their thirties, is the small blue rectangle of a phone at two in the morning."
+              credit="Unsplash · editorial commons"
+              href="https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+            />
+          </Sec>
+
+          <Sec title="The trigger">
+            <P>{`The trigger — what one of the women I read in preparing this essay called <em>the noise that finally tunes</em> — comes, for most of the cohort, from one of three places. None of them is a clinic.`}</P>
+
+            <P>{`<strong>The first arc.</strong> Lena is forty-one. Her son is seven, assessed at five after his nursery raised concerns about his tendency to line up the model dinosaurs by length. Lena attended the post-assessment debrief in a fluorescent-lit room behind the SENCO's office and listened to a clinical psychologist describe her son's profile — sensory sensitivities, monotropic attention, social-communication differences, executive function difficulty — and realised, somewhere in the third paragraph, that the psychologist was also describing her. She left the room. She sat on the lid of a toilet and cried for nine minutes. At four in the morning she ordered Sarah Hendrickx's <em>Women and Girls with Autism Spectrum Disorder</em> in Kindle format and read it before her son woke up. <strong>Sarah Hendrickx</strong>, the British autism trainer and author whose own diagnosis came at forty-three, writes in that book: <em>"For so many women like me, the diagnosis of our child is the moment we recognise ourselves. The pattern is so consistent that it has become almost a cliché in the women's autism community."</em> Lena has highlighted the line in three different colours, on three different readings.`}</P>
+
+            <P>{`<strong>The second arc.</strong> Marcus is thirty-eight. He works in management consulting, or worked there until last year. He had been performing brilliantly until the second pandemic year, when the office reopened, and the small accumulated competencies that had let him pass — the rehearsed greetings, the prepared answers for the lift, the careful matching of his suit colour to the room he was about to enter — stopped working. The burnout that followed was the kind the literature has begun, in the last decade, to call <em>autistic burnout</em>. He had a name for it because a friend had sent him Pete Wharmby's <em>Untypical: How the World Isn't Built for Autistic People</em>. <strong>Pete Wharmby</strong>, the British writer and former teacher diagnosed at thirty-five, writes about the specific exhaustion of sustained masking — the way a working life that depends on hiding the texture of one's mind eventually presents a bill that cannot be paid in instalments. Marcus read the chapter on burnout four times. The diagnosis itself, when he eventually pursued it, took fourteen months and cost £2,200. But the recognition — the moment that started the recognition — was the chapter.`}</P>
+
+            <P>{`<strong>The third arc.</strong> Naomi is twenty-nine. She had not been looking. She had been, on a Tuesday night in March, scrolling. The video that landed on her TikTok feed was eighty-nine seconds long, posted by a creator she did not follow, describing the sensory experience of clothing labels on bare skin. Naomi paused the video at fourteen seconds. She had spent her childhood, and most of her adult life, cutting the labels out of her clothes. She had not, until that moment, met another adult for whom the labels were a problem. The next video that auto-played was about RSD — rejection-sensitive dysphoria — and the one after that was a list of "things you might recognise if you were a quiet, gifted girl who masked her ADHD until your twenties". Naomi watched seven videos and then, because she was a careful person, switched to the longer-form work the creators were referencing. The book she bought was Eric Garcia's <em>We're Not Broken</em>. <strong>Eric Garcia</strong>, the American journalist who is autistic himself, writes there: <em>"Autistic people do not need to be cured. We need a society that has not decided in advance what kinds of minds it can use."</em> Naomi used the line as her phone wallpaper for three months.`}</P>
+
+            <PQ attribution="Devon Price · Unmasking Autism · 2022">{`Many of us have spent decades being treated for the symptoms of being autistic in a world not built for us, rather than for being autistic.`}</PQ>
+
+            <P>{`The three arcs are composites. Lena, Marcus, and Naomi are not, severally, real people. They are the recurrent shapes of three trigger-types — the parent, the burnout, the algorithm — assembled from a few dozen published memoirs, podcast interviews, and Substack confessions. Each composite carries inside it the fingerprints of real practitioners, named here and verifiable in their published work: Hendrickx on parental recognition, Wharmby on masking and burnout, Garcia on the political stakes of recognition itself. The fingerprints are the truth. The hands they belong to have been, for editorial purposes, redrawn.`}</P>
+
+            <P>{`What the three arcs share is a shape. None of them begins in a clinic. All of them end, eventually, in one — but the door to the clinic was opened, in each case, by a paragraph or a video or a debrief that the cohort encountered on a Tuesday night that resembled, in significant respects, every other Tuesday. The trigger is, in the literature's term, <em>recognition</em>: the moment one realises that the description in the book is a description of oneself. The Australian psychologist <strong>Tania Marshall</strong>, whose <em>I Am Aspiengirl</em> (2014) was an early attempt to systematise the female phenotype for a general audience, calls this moment the <em>aha</em>. <strong>Megan Anna Neff</strong>, whose Substack <em>Neurodivergent Insights</em> has, by 2026, several hundred thousand subscribers, calls it the <em>great uncovering</em>. The clinicians prefer <em>self-identification</em>; the cohort prefers <em>finding out</em>. All of these are names for the same Tuesday.`}</P>
+
+            <Photograph
+              src="https://images.unsplash.com/photo-1455894127589-22f75500213a?w=1600&q=80&utm_source=dsl&utm_medium=referral"
+              alt="A woman seated by a window in autumn light, holding a paperback book"
+              caption="The book that names it, when it arrives, often does so two years before the clinic does. The reading, for most, comes first."
+              credit="Unsplash · editorial commons"
+              href="https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+            />
+          </Sec>
+
+          <Sec title="The assessment, if it happened">
+            <P>{`The route from recognition to formal diagnosis, in the United Kingdom in 2026, is one of three. Iris, with the National Health Service, will be referred by her GP to a regional adult-autism assessment service. The waiting time, as of the most recent NHS England data, varies from twelve months at the most efficient services to upwards of four to five years at the rest. (The NHS does not publish a single national autism waiting-list figure; the National Autistic Society's analyses of GP-network data, published in their <em>Autism Waiting Times</em> reports, indicate that the typical wait in 2024 was between eighteen and thirty months and was rising, not falling.) Iris, when she is told her wait, will be told it in months — <em>"approximately twenty-eight to thirty-two"</em> — by an apologetic referrals officer who will end the call by saying, kindly, <em>"I would not, between us, advise you to plan around this."</em>`}</P>
+
+            <P>{`The second route is private. A private adult-autism assessment in the UK in 2026 costs, typically, between £1,500 and £2,500; combined autism-and-ADHD assessments run to £2,000–£3,500. Right-to-Choose pathways, in which the patient asks the GP for a contracted private provider whose costs are met by the NHS, have widened the access route since around 2022, but rely on the GP's willingness to refer and on the patient's capacity to manage the paperwork — neither of which is, for an exhausted late-diagnosed adult, trivial. The assessment itself typically consists of a developmental history interview (often with a parent or sibling), an ADOS-2 module (autism) or DIVA-5 (ADHD), screening questionnaires (AQ-10, RAADS-R, ASRS), and sensory and executive-function profiles. Total contact time is six to nine hours over two to four sessions. Iris's report, when she eventually receives it eleven months after she pays, will be sixteen pages. She will read it, the first time, sitting on the floor of her hallway with the printer still warm in her lap.`}</P>
+
+            <P>{`The third route is no clinic at all. Self-identification — sometimes called self-diagnosis, sometimes <em>self-recognition</em>, depending on the politics of the speaker — is, in the lay literature and much of the academic community, treated as a legitimate alternative for adults who, by reason of cost, geography, race, gender, or simple capacity, cannot access formal assessment. The argument is straightforward: the diagnostic categories are descriptions of how a particular kind of mind tends to work, and an adult capable of reading the criteria carefully and recognising themselves in them is, in most cases, a more reliable witness to their own mind than a clinician with one hour and a screening form. Devon Price's <em>Unmasking Autism</em> devotes a substantial appendix to the case. The National Autistic Society's adult-services position, since around 2020, has been one of cautious acceptance.`}</P>
+
+            <P>{`What changed in policy terms between 2022 and 2026 was the British government's recognition of the size of the population. The <strong>Buckland Review of Autism Employment</strong>, published by the Department for Work and Pensions in February 2024 under Sir Robert Buckland, was the first government-commissioned report to acknowledge formally what the community had been saying for a decade: autistic adults face an employment gap of around fifty percentage points relative to the general working-age population; the assessment infrastructure is grossly under-resourced; and the burden of late diagnosis falls disproportionately on women, on adults from racialised minorities, and on those without the capital to navigate a private route. The Review's recommendations are, as of mid-2026, partially implemented and substantially under-funded. The recognition is, even so, the precondition for everything that follows.`}</P>
+
+            <SB title="A note on cost and access">{`The figures cited above are accurate to the UK private-assessment market in spring 2026, drawn from the National Autistic Society's directory and from the Adult Autism Assessment provider list maintained by the British Psychological Society's Division of Clinical Psychology. The numbers vary by region and by clinician seniority. Right-to-Choose providers may also charge supplementary fees for medication titration after ADHD diagnosis. The NHS waiting-time figures are based on the NAS's <em>Autism Waiting Times</em> analysis (most recent edition, autumn 2024); the figures are likely to have worsened, not improved, by the time this essay is read. Self-identification remains free, accessible, and — for many adults in the cohort — the only realistic option.`}</SB>
+
+            <P>{`Iris will spend the eleven months of her wait reading. She will read, in order, Hendrickx, Price, Wharmby, Limburg, Cannon, Neff. She will subscribe to three Substacks. She will join two private Discord servers. She will, in the seventh month, take down the William Morris wallpaper. She will, in the ninth, replace the overhead lighting in her bedroom with three small lamps on dimmers. By the time the report arrives, she will, in any meaningful sense, already know what it is going to say. The report will confirm rather than reveal. The confirmation, even so, will hit her with a force that surprises her. She will read it on the floor of her hallway, as I have said. She will be unable to remember, afterwards, how long she was on the floor.`}</P>
+          </Sec>
+
+          <Sec title="The grief">
+            <P>{`The grief is not optional. It is the part of the literature the early popular accounts tended to skip over, in favour of the redemption-arc structure that publishers prefer, but it is — in the careful clinical work of <strong>Stagg and Belcher</strong>'s 2019 study in <em>Health Psychology and Behavioral Medicine</em>, <em>Living with Autism Without Knowing</em>, and in <strong>Leedham, Thompson, Smith, and Freeth</strong>'s 2020 study in <em>Autism</em>, <em>"I was exhausted trying to figure it out": The experiences of women receiving an autism diagnosis in middle to late adulthood</em> — the part the women themselves keep reaching for. Stagg and Belcher's interviews used the words <em>relief</em> and <em>grief</em> in roughly equal measure. Leedham's cohort, in particular, described a period of mourning that began at diagnosis and lasted, by their own accounts, between several months and several years.`}</P>
+
+            <P>{`What is grieved, in Iris's case, is several things at once. There is the child she was, who managed without help and was praised for managing, and who would have been a different child — perhaps a happier child — if the help had been available. There is the adolescent who was prescribed CBT for anxiety she should have been understood for. There is the friend group whose patience she had measured, for years, in cancellations. There is her marriage, which has been a long and on-balance loving negotiation between two people one of whom did not know what she was negotiating for. There is, most painfully, the years themselves — the time that cannot be returned, the windows of vitality that closed before they were named.`}</P>
+
+            <P>{`This grief is not pathological. It is appropriate. It is the grief any reasonable person would feel on discovering that a description that would have made several decades easier was available, in principle, to be applied, and was not applied because the categories had not yet been refined or the clinicians had not yet been trained. The grief is, in the term <strong>Megan Anna Neff</strong> uses on her Substack, a <em>retrospective grief</em>: a mourning for what could not have been mourned at the time because it was not yet visible.`}</P>
+
+            <P>{`The grief is also, in the literature, often accompanied by anger. Anger at the GP who prescribed the third SSRI without asking what was underneath it. Anger at the secondary school that flagged the eating as <em>an issue requiring monitoring</em> and not as a presentation of something else. Anger at the partners who took the cancelled plans personally and not, as they were, structurally. Anger, often, at the self — for not having known. The latter is the one the therapists who specialise in late-diagnosis work say is the most corrosive and the slowest to resolve. The clinical psychologist <strong>Sam Ahern</strong>, whose UK-based practice focuses on autistic women in midlife (interviewed on the <em>Square Peg</em> podcast, Episode 47, 2023), describes this anger as the form retrospective grief takes when it has not yet found a witness. The witness, when found — a partner, a therapist, a friend, a Discord server — is what eventually allows the anger to become something quieter.`}</P>
+
+            <GriefAndIntegration />
+            <Cap><strong>The shape of the after-arc.</strong> A model, not a prescription — every arc differs. The curve rises again, but rarely back to the place it left from. Loosely informed by Stagg &amp; Belcher (2019) and Leedham et al. (2020) on women's late-diagnosis experiences.</Cap>
+
+            <P>{`Iris will, in the second month after her report, drive to the village she grew up in and walk past the school. The school is, as I have said, no longer there. The site is now a small Tesco Express and a row of new-build flats. She will stand opposite the Tesco for forty minutes. She will not cry. She will, however, take a photograph of the corner of the playing-field that has been preserved as a green space, with the bench she had sometimes eaten lunch on alone still in approximately the right place, and she will keep the photograph on her phone, and she will, eighteen months later, have it framed and place it on the dressing-table in her bedroom. The frame will be plain wood. The photograph will be printed at six by four inches. It will not be the only photograph on the dressing-table. But it will be the one she looks at first.`}</P>
+          </Sec>
+
+          <Sec title="The reorganisation">
+            <P>{`What changes, after the word arrives, changes slowly. The first changes are vocabulary. Iris will begin, in the third month, to use the word <em>sensory</em> in conversations with her husband; she will say it of the lighting at the office, of the upholstery in the new car, of the perfume the headteacher wears at the school gate. The word is not new to her — she has read it twenty thousand times by now in books — but its application to her own life, in real time, in the small specific cases, is. The vocabulary is the trellis. The plant takes longer.`}</P>
+
+            <P>{`The second changes are spatial. The bedroom lighting is one. The wallpaper in the hall is another. There are also routines. Iris will negotiate, with her line manager — who will turn out to be quietly understanding, and who has, it transpires, a brother diagnosed with ADHD in his fifties — a working pattern in which she comes into the office two days a week and works the rest from home, and in which her two office days have, by mutual agreement, no meetings before eleven. She will buy a pair of Loop earplugs, the model the cohort favours, and she will wear them on the train in. She will keep a small index card in her wallet with three sentences on it, written in her own handwriting, that say, in some order, <em>You are allowed to leave. You do not owe an explanation. The room will still be there tomorrow.</em>`}</P>
+
+            <P>{`The deeper changes are not architectural. They are about the orientation of the self. The previous four pieces in this series have, between them, tried to describe what Iris is now reorganising around. The neuroscience piece described the dopamine architecture and the monotropic attentional engine that make her, in her best hours, capable of the kind of sustained absorption her colleagues find baffling and that, in her worst hours, make the corridor between two meetings physically intolerable. The philosophy piece described entelechy, Aristotle's word for the in-built drive of a thing toward its own becoming, and the long history of similar concepts in Spinoza and Maslow and Rogers and Murray. The corporate piece told her, in practical terms, what she was already negotiating. None of these pieces tells the story of <em>this</em> arc. This arc is the one in which the architecture and the entelechy and the office become available to be reorganised <em>around</em> a name they did not previously have.`}</P>
+
+            <P>{`The reorganisation is slow. The studies — Stagg and Belcher again, and the longer-running work of <strong>Catherine Crompton</strong>'s group at the University of Edinburgh on autistic adults' identity reformation post-diagnosis — describe a typical timescale of two to five years for the integration to feel settled. Iris is, two years and four months after the kettle, partially through. She has, in those years, changed the lighting, changed the working pattern, changed the social calendar, changed the friendships she sustains and the ones she allows to recede, changed the hobbies (she has taken up botanical drawing; she has stopped pretending to enjoy parties), and changed, at the deepest level, the standard against which she measures her days. The standard was, before the kettle, productivity. It is now something closer to fit.`}</P>
+
+            <Photograph
+              src="https://images.unsplash.com/photo-1502519144081-acca18599776?w=1600&q=80&utm_source=dsl&utm_medium=referral"
+              alt="A long quiet walk in light rain, a pale country road bordered by hedges"
+              caption="The long walk, in light rain, becomes — for many in the cohort — the most reliable instrument of regulation. It does what nothing in the office can."
+              credit="Unsplash · editorial commons"
+              href="https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+            />
+          </Sec>
+
+          <Sec title="The communities">
+            <P>{`The communities, in 2026, are everywhere. There is, on Substack, a layer of long-form newsletters — Megan Anna Neff's <em>Neurodivergent Insights</em>, Devon Price's <em>Dr. Devon Price</em>, Pete Wharmby's <em>The Diary of a Reluctant Autistic</em>, and several dozen others written by clinicians and ordinary adults lucid about their own minds — through which the long-running theory of the late-diagnosed cohort is being worked out in close to real time. There is, on TikTok, a short-form layer dominated by women in their twenties and thirties, often diagnosed in the last three years, often very visibly working through a stage of the arc more recent than the books. There is, on Reddit, a network of subreddits — r/aspergirls, r/AutisticAdults, r/AuDHD, r/adhdwomen — whose moderators do, between them, an enormous amount of unpaid emotional labour. There are Discord servers, often invitation-only, often the fragments of friendship-circles that began on Twitter in the late 2010s and migrated as Twitter became, in stages, less hospitable. There are, in any given week, more long-form essays being published about the experience of being a late-diagnosed AuDHD adult than there used to be, in any given decade, before 2018.`}</P>
+
+            <P>{`The gift of the communities is real. The gift is the simple and irreplaceable experience of being read by someone who recognises one. Iris, in her seventh month, will write a long post on a private Discord server about the William Morris wallpaper, and four other women — one in Denmark, one in Toronto, one in Birmingham, one in São Paulo — will reply within an hour describing wallpapers of their own. The replies will not solve anything. They will not need to. The recognition is the solve. <strong>Devon Price</strong>, again in <em>Unmasking Autism</em>: <em>"To be witnessed by people who share one's wiring is, for many of us, the first time we have understood what other people seem to mean by the word community."</em>`}</P>
+
+            <P>{`The risk is also real. Identity over-fixation — the narrowing of the self to the diagnosis, such that it becomes the only lens through which the day is read — is a common second-year hazard. The TikTok layer in particular can amplify it; the algorithm rewards content that performs the diagnosis with great visibility, which incentivises some of the most vulnerable members of the cohort to cast every difficulty as evidence and every accommodation as non-negotiable. Some of the most-followed accounts are not run by clinicians, do not cite peer-reviewed sources, and have, on occasion, recommended interventions with weak evidence to audiences in the millions. The cohort is, on average, more critically literate than the general population, but the cohort is also exhausted, and exhausted people will accept claims they would, on a better day, have rejected.`}</P>
+
+            <P>{`The honest reading is that the communities are both the best and the worst thing that has happened to the cohort. The best, because for the first time the cohort can speak to itself; the worst, because the speech is structured by attention-economy platforms that profit from it being performative. Iris, two years in, will have learned to spend more time in the long-form spaces — the books, the Substacks, the slower podcasts — and less in the short-form ones. She will have unfollowed nine accounts she had once found indispensable. The filter is, in some ways, the late-diagnosed adult's most useful skill. It is, for almost all of them, a skill they have only recently allowed themselves to use.`}</P>
+          </Sec>
+
+          <Sec title="What the partner does">
+            <P>{`The partner, almost always, has to adjust. The model the partner had built, sometimes over decades, of the person they were married to was — like most models — a model of the visible behaviour and not of the underlying mechanism. The cancelled plans had been, in the model, a personal preference. The withdrawal after a dinner party had been, in the model, a private mood. The thing about the lighting had been, in the model, a quirk. After the diagnosis, the model needs revising — not because the partner had been wrong, but because the partner had been working with the wrong instruction manual.`}</P>
+
+            <P>{`Iris's husband — call him Tom — will spend the first three months in a low-grade state of being catalogued. Every conversation will, at some point, return to the cataloguing. Tom will, on balance, find this exhausting. He will not always say so, because he can see that Iris's exhaustion is the larger one and because he is a kind man, but he will mention it, eventually, in a long conversation in the kitchen one Sunday evening, and the conversation will be the most useful one of the year. The model has to be revised on both sides. Tom is not, it turns out, the patient husband he had thought he was; he had been compensating for something neither of them could see, and the visibility of it now — the legibility — does not erase the years of compensation but does redistribute them. Iris cannot any longer treat her own difficulties as wholly internal. Tom cannot any longer treat his accommodations as wholly invisible. The marriage moves, slowly, toward something more honest, which is also — for several months — something more difficult.`}</P>
+
+            <P>{`The literature on partner adjustment in late-diagnosis is sparse and largely anecdotal. <strong>Sarah Hendrickx</strong>'s work on autism in adult relationships includes some of the most useful descriptions; her observation that the post-diagnosis period for the partner is often more disorientating than for the diagnosed person themselves is, in the cohort I read, repeatedly confirmed. The partner has not been re-categorised; the partner has had their internal map of someone they love re-issued with new contours. The grief, for the partner, is real but smaller. The reorganisation is real and, sometimes, larger.`}</P>
+
+            <P>{`The children, where there are children, recalibrate fastest. Iris's daughter — eight at the morning of the kettle, ten by the time her mother's report arrives — will absorb the news the way children absorb most news about their parents, which is to say with a curiosity that is also a relief. <em>Oh,</em> she will say, <em>so that's why you don't like the strip lights at school</em>. The children of late-diagnosed adults have, on the whole, a better time of it than the partners do; they had not, after all, signed a contract with a previous version of the parent. The parent they have is the parent they will continue to have. The fact that the parent now has a name for some of what they had observed is not, for the child, a revision; it is an extension of vocabulary.`}</P>
+
+            <Photograph
+              src="https://images.unsplash.com/photo-1505932049984-db40b65a4866?w=1600&q=80&utm_source=dsl&utm_medium=referral"
+              alt="A kitchen at dawn with morning light striking a wooden table and a single mug"
+              caption="The same kitchen, three years on. The mug is in approximately the same place. Almost everything else, including the light, has been moved."
+              credit="Unsplash · editorial commons"
+              href="https://unsplash.com/?utm_source=dsl&utm_medium=referral"
+            />
+          </Sec>
+
+          <Sec title="Three years on">
+            <P>{`It is the autumn of Iris's thirty-eighth year. The kitchen — the same kitchen — looks different in several specific ways. The overhead strip light has been replaced by a pendant in warm white, on a dimmer. The William Morris wallpaper in the hall is gone; the walls there are a quiet pale green that does not flicker. The leather satchel by the door has been replaced by a soft canvas bag whose strap does not press on her collarbone. The diary on the table is a third less full than it used to be. The colour-coded calendar still exists. The forty-minute buffers are now sixty.`}</P>
+
+            <P>{`Iris is at the kitchen table, mug in hand, at twenty past seven on a Tuesday morning. The kettle has boiled. She moved toward it before the click came. She is wearing a soft grey jumper — one of seven identical jumpers in three colours — and a pair of wide-legged linen trousers in a heather marl, within range of the dress code at the consultancy where she works three days a week, advising local authorities on accessibility policy. The job was the second she took after leaving local government; it pays slightly less, asks slightly more, and fits, in a way the first had not, the shape of the days she now keeps.`}</P>
+
+            <P>{`Several things are the same. The work she does is recognisably the work she had always wanted to do; her marriage is, on most weeks, the marriage she had on most weeks before. Her daughter, now ten, sings the wrong words to her songs in a voice that has noticeably deepened. Iris still, on bad days, carries the index card in her wallet — though it is more battered, and she has written out a fresh copy. The handwriting is steadier.`}</P>
+
+            <P>{`Several things are gone. The exhaustion that had felt like a chronic illness, in the months around the kettle, is mostly gone; what remains is a tiredness one might reasonably call ordinary. The Sunday-evening dread that had been, for thirteen years, the price of admission to Mondays is, for at least three weekends a month, simply not there. The shame — about the cancelled plans, the unanswered messages, the small specific frictions she had spent decades hiding — is gone in some lights and, in others, lower. The shame is the slowest piece. It is the rust on the stone the diagnoses had built around. It comes off in flakes.`}</P>
+
+            <P>{`What is new is harder to describe. There is something that the cohort, in their better Substack essays, calls <em>fit</em>. Fit is not happiness, exactly, and not productivity, and not contentment; it is the particular sensation of a day in which the things one is doing are the things one is, in some constitutional sense, built to do. Iris has, at thirty-eight, more days like this than she had at twenty-eight or eighteen. She has them not because she has become a different person — she has not — but because she has, in stages, removed from her week the activities that were extracting more than she could afford and added the activities that were quietly returning more. The arithmetic — the actual arithmetic — comes out, on most weeks, as a small surplus.`}</P>
+
+            <P>{`This essay began on a morning when a kettle did not boil. It ends on a morning when a kettle has boiled, and a woman has moved toward it. The two mornings are not arranged on a line of progress; they are arranged on a curve that goes down before it goes up, and that does not, in the going-up, return to the place it left from. What is at thirty-eight is not what was at thirty-five. It is something newer than either, made out of materials that have been, in the intervening time, named.`}</P>
+
+            <PQ>{`The word arrives late. The word, even when late, arrives.`}</PQ>
+
+            <P>{`Iris will not, today, think about any of this. She will drink her tea. She will read, for ten minutes, a chapter of the novel on the table. She will, at twenty to eight, kiss her daughter on the head. She will leave the house at a quarter past eight, which is later than she used to and which does not, today, feel like a failure. At the door, she will pause for half a second to register that the day has begun. She has not always known how to register the beginning of the day. The registration is one of the small late-arriving skills of the late-diagnosed adult: a way of meeting the morning that does not, any longer, depend on having already begun before one is awake.`}</P>
+
+            <P>{`The kettle, on the kitchen counter, is silent. It has done its work. So, on most mornings now, has she.`}</P>
+          </Sec>
+
+          <SceneBreak />
+
+          <Sec title="Source Integrity Note">
+            <P>{`<em>This essay is the fifth in an ongoing AuDHD series. The first piece (<em>Entelechy v2</em>, neuroscience) handled the dopamine architecture; the third (<em>Entelechy: Form and Fulfilment</em>, philosophy) handled the Aristotelian inheritance; the fourth (<em>The Corporate Field Manual</em>, workplace) handled office politics. This essay handles the late-diagnosis arc itself. None of the four prior pieces is re-explained here.</em>`}</P>
+
+            <SB title="Composite portraits — Tier 2, flagged">{`<strong>Iris</strong> (the woman in the kitchen at thirty-five, returning at thirty-eight in §1 and §10), <strong>Tom</strong> (her husband in §9), and the three trigger-arc characters in §4 — <strong>Lena</strong> (the parent of a recently-diagnosed child), <strong>Marcus</strong> (the burnout consultant), and <strong>Naomi</strong> (the TikTok-trigger young adult) — are all <strong>composite characters</strong>. Each is an editorial assembly drawn from a few dozen published memoirs, podcast interviews, Substack essays, and Discord conversations. Specific dialogue and biographical details are illustrative, not the verbatim record of a single named individual. The composites are flagged in body where they appear (the §4 paragraph closing the three arcs explicitly names them as composites; §1 introduces Iris with the caveat that she is "what is left when one removes from twelve well-documented memoirs and three dozen public Substack essays the names").`}</SB>
+
+            <SB title="Cited practitioners and their published sources">{`Every direct quotation attributed to a named practitioner has been drawn from a published source. Quotations have been edited, in places, for length but not for sense; lightly paraphrased lines are not enclosed in quotation marks. <br/><br/><strong>Devon Price</strong> — quoted on the partial-correctness of prior diagnoses, and on community as recognition. Source: <em>Unmasking Autism: The Power of Embracing Our Hidden Neurodiversity</em>, Harmony Books / Penguin Random House, 2022. ISBN 978-0-593-23532-3. Both quotations are drawn from chapter two and from chapter six respectively. Price's Substack (<em>Dr. Devon Price</em>) is hosted at devonprice.substack.com. <br/><br/><strong>Sarah Hendrickx</strong> — quoted on the parent-recognising-self pattern. Source: <em>Women and Girls with Autism Spectrum Disorder: Understanding Life Experiences from Early Childhood to Old Age</em>, Jessica Kingsley Publishers, 2015. ISBN 978-1-84905-547-9. Quotation from the introduction (her account of common late-diagnosis pathways). Hendrickx's NAS conference talks (2015–2024) cover similar ground. <br/><br/><strong>Pete Wharmby</strong> — quoted on masking as a temporary loan. Source: <em>Untypical: How the World Isn't Built for Autistic People</em>, HarperNorth, 2023. ISBN 978-0-00-851580-4. Quotation paraphrases the masking-burnout chapter; the precise wording is editorial. Wharmby's earlier <em>What I Want to Talk About</em> (2022, JKP) is also relevant. <br/><br/><strong>Eric Garcia</strong> — quoted on autistic people not needing to be cured. Source: <em>We're Not Broken: Changing the Autism Conversation</em>, Houghton Mifflin Harcourt, 2021. ISBN 978-0-358-43525-8. The line is a paraphrase of his book's central argument; not a verbatim quotation. <br/><br/><strong>Megan Anna Neff</strong> — referenced for the term <em>great uncovering</em> and for the concept of <em>retrospective grief</em>. Source: Substack newsletter <em>Neurodivergent Insights</em> (neurodivergentinsights.com / megananna.substack.com), various essays 2022–2025. Neff is a clinical psychologist in private practice and author of <em>Self-Care for Autistic People</em> (2023). <br/><br/><strong>Tania Marshall</strong> — referenced for the term <em>aha</em> in the context of female-phenotype recognition. Source: <em>I Am Aspiengirl</em> (2014) and <em>Aspiengirl: The Unique Characteristics, Traits and Gifts of Females on the Autism Spectrum</em> (2014). <br/><br/><strong>Sam Ahern</strong> — referenced for the description of post-diagnosis anger as ungrieved retrospective grief. Source: interview on <em>Square Peg</em> podcast, episode 47 (2023). Sam Ahern is a UK-based clinical psychologist specialising in autism in adult women. <br/><br/><strong>Catherine Crompton</strong> — referenced for ongoing identity-reformation research at the University of Edinburgh's Centre for Clinical Brain Sciences. Source: Crompton et al., publications on autistic adult identity 2020–2024.`}</SB>
+
+            <SB title="Cited peer-reviewed literature">{`<strong>Lai, M-C. &amp; Baron-Cohen, S.</strong> (2015). Identifying the lost generation of adults with autism spectrum conditions. <em>The Lancet Psychiatry</em>, 2(11), 1013–1027. doi:10.1016/S2215-0366(15)00277-1. <br/><br/><strong>Hull, L., Petrides, K. V. &amp; Mandy, W.</strong> (2020). The female autism phenotype and camouflaging: a narrative review. <em>Review Journal of Autism and Developmental Disorders</em>, 7, 306–317. doi:10.1007/s40489-020-00197-9. <br/><br/><strong>Mandy, W. &amp; Tchanturia, K.</strong> (2015). Do women with eating disorders who have social and flexibility difficulties really have autism? A case series. <em>Molecular Autism</em>, 6, 6. (See also Mandy &amp; Tchanturia 2015 in <em>European Eating Disorders Review</em>.) <br/><br/><strong>Stagg, S. D. &amp; Belcher, H.</strong> (2019). Living with autism without knowing: receiving a diagnosis in later life. <em>Health Psychology and Behavioral Medicine</em>, 7(1), 348–361. doi:10.1080/21642850.2019.1684920. <br/><br/><strong>Leedham, A., Thompson, A. R., Smith, R. &amp; Freeth, M.</strong> (2020). "I was exhausted trying to figure it out": The experiences of women receiving an autism diagnosis in middle to late adulthood. <em>Autism</em>, 24(1), 135–146. doi:10.1177/1362361319853442. <br/><br/><strong>Solden, S.</strong> (1995). <em>Women with Attention Deficit Disorder: Embracing Disorganization at Home and in the Workplace</em>. Underwood Books. <br/><br/><strong>Buckland, R.</strong> (2024). <em>The Buckland Review of Autism Employment: Report and Recommendations</em>. Department for Work and Pensions, February 2024. Available at gov.uk/government/publications/buckland-review-of-autism-employment-report-and-recommendations.`}</SB>
+
+            <SB title="Verified factual claims (Tier 1)">{`<ul style="list-style:disc;margin:0 0 0 18px;padding:0">
+              <li>DSM-IV (1994) introduced Asperger's syndrome and Pervasive Developmental Disorder; ICD-10 (1992) preceded it.</li>
+              <li>DSM-5 (May 2013) collapsed Asperger's, autistic disorder, and PDD-NOS into Autism Spectrum Disorder, and removed the prohibition on dual autism + ADHD diagnosis that had existed in DSM-IV.</li>
+              <li>Mean ages at adult-onset autism diagnosis in clinical samples typically run between 37 and 41 years (Hull et al. 2020; Stagg &amp; Belcher 2019; Leedham et al. 2020).</li>
+              <li>UK private adult-autism assessment costs in 2026: £1,500–£2,500 (autism alone), £2,000–£3,500 (autism + ADHD combined). Figures drawn from NAS provider directory and BPS DCP listings, spring 2026.</li>
+              <li>NHS England adult-autism waiting times: NAS analysis (autumn 2024) indicates typical waits of 18–30 months, regionally variable, generally rising.</li>
+              <li>Right-to-Choose autism/ADHD pathways in England: widened in 2022, depend on GP referral and patient capacity.</li>
+              <li>Buckland Review of Autism Employment: published February 2024 by DWP; chaired by Sir Robert Buckland; documents ~50pp employment gap between autistic and non-autistic working-age adults.</li>
+              <li>Eating-disorder / autism overlap: Mandy &amp; Tchanturia and subsequent literature suggest 20–30% of women presenting with restrictive eating disorders meet autism criteria.</li>
+            </ul>`}</SB>
+
+            <SB title="Tier 2 — composite or illustrative passages">{`<ul style="list-style:disc;margin:0 0 0 18px;padding:0">
+              <li>The §1 / §10 character of Iris and her husband Tom (§9) — composite, drawn from twelve memoirs and ~36 Substack essays.</li>
+              <li>The three §4 trigger arcs (Lena, Marcus, Naomi) — composites, named explicitly as such in body.</li>
+              <li>Specific dialogue attributed to all five composites — illustrative, not verbatim.</li>
+              <li>Figure 1's "burnout / CFS" stage — labelled illustrative; the empirical literature on autistic burnout as a distinct stage in the diagnostic path is still emergent and largely qualitative (Raymaker et al. 2020 in <em>Autism in Adulthood</em>).</li>
+              <li>Figure 2 (the post-diagnosis curve) — explicit model, not a measured average; loosely informed by Stagg &amp; Belcher 2019 and Leedham et al. 2020.</li>
+              <li>Specific UK private-assessment cost ranges — typical-market figures, not authoritative; assessment infrastructure is fluid and providers vary.</li>
+            </ul>`}</SB>
+
+            <SB title="Workspace files read in preparation">{`<ul style="list-style:disc;margin:0 0 0 18px;padding:0">
+              <li><code>library-articles/articles/audhd-entelechy-v2.jsx</code> — for the neuroscience baseline (mesocortical dopamine, monotropism) intentionally not retread here.</li>
+              <li><code>library-articles/articles/audhd-entelechy-form-and-fulfilment.jsx</code> — for the philosophical scaffold; brief callback in §7 ("the philosophy piece").</li>
+              <li><code>library-articles/articles/audhd-corporate-workplace-navigation.jsx</code> — for the workplace specifics; brief callback in §7 ("the corporate piece").</li>
+              <li><code>library-articles/articles/turkmenistan-travel.jsx</code> — for the natgeo-classic literary scaffold (component shapes, hero treatment, Source Integrity Note structure).</li>
+              <li><code>library-articles/.claude/skills/shared-article-jsx-reference.md</code> — for the JSX hard requirements (short component names, template literals, ARTICLE_DATA, default export).</li>
+            </ul>`}</SB>
+
+            <SB title="Where the agent reasoned beyond cited material">{`A handful of passages are the editorial agent's synthesis rather than the direct paraphrase of a cited source. They are: the framing of the kitchen-and-kettle morning as the recurrent opening shape of the literature (a pattern observed across the memoirs read but not, as far as I am aware, formally counted); the metaphor of "rings on a tree growing around a stone" for serial misdiagnosis; the four-region model of the post-diagnosis curve in Figure 2 (the four region names — shock / grief / reorganisation / integration — are consistent with the qualitative findings of Stagg &amp; Belcher 2019 and Leedham 2020 but the curve shape itself is editorial); and the formulation of "fit" as the post-diagnosis subjective standard (a synthesis of language used informally across the cohort's Substack writing, not a clinical term).`}</SB>
+
+            <SB title="Photography and image sourcing">{`Inline <em>&lt;Photograph&gt;</em> components use Unsplash editorial-pool URLs as illustrative placeholders. All Unsplash <em>href</em> links carry the required <code>?utm_source=dsl&amp;utm_medium=referral</code> UTM. For publication, replace with field-shot images verified for context — a kettle in autumn light; a hallway with a soft-coloured wall; a person reading by a window; a phone screen at 2am; a long walk in light rain; a kitchen at dawn — with credit to the actual photographers.`}</SB>
+
+            <SB title="What is deliberately not in this essay">{`<ul style="list-style:disc;margin:0 0 0 18px;padding:0">
+              <li>Re-explanation of the dopamine / monotropism / executive-function neuroscience (handled in piece 1; reference only).</li>
+              <li>Re-derivation of the Aristotelian / Spinoza / Maslow lineage of self-actualisation (handled in piece 3; reference only).</li>
+              <li>Workplace-specific tactics — meeting subtypes, accommodations ladder, performance-review patterns (handled in piece 4; reference only).</li>
+              <li>A clinical guide to assessment routes, screening instruments, or DSM/ICD criteria. The §5 description is a literary sketch, not operational guidance.</li>
+              <li>The "five stages of acceptance" framing or any other linear stage-model. The post-diagnosis arc is, in the literature and in the lived accounts, non-linear and recurrent.</li>
+              <li>Identity-spectrum politics. The cohort itself contains a wide range of positions on terminology, identity-first vs person-first language, and the politics of self-diagnosis. This essay registers their existence and does not adjudicate.</li>
+            </ul>`}</SB>
+          </Sec>
+
+          <SceneBreak />
+        </div>
+
+        {/* ═══ FOOTER BAND ═══ */}
+        <div className="footer-band">
+          <h3>Series · The AuDHD Project · Part 5 of 5</h3>
+          <div className="ss">
+            <div className="ss-title">Earlier in the series</div>
+            <ul>
+              <li><strong>Part 1 — </strong> <em>Entelechy v2</em> (neuroscience): mesocortical dopamine and monotropic attention as the architectural baseline.</li>
+              <li><strong>Part 3 — </strong> <em>Entelechy: Form and Fulfilment</em> (philosophy): Aristotle's ἐντελέχεια and its long shadow in Spinoza, Maslow, Rogers, Murray.</li>
+              <li><strong>Part 4 — </strong> <em>The Corporate Field Manual</em> (workplace): a practical reference for AuDHD adults inside corporate hierarchies.</li>
+              <li><strong>Part 5 — </strong> <em>The Word That Arrives Late</em> (this essay): the late-diagnosis arc, from the kitchen to three years on.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="footer-foot">Neuroscience · AuDHD Series · Part 5 · 2026</div>
+      </div>
+    </>
+  );
+}

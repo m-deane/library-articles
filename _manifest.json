@@ -1,5 +1,44 @@
 [
   {
+    "slug": "audhd-late-diagnosis-arc",
+    "title": "The Word That Arrives Late",
+    "subtitle": "On the long arc of AuDHD recognition in adulthood \u2014 the life that didn't fit, the misdiagnoses that almost did, the moment a name finally lands, and the slow reorganisation that follows.",
+    "date": "2026-04-26",
+    "read_time": "26 min",
+    "category": "neuroscience",
+    "style": "natgeo-classic",
+    "tags": [
+      "audhd",
+      "autism",
+      "adhd",
+      "late-diagnosis",
+      "identity"
+    ],
+    "component": "AudhdLateDiagnosisArc",
+    "url": "articles/audhd-late-diagnosis-arc.html",
+    "pdf_url": "articles/audhd-late-diagnosis-arc.pdf"
+  },
+  {
+    "slug": "audhd-outwardly-successful",
+    "title": "The Cost Behind the Composure",
+    "subtitle": "On the AuDHD adults the world calls high-functioning \u2014 what the term obscures, what it costs, and a more honest taxonomy of support need.",
+    "date": "2026-04-26",
+    "read_time": "",
+    "category": "neuroscience",
+    "style": "encyclopaedic",
+    "tags": [
+      "audhd",
+      "autism",
+      "adhd",
+      "masking",
+      "burnout",
+      "high-functioning"
+    ],
+    "component": "AudhdOutwardlySuccessful",
+    "url": "articles/audhd-outwardly-successful.html",
+    "pdf_url": "articles/audhd-outwardly-successful.pdf"
+  },
+  {
     "slug": "audhd-corporate-workplace-navigation",
     "title": "The Corporate Field Manual",
     "subtitle": "An in-depth practical reference for AuDHD adults working inside a corporate hierarchy \u2014 strengths, frictions, and a navigable toolkit for the politics of office life.",
