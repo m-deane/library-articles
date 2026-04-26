@@ -108,6 +108,7 @@ SLUGS = [
     "scilly-isles-travel-guide",
     "audhd-life-around-the-engine",
     "audhd-entelechy-form-and-fulfilment",
+    "audhd-corporate-workplace-navigation",
 ]
 
 

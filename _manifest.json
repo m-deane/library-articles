@@ -1,5 +1,25 @@
 [
   {
+    "slug": "audhd-corporate-workplace-navigation",
+    "title": "The Corporate Field Manual",
+    "subtitle": "An in-depth practical reference for AuDHD adults working inside a corporate hierarchy \u2014 strengths, frictions, and a navigable toolkit for the politics of office life.",
+    "date": "2026-04-26",
+    "read_time": "",
+    "category": "neuroscience",
+    "style": "encyclopaedic",
+    "tags": [
+      "audhd",
+      "autism",
+      "adhd",
+      "workplace",
+      "corporate",
+      "career"
+    ],
+    "component": "AudhdCorporateWorkplaceNavigation",
+    "url": "articles/audhd-corporate-workplace-navigation.html",
+    "pdf_url": "articles/audhd-corporate-workplace-navigation.pdf"
+  },
+  {
     "slug": "audhd-entelechy-form-and-fulfilment",
     "title": "Entelechy: Form and Fulfilment",
     "subtitle": "An encyclopaedic essay on Aristotle's word for the in-built drive of a thing toward its own becoming, and why a generation of late-diagnosed AuDHD adults have read themselves into it.",
