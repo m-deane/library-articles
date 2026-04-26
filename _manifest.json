@@ -1,24 +1,5 @@
 [
   {
-    "slug": "audhd-entelechy-form-and-fulfilment",
-    "title": "Entelechy: Form and Fulfilment",
-    "subtitle": "An encyclopaedic essay on Aristotle's word for the in-built drive of a thing toward its own becoming, and why a generation of late-diagnosed AuDHD adults have read themselves into it.",
-    "date": "2026-04-26",
-    "read_time": "",
-    "category": "neuroscience",
-    "style": "encyclopaedic",
-    "tags": [
-      "audhd",
-      "autism",
-      "adhd",
-      "philosophy",
-      "entelechy"
-    ],
-    "component": "AudhdEntelechyFormAndFulfilment",
-    "url": "articles/audhd-entelechy-form-and-fulfilment.html",
-    "pdf_url": "articles/audhd-entelechy-form-and-fulfilment.pdf"
-  },
-  {
     "slug": "basking-sharks",
     "title": "The Slow Giants: Why Basking Sharks Return to the Hebrides",
     "subtitle": "The world's second-largest fish drifts each summer through a stretch of cold Atlantic between Coll and Canna, mouth held wide for a soup of copepods. After a century of slaughter and a generation of indifference, the science is finally catching up to the animal.",
@@ -127,6 +108,25 @@
     "component": "EastIcelandHikingPhotography",
     "url": "articles/east-iceland-hiking-photography.html",
     "pdf_url": "articles/east-iceland-hiking-photography.pdf"
+  },
+  {
+    "slug": "audhd-life-around-the-engine",
+    "title": "Life Around the Engine",
+    "subtitle": "A companion to The Engine That Cannot Be Redirected. Not a treatise on AuDHD brains, but a portrait of the rooms, routines, jobs, partnerships, and refusals that AuDHD adults build to live well at the speed their nervous systems insist upon.",
+    "date": "2026-04-25",
+    "read_time": "",
+    "category": "neuroscience",
+    "style": "natgeo-classic",
+    "tags": [
+      "audhd",
+      "autism",
+      "adhd",
+      "lived-experience",
+      "flourishing"
+    ],
+    "component": "AudhdLifeAroundTheEngine",
+    "url": "articles/audhd-life-around-the-engine.html",
+    "pdf_url": "articles/audhd-life-around-the-engine.pdf"
   },
   {
     "slug": "drone-hyperlapse-mavic-3-pro",
