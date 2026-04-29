@@ -1,5 +1,25 @@
 [
   {
+    "slug": "newhaven-starbank-road-history",
+    "title": "Newhaven and Starbank Road",
+    "subtitle": "A royal shipyard, a fishing village, a Victorian seafront \u2014 five centuries on the south shore of the Firth of Forth, read along a single Edinburgh road.",
+    "date": "2026-04-29",
+    "read_time": "",
+    "category": "history",
+    "style": "encyclopaedic",
+    "tags": [
+      "edinburgh",
+      "newhaven",
+      "scotland",
+      "history",
+      "maritime",
+      "victorian"
+    ],
+    "component": "NewhavenStarbankRoadHistory",
+    "url": "articles/newhaven-starbank-road-history.html",
+    "pdf_url": "articles/newhaven-starbank-road-history.pdf"
+  },
+  {
     "slug": "audhd-late-diagnosis-arc",
     "title": "The Word That Arrives Late",
     "subtitle": "On the long arc of AuDHD recognition in adulthood \u2014 the life that didn't fit, the misdiagnoses that almost did, the moment a name finally lands, and the slow reorganisation that follows.",

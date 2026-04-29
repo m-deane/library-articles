@@ -111,6 +111,7 @@ SLUGS = [
     "audhd-corporate-workplace-navigation",
     "audhd-late-diagnosis-arc",
     "audhd-outwardly-successful",
+    "newhaven-starbank-road-history",
 ]
 
 
